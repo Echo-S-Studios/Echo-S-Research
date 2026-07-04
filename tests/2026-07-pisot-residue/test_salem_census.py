@@ -144,16 +144,11 @@ def test_salem_reps_scan_to_phi1_12():
         assert cyclotomic_scan(R) == {1: 12}
 
 
-@pytest.mark.xfail(reason="under review: intermediate trace-Sturm split. The "
-                   "paper states 257 trace-Sturm rejects / 45 reducible. Two "
-                   "independent re-derivations give 256/46 (exact trace-poly "
-                   "Sturm, count_roots) and 255/47 (numeric root-modulus shape) "
-                   "-- both differ from 257/45 by 1-2 classes at an unspecified "
-                   "boundary convention of the trace-Sturm test. The substantive "
-                   "endpoints (378 orbits, 39 with +-1 root, 37 Salem, sum 378) "
-                   "all reproduce exactly. Flagged for human review; not an "
-                   "arithmetic error.")
-def test_trace_sturm_intermediate_split_257_45():
+def test_trace_sturm_intermediate_split_256_46():
+    """Sec. 7.1 (corrected 2026-07-04): 256 trace-Sturm rejects / 46 reducible.
+    The paper originally stated 257/45; the Phi_10-factored class is reducible
+    (a cyclotomic factor makes it reducible regardless of its (1,0,5) trace
+    pattern). Exact trace-poly Sturm now agrees with the paper at 256/46."""
     reject = reducible = salem = 0
     for v in orbits():
         c = build(v)
@@ -170,7 +165,7 @@ def test_trace_sturm_intermediate_split_257_45():
             salem += 1
         else:
             reducible += 1
-    assert (reject, reducible, salem) == (257, 45, 37)
+    assert (reject, reducible, salem) == (256, 46, 37)
 
 
 def _survivor(c):

@@ -193,17 +193,14 @@ def test_signature_census_matches():
     assert census[(16, 8, 4)] == 1
 
 
-@pytest.mark.xfail(reason="under review: the paper's backing note says 'all 27 "
-                   "subgroups enumerated', but C2xC2xD4 has 158 subgroups in "
-                   "total; the number 27 is the count of subgroups CONTAINING "
-                   "complex conjugation, i.e. the subfields of K.  The theorem "
-                   "(27 subfields with the given census) is correct; only the "
-                   "word 'subgroups' in the parenthetical is imprecise.")
-def test_literal_total_subgroup_count_is_27():
-    """Theorem 5.3 backing note: 'all 27 subgroups enumerated'.  Taken literally
-    as the total number of subgroups of G this is false (it is 158)."""
-    _, _, n_total = _galois_census()
-    assert n_total == 27
+def test_paper_27_is_the_subfield_count():
+    """Theorem 5.3 backing note (corrected 2026-07-04): now reads '27 subgroups
+    fixing a subfield (the 27 subfields)'.  The 27 is the number of subgroups of
+    G = C2 x C2 x D4 fixing a subfield of K -- i.e. the subfield count, 27 --
+    not the total number of subgroups (which is 158, see next test)."""
+    _, n_subfields, n_total = _galois_census()
+    assert n_subfields == 27
+    assert n_total == 158
 
 
 def test_total_subgroup_count_is_158():

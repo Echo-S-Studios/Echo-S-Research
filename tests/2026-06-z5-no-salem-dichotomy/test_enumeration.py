@@ -144,14 +144,10 @@ def test_reciprocal_objects_all_equal_phi5_times_real_unit(objs):
 
 
 # ----------------------------- flagged --------------------------------------
-@pytest.mark.xfail(reason="under review: the paper's Sec. 7 table states 5 "
-                          "reciprocal charge-5 objects in the window, but an "
-                          "independent enumeration finds exactly 4 "
-                          "{Phi_5, x^5-1, Phi_5*(x^2-3x+1), Phi_5*(x^2-4x+1)}. "
-                          "The three DISTINCT measures {1, phi^2, 2+sqrt3} do "
-                          "reproduce; the count is off by one (likely a "
-                          "counting-convention difference). See NOTES.md.")
-def test_reciprocal_object_count_is_5(objs):
-    """Sec. 7: 'reciprocal charge-5 found: 5 objects'."""
+def test_reciprocal_object_count_is_4(objs):
+    """Sec. 7 (corrected 2026-07-04): 'reciprocal charge-5 found: 4 objects'
+    {Phi_5, x^5-1, Phi_5*(x^2-3x+1), Phi_5*(x^2-4x+1)}. The paper originally
+    stated 5; independent enumeration of the window finds 4 (the three distinct
+    measures {1, phi^2, 2+sqrt3} are unchanged)."""
     recip = [o for o in objs if o[2]]
-    assert len(recip) == 5
+    assert len(recip) == 4

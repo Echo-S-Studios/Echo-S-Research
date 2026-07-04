@@ -118,3 +118,7 @@ independent re-derivations that reproduced the paper exactly:
   Thm. smythfloor + Rem. reciprocal, *Lehmer's Box*, *Occupant of the Salem
   Slot*. These live in other papers and are out of scope for this folder.
 - **Provenance sha256 / epistemic-tag bookkeeping** — not mathematical content.
+
+## Correction applied 2026-07-04
+
+Sec. 7 reciprocal charge-Z/5Z object count corrected 5 -> 4; test test_reciprocal_object_count_is_4 now asserts 4. Distinct measures {1, phi^2, 2+sqrt3} and the non-reciprocal count 13 unchanged.

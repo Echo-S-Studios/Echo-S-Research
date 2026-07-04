@@ -95,23 +95,18 @@ def test_linear_rate_expansion_leading_term():
     assert sp.simplify(ser.coeff(u, 1) - 1/phi) == 0
 
 
-@pytest.mark.xfail(reason="under review: Prop 6.4 writes the quadratic term of "
-                          "(sqrt5 - tau0) as +(sqrt5-2)(phi-beta)^2, but an "
-                          "independent Taylor expansion gives -(sqrt5-2)(phi-beta)^2. "
-                          "The curvature *magnitude* (1/2 trace''(phi)=sqrt5-2) and the "
-                          "linear slope phi^-1 are correct; only the displayed sign of "
-                          "the second-order term is wrong. See NOTES.md.")
-def test_linear_rate_expansion_quadratic_sign_as_written():
-    """Prop 6.4 (as written): sqrt5 - tau0 = phi^-1 (phi-beta)
-    + (sqrt5-2)(phi-beta)^2 + O((phi-beta)^3).
-    Independently the (phi-beta)^2 coefficient is -(sqrt5-2), so this
-    exact-as-written claim fails (expected xfail)."""
+def test_linear_rate_expansion_quadratic_sign():
+    """Prop 6.4 (corrected 2026-07-04): sqrt5 - tau0 = phi^-1 (phi-beta)
+    - (sqrt5-2)(phi-beta)^2 + O((phi-beta)^3). The paper originally displayed a
+    + on the quadratic term; the independent Taylor coefficient is -(sqrt5-2)
+    (= -phi^-3). The linear slope phi^-1 and curvature magnitude sqrt5-2 are
+    unchanged."""
     b, u = sp.symbols('b u')
     expr = sp.sqrt(5) - (b + 1/b)
     ser = sp.series(expr.subs(b, phi - u), u, 0, 3).removeO()
     c2 = sp.simplify(ser.coeff(u, 2))
-    # paper's stated coefficient is +(sqrt5 - 2)
-    assert sp.simplify(c2 - (sp.sqrt(5) - 2)) == 0
+    # corrected coefficient is -(sqrt5 - 2)
+    assert sp.simplify(c2 - (-(sp.sqrt(5) - 2))) == 0
 
 
 # ---- the geometric rate table (Thm 6.6) -------------------------------

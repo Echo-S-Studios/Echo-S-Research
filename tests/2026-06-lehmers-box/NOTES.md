@@ -117,3 +117,7 @@ proof/logic claim:
    truth values of (P)", "(B) is unconditional"); not mechanically decidable.
 6. **Open fronts (Rem 8.4)** — the free unbounded commutator and Lehmer's problem
    `(P)` are explicitly left open; nothing to verify.
+
+## Correction applied 2026-07-04
+
+Thm 5.3 note reworded "all 27 subgroups" -> "the 27 subgroups fixing a subfield (the 27 subfields)"; test converted to test_paper_27_is_the_subfield_count asserting 27 subfields and 158 total subgroups (both pass). Signature census unchanged.

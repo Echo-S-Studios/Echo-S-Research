@@ -779,8 +779,8 @@ $M_2(\Q)$ has spectrum
 \end{equation}
 its nonzero eigenvalues being the difference of the two eigenvalues of $R_C$. The $0$--eigenspace is the
 centraliser $\spn\{I,R_C\}$. At the golden value $C=1$ the spectrum is $\{-\sqrt5,0,+\sqrt5\}$ with
-$\sqrt5=\varphi-\psi$, and $R_1$ is conjugate to the keystone $R=\big(\begin{smallmatrix}0&1\\1&1\end{smallmatrix}\big)$
-($\charpoly=x^2-x-1$; both have discriminant $5$, hence the same self--action gap).
+$\sqrt5=\varphi-\psi$, and $R_1$ is conjugate to $-R$, where $R=\big(\begin{smallmatrix}0&1\\1&1\end{smallmatrix}\big)$ is the keystone
+($R_1$ and $-R$ share $\charpoly=x^2+x-1$, and $R,-R$ both have discriminant $5$, so $R_1$ has the same self--action gap $\sqrt5$ as the keystone).
 \end{proposition}
 \begin{proof}
 For a $2\times2$ matrix with eigenvalues $\{a,b\}$ the adjoint action has eigenvalues $\{a-a,a-b,b-a,b-b\}=
@@ -1532,7 +1532,7 @@ $D_{\mathrm{KL}}=\tfrac1{2c}\lVert\rr\rVert_\GG^2\ge\log\Mah$ for the threshold 
 recomputes $2c\log\mu_S$ at $c\in\{1,n\}$ to $0.5624,2.2496,4.4992$ from $\mu_S$, the real root of $x^3-x-1$; the
 self--action spectrum of Proposition~\ref{prop:trifurcation} is verified by forming the $4\times4$ adjoint matrix
 $[R_C,\cdot]$ and confirming its eigenvalues $\{0,0,\pm\sqrt{1+4C}\}$ and kernel $\spn\{I,R_C\}$, with the golden
-case $\{-\sqrt5,0,+\sqrt5\}$ and $R_1$ conjugate to the keystone; and the canonicalization ladder of
+case $\{-\sqrt5,0,+\sqrt5\}$ and $R_1$ conjugate to $-R$ (same self--action gap $\sqrt5$ as the keystone); and the canonicalization ladder of
 Table~\ref{tab:canon} evaluates $c=\sqrt{1+4C}/(2C)$ on the gates $C\in\{\tfrac14,\tfrac12,1\}$ to
 $\{2\sqrt2,\sqrt3,\sqrt5/2\}$ with gap $\sqrt{1+4C}\in\{\sqrt2,\sqrt3,\sqrt5\}$. Every conformal/companion term is
 exact ($\Q$/$\Z$ or $\Q(\sqrt5)$); only the transcendental $\log\mu_S$ uses a certified interval bracket.

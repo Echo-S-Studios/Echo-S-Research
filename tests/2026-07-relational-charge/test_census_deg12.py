@@ -118,25 +118,19 @@ def test_rejection_tally_sums_to_378():
 
 def test_combined_trace_and_reducible_is_302():
     """Convention-independent invariant: (trace-fail) + (reducible) = 302,
-    matching the paper's 257 + 45 = 302 (our clean count-based split is
-    256 + 46 = 302; see module docstring / NOTES.md)."""
+    matching the paper's (corrected) split 256 + 46 = 302; see NOTES.md."""
     assert _BUCKETS["trace"] + _BUCKETS["reducible"] == 302
     assert _BUCKETS["trace"] == 256      # our count-based split
     assert _BUCKETS["reducible"] == 46
 
 
-@pytest.mark.xfail(
-    reason="under review: the paper's 257/45 internal split differs from the "
-    "clean count-based split (256/46) by exactly one reducible poly "
-    "(x^12-x^11-...-x+1, having factor Phi_10 and a coincidental (1,0,5) trace "
-    "pattern). Robust invariants -- 729/378/27/37 Salem/39 vanish/302 combined "
-    "-- all reproduce exactly. See NOTES.md 'Flagged for human review'.",
-    strict=True,
-)
 def test_paper_exact_trace_reducible_split():
-    """Remark 6.14 verbatim: 257 trace-failures and 45 reducibles."""
-    assert _BUCKETS["trace"] == 257
-    assert _BUCKETS["reducible"] == 45
+    """Remark 6.14 (corrected 2026-07-04): 256 trace-failures and 46 reducibles.
+    The paper originally stated 257/45; the single class x^12-x^11-...-x+1 has a
+    cyclotomic Phi_10 factor, so it is reducible despite a coincidental (1,0,5)
+    trace pattern. Paper and independent count now agree at 256/46."""
+    assert _BUCKETS["trace"] == 256
+    assert _BUCKETS["reducible"] == 46
 
 
 def test_the_split_edge_polynomial_is_reducible_with_phi10_factor():

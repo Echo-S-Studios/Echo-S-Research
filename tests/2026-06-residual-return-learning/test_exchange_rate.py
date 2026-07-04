@@ -179,18 +179,22 @@ def test_R1_and_keystone_share_self_action_gap():
     assert {sp.simplify(sp.Abs(e)) for e in g1} == {sp.simplify(sp.Abs(e)) for e in gk} == {sqrt(5)}
 
 
-@pytest.mark.xfail(reason="under review: Prop 4.7 says 'R_1 is conjugate to the "
-                          "keystone R', but R_1 has charpoly x^2+x-1 and R has "
-                          "x^2-x-1; different char. polynomials => NOT similar over "
-                          "any field. Only the self-action GAP (both disc 5) is "
-                          "shared, which the proof actually needs. See NOTES.md.",
-                   strict=True)
-def test_R1_conjugate_to_keystone_literal():
-    """Prop 4.7 (literal aside, EXPECTED TO FAIL): R_1 conjugate/similar to R.
-    Similarity requires equal characteristic polynomials; they differ."""
+def test_R1_conjugate_to_negative_keystone():
+    """Prop 4.7 (corrected 2026-07-04): R_1 = [[0,1],[1,-1]] is conjugate to -R,
+    where R = [[0,1],[1,1]] is the keystone.  R_1 and -R share charpoly x^2+x-1
+    (distinct eigenvalues => similar over Q); R_1 is NOT similar to R (charpoly
+    x^2-x-1).  Both R and -R have discriminant 5, so R_1 has the keystone's
+    self-action gap sqrt5."""
     R1 = Matrix([[0, 1], [1, -1]])
     Rk = Matrix([[0, 1], [1, 1]])
-    assert sp.expand(R1.charpoly(x).as_expr() - Rk.charpoly(x).as_expr()) == 0
+    negRk = -Rk
+    cp_R1 = sp.expand(R1.charpoly(x).as_expr())
+    cp_Rk = sp.expand(Rk.charpoly(x).as_expr())
+    cp_negRk = sp.expand(negRk.charpoly(x).as_expr())
+    assert cp_R1 == x**2 + x - 1
+    assert cp_negRk == x**2 + x - 1
+    assert cp_Rk == x**2 - x - 1
+    assert cp_R1 != cp_Rk
 
 
 # --- Definition 4.8 / Table 4 (frame-shift canonicalization) -----------------

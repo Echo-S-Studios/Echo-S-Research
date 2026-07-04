@@ -137,3 +137,7 @@ statements, or open predictions. Sanity checks were added where feasible.
   root products with an exact root-of-unity test (order ≤ 1680, the totient bound
   for degree 400) rather than by building the degree-400 resultant symbolically;
   this is an independent route to the same {Φ₁²⁰} conclusion.
+
+## Correction applied 2026-07-04
+
+Degree-12 Salem census split corrected 257/45 -> 256/46 (same Phi_10-factored reducible class as relational-charge). Test test_trace_sturm_intermediate_split_256_46 now asserts (256,46,37) and passes; endpoints (378 orbits / 37 Salem) unchanged.

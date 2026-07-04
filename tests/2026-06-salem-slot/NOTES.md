@@ -130,3 +130,7 @@ consecutive ratio →φ — are all correct and independently verified (tests 26
 py -m pytest "C:\Users\acead\projects\Echo-S-Research\tests\2026-06-salem-slot" -v -p no:cacheprovider
 ```
 Expected: 46 passed, 1 xfailed.
+
+## Correction applied 2026-07-04
+
+Prop 6.4 quadratic term sign corrected +(sqrt5-2)(phi-beta)^2 -> -(sqrt5-2)(phi-beta)^2 (= -phi^-3); test test_linear_rate_expansion_quadratic_sign now asserts the minus coefficient. Linear slope phi^-1 and curvature magnitude sqrt5-2 unchanged.

@@ -912,10 +912,14 @@ census is corroboration rather than evidence. Five further degree-$12$
 Salem instances with a coefficient outside $\{-1,0,1\}$ were spot-checked
 and are likewise inert (ledger entry~V). Each of the $341$ non-Salem
 twist-classes carries an exact rejection certificate: $39$ vanish at
-$x=\pm1$, $257$ fail the trace-polynomial Sturm pattern $(1,0,5)$, and $45$
+$x=\pm1$, $256$ fail the trace-polynomial Sturm pattern $(1,0,5)$, and $46$
 are reducible (none fail only trace-polynomial irreducibility); together
-with the $37$ Salem classes, $39+257+45+37=378$ accounts for every
-twist-class (ledger entry~W).
+with the $37$ Salem classes, $39+256+46+37=378$ accounts for every
+twist-class (ledger entry~W). A twist-class whose polynomial has a cyclotomic
+factor is counted as \emph{reducible} regardless of a coincidental trace
+pattern; the single class $x^{12}-x^{11}-x^{10}-x^{9}-x^{7}-x^{6}-x^{5}-x^{3}-x^{2}-x+1$,
+which carries the factor $\Phi_{10}$, therefore sits in the reducible bucket
+rather than among the trace-Sturm rejects.
 \end{remark}
 
 \begin{corollary}[Sharpened exclusion]\label{cor:sharpexcl}
@@ -1442,7 +1446,7 @@ $\{-2,\dots,2\}^6$): all five scans return $\{\Phi_1^{\,12}\}$
 W & plastic number; tally & $x^3-x-1$: irreducible, one real root $>1$
 (Sturm), pair modulus $\theta_0^{-1/2}$; contacts $\{\Phi_1^{\,3}\}$ ---
 inert (Example~\ref{ex:pisotnu}). Census rejection tally re-derived:
-$39/257/45/0/37$, sum $378$. Single-engine
+$39/256/46/0/37$, sum $378$. Single-engine
 (\texttt{supplement\_round7.py}).\\[2pt]
 X & $x^4-x+1$ ($\nu$ executed) & irreducible, $0$ real roots (Sturm),
 non-reciprocal; $\operatorname{charpoly}(C\otimes C)

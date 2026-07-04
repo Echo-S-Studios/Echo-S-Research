@@ -57,7 +57,7 @@ of which $67$ realize the two-pair pattern (all on distinct shells), and the
 composed-square instrument $C_2$ returns exactly $\{\Phi_1^{20}\}$ on all $67$:
 \emph{zero mirrored cross-shell classes} (\F\ per instance; \C\ over the box);
 (4)~companion live replications: the degree-$12$ Salem census
-($378$ twist-classes, tally $39/257/45/37$, $37/37$ inert), a Pisot-quartic sweep
+($378$ twist-classes, tally $39/256/46/37$, $37/37$ inert), a Pisot-quartic sweep
 ($103/103$ scans $\{\Phi_1^4\}$, emission-gap probe unfalsified), and a third run
 of signature ledger~M in \gp\ with \emph{engine-native selection} and two
 in-engine decision paths asserted equal on all $237$ signatures ($474$ scan
@@ -398,11 +398,15 @@ $x^5-2x^4-2x^3-2x^2-2x-2$.
 \subsection{Degree-12 Salem census (\cite[Thm.~7.10]{relcharge})}
 Independent re-implementation (deposit scripts not consulted): Burnside
 $729$ vectors, $27$ twist-fixed, $378$ orbits; cascade tally exactly
-$39$ ($\pm1$ root) $/\,257$ (trace-Sturm) $/\,45$ (reducible) $/\,\mathbf{37}$
+$39$ ($\pm1$ root) $/\,256$ (trace-Sturm) $/\,46$ (reducible) $/\,\mathbf{37}$
 Salem; all $37$ complete scans ($\deg\Rat=144$, bound $41472$, totient filter
 collapsing to $290$ candidates, largest $m=630$) returned $\{\Phi_1^{12}\}$;
 twist-invariance of $\Rat$ verified on a live representative. $60$\,s against
-the deposit's $93$\,s. \F\ per instance.
+the deposit's $93$\,s. \F\ per instance. One reducible twist-class,
+$x^{12}-x^{11}-x^{10}-x^{9}-x^{7}-x^{6}-x^{5}-x^{3}-x^{2}-x+1$ with a $\Phi_{10}$
+factor, carries a coincidental $(1,0,5)$ trace pattern and is counted as
+reducible, not a trace-Sturm reject: a polynomial with a cyclotomic factor is
+reducible regardless of its trace pattern.
 
 \subsection{Pisot-quartic sweep and the emission-gap probe}
 Box $[-3,3]^4$ ($2401$ candidates): $103$ certified Pisot quartics
@@ -435,7 +439,7 @@ run & engine / kernel & decision path & instance selection & operator\\
 
 Run 3 re-derives the census \emph{selection} inside \gp\ (Burnside quotient,
 $\pm1$ check, trace-square Sturm, irreducibility): \textsc{burnside}
-$(729,27,378)$, \textsc{cascade} $(39,257,45,37)$, selection set identical to
+$(729,27,378)$, \textsc{cascade} $(39,256,46,37)$, selection set identical to
 run 1 ($37/37$). Deck outcome: $237/237$ signatures agree
 (canonical $14$ including $Z^{*}$, the mixed pair, and \cite[Ex.~7.18]{relcharge};
 census $37$; quartic Pisots $103$; quintic Pisots $83$), each decided by two

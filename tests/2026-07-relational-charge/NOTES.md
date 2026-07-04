@@ -129,3 +129,7 @@ strict `xfail` so that any future reclassification is caught.
   classes); verified in spirit on the computed types, not as a single assertion.
 - **Gauge/torsor interpretation and citation-provenance prose** — interpretive,
   not mathematical.
+
+## Correction applied 2026-07-04
+
+Degree-12 census intermediate split corrected 257/45 -> 256/46: the class x^12-x^11-x^10-x^9-x^7-x^6-x^5-x^3-x^2-x+1 has a cyclotomic Phi_10 factor, so it is reducible despite a coincidental (1,0,5) trace pattern. Test test_paper_exact_trace_reducible_split now asserts 256/46 and passes; robust invariants (378 orbits / 37 Salem / 302 combined) unchanged.

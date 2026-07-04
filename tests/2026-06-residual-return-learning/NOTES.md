@@ -155,3 +155,7 @@ tested above.
 ```
 py -m pytest "C:\Users\acead\projects\Echo-S-Research\tests\2026-06-residual-return-learning" -v -p no:cacheprovider
 ```
+
+## Correction applied 2026-07-04
+
+Prop 4.7 aside corrected "R_1 conjugate to keystone R" -> "R_1 conjugate to -R"; test test_R1_conjugate_to_negative_keystone now asserts R_1 ~ -R (shared charpoly x^2+x-1) and passes. Shared self-action gap sqrt5 unchanged.
