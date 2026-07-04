@@ -1,0 +1,17 @@
+{
+  "title": "Echo S Research",
+  "upload_type": "publication",
+  "publication_type": "article",
+  "creators": [
+    {
+      "name": "Echo S Studios Research Developments"
+    }
+  ],
+  "license": "cc-by-4.0",
+  "keywords": [
+    "mathematics",
+    "research",
+    "computational"
+  ],
+  "description": "Archive of mathematics research from Echo S Studios Research Developments. This repository collects research papers (PDF and LaTeX source) together with the supporting data, figures, and computational code that underpin them. Each tagged GitHub release is preserved on Zenodo with a citable DOI, providing a permanent, versioned record of the group's mathematical and computational work."
+}

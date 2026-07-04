@@ -1,0 +1,40 @@
+name: Validate metadata
+
+# Validates the Zenodo/citation metadata so a malformed file can't quietly
+# break a DOI deposition. Runs when a release is published (the archiving
+# trigger), on pull requests that touch the metadata (to catch errors early),
+# and on demand. No secrets or external tokens are required.
+on:
+  release:
+    types: [published]
+  pull_request:
+    paths:
+      - ".zenodo.json"
+      - "CITATION.cff"
+      - ".github/workflows/release.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate .zenodo.json and CITATION.cff
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Validate .zenodo.json is valid JSON
+        run: python -c "import json; json.load(open('.zenodo.json', encoding='utf-8')); print('.zenodo.json is valid JSON')"
+
+      - name: Install cffconvert
+        run: python -m pip install --upgrade pip cffconvert
+
+      - name: Validate CITATION.cff
+        run: cffconvert --validate -i CITATION.cff

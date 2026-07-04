@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you use this repository or the works archived in it, please cite it as below."
+title: "Echo S Research"
+abstract: "Archive of mathematics research papers and their supporting data, figures, and computational code from Echo S Studios Research Developments. Each tagged release is preserved on Zenodo with a citable DOI."
+type: dataset
+authors:
+  - name: "Echo S Studios Research Developments"
+license: CC-BY-4.0
+repository-code: "https://github.com/Echo-S-Studios/Echo-S-Research"
+url: "https://github.com/Echo-S-Studios/Echo-S-Research"
+keywords:
+  - mathematics
+  - research
+  - computational
