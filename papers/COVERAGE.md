@@ -16,11 +16,11 @@ exist anywhere in the source material.
 |--------|-------|
 | `.tex` files found | 11 (9 distinct papers; 2 are older duplicate copies) |
 | `.pdf` files found | 23 |
-| Distinct papers archived | 15 |
+| Distinct papers archived | 14 |
 | — with matched `.tex` + `.pdf` | 9 |
-| — PDF only (no LaTeX source) | 6 |
+| — PDF only (no LaTeX source) | 5 |
 | `.tex` with no compiled PDF | 0 |
-| PDFs excluded as non-papers | 3 |
+| PDFs excluded (non-paper / out of scope) | 4 |
 | Superseded/duplicate PDFs not copied | 5 |
 | Consolidated references in `references.bib` | 42 |
 
@@ -55,7 +55,7 @@ Titles (from `\title{}`):
 
 ---
 
-## Missing LaTeX — PDFs archived with NO source (6)
+## Missing LaTeX — PDFs archived with NO source (5)
 
 These are genuine papers but only a compiled PDF was found. Listed with the full
 original path and where it was placed.
@@ -67,7 +67,6 @@ original path and where it was placed.
 | `Downloads\Foundational Pipes\papers\helix_orthogonal_partner.pdf` | `papers/2026-07-helix-orthogonal-partner/` | *The Dissolved Helix and Its Orthogonal Partner* | 8 |
 | `Downloads\Foundational Pipes\papers\operator-algebra-whitepaper.pdf` | `papers/2026-06-operator-algebra/` | *The Operator Algebra of the Emission Semiring* | 6 |
 | `Downloads\Foundational Pipes\papers\salem_slot.pdf` | `papers/2026-06-salem-slot/` | *The Occupant of the Salem Slot* | 11 |
-| `Downloads\Clif\cognitive-compiler-formalized.pdf` | `papers/2026-06-cognitive-compiler/` | *The Cognitive Compiler: Exact-Arithmetic Substrate for Multi-Model Orchestration* | 13 |
 
 > If LaTeX sources for any of these exist elsewhere (e.g. inside the tarballs
 > noted below, or on another machine), drop them into the matching folder later.
@@ -94,12 +93,13 @@ original path and where it was placed.
    compiled version of the `.tex`.
 4. **`lehmers box.pdf`** (with a space) was matched to `lehmers_box.tex` (with an
    underscore) by title/content — near-certain, but the names differ.
-5. **`cognitive-compiler-formalized.pdf` included as a paper.** It is a formal
-   research paper (abstract, appendices, exact-arithmetic verification record) by
-   J. Turner & C. Snodgrass, but it sits in the `Clif\` DARPA-proposal working
-   folder and is systems / AI-orchestration research rather than the pure-math
-   spectral-semiring line. Included on the strength of being a genuine authored
-   paper; **remove it if the archive is meant to be math-only.**
+5. **`cognitive-compiler-formalized.pdf` — dropped on request.** It was initially
+   archived as a genuine authored paper (abstract, appendices, exact-arithmetic
+   verification record, by J. Turner & C. Snodgrass), but it is systems /
+   AI-orchestration research from the `Clif\` DARPA-proposal working folder rather
+   than the pure-math spectral-semiring line, so it was **removed to keep the
+   archive math-focused.** See the excluded-PDFs table below; the original in
+   `Downloads\Clif\` is untouched if it should be added back.
 6. **`.tex` and `.pdf` in different folders.** For several papers the source and
    the compiled PDF lived in different directories (e.g. charge-measure `.tex` in
    the `Foundational Pipes` root but its PDF in `Foundational Pipes\papers\`;
@@ -118,6 +118,7 @@ original path and where it was placed.
 | `Downloads\DMV Drivers License _ State ID _ CDL Renewal.pdf` | Personal/administrative document — not research. |
 | `Downloads\Clif\DARPA_26BZ_R3.pdf` | External government document: *DARPA DoW 2026 SBIR Broad Agency Announcement* (40 pp solicitation), not the team's own work. |
 | `Downloads\Clif\KT_MAESTRO_Jun_30_2026_1221_sonnet_4_6.pdf` | 2-page AI chat export (Claude Sonnet 4.6) summarizing *Lehmer's Box*; a derivative session artifact, not a paper. |
+| `Downloads\Clif\cognitive-compiler-formalized.pdf` | Genuine authored research paper (13 pp), but systems / AI-orchestration rather than the pure-math line; dropped on request to keep the archive math-focused. |
 
 ## Superseded / duplicate PDFs (not copied)
 
