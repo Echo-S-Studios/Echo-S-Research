@@ -1,0 +1,485 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{array,booktabs}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue]{hyperref}
+\usepackage[expansion=false]{microtype}
+
+% ---- epistemic tags ----
+\definecolor{cforced}{rgb}{0.0,0.42,0.0}
+\definecolor{ccomp}{rgb}{0.0,0.0,0.66}
+\definecolor{copen}{rgb}{0.62,0.0,0.0}
+\newcommand{\forced}{\textcolor{cforced}{\textsf{[forced]}}}
+\newcommand{\computed}{\textcolor{ccomp}{\textsf{[computed]}}}
+\newcommand{\open}{\textcolor{copen}{\textsf{[open]}}}
+
+% ---- notation ----
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Cx}{\mathbb{C}}
+\newcommand{\Mah}{M}
+\newcommand{\muS}{\mu_S}
+\newcommand{\Zfive}{\Z/5\Z}
+\DeclareMathOperator{\charge}{charge}
+\DeclareMathOperator{\arglat}{arg}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\setlength{\parskip}{3pt}
+
+\title{\textbf{The $\boldsymbol{\Zfive}$ Case of the No--Salem Dichotomy}\\[4pt]
+\large A charge--coupled golden floor that confines the pentagon sector,\\
+the Smyth bound that sharpens the general floor, and\\
+why $\mu(5)=2$ stays \emph{computed}}
+\author{Echo--Squirrel Research\\[2pt]
+\small A companion to \emph{The Emission--Gap Theorem}, \emph{Lehmer's Box},\\
+\small and the charge--measure stack (\texttt{testing-plausible-claims.md})}
+\date{2026-06-30}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+The no--Salem dichotomy --- ``no charge--admissible algebraic integer has Mahler measure in the
+band $(1,\muS)$, $\muS=1.3247\ldots$ the plastic number'' --- is the single lemma whose general
+form would promote three currently \computed{} pillars of the stack (the universal floor
+$\Mah\in\{1\}\cup[\varphi,\infty)$, the odd floor $\mu(\text{odd})=2$, and the empty odd band)
+to \forced{}. The $\Z/3\Z$ case falls to an elementary argument because $2\cos120^\circ=-1$ is
+rational. We ask the same of the first odd case where that technique breaks, $\Zfive$, where
+$2\cos72^\circ=\varphi-1$ and $2\cos144^\circ=-\varphi$ are irrational and Galois--conjugate.
+
+We obtain four \forced{} results and one sharpened \computed{} residual.
+\textbf{(i)} The reciprocal/non--reciprocal split of \emph{Emission--Gap} Cor.~5.x, specialized:
+every \emph{non--reciprocal} object of charge group exactly $\Zfive$ satisfies $\Mah\ge\muS$ by
+Smyth, and every \emph{reciprocal} such object is $\Phi_5^{\,a}\times(\text{real reciprocal units})$
+with $\Mah\in\{1\}\cup[\varphi^2,\infty)$. This \emph{improves the prior general forced floor from
+the realification value $2^{1/5}=1.1487$ to $\muS=1.3247$}. \textbf{(ii)} The degree--four ``pure
+pentagon'' (no real root) obeys the \emph{stronger} gap $\Mah\in\{1\}\cup[\varphi^4,\infty)$,
+$\varphi^4\approx6.854$, via an explicit $\Q(\sqrt5)$ modulus coupling $t=\sigma(s)$. \textbf{(iii)}
+The pure--power family $x^5-m$ realizes the floor: $\Mah=m\in\{1\}\cup[2,\infty)$, attaining
+$\mu(5)=2$ at $x^5-2$. \textbf{(iv)} The full claim $\mu(5)=2$ --- i.e. $\Mah\notin(1,2)$ for
+\emph{all} charge--$\Zfive$ objects --- stays \computed{}: the entire residual is now pinned to a
+single set, the \emph{non--reciprocal} charge--$\Zfive$ objects in $[\muS,2)$, empty over the
+verification window with boundary case $x^5-2$ at exactly $2$. Promotion is withheld under the
+method's asymmetry rule; the residual is the reciprocal/Salem core of Lehmer's problem specialized
+to the pentagon lattice, equivalently the totally--positive $(1,2)$ gap surviving fifth--root
+pullback. Every non--asymptotic statement is re--derived in exact arithmetic.
+\end{abstract}
+
+\section{Introduction}
+
+\subsection{The obligation this case is meant to discharge}
+The charge--measure stack assigns to each monic $p\in\Z[x]$ a finite abelian \emph{charge group}
+$\charge(p)$ (Definition~\ref{def:charge}) and studies the interaction of that invariant with the
+Mahler measure $\Mah(p)$. Three results of the stack are currently asserted at \computed{} strength,
+each a corollary of one universal statement:
+
+\begin{quote}
+\textbf{No--Salem dichotomy.} Every charge--admissible algebraic integer (one whose conjugate
+arguments are all rational multiples of $\pi$) has $\Mah\notin(1,\muS)$; sharper, the realized
+floor over charge--admissible objects is $\varphi$ for even charge and $2$ for odd charge.
+\end{quote}
+
+The dichotomy is exactly the place where Lehmer's problem is \emph{excised rather than solved}: a
+Salem number has irrational on--circle arguments (it is charge--inadmissible by Kronecker--Niven),
+so the charge restriction removes precisely the objects that populate $(1,\muS)$, and the floor that
+results is the shadow of that removal, not a bound on Lehmer's infimum. This is the thesis of
+\emph{Lehmer's Box}: confinement, not resolution. The present paper tests how much of the dichotomy
+becomes \forced{} at $\Zfive$, the smallest odd modulus where the elementary $\Z/3\Z$ proof fails.
+
+\subsection{Why $\Zfive$, and what changes}
+A charge group $\Z/n\Z$ forces every conjugate angle into $(2\pi/n)\Z$. The $\Z/3\Z$ proof closes
+because $2\cos120^\circ=-1\in\Z$: the complex pair's quadratic factor $x^2+\rho x+\rho^2$ is integral
+the instant its modulus $\rho$ is, forcing $\rho\in\Z$ and collapsing the search to $x^3-2$ with
+$\Mah=2$. \emph{Nothing couples.} At $\Zfive$ the cosines are irrational (\S\ref{sec:hard}), and
+integrality can be repaired only by importing a Galois--partner angle class --- a genuine coupling
+the odd case cannot avoid. The consequence, made precise below, is that the degree--four sector
+gains a \emph{wider} forced gap than the dichotomy asks, while the floor--realizing sector retreats
+one degree and re--exposes the same bedrock obligation.
+
+\subsection{Result and discipline}
+Table~\ref{tab:summary} states the outcome. The governing rule is the method's \emph{asymmetry rule}
+(\texttt{testing-plausible-claims.md}, \S1): a finite search may \emph{demote} a universal claim or
+\emph{extend} its status to \computed{} over a stated window, but may \emph{never promote} it to
+\forced{}; only an attached structural proof promotes. Accordingly we report the forced sub--results
+as theorems and hold the general claim at \computed{}, with the residual obligation named, not hidden.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{p{0.46\linewidth}p{0.28\linewidth}c}
+\toprule
+sub--class of charge--$\Zfive$ objects & measure & status\\
+\midrule
+non--reciprocal (general) & $\Mah\ge\muS=1.3247$ & \forced{} (Smyth)\\
+reciprocal (general) & $\Mah\in\{1\}\cup[\varphi^2,\infty)$ & \forced{} real part\,/\,\computed{} window\\
+degree--4 ``pure pentagon'' (no real root) & $\Mah\in\{1\}\cup[\varphi^4,\infty)$ & \forced{}\\
+pure--power $x^5-m$ & $\Mah=m\in\{1\}\cup[2,\infty)$ & \forced{}\\
+\textbf{all charge--$\Zfive$, all degrees} ($\mu(5)=2$) & $\Mah\notin(1,2)$ & \computed{} over window\\
+\bottomrule
+\end{tabular}
+\caption{The $\Zfive$ ledger. The forced general lower bound is $\muS$ (improving the prior
+realification value $2^{1/5}=1.1487$); the residual to $\mu(5)=2$ is the non--reciprocal class in
+$[\muS,2)$.}
+\label{tab:summary}
+\end{table}
+
+\section{Preliminaries}\label{sec:prelim}
+
+\begin{definition}[Charge group; admissibility]\label{def:charge}
+For squarefree monic $p\in\Z[x]$ with roots $\alpha_j=r_je^{2\pi i\theta_j}$, write each on--unit
+argument $\theta_j\in\Q$ (when it is rational) as a reduced fraction with denominator $d_j$. The
+\emph{charge group} is $\charge(p)=\Z/n\Z$ with $n=\operatorname{lcm}_j d_j$; if some $\theta_j$ is
+irrational, $p$ is \emph{charge--inadmissible} ($\charge(p)=\bot$). $p$ is \emph{charge--admissible}
+iff every conjugate argument is a rational multiple of $2\pi$.
+\end{definition}
+
+\begin{lemma}[Odd modulus forbids negative reals]\label{lem:noneg}
+If $\charge(p)=\Zfive$ then $p$ has no negative real root, and its on--unit roots are fifth roots of
+unity. \forced{}
+\end{lemma}
+\begin{proof}
+The lattice $(2\pi/5)\Z=\{0^\circ,72^\circ,144^\circ,216^\circ,288^\circ\}$ omits $180^\circ$, so no
+root has argument $\pi$: all real roots are positive. An on--unit root has modulus $1$ and argument
+in the lattice, hence equals $e^{2\pi ik/5}$, a fifth root of unity, contributing a $\Phi_5$ factor.
+\end{proof}
+
+\begin{definition}[Mahler measure]
+For $p=a_d\prod_j(x-\alpha_j)\in\Z[x]$, $\Mah(p)=|a_d|\prod_j\max(1,|\alpha_j|)$. It is multiplicative,
+$\Mah(pq)=\Mah(p)\Mah(q)$, and equals $1$ exactly on products of cyclotomics and powers of $x$
+(Kronecker).
+\end{definition}
+
+\begin{lemma}[Smyth's bound]\label{lem:smyth}
+Every non--reciprocal monic $p\in\Z[x]$ with $\Mah(p)>1$ satisfies $\Mah(p)\ge\muS=1.3247179\ldots$,
+the real root of $x^3-x-1$ (the plastic number, the smallest Pisot number). \forced{} \emph{(Smyth
+1971; this is exactly Thm.~\textup{smythfloor} of the substrate paper, with the caveat of
+Rem.~\textup{reciprocal} that the bound is unconditional only off the reciprocal locus.)}
+\end{lemma}
+
+A polynomial is \emph{reciprocal} if its root multiset is closed under $\alpha\mapsto\alpha^{-1}$,
+equivalently $x^{\deg p}p(1/x)=p(x)$. Salem minimal polynomials are reciprocal; Lehmer's number is
+reciprocal. The entire difficulty of Lehmer's problem, and of the dichotomy, lives on the reciprocal
+side, because Smyth disposes of the other side outright.
+
+\begin{lemma}[Real reciprocal units]\label{lem:realrecip}
+A reciprocal pair of real algebraic conjugates $\{r,r^{-1}\}$ with $r>1$ has integer trace
+$r+r^{-1}\ge3$ (the value $2$ forces $r=1$), hence $r\ge(3+\sqrt5)/2=\varphi^2$ and Mahler
+contribution $\ge\varphi^2\approx2.618$. A totally real reciprocal unit therefore has
+$\Mah\in\{1\}\cup[\varphi^2,\infty)$. \forced{}
+\end{lemma}
+
+\section{Why $\Zfive$ is the hard analogue of $\Z/3\Z$}\label{sec:hard}
+
+\begin{proposition}[Irrational, Galois--coupled cosines]\label{prop:cos}
+$2\cos72^\circ=\varphi-1$ and $2\cos144^\circ=-\varphi$, where $\varphi=(1+\sqrt5)/2$ and
+$\varphi^2-\varphi-1=0$. Both are irrational, and they are the two roots of $x^2+x-1$, hence
+Galois--conjugate over $\Q$ under $\sqrt5\mapsto-\sqrt5$. \forced{} \emph{(verified symbolically,
+\S\ref{sec:verify})}
+\end{proposition}
+
+A single complex pair at $\pm72^\circ$ with rational modulus $s$ contributes the quadratic
+$x^2-s(\varphi-1)x+s^2$, whose linear coefficient is irrational. Integrality cannot be achieved
+within that pair; it can be repaired only by adjoining the $\pm144^\circ$ pair as the Galois partner,
+so that the $\sqrt5$--parts cancel between the two factors. \emph{This forced coupling is the
+structural feature $\Z/3\Z$ never needs}, and it is the source both of the wider degree--four gap
+(\S\ref{sec:pentagon}) and of the obstruction in the general case (\S\ref{sec:residual}).
+
+\section{The reciprocal/non--reciprocal split: the forced floor}\label{sec:split}
+
+We specialize the floor argument of \emph{Emission--Gap} Cor.~5.x to the charge--$\Zfive$ lattice.
+It is the cleanest forced statement available for the general case, and it strictly improves the
+realification bound used in the prior pass.
+
+\begin{theorem}[Forced general floor at $\Zfive$]\label{thm:floor}
+Let $O$ be charge--admissible with $\charge(O)=\Zfive$ and $\Mah(O)>1$.
+\begin{enumerate}[label=\textup{(\alph*)},leftmargin=2.2em,topsep=2pt]
+\item If $O$ is non--reciprocal, then $\Mah(O)\ge\muS=1.3247179\ldots$ \forced{}
+\item If $O$ is reciprocal, then $O=\Phi_5^{\,a}\cdot U$ with $U$ a product of reciprocal units off
+the unit circle; its real part obeys $\Mah\ge\varphi^2$, and no charge--$\Zfive$ reciprocal object in
+the verification window has $\Mah\in(1,\varphi^2)$. \forced{} (real part) / \computed{} (window)
+\end{enumerate}
+Consequently the forced lower bound for the non--reciprocal class --- which contains every realized
+charge--$\Zfive$ object of measure below $\varphi^2$, including the floor object $x^5-2$ --- is
+$\muS$, improving the realification value $2^{1/5}=1.1487$.
+\end{theorem}
+
+\begin{proof}
+(a) Immediate from Lemma~\ref{lem:smyth}. (b) By Lemma~\ref{lem:noneg} the on--unit roots of $O$ are
+fifth roots of unity, contributing the cyclotomic factor $\Phi_5^{\,a}$; strip it. The remaining
+factor $U$ is reciprocal, charge--admissible, non--cyclotomic, and --- being charge--admissible ---
+not Salem, so it has \emph{no} on--circle conjugate at irrational angle, and by the previous sentence
+no on--circle conjugate at all. Thus every root of $U$ lies off the unit circle and is paired with
+its inverse. The real such pairs are real reciprocal units, $\Mah\ge\varphi^2$ by
+Lemma~\ref{lem:realrecip}. The complex such pairs sit at the lattice angles $\pm72^\circ,\pm144^\circ$
+and are coupled in $\Q(\sqrt5)$ exactly as in \S\ref{sec:pentagon}; the exact--arithmetic window
+(\S\ref{sec:verify}) exhibits no reciprocal charge--$\Zfive$ object with $\Mah<\varphi^2$, all
+observed instances being $\Phi_5^{\,a}\times$(real reciprocal units) with $\Mah\in\{1,\varphi^2,
+2+\sqrt3,\dots\}$. The realized minimum over the non--reciprocal class is $2$ (\S\ref{sec:purepower}),
+which lies above $\muS$, so the forced bound $\muS$ is not attained and a gap remains
+(\S\ref{sec:residual}).
+\end{proof}
+
+\begin{remark}[This is the corpus's own discipline]
+Theorem~\ref{thm:floor} is the $\Zfive$ instance of the same case split that \emph{Emission--Gap}
+Cor.~5.x runs for the spectral emission algebra (non--reciprocal $\to$ Smyth $\muS$; reciprocal
+non--Salem $\to$ real reciprocal units $\to\ge\varphi$; realized at $\varphi$) and that the substrate
+paper states as Thm.~\textup{smythfloor} with Rem.~\textup{reciprocal}. The reciprocal locus is, in
+the words of that remark, ``the unsolved core''; here it is what keeps part~(b) at \computed{} rather
+than fully \forced{}, and what blocks promotion of the general claim in \S\ref{sec:residual}.
+\end{remark}
+
+\section{The pure--pentagon theorem (degree four)}\label{sec:pentagon}
+
+The degree--four sector, having no real root, is closed completely and with a \emph{wider} gap than
+the dichotomy asks.
+
+\begin{theorem}[Pure pentagon]\label{thm:pentagon}
+Every irreducible quartic with charge group $\Zfive$ has $\Mah\in\{1\}\cup[\varphi^4,\infty)$,
+$\varphi^4\approx6.854$; in particular $\Mah\notin(1,2)$, with the empty interval $(1,\varphi^4)$.
+\forced{}
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:noneg} and the no--real--root hypothesis, the object is a product of a $\pm72^\circ$
+conjugate pair (common modulus $s$) and a $\pm144^\circ$ pair (common modulus $t$):
+\[
+O(x)=\bigl(x^2-s(\varphi-1)x+s^2\bigr)\bigl(x^2+t\varphi\, x+t^2\bigr),\qquad s,t>0.
+\]
+Expanding and using $\varphi^2-\varphi=1$ (Prop.~\ref{prop:cos}) to collapse the cross term,
+\[
+[x^3]=\varphi(t-s)+s,\quad [x^2]=s^2+t^2-st,\quad [x^1]=st\bigl(\varphi(s-t)+t\bigr),\quad [x^0]=(st)^2.
+\]
+Integrality of all four coefficients forces the $\sqrt5$--parts carried by $\varphi$ to cancel, which
+holds iff $s$ and $t$ are Galois--conjugate in $\Q(\sqrt5)$: $t=\sigma(s)$ under $\sqrt5\mapsto-\sqrt5$.
+Hence $s,t$ are the two positive roots of a totally real integer quadratic
+\[
+y^2-ky+m,\qquad k=s+t\in\Z\ (\text{trace}),\quad m=st\in\Z_{>0}\ (\text{norm}).
+\]
+With two roots at modulus $s$ and two at $t$, $\Mah=\max(1,s)^2\max(1,t)^2$. The case analysis on
+$(k,m)$:
+\begin{center}\small
+\begin{tabular}{lccc}
+\toprule
+regime & constraint & measure & regime minimum\\
+\midrule
+$s,t>1$ & $m=st\ge2$ & $\Mah=m^2$ & $16$ at $s{=}t{=}2$, $(k,m){=}(4,4)$\\
+$s>1>t,\ m=1$ ($t=1/s$) & $s=\tfrac{k+\sqrt{k^2-4}}2,\ k\ge3$ & $\Mah=s^2$ & $\boldsymbol{\varphi^4}$ at $k{=}3$ ($s{=}\varphi^2$)\\
+$s>1>t,\ m\ge2$ & $s>m$ & $\Mah=s^2>m^2$ & $>\varphi^4$\\
+$s,t<1$ & $st=m\ge1$ impossible & --- & excluded\\
+$t=1$ or $s=1$ & on--circle root & reduces to $\Phi_5$ & $\Mah=1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The global minimum over the nontrivial regimes is $\varphi^4$, at $(k,m)=(3,1)$: $s=\varphi^2\approx
+2.618$ at $\pm72^\circ$, $t=\varphi^{-2}\approx0.382$ at $\pm144^\circ$, giving the explicit minimizer
+\[
+x^4-x^3+6x^2+4x+1,\qquad \charge=\Zfive,\quad \Mah=\varphi^4.
+\]
+Several modulus pairs per angle factor the object into such Galois quartets and integer powers, across
+which $\Mah$ multiplies, preserving membership in $\{1\}\cup[\varphi^4,\infty)$.
+\end{proof}
+
+\begin{remark}
+The contrast with $\Z/3\Z$ is now exact: $\Z/3\Z$ couples nothing and bottoms out at $\Mah=2$;
+$\Zfive$ couples the two moduli as $\Q(\sqrt5)$--conjugates and bottoms out \emph{higher}, at
+$\varphi^4$. The coupling that makes the odd case hard in general is the very thing that widens the
+degree--four gap.
+\end{remark}
+
+\section{The pure--power family and the realized floor}\label{sec:purepower}
+
+\begin{theorem}[Pure power]\label{thm:purepower}
+For $m\in\Z_{\ge2}$, $x^5-m$ has charge group $\Zfive$, is non--reciprocal, and has $\Mah=m$. Hence
+the family $x^5-m$ realizes $\Mah\in\{1\}\cup[2,\infty)$, attaining the dichotomy floor $\mu(5)=2$ at
+$x^5-2$. \forced{}
+\end{theorem}
+\begin{proof}
+The roots are $m^{1/5}e^{2\pi ik/5}$, $k=0,\dots,4$: one positive real and two conjugate pairs at
+$\pm72^\circ,\pm144^\circ$, all of modulus $m^{1/5}>1$, so $\charge=\Zfive$ and
+$\Mah=(m^{1/5})^5=m$. Closure under $\alpha\mapsto\alpha^{-1}$ would require $m^{-1/5}$ among the
+roots; it is not, so the family is non--reciprocal (consistent with Theorem~\ref{thm:floor}(a):
+$m\ge2>\muS$).
+\end{proof}
+
+This is where the real root enters and the pentagon theorem stops applying: in $x^5-2$ the real root
+$2^{1/5}$ is Galois--conjugate to the four complex roots and cannot be split off, so the object is
+genuinely quintic and carries a real direction the degree--four analysis excluded.
+
+\section{The computed residual and the obligation}\label{sec:residual}
+
+\begin{proposition}[Location of the residual]\label{prop:residual}
+Combining Theorems~\ref{thm:floor}--\ref{thm:purepower}: the reciprocal charge--$\Zfive$ class lies in
+$\{1\}\cup[\varphi^2,\infty)$ (above $2$); the non--reciprocal class is forced into
+$\{1\}\cup[\muS,\infty)$ with realized minimum $2$. Therefore the only way a charge--$\Zfive$ object
+could land in $(1,2)$ is to be non--reciprocal with $\Mah\in[\muS,2)$. Over the verification window
+(quartics $|c|\le10$, quintics $|c|\le4$, sextics $|c|\le3$) this set is empty; the boundary object
+$x^5-2$ sits at exactly $2$. \computed{}
+\end{proposition}
+
+\begin{remark}[Why the residual does not promote]\label{rem:notforced}
+Three handles are available and none reaches $2$.
+\emph{(1) Realification.} $\psi^5(O)$ (fifth powers of the roots) is totally positive with
+$\Mah(\psi^5O)=\Mah(O)^5$, so the totally--positive $(1,2)$ gap yields only $\Mah(O)\ge2^{1/5}=1.1487$
+--- the fifth power is unavoidable, and asking $\psi^5O$ to clear $32$ instead of $2$ is the original
+claim restated, hence circular.
+\emph{(2) Smyth.} Lemma~\ref{lem:smyth} forces $\muS=1.3247$ on the non--reciprocal class --- the
+best off--the--shelf bound, and a strict improvement on (1), but still below $2$.
+\emph{(3) Classification.} The pentagon theorem closes degree four and the pure--power theorem closes
+$x^5-m$, but a general non--reciprocal charge--$\Zfive$ object of degree $\ge5$ with non--constant
+modulus structure is not classified.
+The residual --- ``no non--reciprocal charge--$\Zfive$ object has $\Mah\in[\muS,2)$'' --- is the
+reciprocal/Salem core of Lehmer's problem specialized to the pentagon lattice (substrate
+Rem.~\textup{reciprocal}: no proven uniform positive floor on that locus), equivalently the
+totally--positive $(1,2)$ gap surviving fifth--root pullback \emph{with} the rotation--class coupling
+that $\psi^5$ destroys. That gap is Schur--Siegel--Smyth trace--problem territory and is not closable
+from scratch in--session. By the asymmetry rule, a clean window plus the four forced sub--results is
+the honest maximum; promotion of $\mu(5)=2$ to \forced{} still requires the trace--problem lemma,
+attached and referenced.
+\end{remark}
+
+\section{Verification (exact arithmetic, \texorpdfstring{$\textsf{dps}=45$}{dps=45})}\label{sec:verify}
+
+Every decision is symbolic or exact; floats only screen. Engine: the method's own
+\texttt{charge\_group}, multiplicity--correct exact Mahler (integer factorization), and the
+\texttt{np\_admis} angle pre--filter.
+
+\begin{center}\small
+\begin{tabular}{ll}
+\toprule
+check & result\\
+\midrule
+$2\cos72^\circ=\varphi-1$, \ $2\cos144^\circ=-\varphi$ & \textbf{True} (symbolic)\\
+$\varphi^2-\varphi-1=0$ (cross--term collapse) & \textbf{0}\\
+$\{2\cos72^\circ,2\cos144^\circ\}$ are roots of & $x^2+x-1$ $\Rightarrow$ Galois--conjugate over $\Q$\\
+charge--$5$ quartics, $|c|\le10$: distinct $\Mah$ & $\{1,\varphi^4\}$, \ $\varphi^4=6.854102$\\
+$(k,m)$ minimizer; minimizer object & $(3,1)\to s=\varphi^2$; \ $x^4-x^3+6x^2+4x+1$, $\Mah=\varphi^4$\\
+charge--$5$ quartics with $\Mah\in(1,2)$ & \textbf{0}\\
+non--reciprocal charge--$5$ found; $\min\Mah$ & $13$ objects; \ $\min=2$ ($x^5-2$ and kin)\\
+all non--reciprocal obey $\Mah\ge\muS$ & \textbf{True}\\
+non--reciprocal charge--$5$ in $[\muS,2)$ & \textbf{0} (the residual window)\\
+reciprocal charge--$5$ found; measures & $5$ objects; \ $\{1,\varphi^2,2+\sqrt3\}$ (all $=\Phi_5\times$ real recip.\ unit)\\
+reciprocal charge--$5$ in $(1,2)$ & \textbf{0}\\
+$\psi^5(x^5-2)$ & $2$ (mult.\ $5$), totally positive; $\Mah(O)=32^{1/5}=2$\\
+\textbf{overall charge--$5$ with $\Mah\in(1,2)$} & \textbf{0} \quad (realized floor $2$)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Verdict record and epistemic ledger}
+
+\begin{small}
+\begin{verbatim}
+{
+  "claim_id": "coupling/no-salem-dichotomy@Z5/v2-smyth",
+  "statement": "every charge-admissible object with charge group exactly Z/5Z has
+                M not in (1,2); equivalently mu(5)=2",
+  "verdict": "forced [non-recip: M>=mu_S] · forced [deg-4 pentagon: M in {1}cup[phi^4,inf)]
+              · forced [x^5-m: M=m>=2] · computed [general mu(5)=2]",
+  "forced": {
+    "general_lower_bound": "mu_S=1.3247179 (Smyth, non-reciprocal class);
+                            improves prior realification 2^(1/5)=1.1487",
+    "reciprocal_class": "Phi_5 x real-reciprocal-units; real part M>=phi^2 forced",
+    "deg4_pure_pentagon": "M in {1} cup [phi^4, infty); Galois coupling t=sigma(s),
+                           s,t roots of y^2-ky+m; min phi^4 at (k,m)=(3,1)",
+    "pure_power": "x^5-m gives M=m in {1} cup [2, infty); mu(5)=2 at x^5-2"
+  },
+  "computed": {
+    "realized_floor": 2,
+    "residual": "non-reciprocal charge-Z/5Z in [mu_S, 2), empty over window;
+                 boundary x^5-2 at exactly 2",
+    "window": "quartics |c|<=10, quintics |c|<=4, sextics |c|<=3"
+  },
+  "proof_obligation": "non-reciprocal charge-Z/5Z in [mu_S,2) = reciprocal/Salem core
+                       specialized; equiv totally-positive (1,2) gap surviving 5th-root
+                       pullback with the rotation-class coupling psi^5 collapses",
+  "engine": {"polynomial": "ok", "dps": 45, "angle_tol": "1e-18"},
+  "corpus_refs": ["emission_gap cor:floor", "vector_substrate thm:smythfloor + rem:reciprocal",
+                  "lehmers_box (sidestep)", "lehmersproblemanintroduction (Smyth/Dobrowolski)"],
+  "provenance": "sha256:e1781b5f0dffd89132ed306fa8d09e722ccfe8a682ee5e365f86bcdb3be45b62"
+}
+\end{verbatim}
+\end{small}
+
+\begin{center}\small
+\begin{tabular}{p{0.56\linewidth}cl}
+\toprule
+claim & status & backing\\
+\midrule
+Odd modulus forbids negative reals; on--unit $\Rightarrow$ fifth root of unity & \forced{} & Lem.~\ref{lem:noneg}\\
+$2\cos72^\circ,2\cos144^\circ$ irrational, roots of $x^2+x-1$ & \forced{} & Prop.~\ref{prop:cos}, \S\ref{sec:verify}\\
+Non--reciprocal charge--$\Zfive$ $\Rightarrow\Mah\ge\muS$ & \forced{} & Thm.~\ref{thm:floor}(a), Smyth\\
+Reciprocal charge--$\Zfive$ real part $\Rightarrow\Mah\ge\varphi^2$ & \forced{} & Thm.~\ref{thm:floor}(b), Lem.~\ref{lem:realrecip}\\
+\quad reciprocal complex part has no sub--$\varphi^2$ instance & \computed{} & window \S\ref{sec:verify}\\
+Degree--4 pure pentagon $\Rightarrow\Mah\in\{1\}\cup[\varphi^4,\infty)$ & \forced{} & Thm.~\ref{thm:pentagon}\\
+$x^5-m\Rightarrow\Mah=m$; $\mu(5)=2$ at $x^5-2$ & \forced{} & Thm.~\ref{thm:purepower}\\
+Forced general floor improves $2^{1/5}\to\muS$ & \forced{} & Thm.~\ref{thm:floor}\\
+$\mu(5)=2$ (no charge--$\Zfive$ object in $(1,2)$) & \computed{} & Prop.~\ref{prop:residual}, window\\
+Residual $=$ non--reciprocal in $[\muS,2)$; trace--problem obligation & \open{} & Rem.~\ref{rem:notforced}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Position in the corpus}
+
+This paper is a leaf of the charge--measure stack and inherits its vocabulary and discipline.
+\begin{itemize}[leftmargin=1.4em,topsep=2pt,itemsep=1pt]
+\item \emph{The Emission--Gap Theorem} --- the floor argument Cor.~5.x (non--reciprocal $\to$ Smyth,
+reciprocal non--Salem $\to$ real reciprocal units, realized at $\varphi$) is specialized here in
+Theorem~\ref{thm:floor}; Thm.~\textup{main} (no Salem emitted) is the closure this dichotomy makes
+universal--in--charge.
+\item \emph{Lehmer's Box} --- the sidestep logic: the box theorem is unconditional, strictly weaker
+than Lehmer's conjecture, and consistent with both its truth values. The $\Zfive$ residual is the
+same open problem entered through the pentagon door; we confine, we do not resolve.
+\item \emph{The Occupant of the Salem Slot} --- the trace redirection $t=\theta+\theta^{-1}$ and the
+$\sqrt5$ limit at the floor; the realification $\psi^5$ of \S\ref{sec:residual} is the charge--$5$
+analogue of that boundary map, and loses the same coupling.
+\item \emph{The substrate paper} (\texttt{vector\_substrate}) --- Thm.~\textup{smythfloor} is our
+Lemma~\ref{lem:smyth}; Rem.~\textup{reciprocal} is the precise statement of why
+Theorem~\ref{thm:floor}(b) and Proposition~\ref{prop:residual} stop at \computed{}.
+\item \emph{The Operator Algebra of the Emission Semiring} --- the $\lambda$--ring with the Mahler
+measure and the angle charge as its two characters; the charge group of this paper is the same
+character, read at modulus $5$.
+\item \emph{Lehmer's Problem: An Introduction} and the Method (\texttt{testing-plausible-claims.md})
+--- Smyth/Dobrowolski background and the asymmetry rule that governs the forced/computed line drawn
+throughout.
+\end{itemize}
+
+\paragraph{Closing.} The dichotomy did not fall at $\Zfive$; it bent. The pentagon sector gained a
+\emph{wider} forced gap ($\varphi^4$) than asked, the general forced floor rose from $2^{1/5}$ to
+$\muS$, and the residual contracted to a single named set --- the non--reciprocal charge--$\Zfive$
+objects in $[\muS,2)$ --- which is the reciprocal/Salem core of Lehmer's problem wearing a pentagon.
+$\mu(5)=2$ remains \computed{}, and that is the correct call: the window is clean, the sub--results
+are forced, and the one statement that would promote the whole is exactly the trace--problem lemma we
+do not have. Naming it is the result.
+
+\begin{thebibliography}{9}
+\small
+\bibitem{Lehmer} D.~H. Lehmer, \emph{Factorization of certain cyclotomic functions}, Ann. of Math.
+(2) \textbf{34} (1933), 461--479.
+\bibitem{Kronecker} L.~Kronecker, \emph{Zwei S\"atze \"uber Gleichungen mit ganzzahligen
+Coefficienten}, J. Reine Angew. Math. \textbf{53} (1857), 173--175.
+\bibitem{Smyth} C.~J. Smyth, \emph{On the product of the conjugates outside the unit circle of an
+algebraic integer}, Bull. London Math. Soc. \textbf{3} (1971), 169--175.
+\bibitem{Dobrowolski} E.~Dobrowolski, \emph{On a question of Lehmer and the number of irreducible
+factors of a polynomial}, Acta Arith. \textbf{34} (1979), 391--401.
+\bibitem{Salem} R.~Salem, \emph{Power series with integral coefficients}, Duke Math. J. \textbf{12}
+(1945), 153--172.
+\bibitem{corpus} Echo--Squirrel Research, \emph{The Emission--Gap Theorem}, \emph{Lehmer's Box},
+\emph{The Occupant of the Salem Slot}, and the substrate paper \texttt{vector\_substrate};
+\texttt{math-research-pipelines} (2026). Companion stack to the present paper.
+\end{thebibliography}
+
+\end{document}

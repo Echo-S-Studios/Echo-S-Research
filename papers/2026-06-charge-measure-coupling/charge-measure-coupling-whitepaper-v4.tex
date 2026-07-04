@@ -1,0 +1,848 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{mathtools}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+% ---- theorem environments ----
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% ---- notation ----
+\newcommand{\Mah}{\mathrm{M}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Adams}[1]{\psi^{#1}}
+\newcommand{\gold}{\varphi}
+\newcommand{\dsum}{\oplus}
+\newcommand{\tens}{\otimes}
+\newcommand{\Zmod}[1]{\Z/#1\Z}
+\DeclareMathOperator{\Arg}{Arg}
+
+% ---- epistemic status tag ----
+\newcommand{\status}[1]{{\small\textsf{[#1]}}}
+\newcommand{\forced}{\status{forced}}
+\newcommand{\computed}{\status{computed}}
+\newcommand{\plausible}{\status{plausible}}
+\newcommand{\muS}{\mu_{\mathrm{S}}}
+
+\title{\bfseries The Charge--Measure Coupling on a Spectral Semiring:\\
+Cyclicity, Composition, and a Parity-Graded Mahler Floor}
+\author{math-research-pipelines technical note}
+\date{30 June 2026 \quad(v4, revised)}
+
+\begin{document}
+\maketitle
+
+\begin{center}\small\fbox{\parbox{0.92\textwidth}{%
+\textbf{Erratum and bridge (v1\,$\to$\,v2).} Version~1 stated the universal floor
+$\Mah\in\{1\}\cup[\gold,\infty)$ and, read as forced, implied a forced lower bound of $\gold$
+for odd charge. That tag was too strong. The \emph{forced} floor for odd charge is
+$\muS=1.3247\ldots$ (the plastic number, via Smyth's non-reciprocal bound); the value $\gold$
+remains only \plausible{}. Sections~\ref{sec:prelim} and~\ref{sec:floor} are corrected
+accordingly, and a new \S\ref{sec:z5} works the $\Zmod5$ (pentagon) case as the
+\emph{first instance} of the open problem of \S\ref{sec:scope}: it sharpens the forced floor to
+$\muS$, closes the degree-four sector at $\gold^{4}$, and localizes the residual---but does
+\emph{not} close it. The open problem is refined and still open.
+\\[2pt]\textbf{v2\,$\to$\,v3.} A forced scope boundary (Prop.~\ref{prop:commutator}) is added:
+all results govern the \emph{abelian} spectral semiring on charge-admissible objects, and the
+matrix commutator---the one non-semiring operation---is the proven exit through which the
+entire Salem spectrum (Lehmer's number) re-enters. No existing result or tag changes.
+\\[2pt]\textbf{v3\,$\to$\,v4.} Two corrections. The tensor--Mahler law
+(Prop.~\ref{prop:tensM}, \S\ref{sec:prelim} table) was wrongly stated as
+$\Mah(A)^{\deg B}\Mah(B)^{\deg A}$; the correct law is tropical, $\log\Mah(A\tens B)=\sum
+(\log|\alpha_i|+\log|\beta_j|)^{+}$ (the two agree only off the unit circle, which is why the
+off-circle test suite missed it). No headline result used the tensor measure. And the even
+floor $\mu(\mathrm{even})=\gold$ is split into $\le\gold$ \forced{} / $\ge\gold$ \plausible{},
+matching the treatment already given to the odd case.}}\end{center}
+\medskip
+
+\begin{abstract}
+\noindent We study the spectral semiring of multisets of algebraic-integer eigenvalues
+(the \emph{emission algebra}) equipped with two orthogonal characters: the Mahler measure
+$\Mah$ (a magnitude readout, subject to a gap $\Mah\in\{1\}\cup[\gold,\infty)$ with
+$\gold=\tfrac{1+\sqrt5}{2}$), and a \emph{conjugate-angle charge} $\chi$ valued in a finite
+cyclic group, defined whenever every conjugate of an object lies on a finite rational-angle
+lattice. We determine the structure of the realizable charge groups (they are exactly the
+finite cyclic groups, with primary decomposition realized by the Adams operations of the
+algebra), the law governing their composition under the tensor product (charges combine to
+$\Zmod{\operatorname{lcm}}$, and composition is information-preserving precisely when the
+orders are coprime), and---the principal result---that the two characters are \emph{coupled}
+at the extremal boundary. The minimal Mahler measure over seeds of charge group $\Zmod n$
+equals $\gold$ when $n$ is even and $2$ when $n$ is odd, attained at $\gold$ iff $n$ is even.
+The attainments are \emph{forced} (constructively); the matching lower bound $\Mah\ge\gold$ is
+forced only for quadratics---$\muS=1.3247\ldots$ (Smyth) is the general forced floor---so the
+value $\gold$ is conjectural at both parities, and for odd $n$ the equality $\mu(\mathrm{odd})=2$
+is held at computed strength. We further show that the odd-charge
+gap $(\gold,2)$ \emph{coincides with the no-Salem closure}: the measures that would fill it
+are realized only by Salem numbers, whose irrational conjugate angles render them
+charge-inadmissible. All such results govern the \emph{abelian} spectral semiring
+($\dsum,\tens,\Adams n$); we close by showing the matrix commutator---the one non-semiring
+operation, governed by Shoda's theorem---is the exact exit through which the excluded Salem
+spectrum re-enters, so that no single theorem governs every free commutator. All statements
+are validated in exact arithmetic on an integer-matrix engine; throughout we separate what is
+\emph{proven} from what is \emph{computationally evidenced}.
+\end{abstract}
+
+\section{Introduction}
+
+\subsection{The setting}
+Fix the ring $\overline{\Z}$ of algebraic integers. The objects of interest are finite
+multisets of algebraic integers, presented equivalently as monic integer polynomials
+$p\in\Z[x]$ with $p(0)\neq0$, or as spectra of integer matrices. This collection carries a
+semiring structure---the \emph{emission algebra}---generated by two binary operations and a
+family of unary operations:
+\begin{itemize}[nosep]
+  \item \emph{direct sum} $\dsum$ (multiset union of eigenvalues; on polynomials, the product),
+  \item \emph{tensor} $\tens$ (eigenvalue products; on matrices, the Kronecker product),
+  \item the \emph{Adams operations} $\Adams n$ ($\lambda\mapsto\lambda^{n}$ on each eigenvalue).
+\end{itemize}
+On this algebra act two scalar readouts that behave like orthogonal characters. The three
+generating operations are \emph{abelian}: each acts on the multiset of eigenvalues alone, so
+the characters transform predictably under them. The matrix commutator $[A,B]=AB-BA$ is
+deliberately \emph{not} a generator; it is the one non-abelian operation, and \S\ref{sec:scope}
+(Prop.~\ref{prop:commutator}) shows it is the exact boundary of every result below.
+
+\paragraph{Character I (magnitude).} The \emph{Mahler measure}
+$\Mah(p)=\prod_{i}\max(1,|\alpha_i|)$, taken over the roots $\alpha_i$ of a monic $p$.
+By Kronecker's theorem $\Mah(p)=1$ exactly when every root is a root of unity. The algebra
+exhibits an \emph{emission gap}: its admissible objects satisfy
+$\Mah\in\{1\}\cup[\gold,\infty)$, with floor the golden ratio $\gold$. The gap below $\gold$
+is the arithmetic shadow of Lehmer's problem and the Salem/Pisot spectrum.
+
+\paragraph{Character II (phase).} An object is \emph{charge-admissible} if every conjugate
+$\alpha$ satisfies $\alpha^{n}\in\R_{>0}$ for some $n\ge1$, i.e.\ all conjugate arguments lie
+on the rays of a finite rational-angle lattice. The smallest such $n$ defines the
+\emph{charge group} $\Zmod n$, and the \emph{charge} of a root at argument $\theta$ is
+$\chi_n(\alpha)=\operatorname{round}(n\theta/2\pi)\bmod n$. Objects with an irrational
+conjugate angle---paradigmatically Salem numbers---admit \emph{no} finite charge group.
+
+\subsection{The question}
+Character I measures how far an object sits from the unit circle; Character II records the
+discrete rotational class of its conjugates. They are defined independently and read off
+different data. This note answers two structural questions and one coupling question:
+\begin{enumerate}[label=(\roman*),nosep]
+  \item \textbf{Structure.} Which groups occur as charge groups, and how do they decompose?
+  \item \textbf{Composition.} How do charges combine under the algebra's tensor product, and
+        when is the composition lossless?
+  \item \textbf{Coupling.} Does the magnitude floor \emph{see} the charge---i.e.\ does the
+        minimal Mahler measure depend on the charge group?
+\end{enumerate}
+
+\subsection{Contributions}
+\begin{itemize}[nosep]
+  \item \textbf{Cyclicity and realizability} (\S\ref{sec:structure}). Every charge group is a
+        finite subgroup of $\Q/\Z$, hence cyclic; and every $\Zmod n$ occurs (Thm.~\ref{thm:cyclic},
+        \ref{thm:realize}). Non-cyclic groups such as $\Zmod p\times\Zmod p$ are unrealizable.
+  \item \textbf{Primary decomposition} (\S\ref{sec:structure}). For $n=\prod p_i^{e_i}$ the
+        decomposition $\Zmod n\cong\prod\Zmod{p_i^{e_i}}$ is realized by the Adams operations,
+        with $\Adams{n/p_i^{e_i}}$ projecting onto the $p_i$-primary component (Thm.~\ref{thm:crt}).
+  \item \textbf{The $\operatorname{lcm}$ law and safe composition} (\S\ref{sec:compose}).
+        Under $\tens$, charge groups combine to $\Zmod{\operatorname{lcm}}$; the composition
+        keeps the two charges independently recoverable iff their orders are coprime
+        (Thm.~\ref{thm:lcm}, \ref{thm:safe}).
+  \item \textbf{A parity-graded floor} (\S\ref{sec:floor}). The minimal measure over charge
+        group $\Zmod n$ is $\gold$ for even $n$ and $2$ for odd $n$; $\gold$ is universal and
+        attained iff $n$ is even (Thm.~\ref{thm:parity}).
+  \item \textbf{The odd-charge gap is the no-Salem closure} (\S\ref{sec:salem}). For odd $n$
+        the interval $(\gold,2)$ contains no admissible measure; the would-be occupants are
+        exactly the Salem numbers the algebra excludes (Thm.~\ref{thm:salemgap}).
+  \item \textbf{The $\Zmod5$ worked case} (\S\ref{sec:z5}, new in v2). The first instance of
+        the resulting open problem: the forced floor sharpens to $\muS$, the degree-four sector
+        closes at $\gold^{4}$, and the residual contracts to the pentagon-restricted Lehmer
+        core (Thms.~\ref{thm:z5floor}--\ref{thm:z5pure}, Prop.~\ref{prop:z5residual}).
+  \item \textbf{A commutator scope boundary} (\S\ref{sec:scope}, new in v3). By Shoda's theorem
+        the matrix commutator realizes every trace-zero integer matrix, including one whose
+        spectrum carries Lehmer's number; hence the floor, gap, and charge structure are
+        properties of the abelian semiring only, and no single theorem covers every free
+        commutator (Prop.~\ref{prop:commutator}).
+\end{itemize}
+
+\subsection{A note on rigor}
+Every numerical assertion below was verified in exact arithmetic (\S\ref{sec:method}); no
+floating-point comparison was permitted to decide a structural question. We tag each result
+with its epistemic status: \forced{} (proved), \computed{} (verified exhaustively over a
+stated finite range), or \plausible{} (strongly evidenced, not proved in full generality).
+We do \emph{not} claim to resolve Lehmer's problem or the no-Salem conjecture; we
+characterize their interaction with the charge character on this substrate.
+
+\section{Preliminaries}\label{sec:prelim}
+
+\subsection{The two operators on the characters}
+The operations act on the characters as follows; this table is the algebraic backbone of
+everything that follows.
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+operation & Character I ($\Mah$) & Character II ($\chi$, in $\Zmod n$) \\
+\midrule
+$A\dsum B$ & $\Mah(A)\,\Mah(B)$ & multiset union of charges \\
+$A\tens B$ & $\prod_{i,j}\max(1,|\alpha_i\beta_j|)$ \ \ (tropical $(\max,+)$) & sumset of charges \\
+$\Adams k(A)$ & $\Mah(A)^{k}$ & $\chi\mapsto k\chi \bmod n$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent The $\dsum$ and $\Adams k$ rules for $\Mah$ are immediate from multiplicativity of
+$\Mah$ over roots and from $\Adams k$ raising each modulus to the $k$-th power. The $\tens$
+rule for $\Mah$ is Proposition~\ref{prop:tensM}.
+
+\subsection{Character I: the Mahler measure and the floor}
+\begin{definition}
+For monic $p\in\Z[x]$ with roots $\alpha_i$, $\Mah(p)=\prod_i\max(1,|\alpha_i|)$.
+\end{definition}
+
+\begin{proposition}[Kronecker]\label{prop:kron}
+$\Mah(p)=1$ for a monic $p\in\Z[x]$ if and only if every root of $p$ is a root of unity.
+\end{proposition}
+
+We take as given the algebra's defining magnitude property, the \emph{emission gap}.
+
+\begin{proposition}[Emission gap; floor $\gold$]\label{prop:gap}
+For charge-admissible objects, $\Mah\in\{1\}\cup[\gold,\infty)$.
+\end{proposition}
+
+\noindent\emph{Status (corrected in v2).} \forced{} for the integer-quadratic spectrum (the
+gap $(1,\gold)$ is empty among quadratic units, by direct discriminant analysis). In general
+the bound $\gold$ is only \plausible{}: what is \emph{forced} is the weaker statement
+$\Mah\ge\muS=1.3247\ldots$ on the non-reciprocal class (Lemma~\ref{lem:smyth}) together with
+$\Mah\ge\gold^{2}$ on the real part of the reciprocal class (Lemma~\ref{lem:recipunit}). The
+band $[\muS,\gold)$ is therefore \emph{not} proven empty; it is part of the residual of
+\S\ref{sec:scope}. Lemma~\ref{lem:salem} below shows the sub-$\gold$ algebraic integers that do
+exist (Lehmer/Salem numbers) are precisely the charge-inadmissible ones, which is the
+structural reason the gap is conjectured to survive the charge restriction.
+
+\begin{definition}[Reciprocal]
+$p$ is \emph{reciprocal} if its root multiset is closed under $\alpha\mapsto\alpha^{-1}$,
+equivalently $x^{\deg p}p(1/x)=p(x)$. Salem and Lehmer polynomials are reciprocal; the entire
+difficulty of Lehmer's problem lives on the reciprocal locus, because Smyth disposes of the
+other side outright.
+\end{definition}
+
+\begin{lemma}[Smyth]\label{lem:smyth}
+Every non-reciprocal monic $p\in\Z[x]$ with $\Mah(p)>1$ satisfies $\Mah(p)\ge\muS=1.3247\ldots$,
+the real root of $x^{3}-x-1$ (the plastic number, the smallest Pisot number).
+\end{lemma}
+\noindent\emph{Status.} \forced{} (Smyth 1971). The bound is unconditional only off the
+reciprocal locus---which is exactly where it leaves the residual of \S\ref{sec:z5}.
+
+\begin{lemma}[Real reciprocal units]\label{lem:recipunit}
+A reciprocal pair $\{r,r^{-1}\}$ of real conjugates with $r>1$ and rational trace has integer
+trace $r+r^{-1}\ge3$ (the value $2$ forces $r=1$), hence $r\ge\gold^{2}=\tfrac{3+\sqrt5}{2}$ and
+Mahler contribution $\ge\gold^{2}\approx2.618$.
+\end{lemma}
+\noindent\emph{Status.} \forced{}.
+
+\subsection{Character II: the charge}
+\begin{definition}\label{def:charge}
+An object is \emph{charge-admissible} if every conjugate $\alpha$ has $\alpha^{n}\in\R_{>0}$
+for some $n\ge1$. The \emph{charge group} is $\Zmod n$ for the least such $n$; equivalently,
+writing each conjugate as $|\alpha|e^{2\pi i t}$ with $t\in\Q$, $n$ is the least common
+denominator of the $t$'s. The \emph{charge} of $\alpha$ is
+$\chi_n(\alpha)=\operatorname{round}(nt)\bmod n\in\Zmod n$.
+\end{definition}
+
+\begin{remark}
+$\alpha^{n}\in\R_{>0}$ says precisely that $\Arg\alpha\in(2\pi/n)\Z$. The readout
+$\chi_n$ is the algebra's phase character; $\Adams n$ \emph{realifies} an object of charge
+group $\Zmod n$ (sends every eigenvalue to the positive reals), which is the lever used
+repeatedly below.
+\end{remark}
+
+\subsection{The golden seed and the \texorpdfstring{$\sqrt5$}{sqrt5} coupling}
+The golden ratio $\gold$ is the larger root of $x^2-x-1$; its conjugate is
+$\gold'=\tfrac{1-\sqrt5}{2}=-1/\gold\approx-0.618$, satisfying
+$\sqrt5=\gold+\gold^{-1}=\gold-\gold'$. The single arithmetic fact that
+\[
+\boxed{\;\gold'<0,\quad\text{i.e.\ }\gold'\ \text{lies at argument }\pi\;}
+\]
+drives the parity phenomenon of \S\ref{sec:floor}: the floor-attaining construction must
+place $\gold'$ on the charge lattice, and the ray $\pi$ belongs to $(2\pi/n)\Z$ iff $n$ is
+even.
+
+\section{The realizable charge groups}\label{sec:structure}
+
+\begin{theorem}[Cyclicity]\label{thm:cyclic}
+Every charge group is cyclic. In particular no charge-admissible object has charge group
+$\Zmod p\times\Zmod p$, or any non-cyclic abelian group.
+\end{theorem}
+\begin{proof}
+By Definition~\ref{def:charge} the charges of the conjugates are elements
+$t\in\Q/\Z\cong\bigoplus_{p}\Z[1/p]/\Z$. They generate a finite subgroup
+$G\le\Q/\Z$. Every finite subgroup of $\Q/\Z$ is cyclic: it is the group $\mu_n$ of order
+$n=|G|$, since $\Q/\Z$ has exactly one subgroup of each finite order and that subgroup is
+$\langle 1/n\rangle\cong\Zmod n$. The charge group is $G$, hence cyclic.
+\end{proof}
+
+\noindent\emph{Status.} \forced{}. The content is that the phase character is a rank-one
+invariant: each prime contributes at most one independent cyclic label, so the number of
+independent primary labels of $\Zmod n$ is $\omega(n)$, the number of distinct prime
+divisors of $n$.
+
+\begin{theorem}[Realizability]\label{thm:realize}
+For every $n\ge1$, the polynomial $x^{n}-2$ is charge-admissible with charge group $\Zmod n$,
+attains all $n$ charges, and has $\Mah=2$. Hence the realizable charge groups are exactly
+$\{\Zmod n: n\ge1\}$.
+\end{theorem}
+\begin{proof}
+The roots are $2^{1/n}\zeta^{k}$, $\zeta=e^{2\pi i/n}$, $k=0,\dots,n-1$, at arguments
+$2\pi k/n$ exactly filling $(2\pi/n)\Z/2\pi\Z$; the least common denominator is $n$, so the
+charge group is $\Zmod n$ and every charge $k$ occurs. Each root has modulus $2^{1/n}>1$, so
+$\Mah=\prod_k 2^{1/n}=2$. Combined with Theorem~\ref{thm:cyclic}, the realizable groups are
+the finite cyclic groups.
+\end{proof}
+\emph{Status.} \forced{}; verified for $n=3,\dots,7$ (App.~\ref{app:ledger}, entry A).
+
+\begin{theorem}[Primary decomposition via Adams operations]\label{thm:crt}
+Let $n=\prod_{i} p_i^{e_i}$. Then $\Zmod n\cong\prod_i\Zmod{p_i^{e_i}}$ by the Chinese
+Remainder Theorem, and this decomposition is realized inside the algebra: the Adams operation
+$\Adams{\,n/p_i^{e_i}}$ annihilates the prime-to-$p_i$ part of the charge and projects onto
+the $p_i$-primary component $\Zmod{p_i^{e_i}}$.
+\end{theorem}
+\begin{proof}
+On charges $\Adams k$ acts as multiplication by $k$ on $\Zmod n$
+(table, \S\ref{sec:prelim}). For $k=n/p_i^{e_i}$, multiplication by $k$ has image the unique
+subgroup of order $p_i^{e_i}$ and kernel the complementary factor, i.e.\ it is the CRT
+projection onto $\Zmod{p_i^{e_i}}$. Realification: applying $\Adams{k}$ to an object of charge
+group $\Zmod n$ yields one whose residual charge group is exactly $\Zmod{p_i^{e_i}}$.
+\end{proof}
+\emph{Status.} \forced{} (CRT). Verified on $x^6-2$: $\Adams3$ leaves residual group
+$\Zmod2$, $\Adams2$ leaves $\Zmod3$ (App.~\ref{app:ledger}, entry C). Thus prime powers give a
+\emph{nested} filtration (via $\Adams{p^{j}}$) and distinct primes a \emph{flat} product,
+with $\omega(n)$ independent labels.
+
+\section{Composition under the tensor product}\label{sec:compose}
+
+\begin{proposition}[Measure under $\tens$; tropical law]\label{prop:tensM}
+With $A,B$ having roots $\{\alpha_i\},\{\beta_j\}$,
+\[
+\Mah(A\tens B)=\prod_{i,j}\max\bigl(1,|\alpha_i\beta_j|\bigr),
+\qquad\text{equivalently}\qquad
+\log\Mah(A\tens B)=\sum_{i,j}\bigl(\log|\alpha_i|+\log|\beta_j|\bigr)^{+},
+\]
+where $t^{+}=\max(0,t)$. This is the tropical $(\max,+)$ law on the log-moduli. It does
+\emph{not} factor as $\Mah(A)^{\deg B}\Mah(B)^{\deg A}$ in general; the two agree exactly when
+no product $\alpha_i\beta_j$ crosses the unit circle (e.g.\ when every $|\alpha_i|,|\beta_j|>1$),
+and disagree otherwise.
+\end{proposition}
+\begin{proof}
+The eigenvalues of $A\tens B$ are the $\deg A\cdot\deg B$ products $\alpha_i\beta_j$, so by the
+definition of $\Mah$, $\Mah(A\tens B)=\prod_{i,j}\max(1,|\alpha_i\beta_j|)$; taking logarithms
+gives the stated sum. The factored form would require
+$\max(1,|\alpha_i\beta_j|)=\max(1,|\alpha_i|)\max(1,|\beta_j|)$ for every pair, which fails
+precisely when one factor lies inside the unit circle and the other outside with the product on
+the opposite side: e.g.\ $\gold\tens\gold$ has eigenvalues $\{\gold^{2},-1,-1,\gold'^{2}\}$,
+giving $\Mah=\gold^{2}$, whereas $\Mah(\gold)^{2}\Mah(\gold)^{2}=\gold^{4}$
+(App.~\ref{app:ledger}, entry M).
+\end{proof}
+
+\begin{remark}
+This corrects an error in earlier drafts (v1--v3), which stated the factored form. The
+correct tropical law is the one carried by the corpus's operator-algebra specification (S4);
+no result of this paper depends on the tensor measure---the $\operatorname{lcm}$ law
+(Thm.~\ref{thm:lcm}) and the parity and $\Zmod5$ proofs use the \emph{charge} character and
+the constructions $q_k$, $x^{n}-2$, and direct quartics---so the correction is confined to
+this proposition and the backbone table.
+\end{remark}
+
+\begin{theorem}[The $\operatorname{lcm}$ law]\label{thm:lcm}
+If $A,B$ have charge groups $\Zmod m,\Zmod k$, then $A\tens B$ has charge group
+$\Zmod{\operatorname{lcm}(m,k)}$. If $\gcd(m,k)=1$ this is the full product
+$\Zmod m\times\Zmod k\cong\Zmod{mk}$ and the pair $(\chi_m,\chi_k)$ is recoverable from the
+composite charge; if $\gcd(m,k)>1$, the $\gcd$-part collapses.
+\end{theorem}
+\begin{proof}
+Arguments add under multiplication of eigenvalues: a root of $A$ at $2\pi a/m$ and a root of
+$B$ at $2\pi b/k$ produce a root of $A\tens B$ at $2\pi(a/m+b/k)$. The set
+$\{a/m+b/k\bmod 1\}$ generates the subgroup $\tfrac1m\Z+\tfrac1k\Z=\tfrac1{\operatorname{lcm}(m,k)}\Z$
+of $\Q/\Z$, whose order is $\operatorname{lcm}(m,k)$. Coprimality is the CRT case
+$\Zmod{mk}\cong\Zmod m\times\Zmod k$, in which the projections recover $(\chi_m,\chi_k)$.
+\end{proof}
+
+\begin{theorem}[Safe composition $\Leftrightarrow$ coprime]\label{thm:safe}
+Two charge sectors compose under $\tens$ without making any previously forbidden charge
+reachable if and only if their orders are coprime.
+\end{theorem}
+\begin{proof}
+By Theorem~\ref{thm:lcm}, coprime orders yield $\Zmod m\times\Zmod k$, on which the two
+charges remain independent coordinates; no label of one sector is produced by the other, so
+the forbidden sets stay separated (lossless). If $\gcd(m,k)=d>1$, the composite group has
+order $\operatorname{lcm}(m,k)=mk/d<mk$; the surjection
+$\Zmod m\times\Zmod k\twoheadrightarrow\Zmod{\operatorname{lcm}}$ has nontrivial kernel, and
+its identifications can map an allowed pair onto a forbidden composite charge---a leak.
+\end{proof}
+\emph{Status.} \forced{}. Illustration: $x^3-2\ \tens\ x^4-2$ has $\gcd(3,4)=1$; the engine
+returns charpoly $x^{12}-128$, charge group $\Zmod{12}=\Zmod{\operatorname{lcm}(3,4)}$, and
+$\Mah=128=2^{7}$ (all twelve products have modulus $2^{7/12}>1$, so the tropical law of
+Prop.~\ref{prop:tensM} reduces to $(2^{7/12})^{12}=2^{7}$; this is an off-circle case where the
+factored form happens to agree) (App.~\ref{app:ledger}, entry D).
+
+\section{The coupling: a parity-graded floor}\label{sec:floor}
+
+We now address the coupling question. For $n\ge1$ define
+\[
+\mu(n)\;=\;\inf\bigl\{\,\Mah(O) : O\ \text{charge-admissible},\ \text{charge group }\Zmod n,\ \Mah(O)>1\,\bigr\}.
+\]
+
+\begin{theorem}[Parity-graded floor]\label{thm:parity}
+\[
+\mu(n)=
+\begin{cases}
+\gold, & n\ \text{even},\\[2pt]
+2, & n\ \text{odd},
+\end{cases}
+\]
+Here $\mu(n)=2$ for odd $n$ is the \emph{realized} floor; the \emph{forced} lower bound for odd
+$n$ is only $\muS$ (Lemma~\ref{lem:smyth}), and the equality $\mu(\mathrm{odd})=2$ is held at
+\computed{} strength (\S\ref{sec:z5}). The bound $\gold$ is attained \emph{iff} $n$ is even.
+Symmetrically, $\mu(\mathrm{even})=\gold$ is two statements of unequal strength:
+$\mu(\mathrm{even})\le\gold$ is \forced{} (the construction below attains it), while
+$\mu(\mathrm{even})\ge\gold$ inherits the \plausible{} status of the universal bound
+(Prop.~\ref{prop:gap}). The even floor is attained constructively: for $n=2k$,
+\[
+q_k(x)\;=\;x^{2k}+x^{k}-1
+\]
+is charge-admissible with charge group $\Zmod{2k}$, attains all $2k$ charges, and has
+$\Mah(q_k)=\gold$.
+\end{theorem}
+
+\begin{proof}[Proof of even attainment]
+Substitute $y=x^{k}$ in $q_k$: $y^2+y-1=0$ gives $y=\gold-1=1/\gold>0$ and
+$y=-\gold<0$.
+\begin{itemize}[nosep]
+  \item $x^{k}=1/\gold$ contributes $k$ roots of modulus $(1/\gold)^{1/k}<1$ at arguments
+        $2\pi j/k$ (even multiples of $\pi/k$); these lie inside the unit circle and add
+        nothing to $\Mah$.
+  \item $x^{k}=-\gold$ contributes $k$ roots of modulus $\gold^{1/k}>1$ at arguments
+        $(2j+1)\pi/k$ (odd multiples of $\pi/k$); their product of moduli is
+        $(\gold^{1/k})^{k}=\gold$.
+\end{itemize}
+Hence $\Mah(q_k)=\gold$. The full set of arguments is all multiples of $\pi/k$, i.e.\
+$(2\pi/2k)\Z$, with least common denominator $2k$; so the charge group is $\Zmod{2k}$ and all
+charges occur. For $k=2$ this is the factorization
+$x^4+x^2-1=(x^2+\gold)(x^2+\gold')$, placing the measure-bearing pair $\pm i\sqrt{\gold}$ on
+the imaginary axis and the inert pair $\pm\sqrt{1/\gold}$ on the real axis.
+\end{proof}
+
+\begin{lemma}[The $\pi$-ray obstruction]\label{lem:pi}
+The golden conjugate $\gold'=\tfrac{1-\sqrt5}{2}<0$ lies at argument $\pi$. The ray $\pi$
+belongs to the lattice $(2\pi/n)\Z$ if and only if $n$ is even. Consequently the golden
+seed---the unique structure realizing the universal bound $\Mah=\gold$ at nontrivial
+charge---can be hosted on a charge lattice $\Zmod n$ only when $n$ is even.
+\end{lemma}
+\begin{proof}
+$\pi=(2\pi/n)\cdot m$ for an integer $m$ iff $n=2m$, i.e.\ $n$ even. Any object attaining
+$\Mah=\gold$ through the golden structure carries a conjugate at argument $\pi$ (the image of
+$\gold'$ under the construction); if its charge group were $\Zmod n$ with $n$ odd, that
+conjugate would force $\pi\in(2\pi/n)\Z$, a contradiction.
+\end{proof}
+
+\begin{proof}[Proof of the odd floor (forced part) and status of the rest]
+By Theorem~\ref{thm:realize}, $x^{n}-2$ realizes $\Zmod n$ with $\Mah=2$, so $\mu(n)\le2$. For
+the lower bound, what is \emph{forced} is $\mu(n)\ge\muS$: a non-reciprocal object obeys
+Lemma~\ref{lem:smyth}, and a reciprocal one obeys $\Mah\ge\gold^{2}>2$ on its real part
+(Lemma~\ref{lem:recipunit})---the two cases worked at $\Zmod5$ in \S\ref{sec:z5}.
+Lemma~\ref{lem:pi} blocks the golden construction for odd $n$, so $\gold$ is unattained; and
+Theorem~\ref{thm:salemgap} gives the \computed{} statement that no admissible measure lies in
+$(\gold,2)$. The equality $\mu(\mathrm{odd})=2$ thus rests on emptiness of the non-reciprocal
+class in $[\muS,2)$, verified over the window but not proved (\S\ref{sec:z5},\,\S\ref{sec:scope}).
+The even case combines the construction above with the universal bound $\gold$.
+\end{proof}
+
+\noindent\emph{Status.} \forced{} for the even attainment (constructive), the $\pi$-ray
+obstruction, and the forced odd lower bound $\muS$. The odd \emph{realized} floor
+$\mu(\mathrm{odd})=2$ is \forced{} for $\Zmod3$ (Thm.~\ref{thm:salemgap}) and \computed{} in
+general. Verified: $q_k$ for $k=2,\dots,5$ realizes $\Zmod{2k}$ at $\Mah=\gold$
+(App.~\ref{app:ledger}, entry E).
+
+\begin{theorem}[Totally-positive gap; the blocked cheap route]\label{thm:tp}
+A totally positive algebraic integer (all conjugates real and positive) has no Mahler measure
+in $(1,2)$; the least value exceeding $1$ is exactly $2$, attained by $(x-1)(x-2)$.
+Consequently the cheapest charging route---$\zeta_n$ (a primitive $n$-th root of unity,
+$\Mah=1$) tensored with a positive-real measure-bearing factor---cannot produce an odd-charge
+object with $\Mah\in(\gold,2)$.
+\end{theorem}
+\emph{Status.} \computed{} (verified for all such integers of degree $\le7$). The relevance:
+to carry an odd charge cheaply one multiplies the free cyclotomic charge $\zeta_n$
+($\Mah=1$) by a factor whose roots avoid the argument $\pi$ (else the lattice doubles to even
+order); such a factor is totally positive, and the gap forbids its measure from entering
+$(\gold,2)$. The next totally positive value after $2$ is $\gold^{2}\approx2.618$
+(App.~\ref{app:ledger}, entry G).
+
+\section{The odd-charge gap is the no-Salem closure}\label{sec:salem}
+
+\begin{lemma}[Salem exclusion]\label{lem:salem}
+A Salem number carries no finite charge group. More generally, any algebraic integer with an
+irrational conjugate angle is charge-inadmissible.
+\end{lemma}
+\begin{proof}
+Let $\tau$ be a Salem number: $\tau>1$, $1/\tau$ its only other real conjugate, and all
+remaining conjugates on $|z|=1$. Those unit-circle conjugates are roots of the minimal
+polynomial of $\tau$, which is irreducible and non-cyclotomic; hence none of them is a root
+of unity (a root of unity has cyclotomic minimal polynomial, which would have to coincide
+with the Salem polynomial). A unit-circle algebraic integer that is not a root of unity has
+argument an irrational multiple of $2\pi$, so $\tau^{n}\notin\R_{>0}$ for every $n$:
+$\tau$ is charge-inadmissible. The general statement is immediate from
+Definition~\ref{def:charge}.
+\end{proof}
+
+\begin{theorem}[Odd gap $=$ no-Salem closure]\label{thm:salemgap}
+For odd $n$, the open interval $(\gold,2)$ contains no Mahler measure of any
+charge-admissible object with charge group $\Zmod n$. Moreover, the algebraic integers with
+$\Mah\in(\gold,2)$ lying near odd-order lattices are exactly Salem and Pisot numbers with
+irrational angles; by Lemma~\ref{lem:salem} these are charge-inadmissible. Thus the
+odd-charge gap $(\gold,2)$ coincides with the no-Salem closure of the algebra: the measures
+that would fill it are precisely the excluded Salem occupants.
+\end{theorem}
+
+\begin{proof}[Proof for $\Zmod3$ (the forced case)]
+An irreducible cubic on the $\Zmod3$ lattice has signature $(1,1)$: a real root at argument
+$0$ and a conjugate pair at $\pm120^\circ$, with quadratic factor
+$x^2-2\rho\cos120^\circ\,x+\rho^2=x^2+\rho x+\rho^2$ since $\cos120^\circ=-\tfrac12$.
+Integrality of the coefficients forces $\rho,\rho^2\in\Z$, hence $\rho\in\Z$. Writing the
+cubic as $(x-\alpha)(x^2+\rho x+\rho^2)$ with $\alpha\in\R$, the coefficient relations give
+$c_1=\rho(\rho-\alpha)$ and $c_2=\rho-\alpha$, so $c_1=\rho\,c_2$ with $\rho\in\Z$; the only
+sub-$2$ solution is $x^3-2$ ($\rho=0$, $\Mah=2$). No configuration yields
+$\Mah\in(1,2)$; in particular $(\gold,2)$ is empty for $\Zmod3$. Exhaustive search over
+$|c_i|\le6$ confirms zero exceptions.
+\end{proof}
+
+\noindent\emph{General evidence and status.} A two-stage search---a fast double-precision
+screen followed by exact, high-precision re-classification with tolerance matched to the
+working precision---was run over monic integer polynomials (degree $\le7$, small
+coefficients), reciprocal/Salem-adjacent polynomials (degree $\le12$), and the
+totally-positive family (degree $\le7$). It returned \emph{no} genuine odd-charge object with
+$\Mah\in(\gold,2)$. Every one of the $17$ apparent sub-$2$ candidates surfaced by the loose
+screen had, on exact re-classification, \emph{no} finite charge group: each is an
+irrational-angle Salem or Pisot number. The keystone is
+\[
+\beta_4=x^4-x^3-x^2-x+1,\qquad \Mah(\beta_4)=1.72208\ldots\in(\gold,2),
+\]
+the minimal degree-$4$ Salem number, correctly classified as charge-inadmissible
+(App.~\ref{app:ledger}, entry F). Thus the would-be occupants of the odd-charge gap are the
+exact objects excluded by the emission gap. The statement is \forced{} for $\Zmod3$ and via
+Lemma~\ref{lem:salem}, and \computed{}/\plausible{} for the all-degrees claim, which would
+require a Mahler coefficient-bound argument rather than a finite search.
+
+\begin{corollary}
+The parity dichotomy of Theorem~\ref{thm:parity} and the Salem gap of
+Theorem~\ref{thm:salemgap} are two faces of one fact: the universal magnitude floor $\gold$
+is realizable at nontrivial charge \emph{iff} the charge lattice contains the argument $\pi$
+(i.e.\ $n$ even); when it does not (odd $n$), the next admissible magnitude is $2$, and the
+band $(\gold,2)$ is occupied only by the charge-inadmissible Salem spectrum.
+\end{corollary}
+
+\section{The \texorpdfstring{$\Zmod5$}{Z/5} case: first worked instance of the open problem}\label{sec:z5}
+
+The open problem of \S\ref{sec:scope}---prove for all degrees that odd charge admits no measure
+in $(\gold,2)$---is here worked for the smallest odd modulus on which the elementary $\Zmod3$
+argument fails. The $\Zmod3$ proof closes because $2\cos120^\circ=-1\in\Z$; at $\Zmod5$ the
+relevant cosines are irrational and Galois-coupled, and the case splits into a \emph{forced}
+skeleton and a single \emph{computed} residual which is exactly Lehmer's problem restricted to
+the pentagon lattice. Nothing here closes that residual; the contribution is to sharpen the
+forced floor, close the degree-four sector, and name what remains.
+
+\begin{proposition}[Pentagon cosines]\label{prop:pentcos}
+$2\cos72^\circ=\gold-1$ and $2\cos144^\circ=-\gold$ are the two (irrational) roots of
+$x^2+x-1$, hence Galois-conjugate over $\Q$ under $\sqrt5\mapsto-\sqrt5$.
+\end{proposition}
+\noindent\emph{Status.} \forced{} (symbolic). A single $\pm72^\circ$ pair of rational modulus
+$s$ has factor $x^2-s(\gold-1)x+s^2$ with \emph{irrational} linear term; integrality is
+recoverable only by adjoining the $\pm144^\circ$ Galois partner so the $\sqrt5$-parts cancel.
+This forced coupling is the feature $\Zmod3$ never needs.
+
+\begin{theorem}[Forced floor at $\Zmod5$]\label{thm:z5floor}
+Let $O$ be charge-admissible with charge group $\Zmod5$ and $\Mah(O)>1$.
+\begin{enumerate}[label=\emph{(\alph*)},nosep]
+  \item If $O$ is non-reciprocal, then $\Mah(O)\ge\muS=1.3247\ldots$ \forced{}
+  \item If $O$ is reciprocal, then $O=\Phi_5^{\,a}\cdot U$ with $U$ a product of reciprocal
+        units off the unit circle; its real part obeys $\Mah\ge\gold^{2}$, and no reciprocal
+        charge-$\Zmod5$ object in the verification window has $\Mah<\gold^{2}$.
+        \forced{} (real part) / \computed{} (window)
+\end{enumerate}
+This improves the realification bound $2^{1/5}=1.1487$---from $\Adams5O$ totally positive with
+$\Mah(\Adams5O)=\Mah(O)^{5}\ge2$ (Thm.~\ref{thm:tp})---to $\muS$.
+\end{theorem}
+\begin{proof}
+(a) is Lemma~\ref{lem:smyth}. (b) By Lemma~\ref{lem:salem} an on-unit root of a
+charge-admissible non-cyclotomic object is a fifth root of unity; strip the resulting
+$\Phi_5^{\,a}$. The remainder $U$ is reciprocal, charge-admissible, hence not Salem, so it has
+no on-circle conjugate at all; every root lies off the circle paired with its inverse. The real
+such pairs are real reciprocal units, $\Mah\ge\gold^{2}$ by Lemma~\ref{lem:recipunit}; the
+complex such pairs sit at $\pm72^\circ,\pm144^\circ$, coupled in $\Q(\sqrt5)$ as in
+Theorem~\ref{thm:pentagon}. The window (App.~\ref{app:ledger}, entries I--K) exhibits only
+$\Phi_5^{\,a}\times(\text{real reciprocal units})$ with $\Mah\in\{1,\gold^{2},2+\sqrt3,\dots\}$,
+all $\ge\gold^{2}>2$.
+\end{proof}
+
+\begin{theorem}[Pure pentagon: the degree-four sector]\label{thm:pentagon}
+Every irreducible quartic with charge group $\Zmod5$ has $\Mah\in\{1\}\cup[\gold^{4},\infty)$,
+$\gold^{4}\approx6.854$; in particular $\Mah\notin(1,\gold^{4})$. \forced{}
+\end{theorem}
+\begin{proof}
+By Lemma~\ref{lem:salem} the object has no real root ($180^\circ\notin$ the lattice), so it is a
+$\pm72^\circ$ pair of modulus $s$ times a $\pm144^\circ$ pair of modulus $t$:
+$O=\bigl(x^2-s(\gold-1)x+s^2\bigr)\bigl(x^2+t\gold\,x+t^2\bigr)$. Integrality of all four
+coefficients forces the $\sqrt5$-parts to cancel, i.e.\ $t=\sigma(s)$ under
+$\sqrt5\mapsto-\sqrt5$; equivalently $s,t$ are the two positive roots of a totally real integer
+quadratic $y^2-ky+m$, $k=s+t\in\Z$, $m=st\in\Z_{>0}$. With two roots at $s$ and two at $t$,
+$\Mah=\max(1,s)^2\max(1,t)^2$. The case analysis on $(k,m)$ bottoms out at $(k,m)=(3,1)$:
+$s=\gold^{2}$ at $\pm72^\circ$, $t=\gold^{-2}$ at $\pm144^\circ$, $\Mah=\gold^{4}$, with explicit
+minimizer
+\[
+x^4-x^3+6x^2+4x+1,\qquad \text{charge}=\Zmod5,\quad \Mah=\gold^{4}.
+\]
+Irreducibility forces this Galois-coupled form for \emph{every} charge-$\Zmod5$ quartic (a
+$72^\circ$ root drags in its $\sqrt5$-partner at $144^\circ$), so the classification is
+complete; an exhaustive scan ($|c|\le10$) returns distinct measures exactly $\{1,\gold^{4}\}$
+(App.~\ref{app:ledger}, entry J).
+\end{proof}
+\begin{remark}
+The contrast with $\Zmod3$ is now exact: $\Zmod3$ couples nothing and bottoms out at $2$;
+$\Zmod5$ couples the two moduli as $\Q(\sqrt5)$-conjugates and bottoms out at $\gold^{4}$. The
+coupling that makes the odd case hard \emph{in general} is the very thing that widens the
+degree-four gap here.
+\end{remark}
+
+\begin{theorem}[Pure power realizes the floor]\label{thm:z5pure}
+For $m\ge2$, $x^{5}-m$ has charge group $\Zmod5$, is non-reciprocal, and has $\Mah=m$. Hence the
+family realizes $\Mah\in\{1\}\cup[2,\infty)$, attaining $\mu(5)=2$ at $x^{5}-2$. \forced{}
+\end{theorem}
+\begin{proof}
+Roots $m^{1/5}\zeta^{k}$, all of modulus $m^{1/5}>1$, give charge $\Zmod5$ and $\Mah=m$. Closure
+under $\alpha\mapsto\alpha^{-1}$ would require $m^{-1/5}$ among the roots, which it is not; hence
+non-reciprocal (consistent with Theorem~\ref{thm:z5floor}(a), $m\ge2>\muS$). The real root
+$m^{1/5}$ is Galois-conjugate to the four complex roots and cannot be split off, so $x^{5}-m$ is
+genuinely quintic and escapes the degree-four analysis of Theorem~\ref{thm:pentagon}.
+\end{proof}
+
+\begin{proposition}[The residual, named]\label{prop:z5residual}
+Combining Theorems~\ref{thm:z5floor}--\ref{thm:z5pure}: the reciprocal charge-$\Zmod5$ class
+lies in $\{1\}\cup[\gold^{2},\infty)$ (above $2$); the non-reciprocal class is forced into
+$\{1\}\cup[\muS,\infty)$ with realized minimum $2$. Hence a charge-$\Zmod5$ object can land in
+$(1,2)$ \emph{only} by being non-reciprocal with $\Mah\in[\muS,2)$. Over the verification window
+(quartics $|c|\le10$, quintics $|c|\le4$, sextics $|c|\le3$) this set is empty, the boundary
+object $x^{5}-2$ sitting at exactly $2$. \computed{}
+\end{proposition}
+\begin{remark}[Why this does not promote]
+Three handles reach the residual and none reaches $2$. \emph{Realification}: $\Adams5O$ is
+totally positive with $\Mah(\Adams5O)=\Mah(O)^{5}$, giving only $\Mah(O)\ge2^{1/5}$; asking
+$\Adams5O$ to clear $32$ rather than $2$ is the original claim restated, hence circular.
+\emph{Smyth}: Lemma~\ref{lem:smyth} forces $\muS$, the best off-the-shelf bound, still below
+$2$. \emph{Classification}: Theorems~\ref{thm:pentagon} and~\ref{thm:z5pure} close degree four
+and the pure-power family, but a general non-reciprocal charge-$\Zmod5$ object of degree $\ge5$
+with non-constant modulus structure is unclassified. The residual---``no non-reciprocal
+charge-$\Zmod5$ object has $\Mah\in[\muS,2)$''---is the reciprocal/Salem core of Lehmer's
+problem specialized to the pentagon lattice, equivalently the totally-positive $(1,2)$ gap
+surviving fifth-root pullback with the rotation-class coupling that $\Adams5$ destroys. That is
+Schur--Siegel--Smyth trace-problem territory and is not closable by the methods here. By the
+asymmetry rule (a finite search may extend a claim to \computed{} but never promote it to
+\forced{}), the four forced sub-results plus a clean window are the honest maximum:
+\textbf{the open problem of \S\ref{sec:scope} is refined at $\Zmod5$, not closed.} That the
+residual resists matrix-algebra structure is no accident: by Proposition~\ref{prop:commutator}
+the Lehmer/Salem core it names is realizable outright as a commutator spectrum, so only the
+charge restriction---not the ambient algebra---can do the excluding.
+\end{remark}
+
+\section{Methodology}\label{sec:method}
+
+\paragraph{Exact arithmetic.} Charge-group membership is the assertion
+$\alpha^{n}\in\R_{>0}$, a decision about whether an imaginary part is exactly zero. We never
+let machine doubles adjudicate it. Roots were computed at $25$--$35$ decimal digits with
+$\mathtt{mpmath}$, multiplicities removed via the squarefree part, and the membership
+tolerance set well below the precision floor but far above true-zero residuals
+($10^{-18}$ at $30$ digits). The one recurring failure mode in this line of work was a loose
+angular tolerance on double precision mis-binning an irrational angle as on-lattice; the
+discipline above is its antidote, and it is what distinguishes the spurious screen
+candidates of \S\ref{sec:salem} from genuine witnesses.
+
+\paragraph{Engine validation.} The operations were checked against an independent
+integer-matrix engine in which $\dsum$ is the matrix direct sum, $\tens$ the Kronecker
+product, and $\Adams k$ the matrix $k$-th power; charge readouts were taken from companion
+matrices of the relevant polynomials. The consolidation ledger of
+Appendix~\ref{app:ledger} was produced by this engine and underlies every numerical claim in
+the text.
+
+\paragraph{Epistemic tagging.} Each result carries one of \forced{}/\computed{}/\plausible{}.
+This is not decoration: the parity floor's even half is a constructive proof, its odd half is
+proved only for $\Zmod3$ and verified to a finite degree beyond, and the universal lower
+bound itself is proved only for quadratics. Conflating these would misrepresent what the
+algebra is known to do.
+
+\section{Scope, limitations, and open problems}\label{sec:scope}
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Result & Statement & Status \\
+\midrule
+Cyclicity (Thm.~\ref{thm:cyclic}) & charge groups are cyclic & \forced{} \\
+Realizability (Thm.~\ref{thm:realize}) & every $\Zmod n$ occurs & \forced{} \\
+CRT / Adams (Thm.~\ref{thm:crt}) & primary projectors $\Adams{n/p^{e}}$ & \forced{} \\
+$\operatorname{lcm}$ law (Thm.~\ref{thm:lcm}) & $\tens$ gives $\Zmod{\operatorname{lcm}}$ & \forced{} \\
+Safe $\Leftrightarrow$ coprime (Thm.~\ref{thm:safe}) & lossless iff coprime orders & \forced{} \\
+Even floor, attainment (Thm.~\ref{thm:parity}) & $\mu(\text{even})\le\gold$ ($q_k$ attains) & \forced{} \\
+Even floor, lower bound (Thm.~\ref{thm:parity}) & $\mu(\text{even})\ge\gold$ & \plausible{} (Prop.~\ref{prop:gap}) \\
+Forced odd floor (Lem.~\ref{lem:smyth}) & $\Mah\ge\muS$, odd non-reciprocal & \forced{} (Smyth) \\
+Odd realized floor (Thm.~\ref{thm:parity}) & $\mu(\text{odd})=2$ & \forced{} ($\Zmod3$) / \computed{} \\
+$\Zmod5$ degree-4 (Thm.~\ref{thm:pentagon}) & $\Mah\in\{1\}\cup[\gold^{4},\infty)$ & \forced{} \\
+$\Zmod5$ pure power (Thm.~\ref{thm:z5pure}) & $x^{5}-m$: $\Mah=m$; $\mu(5)=2$ at $x^{5}-2$ & \forced{} \\
+$\Zmod5$ residual (Prop.~\ref{prop:z5residual}) & non-recip in $[\muS,2)$ empty over window & \computed{} \\
+Totally-positive gap (Thm.~\ref{thm:tp}) & no measure in $(1,2)$ & \computed{} (deg $\le7$) \\
+Salem gap (Thm.~\ref{thm:salemgap}) & $(\gold,2)$ empty for odd $n$ & \forced{} ($\Zmod3$) / \plausible{} \\
+Universal bound (Prop.~\ref{prop:gap}) & forced floor $\muS$; $\gold$ conjectural & \forced{} ($\muS$) / \plausible{} ($\gold$) \\
+Commutator boundary (Prop.~\ref{prop:commutator}) & no uniform theorem over free commutators & \forced{} (Shoda) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{The commutator boundary}
+Every result above governs the abelian spectral semiring---objects built from
+$\dsum,\tens,\Adams n$, on which the two characters transform predictably. The natural
+non-abelian operation, the matrix commutator $[A,B]=AB-BA$, lies outside it, and is the exact
+boundary of the theory.
+
+\begin{proposition}[Commutator escape]\label{prop:commutator}
+The matrix commutator is not a semiring operation, and no floor, gap, or charge constraint
+extends across it. Concretely, by Albert--Muckenhoupt a matrix over a field is a commutator
+$[A,B]$ if and only if it has trace zero, and every trace-zero integer matrix is a commutator
+of integer matrices (Laffey--Reams). The companion matrix of $L(x)\,(x-1)$, where
+$L$ is Lehmer's polynomial, is a trace-zero integer matrix whose characteristic polynomial
+carries Lehmer's number $\tau$. Since $\tau$ is a Salem number, this commutator has
+\[
+\Mah=\Mah(L)\,\Mah(x-1)=1.17628\ldots\in(1,\gold)
+\qquad\text{and}\qquad
+\text{charge group }=\ \bot,
+\]
+i.e.\ it lies \emph{below} the emission floor \emph{and} off every angle lattice
+simultaneously. Consequently:
+\begin{enumerate}[label=\emph{(\roman*)},nosep]
+  \item the emission gap (Prop.~\ref{prop:gap}) and the charge structure of
+        \S\ref{sec:structure} do not extend to commutators;
+  \item \emph{no single theorem governs every free commutator}: any uniform floor/gap/charge
+        statement fails on this witness, so the goal is unsatisfiable;
+  \item the no-Salem closure (Thm.~\ref{thm:salemgap}) is \emph{operation-relative}---Salem
+        numbers are excluded by the restriction to the charge-admissible abelian semiring, not
+        by the ambient matrix algebra, which realizes them freely through the commutator.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+The first two sentences are Albert--Muckenhoupt and Laffey--Reams. Lehmer's polynomial
+$L=x^{10}+x^{9}-x^{7}-x^{6}-x^{5}-x^{4}-x^{3}+x+1$ has trace $-1$, so
+$L(x)(x-1)=x^{11}-x^{9}-x^{8}+x^{3}+x^{2}-1$ has trace $0$; its companion matrix $C$ is thus a
+trace-zero integer matrix and a commutator, with characteristic polynomial $L(x)(x-1)$. Hence
+the spectrum of $C$ contains Lehmer's number $\tau$ together with $1$. As $\Mah$ is
+multiplicative and $\Mah(x-1)=1$, $\Mah(C)=\Mah(L)=\tau=1.17628\ldots\in(1,\gold)$. By
+Lemma~\ref{lem:salem} the on-circle conjugates of $\tau$ are at irrational angles, so $C$ is
+charge-inadmissible. The three conclusions follow because $C$ is a commutator violating each
+constraint.
+\end{proof}
+
+\noindent\emph{Status.} \forced{}. This is the sharp form of the maxim that the commutator is
+``the one door'': Shoda fixes the door's width at the full trace-zero set, and Lehmer's number
+witnesses that the door admits the entire sub-$\gold$ Salem spectrum. It sharpens the
+confinement reading of the programme---the abelian semiring is the box, the commutator is the
+door---without altering any result of \S\S\ref{sec:structure}--\ref{sec:z5}.
+\emph{all} degrees, that no charge-admissible object with odd charge group has
+$\Mah\in(\gold,2)$. A finite search cannot settle this: Mahler's coefficient bound permits
+larger coefficients at fixed measure, so a complete proof must proceed structurally---most
+plausibly by upgrading Lemma~\ref{lem:salem} to a full dichotomy (every algebraic integer with
+$\Mah\in(\gold,2)$ is either Salem-type with irrational angle, or has even charge group). The
+$\Zmod5$ worked case (\S\ref{sec:z5}) is the current state of that program: it forces the floor
+up to $\muS$, closes the degree-four sector at $\gold^{4}$, and contracts the residual to a
+single named set---the non-reciprocal charge-$\Zmod5$ objects in $[\muS,2)$, which is the
+reciprocal/Salem core of Lehmer's problem on the pentagon lattice, equivalently the
+totally-positive $(1,2)$ gap surviving fifth-root pullback. That residual is trace-problem
+territory; the same structural upgrade would promote the universal bound (Prop.~\ref{prop:gap}),
+the general odd floor, and $\mu(5)=2$ to \forced{}. Until then the problem is \emph{refined and
+still open}.
+
+\paragraph{Caveat on the larger programme.} The substrate's deeper conjectures---a resolution
+of Lehmer's problem, or particular continuum couplings posited elsewhere in the
+project---are \emph{not} touched here and remain open or conditional. What this note
+establishes is internal to the charge--measure interaction on the abelian spectral semiring:
+the algebra's two characters are orthogonal as readouts but coupled at the extremal floor, with
+the coupling governed by the single parity bit ``does the charge lattice contain $\pi$.'' The
+boundary of that statement is Proposition~\ref{prop:commutator}: pass to the non-abelian
+commutator and every constraint dissolves, Lehmer's number included. Confinement, here, is
+exactly the choice to stay abelian.
+
+\appendix
+\section{Consolidation ledger}\label{app:ledger}
+The following were regenerated in exact arithmetic immediately prior to writing; each grounds
+a claim in the text.
+
+\begin{center}
+\begin{tabular}{cll}
+\toprule
+& object & exact result \\
+\midrule
+A & $x^{n}-2,\ n=3\text{--}7$ & charge group $\Zmod n$, all charges, $\Mah=2$ \\
+B & $x^{4}-2$ & charge group $\Zmod4$ (single generator), not $\Zmod2\times\Zmod2$ \\
+C & $x^{6}-2$ & $\Zmod6$; $\Adams3$ residual $\Zmod2$, $\Adams2$ residual $\Zmod3$ \\
+D & $x^{3}-2\ \tens\ x^{4}-2$ & charpoly $x^{12}-128$, charge $\Zmod{12}$, $\Mah=128=2^{7}$ \\
+E & $x^{2k}+x^{k}-1,\ k=2\text{--}5$ & charge $\Zmod{2k}$, all charges, $\Mah=\gold$ \\
+F & $\beta_4=x^4-x^3-x^2-x+1$ & $\Mah=1.72208\in(\gold,2)$, charge group \emph{none} (irrational) \\
+G & $(x-1)(x-2)$ & totally positive, $\Mah=2$; next value $\gold^2\approx2.618$ \\
+H & --- & $\gold=1.61803$; even floor $\gold$, odd floor $2$, global admissible min $\gold$ \\
+\midrule
+I & $x^4-x^3+6x^2+4x+1$ & charge $\Zmod5$, $\Mah=\gold^{4}=6.854$, irreducible, non-reciprocal \\
+J & charge-$\Zmod5$ quartics, $|c|\le10$ & distinct $\Mah=\{1,\gold^{4}\}$; none in $(1,\gold^{4})$ \\
+K & $\Phi_5\!\cdot\!(x^2-3x+1)$;\ $x^{5}-2$ & recip.\ $\Mah=\gold^{2}$;\ \ $x^{5}-2$ non-recip.\ $\Mah=2=\mu(5)$ \\
+\midrule
+L & $L(x)\,(x-1)=x^{11}-x^{9}-x^{8}+x^{3}+x^{2}-1$ & trace $0$ (commutator); $\Mah=1.17628\in(1,\gold)$; charge group $\bot$ \\
+\midrule
+M & $\gold\tens\gold$ (on-circle regression) & charpoly $(x{+}1)^2(x^2{-}3x{+}1)$; $\Mah=\gold^{2}$ (tropical), \emph{not} $\gold^{4}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section*{References}
+\small
+\begin{enumerate}[label={[\arabic*]},leftmargin=2.2em,nosep]
+  \item L.~Kronecker, \emph{Zwei S\"atze \"uber Gleichungen mit ganzzahligen Coefficienten},
+        J.~Reine Angew.~Math.\ \textbf{53} (1857), 173--175.
+  \item D.~H.~Lehmer, \emph{Factorization of certain cyclotomic functions},
+        Ann.~of Math.\ \textbf{34} (1933), 461--479.
+  \item R.~Salem, \emph{Power series with integral coefficients},
+        Duke Math.~J.\ \textbf{12} (1945), 153--172.
+  \item K.~Mahler, \emph{On some inequalities for polynomials in several variables},
+        J.~London Math.~Soc.\ \textbf{37} (1962), 341--344.
+  \item C.~J.~Smyth, \emph{On the product of the conjugates outside the unit circle of an
+        algebraic integer}, Bull.~London Math.~Soc.\ \textbf{3} (1971), 169--175.
+  \item D.~W.~Boyd, \emph{Speculations concerning the range of Mahler's measure},
+        Canad.~Math.~Bull.\ \textbf{24} (1981), 453--469.
+  \item E.~Dobrowolski, \emph{On a question of Lehmer and the number of irreducible factors of
+        a polynomial}, Acta Arith.\ \textbf{34} (1979), 391--401.
+  \item K.~Shoda, \emph{Einige S\"atze \"uber Matrizen}, Japan.\ J.\ Math.\ \textbf{13} (1936),
+        361--365.
+  \item A.~A.~Albert and B.~Muckenhoupt, \emph{On matrices of trace zero},
+        Michigan Math.~J.\ \textbf{4} (1957), 1--3.
+  \item T.~J.~Laffey and R.~Reams, \emph{Integral similarity and commutators of integral
+        matrices}, Linear Algebra Appl.\ \textbf{197/198} (1994), 671--689.
+  \item M.~J.~Bertin et al., \emph{Pisot and Salem Numbers}, Birkh\"auser, 1992.
+  \item \emph{The $\Zmod5$ Case of the No--Salem Dichotomy}, companion note,
+        math-research-pipelines (2026); the source of \S\ref{sec:z5}.
+\end{enumerate}
+\smallskip
+\noindent\textit{Citation caveat:} these references are standard attributions for the results
+invoked (Kronecker's theorem, Lehmer's problem, Salem/Pisot numbers, the Mahler measure,
+Smyth's non-reciprocal bound, and the Shoda / Albert--Muckenhoupt / Laffey--Reams commutator
+results), supplied from memory. Volume, page, and year details have \emph{not} been
+machine-verified and should be checked against the primary sources before any external use.
+
+\end{document}

@@ -1,0 +1,598 @@
+\documentclass[11pt]{article}
+\usepackage[margin=2.4cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{array}
+\usepackage[hidelinks]{hyperref}
+
+% ---------- epistemic tags (house macros) ----------
+\newcommand{\F}{\textnormal{\texttt{[FORCED]}}}
+\newcommand{\C}{\textnormal{\texttt{[COMPUTED]}}}
+\newcommand{\Pl}{\textnormal{\texttt{[PLAUSIBLE]}}}
+\newcommand{\Dc}{\textnormal{\texttt{[DECLARED]}}}
+\newcommand{\Op}{\textnormal{\texttt{[OPEN]}}}
+
+% ---------- notation ----------
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Rat}{\operatorname{Rat}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\lc}{\operatorname{lc}}
+\newcommand{\Gal}{\operatorname{Gal}}
+\newcommand{\gp}{\textsc{pari/gp}}
+\newcommand{\sy}{\textsc{sympy}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{observation}[theorem]{Observation}
+
+\title{\textbf{The Pisot Cross-Shell Residue:}\\
+A Reduction Lemma, Sharpness Witnesses, and an Exhaustive Quintic Execution of the $\nu$-Criterion\\
+\large with a three-run replication of the relational-charge signature ledger}
+\author{J.~Turner\\ \small Echo-S Studios --- \texttt{math-research-pipelines}}
+\date{July 2, 2026 \\ \small Session note; all computations exact, artifact manifest in Appendix~A.}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This note consolidates one live verification session against the relational-charge
+framework of \cite{relcharge}. Contributions, each carrying its epistemic tag:
+(1)~a \emph{hypothesis-necessity witness} $Z^{*}=x^4-3x^2+1=(x^2-x-1)(x^2+x-1)$
+showing that both the irreducibility hypothesis of the modulus-pinning theorem and
+the disjoint-modulus clause of its mixed form are necessary \F;
+(2)~a \emph{real-pair $\nu$-reduction lemma}: every real$\times$non-real coherence
+question is decided by the shell scan of $\Rat_p$ alone \F, which forces relational
+inertness for every Pisot number with at most one pair of non-real conjugates \F\
+and locates the first genuinely open cross-shell residue of \cite[Cor.~7.16]{relcharge}
+at the quintic two-pair pattern;
+(3)~the \emph{first execution of that residue}: an exhaustive exact census of the
+$3125$ monic quintics with coefficients in $[-2,2]$ certifies $83$ Pisot quintics,
+of which $67$ realize the two-pair pattern (all on distinct shells), and the
+composed-square instrument $C_2$ returns exactly $\{\Phi_1^{20}\}$ on all $67$:
+\emph{zero mirrored cross-shell classes} (\F\ per instance; \C\ over the box);
+(4)~companion live replications: the degree-$12$ Salem census
+($378$ twist-classes, tally $39/257/45/37$, $37/37$ inert), a Pisot-quartic sweep
+($103/103$ scans $\{\Phi_1^4\}$, emission-gap probe unfalsified), and a third run
+of signature ledger~M in \gp\ with \emph{engine-native selection} and two
+in-engine decision paths asserted equal on all $237$ signatures ($474$ scan
+executions, $0$ disagreements) \C;
+(5)~two reproducible verification-harness rules for \gp\ decks, discovered by a
+pinned-tally failure and codified \F.
+Next steps are enumerated with falsifiable predictions, including the general
+Pisot-inertness conjecture \Op\ in its multiplicative-torsion formulation.
+\end{abstract}
+
+\section{Scope, engines, and discipline}\label{sec:scope}
+
+All statements below concern the objects of \cite{relcharge}: for a monic
+$p\in\Z[x]$ with $p(0)\neq 0$ and roots $\alpha_1,\dots,\alpha_n\in\mathbb{C}$,
+the \emph{angle} $t(\alpha)\in\R/\Z$ is the normalized argument, two roots are
+\emph{coherent}, $\alpha\approx\beta$, iff
+$t_{\mathrm{rel}}(\alpha,\beta)=t(\alpha)-t(\beta)\in\Q/\Z$, a \emph{shell} is a
+level set of the modulus, and the \emph{relational type} is the partition of the
+root set into coherence classes together with the class offsets. The
+\emph{ratio object} is
+\[
+\Rat_p(x)\;=\;\operatorname{prim}\,\Res_y\bigl(p(y),\,p(xy)\bigr)\in\Z[x].
+\]
+
+Two engines were used, matching the ledger-M standard of \cite{relcharge}:
+\sy~1.14.0 on Python~3.12.3 (arbitrary-precision Python integers), and
+\gp~2.15.4 on GMP~6.3.0 (amd64, gcc~13.2.0 build). \emph{No floating-point value
+crosses any decision boundary}: every equality, divisibility, and inequality
+below is settled by exact division in $\Z[x]$, Sturm counts at rational
+endpoints, or rational-interval certificates. Where residues are pruned modulo
+the primes $10^9{+}7$ and $998244353$, pruning discards \emph{negatives only};
+every positive is confirmed by exact division over $\Z$. Tags follow house
+convention: \F\ (machine-verified theorem / exact per-instance certificate),
+\C\ (exact computation over a stated finite range), \Pl, \Dc, \Op.
+
+\section{The scan as a decision procedure}\label{sec:scan}
+
+\begin{proposition}[ratio object]\label{prop:rat}
+Let $p$ be monic of degree $n$ with $p(0)\neq0$ and roots $\alpha_1,\dots,\alpha_n$
+(with multiplicity). Then
+\[
+\Res_y\bigl(p(y),p(xy)\bigr)
+=\bigl((-1)^n p(0)\bigr)^{n}\prod_{i,j}\Bigl(x-\frac{\alpha_j}{\alpha_i}\Bigr),
+\]
+so $\Rat_p$ has degree exactly $n^2$, root multiset the $n^2$ ordered ratios,
+and integer coefficients. Moreover the multiplicity of $(x-1)$ in $\Rat_p$
+equals $\sum_{\text{distinct roots}}m_\alpha^{2}$; in particular it equals $n$
+iff $p$ is squarefree. \F
+\end{proposition}
+
+\begin{proof}
+With $f=p(y)$ monic and $g=p(xy)$ of $y$-degree $n$,
+$\Res_y(f,g)=\lc(f)^{\deg g}\prod_{p(\alpha_i)=0}p(x\alpha_i)$ and
+$p(x\alpha_i)=\prod_j(x\alpha_i-\alpha_j)=\alpha_i^{\,n}\prod_j(x-\alpha_j/\alpha_i)$;
+collect $\prod_i\alpha_i^{\,n}=((-1)^np(0))^n\neq0$. The diagonal count is
+$\#\{(i,j):\alpha_i=\alpha_j\}=\sum m_\alpha^2$.
+\end{proof}
+
+\begin{lemma}[contact criterion]\label{lem:contact}
+Suppose $|\alpha|=|\beta|$. Then $\alpha\approx\beta$ iff $\alpha/\beta$ is a
+root of unity; and if $\alpha/\beta$ is a primitive $M$-th root of unity then
+$\Phi_M\mid\Rat_p$ in $\Z[x]$ (Gauss). Conversely $\Phi_M\mid\Rat_p$ exhibits a
+primitive $M$-th root of unity among the ratios. \F
+\end{lemma}
+
+\begin{lemma}[completeness bound]\label{lem:totient}
+For every $M\ge1$, $2\varphi(M)^2\ge M$, with equality iff $M=2$. Hence
+$\Phi_M\mid P$ forces $M\le 2(\deg P)^2$; the complete contact scan of $\Rat_p$
+is a finite decision procedure with bound $2n^4$, entirely in $\Z[x]$. \F
+\end{lemma}
+
+\begin{proof}
+Odd prime power: $\varphi(p^b)=p^{b-1}(p-1)\ge p^{b-1}\sqrt{p}=p^{\,b-\frac12}\ge p^{b/2}$,
+using $p-1\ge\sqrt p\iff p^2-3p+1\ge0$ for $p\ge3$. Two-part, $a\ge1$:
+$\varphi(2^a)=2^{a-1}\ge 2^{(a-1)/2}$, equality iff $a=1$. Multiply:
+$\varphi(M)\ge\sqrt{M/2}$, tight only at $M=2$. The equality case was swept
+exactly to $M\le 2\cdot10^{5}$: no violations, unique tight case $M=2$. \C
+\end{proof}
+
+\begin{remark}[$\nu$-criterion, two-part caveat]\label{rem:nu2part}
+For a cross-shell pair set $\mu=\alpha/\beta$ and $\nu=\mu/\bar\mu$; then
+$t(\nu)=2\,t_{\mathrm{rel}}$, so \emph{rationality} of the offset is decided
+exactly while its \emph{order} is read only up to the $2$-part
+(\cite[Rem.~7.6]{relcharge}).
+\end{remark}
+
+Engine corroboration of \S\ref{sec:scan} on the canonical ledger (signatures
+$A$--$X$ of \cite{relcharge}) reproduced every row, including the Lehmer scan
+($\deg\Rat=100$, bound $20000$, $\{\Phi_1^{10}\}$, $0.89$\,s against the
+deposit's $1.1$\,s), the mixed scan $\Rat_{L,\beta_4}$ ($\deg 40$, empty), the
+Salem certifications of $\beta_4,S_6,S_8,L$ by trace-polynomial Sturm patterns
+$(1,0,n/2-1)$, the two-route identity
+$\operatorname{charpoly}(C\otimes C^{-1})=\Rat_{\beta_4}$, and the
+Kronecker-square factorization
+$\operatorname{charpoly}(C_{x^4-x+1}\otimes C_{x^4-x+1})=S_6^{\,2}\cdot(x^4+2x^2-x+1)$
+with the quartic factor equal to the $\psi^2$-image. Total: $1.5$\,s. \F\ per
+instance. Artifact: \texttt{pinning\_scan\_scratch.py}.
+
+\section{Modulus pinning and its sharpness}\label{sec:pinning}
+
+\begin{theorem}[modulus pinning; {\cite[Thm.~7.13]{relcharge}}, proof included for
+self-containment]\label{thm:pin}
+Let $p\in\Z[x]$ be irreducible with a root $\alpha_0$ whose modulus is attained
+by no other root. Then no two distinct roots of $p$ differ by a root-of-unity
+factor. Mixed form: if $q\neq p$ is irreducible and no root of $q$ has modulus
+$|\alpha_0|$, then no torsion ratio exists between a root of $p$ and a root of
+$q$. \F
+\end{theorem}
+
+\begin{proof}
+Suppose $\alpha\neq\beta$, $p(\alpha)=p(\beta)=0$, $\alpha=\zeta\beta$ with
+$\zeta^M=1$. Transitivity of $G=\Gal$ of the splitting field (the \emph{only}
+use of irreducibility) supplies $\sigma$ with $\sigma\alpha=\alpha_0$. Since
+$(\sigma\zeta)^M=1$, $\sigma\zeta$ is torsion, hence $|\sigma\zeta|=1$; thus
+$|\sigma\beta|=|\alpha_0|$, forcing $\sigma\beta=\alpha_0=\sigma\alpha$ and
+$\alpha=\beta$. For the mixed form, work in the splitting field $L$ of $pq$;
+restriction $\Gal(L/\Q)\twoheadrightarrow\Gal(K_p/\Q)$ lifts transitivity, and
+$\sigma\beta=\sigma\alpha/\sigma\zeta$ is a $q$-root at the excluded modulus.
+\end{proof}
+
+\begin{remark}[proof audit]\label{rem:audit}
+(i)~The complex modulus is \emph{not} Galois-equivariant and the proof never
+needs it to be; only the Galois-stable predicate ``is torsion'' plus $|{\cdot}|=1$
+for torsion enters. (ii)~The pinned root need not participate in the offending
+pair. (iii)~``Uniquely attained'', not ``maximal'', is the hypothesis; a Salem
+polynomial carries two pins ($\tau$ and $1/\tau$). Corollaries
+\cite[7.14, 7.15]{relcharge} (Salem inertness; no cross-locking of distinct
+Salems) follow as in the parent paper and were re-derived and engine-checked.
+\end{remark}
+
+\begin{proposition}[hypothesis-necessity witness $Z^{*}$]\label{prop:zstar}
+Let $f_1=x^2-x-1$, $f_2=x^2+x-1$, and
+$Z^{*}=f_1f_2=x^4-3x^2+1$. Each $f_i$ is irreducible and \emph{both} of its
+root moduli ($\varphi$ and $\varphi^{-1}$) are uniquely attained within that
+factor, so per-factor pinning holds; yet $Z^{*}$ carries the torsion ratio $-1$
+between the roots $\varphi$ (of $f_1$) and $-\varphi$ (of $f_2$) at the shared
+modulus $\varphi$. Consequently: (i)~irreducibility cannot be dropped from
+Theorem~\ref{thm:pin}; (ii)~the disjoint-modulus clause cannot be dropped from
+its mixed form. The complete scan confirms
+$\Rat_{Z^{*}}\leadsto\{\Phi_1^4,\Phi_2^4\}$. \F
+\end{proposition}
+
+\begin{proof}
+$f_1$ has roots $\varphi,-1/\varphi$; $f_2$ has roots $1/\varphi,-\varphi$.
+Moduli per factor: $\{\varphi,\varphi^{-1}\}$, each once. Across factors,
+$\varphi/(-\varphi)=-1$ is torsion at the shared modulus $\varphi$. The
+same-polynomial form fails only through transitivity (absent for the reducible
+product); the mixed form fails only through its shared-modulus clause. The
+signature $\{\Phi_1^4,\Phi_2^4\}$ ($\Phi_1$ from the diagonal, $\Phi_2$ from the
+two antipodal pairs, ordered) is engine-confirmed in both stacks.
+\end{proof}
+
+\begin{remark}
+$Z^{*}$ complements the parent paper's sharpness example $x^4-2$ (which shows
+the pinning \emph{hypothesis} necessary for an irreducible input): together the
+two witnesses isolate every hypothesis of Theorem~\ref{thm:pin} and its mixed
+form. Candidate placement: a remark beside \cite[Ex.~7.19]{relcharge}.
+\end{remark}
+
+\section{The real-pair $\nu$-reduction; inertness below two non-real shells}
+\label{sec:reduction}
+
+\begin{lemma}[real-pair $\nu$-reduction]\label{lem:redu}
+Let $O$ be a conjugation-closed set of nonzero algebraic numbers, $\beta\in O$
+real, $\alpha\in O$ non-real. Then
+\[
+\alpha\approx\beta \iff \alpha/\bar\alpha \text{ is a root of unity.}
+\]
+If $O$ is the root set of $p$, then $\alpha/\bar\alpha$ is a \emph{root of
+$\Rat_p$}; hence every real$\times$non-real coherence question --- same shell or
+cross shell --- is decided by the complete contact scan of $\Rat_p$ alone. \F
+\end{lemma}
+
+\begin{proof}
+$t(\beta)\in\{0,\tfrac12\}$, so $t(\alpha)-t(\beta)\in\Q\iff t(\alpha)\in\Q
+\iff 2t(\alpha)\in\Q$. The number $\alpha/\bar\alpha$ is unimodular with
+$t(\alpha/\bar\alpha)=2t(\alpha)$; unimodular with rational angle is exactly
+torsion (Lemma~\ref{lem:contact}). Since $\bar\alpha\in O$, the quantity is an
+ordered ratio, i.e.\ a root of $\Rat_p$. \cite[Ex.~7.17(iii)]{relcharge} is the
+$\beta_4$ instance of this statement.
+\end{proof}
+
+\begin{theorem}[Pisot inertness below two non-real shells]\label{thm:pisot1pair}
+Every Pisot number whose minimal polynomial has at most one pair of non-real
+conjugates --- in particular every Pisot number of degree $\le 4$, and every
+quintic Pisot of pattern $(\theta,r_1,r_2,\lambda,\bar\lambda)$ --- is
+relationally inert: its type is one rational block containing exactly the real
+conjugates, plus singletons $\{\lambda\},\{\bar\lambda\}$ when the pair exists. \F
+\end{theorem}
+
+\begin{proof}
+The dominant root $\theta>1$ pins its modulus (all other conjugates lie in the
+open unit disk), so Theorem~\ref{thm:pin} excludes every torsion ratio between
+distinct conjugates; in particular $\lambda/\bar\lambda$ is not torsion, so by
+Lemma~\ref{lem:redu} no real$\times$non-real pair is coherent, and
+$\lambda\not\approx\bar\lambda$ within the pair's shell. Real$\times$real pairs
+have angle difference in $\tfrac12\Z\subset\Q$ and form the rational block.
+With at most one non-real pair there is no non-real cross-shell pair left to
+decide.
+\end{proof}
+
+\begin{corollary}\label{cor:residue-location}
+The open cross-shell residue of \cite[Cor.~7.16]{relcharge} is empty through
+the patterns covered by Theorem~\ref{thm:pisot1pair}. Its first live case is
+the quintic two-pair pattern $(\theta,\lambda_1,\bar\lambda_1,\lambda_2,\bar\lambda_2)$. \F
+\end{corollary}
+
+\section{The residue at two non-real shells}\label{sec:residue}
+
+Throughout this section $p$ is an irreducible Pisot quintic of two-pair pattern;
+write $u_i=\lambda_i/\bar\lambda_i$ (unimodular, and by
+Proposition~\ref{prop:rat} a root of $\Rat_p$), and
+$\Rat_p^{\circ}=\Rat_p/(x-1)^5$.
+
+\begin{proposition}[$\nu$ inventory; level-2 formulation]\label{prop:nuinv}
+For distinct shells $|\lambda_1|\neq|\lambda_2|$:
+\[
+\lambda_1\approx\lambda_2\iff u_1\bar u_2\ \text{torsion},\qquad
+\lambda_1\approx\bar\lambda_2\iff u_1u_2\ \text{torsion}.
+\]
+Hence a mirrored cross-shell class exists iff two unimodular roots of
+$\Rat_p^{\circ}$ differ multiplicatively by a root of unity. The degenerate
+case $u_1=u_2$ (offset in $\tfrac12\Z$) forces a repeated root of
+$\Rat_p^{\circ}$ and is detected by its squarefreeness. \F
+\end{proposition}
+
+\begin{proof}
+$t(u_1\bar u_2)=2(t_1-t_2)$ and $t(u_1u_2)=2(t_1+t_2)$; rationality transfers
+both ways (Remark~\ref{rem:nu2part} affects only the order, not the decision).
+Both $u_2$ and $u_2^{-1}=\bar u_2$ are roots of $\Rat_p$. If $u_1=u_2$ as
+values, two distinct ordered ratios coincide.
+\end{proof}
+
+\begin{proposition}[no level-2 pin]\label{prop:nopin}
+In the two-pair pattern with distinct shells, the modulus multiset of
+$\Rat_p^{\circ}$ is
+\[
+\Bigl\{\tfrac{\theta}{|\lambda_1|},\tfrac{\theta}{|\lambda_2|},
+\tfrac{|\lambda_1|}{\theta},\tfrac{|\lambda_2|}{\theta}\ (\times2\ \text{each}),\
+\tfrac{|\lambda_1|}{|\lambda_2|},\tfrac{|\lambda_2|}{|\lambda_1|}\ (\times4\ \text{each}),\
+1\ (\times4)\Bigr\},
+\]
+every value attained at least twice (coincidences only merge classes). Hence
+Theorem~\ref{thm:pin} is inapplicable one level up: no transport argument closes
+the residue, and a scan is genuinely required. \F
+\end{proposition}
+
+\begin{proposition}[the $S^{*}/C_2$ instrument]\label{prop:c2}
+Let $S^{*}$ be the product of the self-reciprocal irreducible $\Z$-factors of
+$\Rat_p^{\circ}$ that carry at least one unimodular root (certified per factor
+by the Sturm count of the exact trace square on $(-2,2)$), $d=\deg S^{*}$, and
+\[
+C_2(x)\;=\;\Res_y\bigl(S^{*}(y),\,y^{\,d}S^{*}(x/y)\bigr).
+\]
+Then: (a)~the minimal polynomial of any unimodular algebraic number $u\neq\pm1$
+is self-reciprocal (its Galois orbit is inversion-closed, since
+$u^{-1}=\bar u$ lies in it), so $u_1,\bar u_1,u_2,\bar u_2$ are roots of
+$S^{*}$; (b)~$C_2$ is monic of degree $d^{\,2}$ with root multiset all ordered
+products of $S^{*}$-roots; (c)~\emph{negative certificate}: if the complete
+contact scan of $C_2$ returns exactly $\{\Phi_1^{\,d}\}$, then no product of two
+$S^{*}$-roots is a root of unity; in particular $u_1\bar u_2$ and $u_1u_2$ are
+not torsion and no mirrored cross-shell class exists; (d)~the forced
+$\Phi_1$-multiplicity is exactly $d$ (each root pairs uniquely with its inverse;
+$\pm1$ are excluded from $S^{*}$ by level-1 pinning), so any excess or any
+$\Phi_M$, $M\ge2$, is a signal. \F
+\end{proposition}
+
+\begin{proposition}[shell detector]\label{prop:shells}
+For the two-pair pattern, the number of unimodular roots of $\Rat_p^{\circ}$
+equals $4$ iff $|\lambda_1|\neq|\lambda_2|$ and $12$ iff
+$|\lambda_1|=|\lambda_2|$; the same-shell case is already closed by level-1
+pinning (all its cross pairs are ordered ratios of conjugates). \F
+\end{proposition}
+
+\section{Exhaustive quintic execution}\label{sec:quintic}
+
+\textbf{Certification (stage 1).} Over the box of monic quintics
+$x^5+ax^4+bx^3+cx^2+dx+e$, $(a,\dots,e)\in[-2,2]^5$ ($3125$ candidates), each
+candidate passes, in order: $e\neq0$; rejection of $\pm$reciprocal coefficient
+vectors (an irreducible polynomial with a unimodular root is $\pm$reciprocal,
+so this both removes the only carriers of circle roots and guarantees the disk
+certificates terminate --- the Salem-boundary lesson of the quartic sweep, where
+$|\lambda|=1$ makes $\theta r=d$ exactly and interval refinement cannot
+separate); irreducibility; the Sturm real pattern (exactly one root in
+$(1,\infty)$, none in $(-\infty,-1]$); and rational-rectangle disk certificates
+for each non-real root via indexed \texttt{CRootOf} rational refinement
+(indexed construction is required because solvable quintics return radical
+forms). Tallies:
+
+\begin{center}
+\begin{tabular}{lrlr}
+\hline
+reject: $e=0$ & 625 & reject: $\pm$reciprocal & 50\\
+reject: reducible & 638 & reject: real pattern & 1318\\
+reject: disk certificate & 411 & \textbf{certified Pisot} & \textbf{83}\\
+\hline
+\multicolumn{4}{c}{patterns: real5 $=0$;\quad mixed $=16$;\quad two-pair $=\mathbf{67}$}\\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{Decision (stage 2).} All $83$ ratio scans ($\deg\Rat=25$, bound $1250$,
+$53$ totient-filtered candidates) returned exactly $\{\Phi_1^5\}$, as
+Theorem~\ref{thm:pin} forces; the $16$ mixed instances are thereby fully typed
+(Theorem~\ref{thm:pisot1pair}). On the $67$ two-pair instances: the shell
+detector read $4$ on \emph{every} instance (all distinct-shell; no same-shell
+case occurred in the box); $\Rat_p^{\circ}$ was squarefree and in fact
+\emph{irreducible of degree $20$ on all $67$} (so $S^{*}=\Rat_p^{\circ}$,
+$\deg C_2=400$ uniformly); the $67$ complete $C_2$ scans (\gp\ trial division
+over the master list of $790$ cyclotomic candidates with
+$\varphi(m)\le400$, largest $m=1680$) returned exactly $\{\Phi_1^{20}\}$ each,
+with two instances independently re-derived end-to-end in \sy\ (composed square
+by resultant, scan by trial division with two-prime negative pruning), in exact
+agreement.
+
+\begin{theorem}[quintic box result]\label{thm:box}
+Every Pisot quintic with coefficients in $[-2,2]$ is relationally inert: its
+type is the rational block of its real conjugates plus non-real singletons. In
+particular, across the first $67$ live instances of the cross-shell residue,
+\emph{no mirrored cross-shell class exists}, and no degenerate
+$\tfrac12\Z$-offset coherence occurs ($\Rat_p^{\circ}$ squarefree, $67/67$).
+\F\ per instance; box coverage \C.
+\end{theorem}
+
+\begin{observation}\label{obs:generic}
+$\Rat_p^{\circ}$ irreducible on $67/67$ instances is the Galois-generic
+expectation (transitive action on ordered root pairs); factored instances are
+predicted for special Galois groups and would shrink $S^{*}$ and $C_2$. \Pl
+\end{observation}
+
+Wall times: certification $64$\,s; stage 2 total $69$\,s (\gp\ $C_2$ block
+$39.9$\,s; \sy\ two-route samples $10.3$\,s and $9.1$\,s). The smallest two-pair
+instance encountered first in enumeration order is
+$x^5-2x^4-2x^3-2x^2-2x-2$.
+
+\section{Companion live replications}\label{sec:companions}
+
+\subsection{Degree-12 Salem census (\cite[Thm.~7.10]{relcharge})}
+Independent re-implementation (deposit scripts not consulted): Burnside
+$729$ vectors, $27$ twist-fixed, $378$ orbits; cascade tally exactly
+$39$ ($\pm1$ root) $/\,257$ (trace-Sturm) $/\,45$ (reducible) $/\,\mathbf{37}$
+Salem; all $37$ complete scans ($\deg\Rat=144$, bound $41472$, totient filter
+collapsing to $290$ candidates, largest $m=630$) returned $\{\Phi_1^{12}\}$;
+twist-invariance of $\Rat$ verified on a live representative. $60$\,s against
+the deposit's $93$\,s. \F\ per instance.
+
+\subsection{Pisot-quartic sweep and the emission-gap probe}
+Box $[-3,3]^4$ ($2401$ candidates): $103$ certified Pisot quartics
+($102$ complex-pair, $1$ totally real); $103/103$ complete scans returned
+exactly $\{\Phi_1^4\}$, the Theorem~\ref{thm:pin} prediction. \C\ over the box.
+The totally-real subfamily is charge-admissible: all angles lie in
+$\{0,\tfrac12\}$ and $M(p)=\theta$ (only $\theta$ lies outside the closed unit
+disk), so the corpus emission-gap theorem
+$M\in\{1\}\cup[\varphi,\infty)$ predicts $\theta\ge\varphi$. The unique
+totally-real hit, $x^4-3x^3-2x^2+2x+1$ ($\theta\approx3.390$, display value
+only), satisfies $\theta>\varphi$ by exact certificate: the probe does not
+falsify the gap. The smallest complex-pair instance is $x^4-x^3-1$
+($\theta\approx1.3803$).
+
+\subsection{Signature ledger M, third run}\label{sec:ledgerM}
+Independence audit:
+
+\begin{center}
+\footnotesize
+\begin{tabular}{lllll}
+\hline
+run & engine / kernel & decision path & instance selection & operator\\
+\hline
+1 & \sy~1.14.0 / Python ints & trial division & Python cascade + sweeps & same\\
+2 & \gp~2.15.4 / GMP 6.3.0 & \texttt{factor}+\texttt{poliscyclo} & fed from run 1 & same\\
+3 & \gp~2.15.4 / GMP 6.3.0 & both, asserted equal & \gp-native census; re-typed canonicals & same\\
+\hline
+\end{tabular}
+\end{center}
+
+Run 3 re-derives the census \emph{selection} inside \gp\ (Burnside quotient,
+$\pm1$ check, trace-square Sturm, irreducibility): \textsc{burnside}
+$(729,27,378)$, \textsc{cascade} $(39,257,45,37)$, selection set identical to
+run 1 ($37/37$). Deck outcome: $237/237$ signatures agree
+(canonical $14$ including $Z^{*}$, the mixed pair, and \cite[Ex.~7.18]{relcharge};
+census $37$; quartic Pisots $103$; quintic Pisots $83$), each decided by two
+in-engine paths for $474$ scan executions with $0$ path disagreements; ledger-O
+certifications $4/4$. Wall time $1.8$\,s. Independence achieved: engine, bignum
+kernel, decision algorithm, selection pipeline. Not achieved and disclosed per
+\cite[\S9]{relcharge}: the session operator and the shared family definitions.
+Consistency claim \C; each per-instance signature independently \F.
+
+\section{Verification-harness findings}\label{sec:harness}
+
+Both discovered by a pinned-tally failure (the truncated run produced the
+internally consistent but wrong cascade $(108,270,0,0)$) and reproduced in a
+minimal probe. \F
+
+\begin{itemize}
+\item[\textbf{H1.}] \gp\ terminates top-level statements at newline: a function
+body split across physical lines without braces silently truncates. Rule:
+multi-line \gp\ definitions must be brace-wrapped; single-line otherwise.
+\item[\textbf{H2.}] \texttt{gp} exits $0$ after load errors, emitting
+\texttt{***} diagnostics to stderr only (``skipping file''). Rule: harnesses
+must treat any non-benign \texttt{***} stderr line as fatal.
+\item[\textbf{H3.}] Positive pattern: the dual-path
+$\mathrm{sig}(P)=\mathrm{scan}_{\mathrm{td}}(P)\overset{!}{=}\mathrm{scan}_{\mathrm{fp}}(P)$
+assertion (trial division vs.\ factorization) as the in-engine standard for
+\gp-side scans.
+\end{itemize}
+
+\section{Next steps and predictions}\label{sec:next}
+
+\subsection{Operational fronts}
+\begin{itemize}
+\item[\textbf{N1.}] Symmetrize $C_2$ coverage: full \sy-side scans of all $67$
+composed squares ($\approx67\times10$\,s $\approx11$\,min).
+\item[\textbf{N2.}] Quintic box extension to $[-3,3]^5$ ($16807$ candidates;
+certification $\approx6\times$ stage-1 cost).
+\item[\textbf{N3.}] Census family extension $c\in\{-2,\dots,2\}^6$: $15625$
+vectors; twist-fixed $5^3=125$; Burnside gives \emph{exactly}
+$(15625+125)/2=7875$ twist-classes (forced arithmetic); cascade tallies to be
+computed.
+\item[\textbf{N4.}] Degrees $6$--$7$: degree $6$ contributes patterns
+$(\theta,r,\lambda_1,\bar\lambda_1,\lambda_2,\bar\lambda_2)$ (two-pair with a
+real spectator --- machinery unchanged) and real-heavy patterns closed by
+Theorem~\ref{thm:pisot1pair}; the first three-pair pattern appears at degree
+$7$, and $C_2$ still suffices there since every pairwise $\nu$ is a product of
+two $u$'s.
+\item[\textbf{N5.}] Codify H1--H3 into the repository's cross-engine
+verification standard beside the engine version pins.
+\item[\textbf{N6.}] Fold Proposition~\ref{prop:zstar} (beside
+\cite[Ex.~7.19]{relcharge}) and Lemma~\ref{lem:redu} (beside
+\cite[Rem.~7.6]{relcharge}) into a v1.1 of the parent paper; sharpen
+\cite[Cor.~7.16]{relcharge} by Corollary~\ref{cor:residue-location}.
+\item[\textbf{N7.}] Provenance pass (Crossref/arXiv only, per house discipline)
+on: minimality of totally-real Pisot numbers, and multiplicative
+(in)dependence of conjugates / torsion quotients (the Dubickas-program
+direction referenced in the provenance block of \cite{relcharge}).
+\end{itemize}
+
+\subsection{Predictions}
+\begin{conjecture}[Pisot inertness, general]\label{conj:pisot}
+Every Pisot number is relationally inert: its type is the rational block of its
+real conjugates plus non-real singletons. Equivalently, for conjugate-ratio
+values $u_i=\lambda_i/\bar\lambda_i$ on distinct shells, $u_iu_j^{\pm1}$ is
+never a root of unity. \Op
+\end{conjecture}
+
+Status: \F\ for at most one non-real pair (Theorem~\ref{thm:pisot1pair});
+\C-empty on the first $67$ live instances (Theorem~\ref{thm:box});
+Proposition~\ref{prop:nopin} shows transport cannot prove it, so a genuinely
+new mechanism (heights, multiplicative-relation bounds) is required.
+
+\begin{center}
+\small
+\begin{tabular}{p{0.6cm}p{8.2cm}p{2.4cm}p{3.6cm}}
+\hline
+ID & prediction & status & falsifier\\
+\hline
+P1 & Conjecture~\ref{conj:pisot} holds. & \Op & any certified Pisot with a
+$C_2$-contact $\Phi_M$, $M\ge2$, or a $\Phi_1$ excess / non-squarefree
+$\Rat_p^{\circ}$\\
+P2 & N2 yields $0$ mirrored classes among all two-pair instances in
+$[-3,3]^5$. & \Op\ (P1-implied) & a single hit\\
+P3 & Every certified Pisot's $\Rat$ scan returns exactly $\{\Phi_1^{\deg p}\}$
+in any box extension. & \F\ (Thm.~\ref{thm:pin}) & --- (a deviation would
+falsify the pinning theorem)\\
+P4 & Every totally-real Pisot number satisfies $\theta\ge\varphi$, equality
+only at $\theta=\varphi$ (degree $2$). & emission-gap--implied; standalone
+\Op & a totally-real Pisot with $\theta<\varphi$ (would falsify the gap on
+admissible objects)\\
+P5 & N3 Burnside count is exactly $7875$ twist-classes. & \F\ (arithmetic) & ---\\
+P6 & Every Salem class found by N3 is inert with scan $\{\Phi_1^{12}\}$.
+& \F\ (\cite[Cor.~7.14]{relcharge}) & ---\\
+P7 & Two-pair instances with $\Rat_p^{\circ}$ reducible (smaller $S^{*}$)
+exist for non-generic Galois groups. & \Pl & exhaustive extensions showing
+irreducibility persists\\
+P8 & Same-shell two-pair Pisot quintics (shell detector $=12$): none occurred
+in $[-2,2]^5$; existence elsewhere undetermined. & \Op & (either outcome
+informative)\\
+\hline
+\end{tabular}
+\end{center}
+
+\section{Provenance and citation discipline}\label{sec:provenance}
+
+Bibliographic pointers here are restricted to the corpus's own archived records
+(DOIs below) and to prior art \emph{as attributed inside}
+\cite[Rem.~7.20 and refs.~14--16]{relcharge}. No literature search was performed
+in-session; external attributions (torsion quotients of conjugates; totally-real
+Pisot minimality) are therefore inherited, not re-verified, and N7 schedules the
+Crossref/arXiv pass. All numerical displays marked ``display value'' carry no
+decision weight.
+
+\appendix
+
+\section{Artifact manifest, engines, runtimes}\label{app:manifest}
+
+Engines: \sy~1.14.0 / Python 3.12.3; \gp~2.15.4 / GMP 6.3.0. Runtimes:
+canonical corroboration $1.5$\,s; census $60$\,s; quartic sweep $4$\,s;
+cross-engine run 2 $0.5$\,s; quintic certification $64$\,s; quintic decision
+$69$\,s; ledger-M run 3 $1.8$\,s.
+
+\begin{center}
+\scriptsize\ttfamily
+\begin{tabular}{ll}
+\hline
+artifact & SHA-256\\
+\hline
+pinning\_scan\_scratch.py & 9b9d95156532057b841d5f07b33428d1ab02a18dfe416fc3086427a1b444f090\\
+front1\_census.py & da3ef53064d33a3ce87ed37b652a4603dedee0451ff84e106d2098e34ef3d18f\\
+front1\_scans.py & d4ae1e47ebba0476291ce67ce63127c6050a60f21ad93019e0a5b2acdde5c7af\\
+front2\_pisot\_sweep.py & bf5c81f26ecc4f54d16ee2e27901f1b86bb2389e6ec13c8e26acff0b2a73e145\\
+front3\_cross\_engine.py & 092b408806e9c8cbdec8bc4adb54737268bb12986cf7be1dc1202138b3e4372c\\
+cross\_live.gp & b07b8b3ac1f1466b8542d68fe32b7109964b0c8cfa691a3edc9d1c57d80b4ec5\\
+nu\_quintic\_cert.py & 283b588ea9b3ba70b97ac7e597d6bf3ecebfe5477e17065651f8b5d976bac083\\
+nu\_quintic\_scan.py & 9b5fccddcf40c1a70ab34cc8e3d662da8f4ad43b8720e1dad0783d208f3f7cf2\\
+quintic\_c2.gp & e199df7f6cb9d3e9f00b6bb55f520b254a6cdbeaa8d965f196dbab5223b879bb\\
+quintic\_pisots.json & 49f3e1569d755416d86fb0ff95c337b86a1e5e3f5bee44e0bbd6a4bf5b1a969c\\
+ledgerM\_header.gp & ed4ca186fdf336004b185d7d9b745a6d31d5a12d5c9a1f6ab2256edf418aa4b2\\
+ledgerM\_live.gp & 54fcd1488cdd37ab151877a98e0a3ec13f1f52dcf7799a44bbb47fc72e94349a\\
+build\_ledgerM.py & 4b4ee6818f5b3dfed3706a88085f2dda72de36cc42fa85740b145f64abc5df8b\\
+pisot103.json & fb349dc136e149718726df2e729184681b33fd22abb68585e077df7b0dfe792d\\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{thebibliography}{9}
+\bibitem{relcharge}
+J.~Turner,
+\emph{Relational Charge on the Spectral Semiring: Gauge Rigidity, Coherence
+Types, and a Reference-Free Parity Floor}, v1.0.0, Zenodo,
+\href{https://doi.org/10.5281/zenodo.21121863}{doi:10.5281/zenodo.21121863};
+verification bundle v1.0.1,
+\href{https://doi.org/10.5281/zenodo.21122410}{doi:10.5281/zenodo.21122410}.
+
+\bibitem{repo}
+Echo-S Studios, \emph{math-research-pipelines} (repository and live site),
+\url{https://echo-s-studios.github.io/math-research-pipelines/}.
+\end{thebibliography}
+
+\end{document}
