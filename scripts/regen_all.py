@@ -17,8 +17,9 @@ import os
 import subprocess
 import sys
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from _registry import REPO_ROOT  # noqa: E402
+# Self-contained (no third-party imports) so the drift job needs only the
+# producers' own deps (sympy/mpmath/numpy) — not the registry's pyyaml.
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SKIP_BASENAMES = {"make_figures.py"}
 
