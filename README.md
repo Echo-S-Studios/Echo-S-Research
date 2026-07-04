@@ -34,10 +34,12 @@ The included GitHub Actions workflow ([`.github/workflows/release.yml`](.github/
 
 ## How to add a paper
 
-1. Create a subfolder in `papers/` named `YYYY-MM-shortname` (year and month of the draft, plus a short slug), e.g. `papers/2026-07-spectral-gap`.
-2. Add the compiled **PDF** and the full **LaTeX source** (`.tex`, `.bib`, and any class/style files).
+1. Copy [`papers/_TEMPLATE/`](papers/_TEMPLATE) to a new folder named `YYYY-MM-shortname` (year and month of the paper, plus a short slug), e.g. `papers/2026-07-spectral-gap`.
+2. Add the full **LaTeX source** and compiled **PDF**, and fill in **`paper.cff`** (title, author, date). Set the LaTeX `\author{}` and the `paper.cff` author to your own attribution, and add any new citations to the consolidated [`papers/references.bib`](papers/references.bib).
 3. Put supporting artifacts in the shared top-level folders: datasets in `data/`, figures in `figures/`, code in `code/`. Reference them from the paper or its folder as needed.
 4. Open a pull request. CI will confirm the metadata files still validate before you merge.
+
+Authorship is per-member and umbrella-org — follow **[`docs/ATTRIBUTION.md`](docs/ATTRIBUTION.md)** (members table + step-by-step workflow).
 
 ## How to cut a release
 

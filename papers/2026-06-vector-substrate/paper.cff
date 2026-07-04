@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you cite this paper, please use the metadata below."
+title: "The Vector Substrate: Number Fields as Exact Learning Geometry"
+authors:
+  - name: "AceTheDactyl"
+    alias: "AceTheDactyl"
+date-released: "2026-06-28"
+references:
+  - type: generic
+    title: "Consolidated bibliography for the Echo S Research archive"
+    notes: "Citations for this paper are consolidated in ../references.bib (the shared BibTeX file)."
+    authors:
+      - name: "Echo S Studios Research Developments"

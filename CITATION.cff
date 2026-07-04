@@ -4,7 +4,16 @@ title: "Echo S Research"
 abstract: "Archive of mathematics research papers and their supporting data, figures, and computational code from Echo S Studios Research Developments. Each tagged release is preserved on Zenodo with a citable DOI."
 type: dataset
 authors:
+  # Umbrella organization — also the sole creator in .zenodo.json (the Zenodo
+  # deposition stays org-only; per-paper authors live in each papers/*/paper.cff).
   - name: "Echo S Studios Research Developments"
+  # Team members, attributed by GitHub username via `alias`. See docs/ATTRIBUTION.md.
+  - name: "AceTheDactyl"
+    alias: "AceTheDactyl"
+  - name: "mK@"
+    alias: "eMKa7-tY"
+  - name: "sKiDaGgAbAtEe"
+    alias: "sKiDaGgAbAtEe"
 license: CC-BY-4.0
 repository-code: "https://github.com/Echo-S-Studios/Echo-S-Research"
 url: "https://github.com/Echo-S-Studios/Echo-S-Research"

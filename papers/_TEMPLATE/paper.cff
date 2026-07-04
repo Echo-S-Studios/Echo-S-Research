@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you cite this paper, please use the metadata below."
+title: "TITLE OF YOUR PAPER"
+authors:
+  # One block per author. Put your DISPLAY NAME in `name` and your GitHub
+  # USERNAME in `alias`. See ../../docs/ATTRIBUTION.md for the members table.
+  - name: "YOUR DISPLAY NAME"        # e.g. mK@
+    alias: "your-github-username"    # e.g. eMKa7-tY
+date-released: "2026-01-01"          # YYYY-MM-DD — set to your paper's date
+references:
+  # The archive keeps ONE consolidated bibliography. This is a pointer, not a
+  # place to list your references — add new citations to ../references.bib.
+  - type: generic
+    title: "Consolidated bibliography for the Echo S Research archive"
+    notes: "Add any new citations to ../references.bib (the shared BibTeX file); do not keep a separate per-paper bibliography."
+    authors:
+      - name: "Echo S Studios Research Developments"
