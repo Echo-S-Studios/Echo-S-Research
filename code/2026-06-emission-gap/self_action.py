@@ -26,7 +26,7 @@ def adR_spectrum():
     return {
         "host": "R = companion(x^2 - x - 1)",
         "operator": "ad_R = R (x) I - I (x) R^T on 2x2 matrix space (dim 4)",
-        "spectrum": [round(v, 12) for v in ev],
+        "spectrum": [round(v, 12) + 0.0 for v in ev],  # +0.0 normalizes -0.0 -> 0.0 (platform-stable)
         "expected": sorted([-s5, 0.0, 0.0, s5]),
         "matches_pm_sqrt5_and_0": bool(
             max(abs(a - b) for a, b in zip(ev, sorted([-s5, 0.0, 0.0, s5]))) < 1e-9),
@@ -38,8 +38,10 @@ def difference_spectrum_general():
     """ad_M spectrum equals the eigenvalue difference set for a generic matrix."""
     M = np.array([[3.0, 1.0, 0.0], [0.0, -2.0, 4.0], [1.0, 0.0, 5.0]])
     mu = np.linalg.eigvals(M)
-    diffs = sorted(round(float((a - b).real), 6) for a in mu for b in mu)
-    ad_ev = sorted(round(float(v.real), 6) for v in np.linalg.eigvals(C.ad_operator(M)))
+    # + 0.0 normalizes -0.0 -> 0.0 before sorting, so the output is platform-stable
+    # (numpy/LAPACK yields -0.0 for the zero differences on Linux but +0.0 on Windows).
+    diffs = sorted(round(float((a - b).real), 6) + 0.0 for a in mu for b in mu)
+    ad_ev = sorted(round(float(v.real), 6) + 0.0 for v in np.linalg.eigvals(C.ad_operator(M)))
     return {
         "M": M.tolist(),
         "difference_set": diffs,
