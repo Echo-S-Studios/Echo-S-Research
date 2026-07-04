@@ -14,6 +14,8 @@ Members are attributed by GitHub username for now (ORCIDs may be added later).
 
 The umbrella organization credit is always **Echo S Studios Research Developments**.
 
+> **The machine-readable registry is [`.github/members.yml`](../.github/members.yml) — the single source of truth.** The table above is the human-readable view of it. The `alias:` (GitHub handle) you put in your `paper.cff` is the self-identification, and it is validated against that registry by the `structure` CI workflow; [`scripts/new_contribution.py`](../scripts/new_contribution.py) also refuses to scaffold for a handle that isn't listed. Onboarding a new teammate is a **one-line edit** to `members.yml` — nothing else changes.
+
 ## The umbrella rule
 
 Two layers of credit, and they do not conflict:
@@ -37,15 +39,19 @@ files are consistent, not conflicting.
 
 When you add a paper, follow these four steps.
 
-**a. Create the folder** — copy the template into a new folder named
-`papers/YYYY-MM-shortname` (year + month of the paper, then a short slug):
+**a. Scaffold the folders** — run the generator. It validates your handle against
+[`.github/members.yml`](../.github/members.yml) and creates all five parallel
+folders (`papers/`, `tests/`, `code/`, `data/`, `figures/`) named
+`YYYY-MM-shortname`, each with the required stub files and your attribution
+pre-filled from the registry:
 
 ```bash
-cp -r papers/_TEMPLATE papers/2026-08-my-new-result          # macOS / Linux
+py scripts/new_contribution.py --member <your-github-handle> --shortname my-new-result --date 2026-08
 ```
-```powershell
-Copy-Item -Recurse papers\_TEMPLATE papers\2026-08-my-new-result   # Windows
-```
+
+See [`CONTRIBUTING.md`](../CONTRIBUTING.md) for the full end-to-end workflow, and
+copy an existing paper (e.g. [`papers/2026-06-salem-slot/`](../papers/2026-06-salem-slot))
+as the reference example.
 
 **b. Set the LaTeX author** — in your `.tex`, set `\author{}` to your author string
 from the table above (org affiliation on the second line):

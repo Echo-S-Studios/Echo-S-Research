@@ -1,0 +1,48 @@
+name: drift
+
+# Detects when the repo goes inconsistent: re-runs every producer under code/ to
+# regenerate data/, and fails loudly if the result differs from the committed
+# data/ (= drift). Then runs the full independent test suite. Runs on ubuntu, so
+# it uses python3/pip. No TeX is needed (figure builders are skipped).
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  drift:
+    name: regenerate data & run tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip sympy mpmath numpy pytest
+
+      - name: Snapshot committed data/
+        run: cp -r data "$RUNNER_TEMP/data_committed"
+
+      - name: Regenerate all data producers under code/
+        run: python scripts/regen_all.py
+
+      - name: Diff regenerated data/ against committed  (DRIFT CHECK)
+        run: |
+          if diff -r --strip-trailing-cr "$RUNNER_TEMP/data_committed" data > "$RUNNER_TEMP/drift.diff"; then
+            echo "No drift: regenerated data/ matches the committed data/."
+          else
+            echo "::error title=Data drift detected::Producers under code/ no longer reproduce the committed data/."
+            echo "Fix: run 'py scripts/regen_all.py' and commit the updated data/, or make the"
+            echo "offending producer deterministic (seed any RNG; avoid timestamps/unordered sets)."
+            echo '----- diff:  <committed>  vs  >regenerated< -----'
+            cat "$RUNNER_TEMP/drift.diff"
+            exit 1
+          fi
+
+      - name: Full test suite (independent verifiers)
+        run: python -m pytest tests -q -p no:cacheprovider

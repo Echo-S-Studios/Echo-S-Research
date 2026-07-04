@@ -1,6 +1,13 @@
 # Echo S Research
 
+[![structure](https://github.com/Echo-S-Studios/Echo-S-Research/actions/workflows/structure.yml/badge.svg)](https://github.com/Echo-S-Studios/Echo-S-Research/actions/workflows/structure.yml)
+[![drift](https://github.com/Echo-S-Studios/Echo-S-Research/actions/workflows/drift.yml/badge.svg)](https://github.com/Echo-S-Studios/Echo-S-Research/actions/workflows/drift.yml)
+
 Research papers and their computational products from **Echo S Studios Research Developments**.
+
+> A red **structure** or **drift** badge means the repo went inconsistent — see
+> [`docs/MAINTAINING.md`](docs/MAINTAINING.md) for what each workflow checks and how
+> to read a failure. New contributors: start with [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 This repository is the group's permanent archive for mathematics research. Each paper is stored alongside the data, figures, and code needed to reproduce its results, and every tagged release is mirrored to [Zenodo](https://zenodo.org/) with a citable DOI.
 

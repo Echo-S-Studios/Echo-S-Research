@@ -1,0 +1,46 @@
+name: structure
+
+# Validates repository invariants and fails loudly with human-readable messages.
+# Fully registry-driven (.github/members.yml) and convention-driven (folder globs),
+# so onboarding a member or adding a paper needs NO edit to this workflow.
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  structure:
+    name: repo invariants
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip pyyaml bibtexparser cffconvert
+
+      - name: Invariants (registry attribution, parallel-tree parity, naming, required files, references.bib, .zenodo.json)
+        run: python scripts/check_structure.py
+
+      - name: Validate CITATION.cff (CFF 1.2.0)
+        run: cffconvert --validate -i CITATION.cff
+
+      - name: Validate every paper.cff (CFF 1.2.0)
+        run: |
+          rc=0
+          for f in papers/[0-9]*/paper.cff; do
+            [ -e "$f" ] || continue
+            if cffconvert --validate -i "$f" >/dev/null 2>&1; then
+              echo "ok   $f"
+            else
+              echo "::error title=Invalid CFF::$f is not valid CFF 1.2.0"
+              cffconvert --validate -i "$f" || true
+              rc=1
+            fi
+          done
+          exit $rc

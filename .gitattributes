@@ -1,0 +1,9 @@
+# Normalize line endings: text files are stored and checked out as LF on every
+# platform. This keeps the drift workflow's regenerated data/ byte-comparable to
+# the committed data/ regardless of where a producer was run (Windows CRLF vs
+# Linux LF), so line-ending noise never shows up as false "drift".
+* text=auto eol=lf
+
+# Binary artifacts — never normalize or diff as text.
+*.pdf binary
+*.png binary

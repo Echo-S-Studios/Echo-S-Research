@@ -160,6 +160,7 @@ def shoda_facts():
     """Lem. 7.2 (Shoda), necessary direction: every commutator is traceless; a
     traceless integer carrier of Lehmer exists (the one door)."""
     random.seed(5)
+    np.random.seed(5)  # deterministic: drift CI regenerates this exactly
     max_tr = 0.0
     for _ in range(30):
         n = random.randint(2, 5)

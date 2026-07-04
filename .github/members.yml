@@ -1,0 +1,25 @@
+# Echo S Research — member registry (SINGLE SOURCE OF TRUTH for valid contributors)
+#
+# Maps each contributor's GitHub handle -> display name. This is the machine-
+# readable registry the CI workflows and the scaffolding generator check against:
+#   - .github/workflows/structure.yml FAILS if any papers/*/paper.cff author
+#     `alias:` (or any CITATION.cff member alias) is not a handle listed here.
+#   - scripts/new_contribution.py REFUSES to scaffold for an unlisted handle.
+#
+# It reconciles with the existing self-identify scaffolding — the `alias:`
+# (GitHub handle) fields already used in CITATION.cff and every papers/*/paper.cff,
+# documented in docs/ATTRIBUTION.md. Those aliases are the authoritative per-paper
+# self-identification; THIS file is the registry they are validated against. Do not
+# add a second, competing registry — edit this file.
+#
+# ONBOARDING A NEW TEAMMATE IS A ONE-LINE EDIT: uncomment one reserved slot below
+# and replace it with `their-github-handle: "Their Display Name"`. Nothing else
+# needs to change — the workflows and the generator are fully registry-driven.
+
+members:
+  AceTheDactyl: "AceTheDactyl"
+  eMKa7-tY: "mK@"
+  sKiDaGgAbAtEe: "sKiDaGgAbAtEe"
+  # --- reserved slots for the two expected new teammates (uncomment to onboard) ---
+  # member_slot_4: "Display Name Four"    # <- replace this whole line: handle: "Display Name"
+  # member_slot_5: "Display Name Five"    # <- replace this whole line: handle: "Display Name"

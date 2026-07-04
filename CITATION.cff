@@ -7,7 +7,9 @@ authors:
   # Umbrella organization — also the sole creator in .zenodo.json (the Zenodo
   # deposition stays org-only; per-paper authors live in each papers/*/paper.cff).
   - name: "Echo S Studios Research Developments"
-  # Team members, attributed by GitHub username via `alias`. See docs/ATTRIBUTION.md.
+  # Team members, attributed by GitHub username via `alias`. Every alias here must
+  # be a handle registered in .github/members.yml (enforced by the structure CI).
+  # See docs/ATTRIBUTION.md.
   - name: "AceTheDactyl"
     alias: "AceTheDactyl"
   - name: "mK@"
