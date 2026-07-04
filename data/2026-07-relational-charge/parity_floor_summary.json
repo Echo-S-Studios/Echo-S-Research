@@ -1,0 +1,62 @@
+{
+  "_source_paper": "papers/2026-07-relational-charge/relational_charge_paper.tex",
+  "_generated_by": "code/2026-07-relational-charge/parity_floor.py",
+  "golden_relation": {
+    "identity": "phi/phi' = -phi^2 (negative real)",
+    "t_rel_phi_phip": "1/2",
+    "t_rel_numeric": 0.5,
+    "verified": true,
+    "status": "[forced] (ledger J)"
+  },
+  "parity_bit": {
+    "statement": "1/2 in Delta(O) iff |Delta(O)| even (Cor 5.7)",
+    "verified": true,
+    "half_in_group_by_m": {
+      "1": false,
+      "2": true,
+      "3": false,
+      "4": true,
+      "5": false,
+      "6": true,
+      "7": false,
+      "8": true,
+      "9": false,
+      "10": true,
+      "11": false,
+      "12": true,
+      "13": false,
+      "14": true,
+      "15": false,
+      "16": true,
+      "17": false,
+      "18": true,
+      "19": false,
+      "20": true
+    }
+  },
+  "theorem_5_5": {
+    "even_m": "mu_rel(m) = phi, attained by q_{m/2}",
+    "odd_m": "mu_rel(m) = mu(m); value 2 attained by x^m-2",
+    "even_attainment_status": "[forced] (q_k gives M=phi)",
+    "even_infimum_identification_status": "conditional on (EG), Rem 2.3",
+    "odd_identity_status": "[forced] (twist reduction, Lem 5.3)",
+    "odd_value_2_status": "[forced] at m=3; [computed]/[plausible] general",
+    "odd_attainment_x_m_minus_2": {
+      "3": {
+        "object": "x^3-2",
+        "relational_order": 3,
+        "mahler": "2.0"
+      },
+      "5": {
+        "object": "x^5-2",
+        "relational_order": 5,
+        "mahler": "2.0"
+      },
+      "7": {
+        "object": "x^7-2",
+        "relational_order": 7,
+        "mahler": "2.0"
+      }
+    }
+  }
+}

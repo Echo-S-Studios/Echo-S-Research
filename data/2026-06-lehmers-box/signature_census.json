@@ -1,0 +1,69 @@
+{
+  "_source_paper": "papers/2026-06-lehmers-box/lehmers_box.tex",
+  "_generated_by": "code/2026-06-lehmers-box/signature_census.py",
+  "_description": "Independent Galois-correspondence signature census of K = Q(sqrt2,sqrt3,5^{1/4}) (Theorem 5.3), plus the total subgroup count of G ~ C2 x C2 x D4 (=158).",
+  "galois_group": "Gal(K(i)/Q) ~ C2 x C2 x D4, order 32",
+  "K_degree_over_Q": 16,
+  "census_by_deg_r1_r2": {
+    "(1,1,0)": 1,
+    "(2,2,0)": 7,
+    "(4,2,1)": 4,
+    "(4,4,0)": 7,
+    "(8,4,2)": 6,
+    "(8,8,0)": 1,
+    "(16,8,4)": 1
+  },
+  "n_subfields": 27,
+  "census_total": 27,
+  "n_total_subgroups": 158,
+  "subgroup_order_breakdown": {
+    "1": 1,
+    "2": 23,
+    "4": 67,
+    "8": 51,
+    "16": 15,
+    "32": 1
+  },
+  "salem_bearing_signatures": {
+    "4,2,1": 4
+  },
+  "K_own_signature": "(8,4)  [row (deg,r1,r2)=(16,8,4)]",
+  "note_27_vs_158": "27 = subfields of K = subgroups of G containing complex conjugation; 158 = total subgroups of G.",
+  "salem_trace_form_signatures": [
+    {
+      "name": "beta_4",
+      "degree": 4,
+      "m": 2,
+      "unit_rank_signature": "(2,1)",
+      "expected_unit_rank": "(2,1)",
+      "trace_form_signature": "(3,1)",
+      "expected_trace_form": "(3,1)",
+      "indefinite": true
+    },
+    {
+      "name": "Lehmer_L",
+      "degree": 10,
+      "m": 5,
+      "unit_rank_signature": "(2,4)",
+      "expected_unit_rank": "(2,4)",
+      "trace_form_signature": "(6,4)",
+      "expected_trace_form": "(6,4)",
+      "indefinite": true
+    }
+  ],
+  "beta_4_gt_phi_exact": {
+    "test_element": "m_{beta_4}(phi) = phi^4 - phi^3 - phi^2 - phi + 1",
+    "a_plus_b_sqrt5": {
+      "a": "1/2",
+      "b": "-1/2"
+    },
+    "equals": "(1 - sqrt5)/2",
+    "sign": -1,
+    "conclusion": "sign < 0  =>  beta_4 > phi (FORCED_ABOVE_FLOOR)"
+  },
+  "complex_place_off_circle": {
+    "abs_i_beta": "2.41952515305",
+    "abs_5^{1/4}_i": "1.49534878122",
+    "both_off_unit_circle": true
+  }
+}

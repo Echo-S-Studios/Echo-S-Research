@@ -1,0 +1,28 @@
+{
+  "_source_paper": "papers/2026-07-relational-charge/relational_charge_paper.tex",
+  "_generated_by": "code/2026-07-relational-charge/quadratic_eg.py",
+  "identities_ledger_R": {
+    "(1+sqrt5)/2 = phi": true,
+    "(3+sqrt5)/2 = phi^2": true,
+    "phi^2 = phi + 1": true
+  },
+  "case_real_units_n_minus_1": {
+    "M(t) = (|t| + sqrt(t^2+4))/2": true,
+    "floor_at_abs_t_1": "phi = (1+sqrt5)/2",
+    "attained_by": "x^2-x-1",
+    "increasing_in_t": true
+  },
+  "case_real_units_n_plus_1": {
+    "M(t) = (|t| + sqrt(t^2-4))/2 for |t|>=3": true,
+    "floor_at_abs_t_3": "phi^2 = (3+sqrt5)/2",
+    "phi2_gt_phi": true
+  },
+  "case_complex_pair": {
+    "M = n = |alpha|^2": true,
+    "n_1_root_of_unity_M_1": true,
+    "n_ge_2_M_eq_n": true
+  },
+  "conclusion": "every quadratic Mahler value lies in {1} U [phi, infinity)",
+  "phi_attained_by": "x^2-x-1",
+  "status": "[forced] (quadratic case of EG); general EG is [computed]/[plausible]"
+}

@@ -1,0 +1,76 @@
+{
+  "_source_paper": "papers/2026-07-emission-algebra-primer/emission_algebra_primer.tex",
+  "_generated_by": "code/2026-07-emission-algebra-primer/helix_orthogonal_partner.py",
+  "K": "x^4 + 5 x^2 - 5",
+  "substitution": "y = x^2  ->  y^2 + 5y - 5",
+  "y_roots_straddle_zero": {
+    "y_plus": "-5/2 + 3*sqrt(5)/2",
+    "y_plus_decimal": 0.8541,
+    "y_minus": "-3*sqrt(5)/2 - 5/2",
+    "y_minus_decimal": -5.8541
+  },
+  "real_roots_terrain": {
+    "value_pm_K": "sqrt(-10 + 6*sqrt(5))/2",
+    "equals_5^(1/4)/phi": true,
+    "K_decimal": 0.9242,
+    "inside_unit_circle": true
+  },
+  "imaginary_roots_rotation": {
+    "value_pm_i_beta": "sqrt(10 + 6*sqrt(5))/2",
+    "beta_decimal": 2.4195
+  },
+  "magnitude": {
+    "num_outside_unit_circle": 2,
+    "M_K": "5/2 + 3*sqrt(5)/2",
+    "equals_phi^2_sqrt5": true,
+    "equals_beta^2": true,
+    "M_K_decimal": 5.8541
+  },
+  "charge_completion": {
+    "chi_K": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "real_roots_supply": [
+      0,
+      2
+    ],
+    "imaginary_roots_supply": [
+      1,
+      3
+    ],
+    "completes_Z4": true
+  },
+  "parity_criterion": {
+    "statement": "an even real quartic (polynomial in x^2) with a negative x^2-root places its complex roots on the imaginary axis (charges {1,3}); it is PARITY, not the field, that singles out K",
+    "even_quartic_examples": [
+      {
+        "quartic": "x^4+5x^2+(-5)",
+        "imaginary_root_charges": [
+          1
+        ]
+      },
+      {
+        "quartic": "x^4+1x^2+(-3)",
+        "imaginary_root_charges": [
+          1
+        ]
+      },
+      {
+        "quartic": "x^4+2x^2+(-7)",
+        "imaginary_root_charges": [
+          1
+        ]
+      },
+      {
+        "quartic": "x^4+4x^2+(-1)",
+        "imaginary_root_charges": [
+          1
+        ]
+      }
+    ],
+    "non_even_example": "x^4 + x + 1 places a complex root off-axis (charge-lattice miss)"
+  }
+}

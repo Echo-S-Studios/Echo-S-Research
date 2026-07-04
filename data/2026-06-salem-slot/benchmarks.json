@@ -1,0 +1,49 @@
+{
+  "_source_paper": "papers/2026-06-salem-slot/salem_slot.tex",
+  "_generated_by": "code/2026-06-salem-slot/make_benchmarks.py",
+  "_description": "Benchmark Salem numbers (Section 5) with trace redirection tau0, trace-down T, Mah(T), and the entropy-trade logs. High precision.",
+  "benchmarks": [
+    {
+      "name": "Lehmer",
+      "degree": 10,
+      "salem_poly": "x**10 + x**9 - x**7 - x**6 - x**5 - x**4 - x**3 + x + 1",
+      "trace_down_T": "t**5 + t**4 - 5*t**3 - 5*t**2 + 4*t + 3",
+      "beta": "1.176280818259918",
+      "tau0": "2.02641794918696",
+      "tau0_from_trace_down": "2.02641794918696",
+      "Mah_T": "5.615600601438066",
+      "log_beta": "0.162357612008",
+      "log_tau0": "0.706269677338",
+      "prop4_2_tau0_minus_2": "0.02641794918695986",
+      "prop4_2_identity_holds": true
+    },
+    {
+      "name": "beta4",
+      "degree": 4,
+      "salem_poly": "x**4 - x**3 - x**2 - x + 1",
+      "trace_down_T": "t**2 - t - 3",
+      "beta": "1.722083805739042",
+      "tau0": "2.302775637731995",
+      "tau0_from_trace_down": "2.302775637731995",
+      "Mah_T": "3.0",
+      "log_beta": "0.543535072498",
+      "log_tau0": "0.834115194352",
+      "prop4_2_tau0_minus_2": "0.3027756377319946",
+      "prop4_2_identity_holds": true
+    },
+    {
+      "name": "deg6",
+      "degree": 6,
+      "salem_poly": "x**6 - x**5 - x**3 - x + 1",
+      "trace_down_T": "t**3 - t**2 - 3*t + 1",
+      "beta": "1.506135679553839",
+      "tau0": "2.170086486626034",
+      "tau0_from_trace_down": "2.170086486626034",
+      "Mah_T": "3.214319743377535",
+      "log_beta": "0.409547217985",
+      "log_tau0": "0.774767022346",
+      "prop4_2_tau0_minus_2": "0.1700864866260337",
+      "prop4_2_identity_holds": true
+    }
+  ]
+}

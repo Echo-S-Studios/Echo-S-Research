@@ -1,0 +1,51 @@
+{
+  "_source_paper": "papers/2026-07-helix-orthogonal-partner/helix_orthogonal_partner.tex",
+  "_generated_by": "code/2026-07-helix-orthogonal-partner/kformation.py",
+  "section": "5 -- The K-formation astride the fold",
+  "results": {
+    "prop_5_1_kformation": {
+      "seed_quartic_Kf": "x^4 + 5x^2 - 5",
+      "eq6_inner_quadratic": {
+        "quadratic": "y^2 + 5y - 5  (y = x^2)",
+        "roots_closed_form": [
+          "(-5+3 sqrt5)/2",
+          "(-5-3 sqrt5)/2"
+        ],
+        "roots_match_solver_residual": "0",
+        "y_plus_decimal": "0.8541019662496845446137605030969143531609",
+        "y_minus_decimal": "-5.854101966249684544613760503096914353161",
+        "straddle_zero": true
+      },
+      "eq7_terrain_K": {
+        "K_closed_form": "5^{1/4}/phi",
+        "K_squared_equals_y_plus_residual": "0",
+        "sqrt5_over_phi2_rationalised_residual": "0",
+        "K_minimal_polynomial": "x**4 + 5*x**2 - 5",
+        "K_minpoly_is_Kf_residual": "0",
+        "K_decimal": "0.9241763718304447890521331860761631432884",
+        "K_less_than_1": true
+      },
+      "rotation_beta": {
+        "beta_closed_form": "sqrt(|y_-|) = sqrt((5+3 sqrt5)/2)",
+        "beta_squared_residual": "0",
+        "beta_decimal": "2.419525153051665330964032180217076538652",
+        "beta_greater_than_1": true,
+        "interpretation": "imaginary roots +/- i beta = a pi/2 turn about the origin"
+      },
+      "eq8_mahler": {
+        "closed_form": "beta^2 = (5+3 sqrt5)/2 = phi^2 sqrt5",
+        "beta2_equals_phi2_sqrt5_residual": "0",
+        "exact_product_over_roots_residual": "0",
+        "mahler_decimal": "5.854101966249684544613760503096914353161",
+        "numeric_cross_check_abs_error": "1.14e-50"
+      },
+      "root_structure": {
+        "num_real_roots": 2,
+        "num_imaginary_roots": 2,
+        "real_roots_sum_to_zero_residual": "0",
+        "imaginary_roots_sum_to_zero_residual": "0",
+        "K_lt_1_lt_beta": true
+      }
+    }
+  }
+}

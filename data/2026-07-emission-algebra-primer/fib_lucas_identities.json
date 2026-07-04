@@ -1,0 +1,34 @@
+{
+  "_source_paper": "papers/2026-07-emission-algebra-primer/emission_algebra_primer.tex",
+  "_generated_by": "code/2026-07-emission-algebra-primer/d1_keystone_powerlaw.py",
+  "keystone_R2_eq_R_plus_I": true,
+  "trace_R": 1,
+  "det_R": -1,
+  "vieta_sum_phi_plus_psi_eq_1": true,
+  "vieta_prod_phi_psi_eq_minus1": true,
+  "root5_identity_phi_minus_psi_eq_sqrt5_eq_phi_plus_inv": true,
+  "low_powers_in_R_I_coords": {
+    "R^2": [
+      1,
+      1
+    ],
+    "R^3": [
+      2,
+      1
+    ],
+    "R^4": [
+      3,
+      2
+    ],
+    "R^5": [
+      5,
+      3
+    ]
+  },
+  "low_powers_note": "R^k = a R + b I with (a,b) = (F_k, F_{k-1}); (1,1),(2,1),(3,2),(5,3) are consecutive Fibonacci pairs",
+  "binet_verified_n_-8_8": true,
+  "n_range": [
+    -16,
+    16
+  ]
+}

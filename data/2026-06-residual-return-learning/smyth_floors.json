@@ -1,0 +1,13 @@
+{
+  "_source_paper": "papers/2026-06-residual-return-learning/residual_return_learning.tex",
+  "_generated_by": "code/2026-06-residual-return-learning/exchange_rate.py",
+  "identity": "lambda = 2c  (from D_KL = (1/2c)||r||_G^2 >= log Mah)",
+  "lambda_at_c_1_gaussian": 2,
+  "lambda_at_c_n_maxentropy": "2n",
+  "smyth_constant_mu_S": "1.324717957244746025960909",
+  "mu_S_is_plastic_root_of_x3_minus_x_minus_1": true,
+  "floor_2logmuS_c1": "0.562399148646",
+  "floor_n2logmuS_c_n4": "2.24959659458",
+  "floor_n2logmuS_c_n8": "4.49919318917",
+  "note": "the two shipped floors are the c=1 and c=n readings of one identity"
+}

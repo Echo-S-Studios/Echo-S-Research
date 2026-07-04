@@ -1,0 +1,79 @@
+{
+  "_source_paper": "papers/2026-06-emission-gap/emission_gap_paper.tex",
+  "_generated_by": "code/2026-06-emission-gap/constants.py",
+  "constants": {
+    "mu_S": {
+      "value": "1.32471795724474602596090885448",
+      "float": 1.324717957244746,
+      "definition": "real root of x^3 - x - 1 (plastic number)",
+      "paper_location": "Sec. 1 (Smyth bound), App. A",
+      "role": "non-reciprocal Mahler floor; right end of the Salem band (1, mu_S)"
+    },
+    "log_mu_S": {
+      "value": "0.281199574322961846512050764068",
+      "float": 0.28119957432296183,
+      "definition": "log of the plastic number, in nats",
+      "paper_location": "Cor. 6.1, App. A",
+      "role": "cost floor lambda*log M >= log mu_S"
+    },
+    "phi": {
+      "value": "1.61803398874989484820458683437",
+      "float": 1.618033988749895,
+      "definition": "golden ratio (1+sqrt5)/2, root of x^2 - x - 1",
+      "paper_location": "Cor. 6.1, App. A",
+      "role": "smallest realised catalog Mahler measure"
+    },
+    "log_phi": {
+      "value": "0.481211825059603447497758913424",
+      "float": 0.48121182505960347,
+      "definition": "log of the golden ratio, in nats",
+      "paper_location": "Cor. 6.1, App. A",
+      "role": "realised cost floor (entropy end of the gap)"
+    },
+    "phi_squared": {
+      "value": "2.61803398874989484820458683437",
+      "float": 2.618033988749895,
+      "definition": "phi^2 = phi + 1 = (3+sqrt5)/2",
+      "paper_location": "App. A",
+      "role": "reciprocal quadratic Mahler jump / squaring image"
+    },
+    "phi_fourth": {
+      "value": "6.85410196624968454461376050310",
+      "float": 6.854101966249685,
+      "definition": "phi^4 = (7+3 sqrt5)/2, the 'gap' seed x^2-7x+1 measure",
+      "paper_location": "App. A",
+      "role": "Mahler measure of the gap seed"
+    },
+    "lehmer_number": {
+      "value": "1.17628081825991750654407033847",
+      "float": 1.1762808182599176,
+      "definition": "largest root and Mahler measure of the Lehmer polynomial x^10+x^9-x^7-x^6-x^5-x^4-x^3+x+1",
+      "paper_location": "Sec. 1, Lemma 5.1",
+      "role": "smallest known Salem number; sits below mu_S inside the Salem band"
+    },
+    "beta_4": {
+      "value": "1.72208380573904224502706921215",
+      "float": 1.7220838057390422,
+      "definition": "real root of x^4 - x^3 - x^2 - x + 1 (minimal degree-4 Salem number)",
+      "paper_location": "Cor. 10.4, App. A",
+      "role": "floor for any Salem number housed in K; exceeds phi"
+    },
+    "sqrt5": {
+      "value": "2.23606797749978969640917366873",
+      "float": 2.23606797749979,
+      "definition": "sqrt(disc(x^2-x-1)) = sqrt5; nonzero ad_R eigenvalue",
+      "paper_location": "Sec. 7, Lemma 10.1, App. A",
+      "role": "channel-gap endpoint (distinct from phi and log phi)"
+    }
+  },
+  "relations": {
+    "lehmer < mu_S": true,
+    "mu_S < 2": true,
+    "phi < beta_4": true,
+    "beta_4 exceeds phi": true,
+    "phi^2 = phi + 1": true,
+    "phi^4 = (7+3 sqrt5)/2": true,
+    "exp(log phi) = phi": true,
+    "salem_band": "(1, 1.32471795724)"
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "_source_paper": "papers/2026-06-lambda-2c/lambda_2c_paper.tex",
+  "_generated_by": "code/2026-06-lambda-2c/keystone.py",
+  "keystone_companion": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      1
+    ]
+  ],
+  "relation": "R^2 = R + I",
+  "eigenvalues": [
+    "phi",
+    "psi"
+  ],
+  "det_R": -1,
+  "perron": {
+    "smallest_primitive_perron_root": 1.618033988749895,
+    "argmin": [
+      0,
+      1,
+      1,
+      1
+    ],
+    "equals_phi": true,
+    "swap_matrix_eigs": [
+      "-1",
+      "1"
+    ],
+    "swap_perron_root": 1
+  },
+  "R4": {
+    "matrix": [
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "equals_3R_plus_2I": true,
+    "charpoly": "x**2 - 7*x + 1",
+    "entries_are_F3F4F5": [
+      2,
+      3,
+      5
+    ],
+    "L4_trace": 7,
+    "L4_as_F3_plus_F5": 7,
+    "pell_at_n4": "L_4^2 - 4 = 5*F_4^2 = 45  =>  L_4 = 7",
+    "gap_seed_roots": [
+      "7/2 - 3*sqrt(5)/2",
+      "3*sqrt(5)/2 + 7/2"
+    ],
+    "z_c": "sqrt(3)/2"
+  },
+  "appendix_identity_iv": {
+    "F3F4F5": [
+      2,
+      3,
+      5
+    ],
+    "L4_squared": 49,
+    "check_5F4sq_plus_4": 49
+  }
+}

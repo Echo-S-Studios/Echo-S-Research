@@ -1,0 +1,160 @@
+{
+  "_source_paper": "papers/2026-06-charge-measure-coupling/charge-measure-coupling-whitepaper-v4.tex",
+  "_generated_by": "code/2026-06-charge-measure-coupling/charge_group_structure.py",
+  "cyclicity": {
+    "checked_subgroups": 92,
+    "all_generated_subgroups_cyclic": true,
+    "L_range": [
+      2,
+      24
+    ],
+    "noncyclic_counterexamples": {
+      "Z/2 x Z/2": {
+        "group_order": 4,
+        "max_element_order (exponent)": 2,
+        "cyclic": false
+      },
+      "Z/3 x Z/3": {
+        "group_order": 9,
+        "max_element_order (exponent)": 3,
+        "cyclic": false
+      },
+      "Z/5 x Z/5": {
+        "group_order": 25,
+        "max_element_order (exponent)": 5,
+        "cyclic": false
+      }
+    },
+    "paper_ref": "Thm 3.1"
+  },
+  "crt_adams": {
+    "cases": {
+      "6": {
+        "factorization": {
+          "2": 1,
+          "3": 1
+        },
+        "crt_bijection": true,
+        "num_independent_primary_labels (omega(n))": 2,
+        "adams_projectors": {
+          "psi^3": {
+            "targets_component": "Z/2",
+            "image_order": 2,
+            "kernel_order": 3,
+            "image_is_unique_order_pe_subgroup": true
+          },
+          "psi^2": {
+            "targets_component": "Z/3",
+            "image_order": 3,
+            "kernel_order": 2,
+            "image_is_unique_order_pe_subgroup": true
+          }
+        }
+      },
+      "12": {
+        "factorization": {
+          "2": 2,
+          "3": 1
+        },
+        "crt_bijection": true,
+        "num_independent_primary_labels (omega(n))": 2,
+        "adams_projectors": {
+          "psi^3": {
+            "targets_component": "Z/4",
+            "image_order": 4,
+            "kernel_order": 3,
+            "image_is_unique_order_pe_subgroup": true
+          },
+          "psi^4": {
+            "targets_component": "Z/3",
+            "image_order": 3,
+            "kernel_order": 4,
+            "image_is_unique_order_pe_subgroup": true
+          }
+        }
+      },
+      "30": {
+        "factorization": {
+          "2": 1,
+          "3": 1,
+          "5": 1
+        },
+        "crt_bijection": true,
+        "num_independent_primary_labels (omega(n))": 3,
+        "adams_projectors": {
+          "psi^15": {
+            "targets_component": "Z/2",
+            "image_order": 2,
+            "kernel_order": 15,
+            "image_is_unique_order_pe_subgroup": true
+          },
+          "psi^10": {
+            "targets_component": "Z/3",
+            "image_order": 3,
+            "kernel_order": 10,
+            "image_is_unique_order_pe_subgroup": true
+          },
+          "psi^6": {
+            "targets_component": "Z/5",
+            "image_order": 5,
+            "kernel_order": 6,
+            "image_is_unique_order_pe_subgroup": true
+          }
+        }
+      },
+      "36": {
+        "factorization": {
+          "2": 2,
+          "3": 2
+        },
+        "crt_bijection": true,
+        "num_independent_primary_labels (omega(n))": 2,
+        "adams_projectors": {
+          "psi^9": {
+            "targets_component": "Z/4",
+            "image_order": 4,
+            "kernel_order": 9,
+            "image_is_unique_order_pe_subgroup": true
+          },
+          "psi^4": {
+            "targets_component": "Z/9",
+            "image_order": 9,
+            "kernel_order": 4,
+            "image_is_unique_order_pe_subgroup": true
+          }
+        }
+      },
+      "60": {
+        "factorization": {
+          "2": 2,
+          "3": 1,
+          "5": 1
+        },
+        "crt_bijection": true,
+        "num_independent_primary_labels (omega(n))": 3,
+        "adams_projectors": {
+          "psi^15": {
+            "targets_component": "Z/4",
+            "image_order": 4,
+            "kernel_order": 15,
+            "image_is_unique_order_pe_subgroup": true
+          },
+          "psi^20": {
+            "targets_component": "Z/3",
+            "image_order": 3,
+            "kernel_order": 20,
+            "image_is_unique_order_pe_subgroup": true
+          },
+          "psi^12": {
+            "targets_component": "Z/5",
+            "image_order": 5,
+            "kernel_order": 12,
+            "image_is_unique_order_pe_subgroup": true
+          }
+        }
+      }
+    },
+    "paper_ref": "Thm 3.4"
+  },
+  "lcm_law_note": "tensor charge group = Z/lcm(m,k); kernel order = gcd(m,k); safe (lossless) iff coprime -- see lcm_composition.csv"
+}

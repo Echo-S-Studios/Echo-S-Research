@@ -1,0 +1,115 @@
+{
+  "_source_paper": "papers/2026-07-pisot-residue/pisot_residue_whitepaper.tex",
+  "_generated_by": "code/2026-07-pisot-residue/salem_census.py",
+  "description": "Section 7.1 degree-12 Salem census; Burnside 729/27/378, corrected cascade 39/256/46/37, 302 combined, Salem scans {Phi_1^12}.",
+  "family": {
+    "palindromic_vectors": 729,
+    "twist_fixed": 27,
+    "burnside_orbits": 378,
+    "orbits_enumerated": 378
+  },
+  "cascade": {
+    "pm1_root": 39,
+    "trace_sturm_reject": 256,
+    "reducible": 46,
+    "salem": 37,
+    "combined_reject_plus_reducible": 302,
+    "partitions_378": true
+  },
+  "phi10_reducible_class": {
+    "poly": "x^12 - x^11 - x^10 - x^9 - x^7 - x^6 - x^5 - x^3 - x^2 - x + 1",
+    "coeffs_hi_to_lo": [
+      1,
+      -1,
+      -1,
+      -1,
+      0,
+      -1,
+      -1,
+      -1,
+      0,
+      -1,
+      -1,
+      -1,
+      1
+    ],
+    "cyclotomic_factor": "x^4 - x^3 + x^2 - x + 1"
+  },
+  "scan_sizing": {
+    "deg_Rat": 144,
+    "bound_2n4": 41472
+  },
+  "salem_rep_scans_sample": [
+    {
+      "poly": "x^12 - x^11 - x^10 - x^9 - x^8 - x^7 - x^6 - x^5 - x^4 - x^3 - x^2 - x + 1",
+      "deg_Rat": 144,
+      "scan": {
+        "factors": [
+          {
+            "m": 1,
+            "multiplicity": 12
+          }
+        ],
+        "pretty": "{Phi_1^12}"
+      },
+      "inert": true
+    },
+    {
+      "poly": "x^12 - x^11 - x^10 - x^9 - x^8 - x^7 - x^5 - x^4 - x^3 - x^2 - x + 1",
+      "deg_Rat": 144,
+      "scan": {
+        "factors": [
+          {
+            "m": 1,
+            "multiplicity": 12
+          }
+        ],
+        "pretty": "{Phi_1^12}"
+      },
+      "inert": true
+    },
+    {
+      "poly": "x^12 - x^11 - x^10 - x^9 - x^8 - x^7 + x^6 - x^5 - x^4 - x^3 - x^2 - x + 1",
+      "deg_Rat": 144,
+      "scan": {
+        "factors": [
+          {
+            "m": 1,
+            "multiplicity": 12
+          }
+        ],
+        "pretty": "{Phi_1^12}"
+      },
+      "inert": true
+    },
+    {
+      "poly": "x^12 - x^11 - x^10 - x^9 - x^8 - x^6 - x^4 - x^3 - x^2 - x + 1",
+      "deg_Rat": 144,
+      "scan": {
+        "factors": [
+          {
+            "m": 1,
+            "multiplicity": 12
+          }
+        ],
+        "pretty": "{Phi_1^12}"
+      },
+      "inert": true
+    },
+    {
+      "poly": "x^12 - x^11 - x^10 - x^9 - x^8 - x^4 - x^3 - x^2 - x + 1",
+      "deg_Rat": 144,
+      "scan": {
+        "factors": [
+          {
+            "m": 1,
+            "multiplicity": 12
+          }
+        ],
+        "pretty": "{Phi_1^12}"
+      },
+      "inert": true
+    }
+  ],
+  "all_sampled_scans_are_phi1_12": true
+}

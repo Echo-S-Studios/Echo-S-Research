@@ -1,0 +1,27 @@
+{
+  "_source_paper": "papers/2026-06-residual-return-learning/residual_return_learning.tex",
+  "_generated_by": "code/2026-06-residual-return-learning/learning_and_witness.py",
+  "chain_rule": "h_k = SHA-256(h_{k-1} || canonical_json(body))[0:16]",
+  "prev_hash": "genesis",
+  "body": {
+    "coords": [
+      "-5",
+      "0",
+      "1",
+      "0"
+    ],
+    "event": "basis_growth",
+    "index": 0,
+    "min_poly": [
+      1,
+      0,
+      -24
+    ],
+    "num_seeds": 3,
+    "prev_hash": "genesis",
+    "snap": "exact",
+    "streak": 4
+  },
+  "canonical_json": "{\"coords\":[\"-5\",\"0\",\"1\",\"0\"],\"event\":\"basis_growth\",\"index\":0,\"min_poly\":[1,0,-24],\"num_seeds\":3,\"prev_hash\":\"genesis\",\"snap\":\"exact\",\"streak\":4}",
+  "digest": "31f1f1e05ac9a35a"
+}

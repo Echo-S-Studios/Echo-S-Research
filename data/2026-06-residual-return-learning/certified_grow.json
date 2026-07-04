@@ -1,0 +1,31 @@
+{
+  "_source_paper": "papers/2026-06-residual-return-learning/residual_return_learning.tex",
+  "_generated_by": "code/2026-06-residual-return-learning/exchange_rate.py",
+  "certified_grow": [
+    {
+      "seed": "sqrt7",
+      "mahler": 7,
+      "log_enclosure_lo": "[1.94591014905531330510535274344317972963708232, 1.94591014905531330510535274344317972963708232]",
+      "log_enclosure_hi": "[1.94591014905531330510535274344317972963710528, 1.94591014905531330510535274344317972963710528]",
+      "lambda": 2,
+      "cost_upper_bound_2logMah": "[3.89182029811062661021070548688635945927421055, 3.89182029811062661021070548688635945927421055]",
+      "exact_gain": 56,
+      "certified_grow": true
+    },
+    {
+      "seed": "2*sqrt6",
+      "mahler": 24,
+      "log_enclosure_lo": "[3.17805383034794561964694160129705540887398029, 3.17805383034794561964694160129705540887398029]",
+      "log_enclosure_hi": "[3.1780538303479456196469416012970554088740262, 3.1780538303479456196469416012970554088740262]",
+      "lambda": 2,
+      "cost_upper_bound_2logMah": "[6.35610766069589123929388320259411081774805241, 6.35610766069589123929388320259411081774805241]",
+      "exact_gain": 96,
+      "certified_grow": true
+    }
+  ],
+  "certified_stop": {
+    "lattice_noise_magnitude": "1/10",
+    "smyth_floor_rational_bracket": "5624/10000",
+    "stopped": true
+  }
+}

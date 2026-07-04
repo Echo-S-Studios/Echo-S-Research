@@ -1,0 +1,67 @@
+{
+  "_source_paper": "papers/2026-06-residual-return-learning/residual_return_learning.tex",
+  "_generated_by": "code/2026-06-residual-return-learning/language.py",
+  "return_operator": "L(X) = R X + X R - X",
+  "L_matrix_basis_1_e1_e2_i": [
+    [
+      "0",
+      "2",
+      "-1",
+      "0"
+    ],
+    [
+      "2",
+      "0",
+      "0",
+      "0"
+    ],
+    [
+      "-1",
+      "0",
+      "0",
+      "0"
+    ],
+    [
+      "0",
+      "0",
+      "0",
+      "0"
+    ]
+  ],
+  "L_of_keystone_coords": [
+    "5/2",
+    "1",
+    "-1/2",
+    "0"
+  ],
+  "keystone_in_kernel": false,
+  "kernel_dimension": 2,
+  "kernel_basis": [
+    "e1+2e2 = H(0,1,2,0)",
+    "i = H(0,0,0,1)"
+  ],
+  "kernel_check_L_e1p2e2_zero": true,
+  "kernel_check_L_i_zero": true,
+  "sylvester_eigenvalues": {
+    "-sqrt(5)": 1,
+    "sqrt(5)": 1,
+    "0": 2
+  },
+  "zero_eigenvalue_multiplicity": 2,
+  "disproof": {
+    "claim": "N=H(0,-1,1,0) in ker L is FALSE",
+    "L_of_H_0_m1_1_0_coords": [
+      "-3",
+      "0",
+      "0",
+      "0"
+    ],
+    "correct_image_cl_of_[[0,-1],[1,0]]": [
+      "0",
+      "0",
+      "0",
+      "1"
+    ],
+    "correct_image_in_kernel": true
+  }
+}

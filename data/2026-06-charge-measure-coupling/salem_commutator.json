@@ -1,0 +1,62 @@
+{
+  "_source_paper": "papers/2026-06-charge-measure-coupling/charge-measure-coupling-whitepaper-v4.tex",
+  "_generated_by": "code/2026-06-charge-measure-coupling/salem_commutator.py",
+  "salem_witnesses": [
+    {
+      "object": "beta_4 = x^4-x^3-x^2-x+1",
+      "reciprocal": true,
+      "roots_outside_unit_circle": 1,
+      "roots_on_unit_circle": 2,
+      "roots_inside_unit_circle": 1,
+      "is_salem": true,
+      "mahler": "1.72208380573904225",
+      "mahler_equals_salem_number": true,
+      "charge_group": null,
+      "charge_inadmissible": true,
+      "paper_ref": "ledger F / Lem 8.1"
+    },
+    {
+      "object": "Lehmer = x^10+x^9-x^7-...-x^3+x+1",
+      "reciprocal": true,
+      "roots_outside_unit_circle": 1,
+      "roots_on_unit_circle": 8,
+      "roots_inside_unit_circle": 1,
+      "is_salem": true,
+      "mahler": "1.17628081825991751",
+      "mahler_equals_salem_number": true,
+      "charge_group": null,
+      "charge_inadmissible": true,
+      "paper_ref": "Prop 8.2 / Lem 8.1"
+    }
+  ],
+  "commutator_escape": {
+    "lehmer_polynomial": "x^10+x^9-x^7-x^6-x^5-x^4-x^3+x+1",
+    "lehmer_trace": -1,
+    "commutator_polynomial": "x^11-x^9-x^8+x^3+x^2-1",
+    "commutator_poly_coeffs": [
+      1,
+      0,
+      -1,
+      -1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      -1
+    ],
+    "commutator_trace": 0,
+    "companion_matrix_trace": 0.0,
+    "companion_is_integer": true,
+    "carries_lehmer_number": true,
+    "carries_eigenvalue_1": true,
+    "mahler": "1.17628081825991751",
+    "mahler_in_gap_1_phi": true,
+    "charge_group": null,
+    "charge_bottom": true,
+    "interpretation": "trace-zero integer matrix (Shoda/Laffey-Reams commutator) carrying a Salem number below the floor and off every angle lattice: the abelian constraints do not extend",
+    "paper_ref": "Prop 8.2 / ledger L"
+  }
+}

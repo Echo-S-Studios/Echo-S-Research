@@ -1,0 +1,176 @@
+{
+  "_source_paper": "papers/2026-06-vector-substrate/vector_substrate.tex",
+  "_generated_by": "code/2026-06-vector-substrate/trace_form.py",
+  "gram_matrices": {
+    "golden_Q_sqrt5": {
+      "basis": "{1, phi}",
+      "gram": [
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          3
+        ]
+      ],
+      "det": 5,
+      "d_K": 5,
+      "traces": [
+        2,
+        1,
+        3
+      ]
+    },
+    "biquadratic_Q_sqrt2_sqrt3": {
+      "basis": "{1, sqrt2, sqrt3, sqrt6}",
+      "gram": [
+        [
+          4,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          8,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          12,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          24
+        ]
+      ],
+      "diagonal": [
+        4,
+        8,
+        12,
+        24
+      ],
+      "det": 9216,
+      "d_K": 2304,
+      "index": 2
+    },
+    "gaussian_Q_i": {
+      "basis": "{1, i}",
+      "trace_form": [
+        [
+          2,
+          0
+        ],
+        [
+          0,
+          -2
+        ]
+      ],
+      "trace_form_signature": [
+        1,
+        1
+      ],
+      "hermitian_G2": [
+        [
+          2,
+          0
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "det_G2": 4,
+      "abs_d_K": 4,
+      "covol": 2,
+      "geometric_rescaled_covol": 1
+    },
+    "cubic_Q_cbrt2": {
+      "basis": "{1, cbrt2, cbrt4}",
+      "trace_form": [
+        [
+          3,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          6
+        ],
+        [
+          0,
+          6,
+          0
+        ]
+      ],
+      "det": -108,
+      "d_K": -108,
+      "signature": [
+        2,
+        1
+      ],
+      "eigenvalues": [
+        -6,
+        3,
+        6
+      ]
+    }
+  },
+  "G_equals_MtM_numeric_check": {
+    "x**2 - x - 1": {
+      "det_G_exact": 5,
+      "max_abs_error_MtM_vs_G": "1.1479e-41"
+    },
+    "x**2 - 2": {
+      "det_G_exact": 8,
+      "max_abs_error_MtM_vs_G": "4.5918e-41"
+    },
+    "x**2 - 7": {
+      "det_G_exact": 28,
+      "max_abs_error_MtM_vs_G": "1.8367e-40"
+    },
+    "x**3 - 2": {
+      "det_G_exact": -108,
+      "max_abs_error_MtM_vs_G": "9.1835e-41"
+    },
+    "x**2 + 1": {
+      "det_G_exact": -4,
+      "max_abs_error_MtM_vs_G": "0.0"
+    },
+    "x**4 - 10*x**2 + 1": {
+      "det_G_exact": 147456,
+      "max_abs_error_MtM_vs_G": "4.702e-38"
+    }
+  },
+  "trace_duality_golden": {
+    "G_inverse": [
+      [
+        "3/5",
+        "-1/5"
+      ],
+      [
+        "-1/5",
+        "2/5"
+      ]
+    ],
+    "dual_of_1": [
+      "3/5",
+      "-1/5"
+    ],
+    "dual_of_phi": [
+      "-1/5",
+      "2/5"
+    ],
+    "Tr_1_times_1dual": 1,
+    "Tr_phi_times_1dual": 0,
+    "different_generator": "2*phi - 1 = sqrt(5)",
+    "norm_different": 5
+  }
+}

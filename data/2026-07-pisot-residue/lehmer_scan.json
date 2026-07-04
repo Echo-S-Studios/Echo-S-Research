@@ -1,0 +1,34 @@
+{
+  "_source_paper": "papers/2026-07-pisot-residue/pisot_residue_whitepaper.tex",
+  "_generated_by": "code/2026-07-pisot-residue/lehmer_scan.py",
+  "description": "Section 2 canonical Lehmer scan: Rat_L degree 100, scan {Phi_1^10}, Lehmer's number relationally inert.",
+  "polynomial": "x^10 + x^9 - x^7 - x^6 - x^5 - x^4 - x^3 + x + 1",
+  "coeffs_hi_to_lo": [
+    1,
+    1,
+    0,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    0,
+    1,
+    1
+  ],
+  "reciprocal_salem": true,
+  "irreducible": true,
+  "degree": 10,
+  "deg_Rat_L": 100,
+  "scan_bound_2n4": 20000,
+  "scan": {
+    "factors": [
+      {
+        "m": 1,
+        "multiplicity": 10
+      }
+    ],
+    "pretty": "{Phi_1^10}"
+  },
+  "relationally_inert": true
+}

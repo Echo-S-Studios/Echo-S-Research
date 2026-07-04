@@ -1,0 +1,18 @@
+{
+  "_source_paper": "papers/2026-07-relational-charge/relational_charge_paper.tex",
+  "_generated_by": "code/2026-07-relational-charge/pinning_tensor.py",
+  "object": "beta_4 (x) beta_4",
+  "kronecker_charpoly_degree": 16,
+  "phi1_multiplicity": 4,
+  "deg_gcd_F_Fprime": 7,
+  "multiplicity_pattern": "1^4 . (four doubles)",
+  "distinct_real_roots": 3,
+  "distinct_positive_real_roots": 3,
+  "distinct_negative_real_roots": 0,
+  "rational_block_size": 6,
+  "diagonal_ones_count": 4,
+  "rational_block": "{1,1,1,1, tau^2, tau^-2}",
+  "inert": false,
+  "mechanism": "offset cancellation (Prop 4.9 iii) manufactures a rational block from an inert factor",
+  "status": "[forced] structure; single-engine run (ledger S)"
+}

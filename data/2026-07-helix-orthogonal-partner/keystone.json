@@ -1,0 +1,67 @@
+{
+  "_source_paper": "papers/2026-07-helix-orthogonal-partner/helix_orthogonal_partner.tex",
+  "_generated_by": "code/2026-07-helix-orthogonal-partner/keystone.py",
+  "section": "2 -- The keystone: the golden generator",
+  "results": {
+    "prop_2_2_keystone": {
+      "charpoly": "lambda**2 - lambda - 1",
+      "charpoly_is_fibonacci": true,
+      "trace": 1,
+      "det": -1,
+      "spectrum_closed_form": [
+        "psi=(1-sqrt5)/2",
+        "phi=(1+sqrt5)/2"
+      ],
+      "spectrum_decimal": [
+        "-0.6180339887498948482045868343656381177203",
+        "1.61803398874989484820458683436563811772"
+      ],
+      "eigenvalue_multiplicities": [
+        1,
+        1
+      ],
+      "cayley_hamilton_R2_minus_R_minus_I": "[[0, 0], [0, 0]]",
+      "R2_equals_R_plus_I": true,
+      "vieta_sum_phi_plus_psi": 1,
+      "vieta_prod_phi_times_psi": -1,
+      "psi_alternate_forms": {
+        "one_minus_phi_residual": "0",
+        "neg_inv_phi_residual": "0"
+      },
+      "root5_identity_eq1": {
+        "phi_minus_psi": "sqrt5",
+        "phi_minus_psi_residual": "0",
+        "phi_plus_inv_phi_residual": "0",
+        "sqrt5_decimal": "2.236067977499789696409173668731276235441"
+      }
+    },
+    "prop_2_3_self_action": {
+      "operator": "ad_R = [R, .] on M_2 ~ R^4",
+      "charpoly": "lambda**4 - 5*lambda**2",
+      "charpoly_is_lam2_times_lam2_minus_5": true,
+      "spectrum_multiset": "{0, 0, +sqrt5, -sqrt5}",
+      "coupling": "sqrt5 = phi + phi^{-1} = phi - psi",
+      "coupling_matches_phi_minus_psi_residual": "0",
+      "coupling_is_sole_irrational": true
+    },
+    "def_2_4_golden_object": {
+      "object": "A_phi = {phi, psi}",
+      "abs_psi_equals_inv_phi_residual": "0",
+      "mahler_measure_M": "phi",
+      "mahler_measure_residual": "0",
+      "mahler_decimal": "1.61803398874989484820458683436563811772",
+      "phase_charge_chi": [
+        0,
+        2
+      ],
+      "phase_charge_note": "phi>0 -> 0 ; psi<0 -> 2",
+      "adams_power_psi2": {
+        "mahler_maps_to": "M^2 = phi^2",
+        "mahler_squared_residual": "0",
+        "charge_doubles_mod4": [
+          0
+        ]
+      }
+    }
+  }
+}

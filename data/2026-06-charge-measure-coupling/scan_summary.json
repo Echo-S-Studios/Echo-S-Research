@@ -1,0 +1,26 @@
+{
+  "_source_paper": "papers/2026-06-charge-measure-coupling/charge-measure-coupling-whitepaper-v4.tex",
+  "_generated_by": "code/2026-06-charge-measure-coupling/finite_scans.py",
+  "totally_positive_gap": {
+    "window": "degrees 1..4, |c|<=6 (paper: deg<=7)",
+    "distinct_measures": 17,
+    "least_measure_above_1": 2.0,
+    "gap_1_2_empty": true,
+    "paper_ref": "Thm 4.6 / ledger G"
+  },
+  "z5_quartic_sector": {
+    "window": "quartics |c|<=6 (paper: |c|<=10)",
+    "distinct_measures": [
+      "1",
+      "phi^4"
+    ],
+    "only_1_and_phi4": true,
+    "gap_1_phi4_empty": true,
+    "paper_ref": "ledger J / Thm 6.5"
+  },
+  "z5_reciprocal_window_measures": [
+    "1",
+    "2+sqrt3",
+    "phi^2"
+  ]
+}

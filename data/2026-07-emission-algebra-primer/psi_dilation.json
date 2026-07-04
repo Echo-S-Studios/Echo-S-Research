@@ -1,0 +1,46 @@
+{
+  "_source_paper": "papers/2026-07-emission-algebra-primer/emission_algebra_primer.tex",
+  "_generated_by": "code/2026-07-emission-algebra-primer/d6b_psi_casimir_map.py",
+  "a_spectrum": {
+    "gap_dilation": "phi - psi = sqrt5  ->  phi^n - psi^n = F_n sqrt5",
+    "verified_n_-8_8": true
+  },
+  "b_operator": {
+    "ad_Rn_eq_Fn_adR": true,
+    "hence": "H = X_1  ->  X_n = F_n H; index multiplicative psi^n: X_m -> X_{nm}"
+  },
+  "c_invariant": {
+    "seed": "(1/2)Tr(H^2) = 5 = L_1^2 - 4(-1)^1",
+    "lift": "(1/2)Tr(X_n^2) = 5 F_n^2 = L_n^2 - 4(-1)^n"
+  },
+  "coupled_casimir": {
+    "V1xV2": {
+      "summands": [
+        "V1",
+        "V3"
+      ],
+      "casimirs": [
+        "3/2",
+        "15/2"
+      ]
+    },
+    "V2xV2": {
+      "summands": [
+        "V0",
+        "V2",
+        "V4"
+      ],
+      "casimirs": [
+        "0",
+        "4",
+        "12"
+      ]
+    },
+    "Cas_V3": "15/2",
+    "Cas_V4": "12"
+  },
+  "ladder_scalings": {
+    "V3_factor_binom(5,3)": 10,
+    "V4_factor_binom(6,3)": 20
+  }
+}

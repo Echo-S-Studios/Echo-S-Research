@@ -1,0 +1,168 @@
+{
+  "_source_paper": "papers/2026-07-emission-algebra-primer/emission_algebra_primer.tex",
+  "_generated_by": "code/2026-07-emission-algebra-primer/d4_transition.py",
+  "rational_structure_constants": {
+    "[H,S]": "10 J",
+    "[H,J]": "2 S",
+    "[S,J]": "-2 H",
+    "HS": [
+      [
+        "0",
+        "-5"
+      ],
+      [
+        "5",
+        "0"
+      ]
+    ],
+    "SH": [
+      [
+        "0",
+        "5"
+      ],
+      [
+        "-5",
+        "0"
+      ]
+    ]
+  },
+  "splitting_obstruction": {
+    "adH_on_span_S_J": [
+      [
+        0,
+        2
+      ],
+      [
+        10,
+        0
+      ]
+    ],
+    "char_poly": "lambda^2 - 20",
+    "roots": [
+      "2*sqrt5",
+      "-2*sqrt5"
+    ],
+    "note": "not diagonalisable over Q; minimal field is Q(sqrt20)=Q(sqrt5)"
+  },
+  "signature_2_1": {
+    "H^2": [
+      [
+        "5",
+        "0"
+      ],
+      [
+        "0",
+        "5"
+      ]
+    ],
+    "S^2": [
+      [
+        "5",
+        "0"
+      ],
+      [
+        "0",
+        "5"
+      ]
+    ],
+    "J^2": [
+      [
+        "-1",
+        "0"
+      ],
+      [
+        "0",
+        "-1"
+      ]
+    ],
+    "N+^2_is_zero": true,
+    "N-^2_is_zero": true,
+    "trace_form_gram": "diag(10, 10, -2)",
+    "signature": "(2,1): two space-like boosts H,S; one time-like rotation J"
+  },
+  "null_frame": {
+    "N+": "(S + sqrt5 J)/2",
+    "N-": "(S - sqrt5 J)/2",
+    "N+_check": true,
+    "N-_check": true,
+    "M_R_to_E": [
+      [
+        "1",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "1",
+        "sqrt(5)/5"
+      ],
+      [
+        "0",
+        "1",
+        "-sqrt(5)/5"
+      ]
+    ],
+    "M_E_to_R": [
+      [
+        "1",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "1/2",
+        "1/2"
+      ],
+      [
+        "0",
+        "sqrt(5)/2",
+        "-sqrt(5)/2"
+      ]
+    ],
+    "mutually_inverse": true,
+    "det_M_R_to_E": "-2*sqrt(5)/5",
+    "det_is_irrational": "det = -2/sqrt5 certifies the frame change leaves Q"
+  },
+  "conjugator_V": {
+    "V": [
+      [
+        "1",
+        "1"
+      ],
+      [
+        "1/2 + sqrt(5)/2",
+        "1/2 - sqrt(5)/2"
+      ]
+    ],
+    "V^-1 H V": [
+      [
+        "sqrt(5)",
+        "0"
+      ],
+      [
+        "0",
+        "-sqrt(5)"
+      ]
+    ],
+    "V^-1 N+ V": [
+      [
+        "0",
+        "5/2 - sqrt(5)/2"
+      ],
+      [
+        "0",
+        "0"
+      ]
+    ],
+    "V^-1 N- V": [
+      [
+        "0",
+        "0"
+      ],
+      [
+        "sqrt(5)/2 + 5/2",
+        "0"
+      ]
+    ]
+  }
+}

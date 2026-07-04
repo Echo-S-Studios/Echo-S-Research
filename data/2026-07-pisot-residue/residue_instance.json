@@ -1,0 +1,84 @@
+{
+  "_source_paper": "papers/2026-07-pisot-residue/pisot_residue_whitepaper.tex",
+  "_generated_by": "code/2026-07-pisot-residue/residue_instance.py",
+  "description": "Sections 5-6 cross-shell residue on the first two-pair Pisot quintic x^5-2x^4-2x^3-2x^2-2x-2; degree-20 Rat_p^o and the C_2 negative certificate.",
+  "instance": {
+    "poly": "x^5 - 2x^4 - 2x^3 - 2x^2 - 2x - 2",
+    "coeffs_hi_to_lo": [
+      1,
+      -2,
+      -2,
+      -2,
+      -2,
+      -2
+    ]
+  },
+  "rat_p_circ": {
+    "definition": "Rat_p / (x-1)^5",
+    "degree": 20,
+    "squarefree": true,
+    "irreducible": true,
+    "equals_S_star": true,
+    "scan": {
+      "factors": [
+        {
+          "m": 1,
+          "multiplicity": 5
+        }
+      ],
+      "pretty": "{Phi_1^5}"
+    }
+  },
+  "shell_detector": {
+    "num_unimodular_roots": 4,
+    "distinct_shells": true,
+    "reads_4_iff_distinct_shells": true
+  },
+  "modulus_multiset_prop52": {
+    "num_distinct_moduli": 7,
+    "multiplicity_multiset": [
+      2,
+      2,
+      2,
+      2,
+      4,
+      4,
+      4
+    ],
+    "modulus_1_multiplicity": 4,
+    "reciprocal_closed": true,
+    "distinct_moduli_display": [
+      0.2946188467927524,
+      0.3100816215222247,
+      0.950133211205605,
+      1.0,
+      1.0524839971977402,
+      3.224957335719835,
+      3.3942159874905866
+    ]
+  },
+  "c2_degree_and_root_products_prop53b": {
+    "S_star_used": "x^4 - 3x^2 + 1",
+    "deg_C2": 16,
+    "monic_up_to_sign": true,
+    "root_multiset_is_ordered_products": true,
+    "max_coeff_deviation_display": 4.547473508864641e-13
+  },
+  "deg_C2_full_instance": 400,
+  "negative_certificate_theorem61": {
+    "num_ordered_products": 400,
+    "products_equal_to_1": 20,
+    "products_on_circle_not_1": 44,
+    "rogue_roots_of_unity": 0,
+    "scan": {
+      "factors": [
+        {
+          "m": 1,
+          "multiplicity": 20
+        }
+      ],
+      "pretty": "{Phi_1^20}"
+    },
+    "zero_mirrored_cross_shell_classes": true
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "_source_paper": "papers/2026-07-emission-algebra-primer/emission_algebra_primer.tex",
+  "_generated_by": "code/2026-07-emission-algebra-primer/d2_core_mechanics.py",
+  "golden_object_A_phi": {
+    "magnitude_M": "1/2 + sqrt(5)/2",
+    "charge_chi": [
+      0,
+      2
+    ]
+  },
+  "superposition_factors": {
+    "M_union": "2 + sqrt(5)",
+    "equals_product_M_A_M_B": true
+  },
+  "coupling_tropical": {
+    "coupled_spectrum": [
+      "phi^3",
+      "-phi",
+      "phi^-1",
+      "-phi^-3"
+    ],
+    "num_outside_unit_circle": 2,
+    "M_tropical": "3*sqrt(5)/2 + 7/2",
+    "M_naive_product": "2 + sqrt(5)",
+    "tropical_over_naive": "1/2 + sqrt(5)/2",
+    "note": "the cross term psi^2*phi = phi^-1 falls THROUGH the unit circle and is floored to 1; naive M(A)M(B) is wrong by phi"
+  },
+  "adams_pullback": {
+    "psi2_is_keystone": true,
+    "binet_n_0_8": true,
+    "multiplicative_not_additive": "psi^2(phi+1) - [psi^2(phi)+psi^2(1)] = 2phi",
+    "non_additivity_gap": "1 + sqrt(5)"
+  }
+}

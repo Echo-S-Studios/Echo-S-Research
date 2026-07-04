@@ -1,0 +1,44 @@
+{
+  "_source_paper": "papers/2026-06-residual-return-learning/residual_return_learning.tex",
+  "_generated_by": "code/2026-06-residual-return-learning/exchange_rate.py",
+  "R_1": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      -1
+    ]
+  ],
+  "charpoly_R_1": "x**2 + x - 1",
+  "keystone_R": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      1
+    ]
+  ],
+  "charpoly_R": "x**2 - x - 1",
+  "neg_keystone": [
+    [
+      0,
+      -1
+    ],
+    [
+      -1,
+      -1
+    ]
+  ],
+  "charpoly_negR": "x**2 + x - 1",
+  "R_1_conjugate_to_neg_R": true,
+  "R_1_conjugate_to_R": false,
+  "reason": "characteristic polynomial is a similarity invariant; R_1 and -R share x^2+x-1 with distinct eigenvalues => similar over Q",
+  "discriminant_R_1": 5,
+  "discriminant_R": 5,
+  "shared_self_action_gap": "sqrt(5)",
+  "gaps_coincide": true
+}

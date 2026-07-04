@@ -1,0 +1,88 @@
+{
+  "_source_paper": "papers/2026-06-operator-algebra/operator-algebra-whitepaper.tex",
+  "_generated_by": "code/2026-06-operator-algebra/floor_monoid.py",
+  "monoid": "M(S, (+)) = <phi, 2, 3, 5, beta^2>  (multiplicative)",
+  "generators": [
+    {
+      "generator": "phi",
+      "value_exact": "1/2 + sqrt(5)/2",
+      "value_decimal": "1.61803398874989484820458683437",
+      "realised_as_measure_of": "x^2-x-1",
+      "realised_ok": true,
+      "norm_Qsqrt5": -1
+    },
+    {
+      "generator": "2",
+      "value_exact": "2",
+      "value_decimal": "2.00000000000000000000000000000",
+      "realised_as_measure_of": "x^2-2",
+      "realised_ok": true,
+      "norm_Qsqrt5": 4
+    },
+    {
+      "generator": "3",
+      "value_exact": "3",
+      "value_decimal": "3.00000000000000000000000000000",
+      "realised_as_measure_of": "x^2-3",
+      "realised_ok": true,
+      "norm_Qsqrt5": 9
+    },
+    {
+      "generator": "5",
+      "value_exact": "5",
+      "value_decimal": "5.00000000000000000000000000000",
+      "realised_as_measure_of": "x^2-5",
+      "realised_ok": true,
+      "norm_Qsqrt5": 25
+    },
+    {
+      "generator": "beta^2",
+      "value_exact": "5/2 + 3*sqrt(5)/2",
+      "value_decimal": "5.85410196624968454461376050310",
+      "realised_as_measure_of": "x^4+5x^2-5",
+      "realised_ok": true,
+      "norm_Qsqrt5": null
+    }
+  ],
+  "relation": {
+    "statement": "beta^2 = phi^2 * sqrt5",
+    "beta2_exact": "5/2 + 3*sqrt(5)/2",
+    "beta2_decimal": "5.85410196624968454461376050310",
+    "closed_form_(5+3sqrt5)/2": true,
+    "log_relation": "log(beta^2) = 2 log(phi) + (1/2) log(5)"
+  },
+  "non_unique_factorisation": {
+    "statement": "beta^2 . beta^2 = 5 . phi^4",
+    "holds": true,
+    "beta4_exact": "15*sqrt(5)/2 + 35/2"
+  },
+  "norms_Qsqrt5": {
+    "N(phi)": -1,
+    "N(2)": 4,
+    "N(3)": 9,
+    "N(5)": 25
+  },
+  "multiplicative_independence": {
+    "generators_tested": [
+      "phi",
+      "2",
+      "3",
+      "5"
+    ],
+    "search_box": "[-6,6]^4 over (log phi, log2, log3, log5)",
+    "integer_relations_found": [],
+    "independent": true
+  },
+  "structure": {
+    "atoms": 5,
+    "rank": 4,
+    "factorial": false,
+    "note": "5 atoms but rank 4 (one relation) -> not factorial"
+  },
+  "cost_floor": {
+    "least_generator": "phi",
+    "phi_decimal": "1.61803398874989484820458683437",
+    "no_element_in_open_interval_(1,phi)": true,
+    "note": "phi is the least generator -> monoid meets (1,phi) in nothing"
+  }
+}

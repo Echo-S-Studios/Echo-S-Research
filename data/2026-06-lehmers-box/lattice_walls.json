@@ -1,0 +1,61 @@
+{
+  "_source_paper": "papers/2026-06-lehmers-box/lehmers_box.tex",
+  "_generated_by": "code/2026-06-lehmers-box/lattice_walls.py",
+  "_description": "The lattice walls (pi/2)Z of Lehmer's Box (Section 4).",
+  "lattice_group_facts": {
+    "model": "(pi/2)Z ~ Z/4 (units of pi/2)",
+    "closed_under_addition": true,
+    "closed_under_doubling": true,
+    "closed_under_halving": false,
+    "half_of_pi_over_2_is_pi_over_4_off_lattice": true
+  },
+  "mu4_facts": {
+    "mu_4": "{1, i, -1, -i}",
+    "entries": [
+      {
+        "k": 0,
+        "z_real": "1.0",
+        "z_imag": "0.0",
+        "is_fourth_root_of_unity": true,
+        "matches_mu4": true
+      },
+      {
+        "k": 1,
+        "z_real": "5.8829316e-52",
+        "z_imag": "1.0",
+        "is_fourth_root_of_unity": true,
+        "matches_mu4": true
+      },
+      {
+        "k": 2,
+        "z_real": "-1.0",
+        "z_imag": "1.1765863e-51",
+        "is_fourth_root_of_unity": true,
+        "matches_mu4": true
+      },
+      {
+        "k": 3,
+        "z_real": "9.1049535e-52",
+        "z_imag": "-1.0",
+        "is_fourth_root_of_unity": true,
+        "matches_mu4": true
+      }
+    ]
+  },
+  "K_x2_split": {
+    "quadratic_in_x2": "y^2 + 5y - 5 = 0",
+    "upper_root_y": "0.8541019662496845",
+    "upper_gives": "x^2 > 0 -> real pair +/- K at arg {0, pi}",
+    "lower_root_y": "-5.854101966249685",
+    "lower_gives": "x^2 < 0 -> imaginary pair +/- i beta at arg {pi/2, 3pi/2}"
+  },
+  "salem_oncircle_off_lattice": {
+    "instance": "Lehmer L (degree 10 Salem)",
+    "n_oncircle_conjugates": 8,
+    "all_off_lattice": true,
+    "min_abs_real_part": "0.292332",
+    "min_abs_imag_part": "0.33192772",
+    "note": "each on-circle conjugate has |Re|>0 and |Im|>0, so its argument is not in (pi/2)Z; being a conjugate of beta>1 it is not a root of unity."
+  },
+  "all_catalog_arguments_in_halfpi_Z": true
+}

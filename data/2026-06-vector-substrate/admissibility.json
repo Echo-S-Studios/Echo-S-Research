@@ -1,0 +1,75 @@
+{
+  "_source_paper": "papers/2026-06-vector-substrate/vector_substrate.tex",
+  "_generated_by": "code/2026-06-vector-substrate/capacity_heights.py",
+  "phi4_minpoly": {
+    "phi4_minpoly": "x**2 - 7*x + 1",
+    "phi4_equals_3phi_plus_2": true
+  },
+  "mahler_coefficient_bound": {
+    "x**2 - 24": {
+      "all_bounds_hold": true
+    },
+    "x**2 - 7": {
+      "all_bounds_hold": true
+    },
+    "x**4 - 10*x**2 + 1": {
+      "all_bounds_hold": true
+    },
+    "x**2 - 7*x + 1": {
+      "all_bounds_hold": true
+    }
+  },
+  "irreducibility_classification": {
+    "x**2 - x - 1": {
+      "irreducible": true,
+      "factored": "x**2 - x - 1"
+    },
+    "x**2 - x": {
+      "irreducible": false,
+      "factored": "x*(x - 1)"
+    },
+    "x**2 - x + 1": {
+      "irreducible": true,
+      "factored": "x**2 - x + 1"
+    },
+    "x**2 - 1": {
+      "irreducible": false,
+      "factored": "(x - 1)*(x + 1)"
+    },
+    "x**2": {
+      "irreducible": false,
+      "factored": "x**2"
+    },
+    "x**2 + 1": {
+      "irreducible": true,
+      "factored": "x**2 + 1"
+    },
+    "x**2 + x - 1": {
+      "irreducible": true,
+      "factored": "x**2 + x - 1"
+    },
+    "x**2 + x": {
+      "irreducible": false,
+      "factored": "x*(x + 1)"
+    },
+    "x**2 + x + 1": {
+      "irreducible": true,
+      "factored": "x**2 + x + 1"
+    }
+  },
+  "admissibility_gate": {
+    "seed": "x^2 - 24 (2sqrt6)",
+    "reject_at_Hmax_23": true,
+    "admit_at_Hmax_24": true,
+    "admit_episode_budget_64_256": true,
+    "reject_degree_budget_Dmax_1": true,
+    "coeff_height": 24
+  },
+  "float_gate_artifact": {
+    "exact_mahler_sqrt7": 7,
+    "float_sqrt7_squared_repr": "7.000000000000001",
+    "float_strictly_above_7": true,
+    "ulp_gap": 8.881784197001252e-16,
+    "integer_gate_admits_sqrt7": true
+  }
+}

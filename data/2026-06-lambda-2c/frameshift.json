@@ -1,0 +1,33 @@
+{
+  "_source_paper": "papers/2026-06-lambda-2c/lambda_2c_paper.tex",
+  "_generated_by": "code/2026-06-lambda-2c/canonicalizations.py",
+  "frameshift_equation": "2 c C = sqrt(1+4C)",
+  "frameshift_solution": "sqrt(4*C + 1)/(2*C)",
+  "frameshift_matches_closed_form": true,
+  "golden_gate": {
+    "C": 1,
+    "c": "sqrt(5)/2",
+    "c_float": 1.118033988749895,
+    "lambda": "sqrt(5)",
+    "lambda_float": 2.23606797749979,
+    "lambda_equals_spectral_gap": true,
+    "phi_minus_psi": "sqrt(5)"
+  },
+  "canonicalizations": {
+    "jeffreys": {
+      "c": "1",
+      "status": "declared",
+      "cost_floor": "2 log muS"
+    },
+    "degree": {
+      "c": "n",
+      "status": "declared",
+      "cost_floor": "2n log muS"
+    },
+    "frameshift": {
+      "c": "sqrt(1+4C)/(2C)",
+      "status": "forced (gate at C=1)",
+      "cost_floor": "spectral gap sqrt(1+4C)"
+    }
+  }
+}

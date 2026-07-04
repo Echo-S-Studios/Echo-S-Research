@@ -1,0 +1,77 @@
+{
+  "_source_paper": "papers/2026-06-z5-no-salem-dichotomy/Z5-no-salem-dichotomy-whitepaper.tex",
+  "_generated_by": "code/2026-06-z5-no-salem-dichotomy/constants.py",
+  "constants": {
+    "phi": {
+      "defining_poly": "x^2 - x - 1",
+      "closed_form": "(1+sqrt5)/2",
+      "value": "1.61803398874989484820458683436563811772",
+      "poly_check_zero": "0",
+      "paper_ref": "Prop. 3.1"
+    },
+    "phi_squared": {
+      "closed_form": "(3+sqrt5)/2 = phi+1",
+      "value": "2.61803398874989484820458683436563811772",
+      "check_zero": "0",
+      "role": "forced Mahler floor of a real reciprocal unit (Lem. 2.5)",
+      "paper_ref": "Lem. 2.5 / Thm. 3.1(b)"
+    },
+    "phi_fourth": {
+      "closed_form": "(7+3*sqrt5)/2 = 3*phi+2",
+      "value": "6.854101966249684544613760503096914353161",
+      "check_zero": "0",
+      "check_3phi_plus_2": "0",
+      "role": "degree-4 pure-pentagon Mahler floor (Thm. 4.1); minimizer measure",
+      "paper_ref": "Thm. 4.1 / Sec. 7"
+    },
+    "mu_S_plastic_number": {
+      "defining_poly": "x^3 - x - 1",
+      "value": "1.324717957244746025960908854478097340734",
+      "residual_at_root": "-1.56e-61",
+      "is_pisot_conjugate_moduli_below_1": true,
+      "conjugate_moduli": [
+        "0.868836961833",
+        "0.868836961833"
+      ],
+      "description": "smallest Pisot number; forced non-reciprocal Mahler floor (Smyth)",
+      "paper_ref": "Lem. 2.4 (Smyth)"
+    },
+    "realification_bound_2_pow_1_5": {
+      "closed_form": "2^(1/5)",
+      "value": "1.148698354997035006798626946777927589444",
+      "fifth_power": "2.0",
+      "role": "prior forced floor via psi^5, improved to mu_S in this paper",
+      "paper_ref": "Rem. 6.2(1)"
+    },
+    "two_cos_72": {
+      "closed_form": "phi - 1 = (sqrt5-1)/2",
+      "value": "0.6180339887498948482045868343656381177203",
+      "check_zero": "0",
+      "root_of": "x^2 + x - 1",
+      "paper_ref": "Prop. 3.1"
+    },
+    "two_cos_144": {
+      "closed_form": "-phi = -(1+sqrt5)/2",
+      "value": "-1.61803398874989484820458683436563811772",
+      "check_zero": "0",
+      "root_of": "x^2 + x - 1",
+      "galois_conjugate_of": "two_cos_72 under sqrt5 -> -sqrt5",
+      "paper_ref": "Prop. 3.1"
+    },
+    "two_plus_sqrt3": {
+      "closed_form": "2 + sqrt3",
+      "value": "3.732050807568877293527446341505872366943",
+      "arises_as": "M of Phi_5*(x^2-4x+1); trace-4 real reciprocal unit",
+      "paper_ref": "Thm. 3.1(b) / Sec. 7 window {1, phi^2, 2+sqrt3}"
+    }
+  },
+  "forced_floor_ordering": {
+    "sequence": "2^(1/5) < mu_S < 2",
+    "two_pow_1_5": "1.1486983549970350068",
+    "mu_S": "1.324717957244746026",
+    "realized_floor": 2,
+    "ordering_holds": true,
+    "improvement_mu_S_minus_2_pow_1_5": "0.176019602248",
+    "paper_ref": "Table 1 / Thm. 3.1 (floor improved 2^(1/5) -> mu_S)"
+  }
+}

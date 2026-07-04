@@ -1,0 +1,39 @@
+{
+  "_source_paper": "papers/2026-07-relational-charge/relational_charge_paper.tex",
+  "_generated_by": "code/2026-07-relational-charge/census_deg12.py",
+  "family_size": 729,
+  "family_size_is_3_to_6": true,
+  "twist_fixed_count": 27,
+  "twist_fixed_is_27": true,
+  "twist_classes": 378,
+  "burnside_378": true,
+  "rejection_tally": {
+    "vanish_at_pm1": 39,
+    "trace_sturm_fail": 256,
+    "reducible": 46,
+    "salem": 37
+  },
+  "corrected_split_256_46": true,
+  "combined_trace_plus_reducible": 302,
+  "combined_is_302": true,
+  "tally_sums_to_378": true,
+  "salem_count_37": true,
+  "boundary_polynomial": {
+    "coeffs": [
+      -1,
+      -1,
+      -1,
+      0,
+      -1,
+      -1
+    ],
+    "poly": "x**12 - x**11 - x**10 - x**9 - x**7 - x**6 - x**5 - x**3 - x**2 - x + 1",
+    "reducible": true,
+    "has_phi10_factor": true,
+    "trace_pattern_1_0_5": true,
+    "bucketed_as": "reducible (cyclotomic factor overrides coincidental trace pattern)"
+  },
+  "headline": "all 37 certified Salem classes are relationally inert {Phi_1^12}",
+  "status": "[forced] per instance; [computed] complete family verification (ledger T)",
+  "all_37_inert_phi1_12": true
+}

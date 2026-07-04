@@ -1,0 +1,114 @@
+{
+  "_source_paper": "papers/2026-06-lehmers-box/lehmers_box.tex",
+  "_generated_by": "code/2026-06-lehmers-box/constants.py",
+  "_description": "Named numeric constants of Lehmer's Box, each derived from its defining polynomial or closed form.",
+  "_precision_digits": 40,
+  "constants": [
+    {
+      "key": "phi",
+      "symbol": "varphi",
+      "description": "golden ratio; the floor wall of Lehmer's Box",
+      "minimal_polynomial": "x^2 - x - 1",
+      "closed_form": "(1+sqrt5)/2",
+      "value": "1.61803398874989484820458683436563811772",
+      "paper_location": "abstract; Def. 2.9; Sec. 1.3",
+      "role": "floor wall"
+    },
+    {
+      "key": "tau",
+      "symbol": "tau",
+      "description": "tau = phi^{-1}, smaller root of x^2 + x - 1",
+      "minimal_polynomial": "x^2 + x - 1",
+      "closed_form": "(-1+sqrt5)/2",
+      "value": "0.6180339887498948482045868343656381177203",
+      "paper_location": "Def. 2.9",
+      "role": "catalog seed (tau)"
+    },
+    {
+      "key": "mu_S",
+      "symbol": "mu_S",
+      "description": "plastic number; smallest Pisot; Smyth non-reciprocal bound",
+      "minimal_polynomial": "x^3 - x - 1",
+      "closed_form": "real root of x^3-x-1",
+      "value": "1.324717957244746025960908854478097340734",
+      "paper_location": "Sec. 1.2; Lem. 2.7",
+      "role": "Smyth floor mu_S"
+    },
+    {
+      "key": "log_mu_S",
+      "symbol": "log mu_S",
+      "description": "natural log of the Smyth floor (nats)",
+      "minimal_polynomial": "",
+      "closed_form": "ln(mu_S)",
+      "value": "0.281199574322961846512050764067878299792",
+      "paper_location": "Cor. 4.9 (eq. floorval)",
+      "role": "cost floor (Smyth)"
+    },
+    {
+      "key": "log_phi",
+      "symbol": "log varphi",
+      "description": "natural log of the realised golden floor (nats)",
+      "minimal_polynomial": "",
+      "closed_form": "ln(phi)",
+      "value": "0.4812118250596034474977589134243684231352",
+      "paper_location": "Cor. 4.9 (eq. floorval)",
+      "role": "cost floor (realised)"
+    },
+    {
+      "key": "Mah_L",
+      "symbol": "Mah(L)",
+      "description": "Mahler measure of Lehmer's number L (smallest known)",
+      "minimal_polynomial": "x^10+x^9-x^7-x^6-x^5-x^4-x^3+x+1",
+      "closed_form": "dominant root of L (Salem)",
+      "value": "1.176280818259917506544070338474035050693",
+      "paper_location": "Sec. 1.2",
+      "role": "excluded emission (Salem, sub-mu_S)"
+    },
+    {
+      "key": "beta_4",
+      "symbol": "beta_4",
+      "description": "minimal degree-four Salem number; beta_4 > phi",
+      "minimal_polynomial": "x^4 - x^3 - x^2 - x + 1",
+      "closed_form": "dominant root (Salem)",
+      "value": "1.72208380573904224502706921215383146207",
+      "paper_location": "Cor. 5.5",
+      "role": "minimal Salem in K, above the floor"
+    },
+    {
+      "key": "gap",
+      "symbol": "phi^4",
+      "description": "'gap' seed value; roots phi^4, phi^-4 of x^2-7x+1",
+      "minimal_polynomial": "x^2 - 7x + 1",
+      "closed_form": "phi^4",
+      "value": "6.854101966249684544613760503096914353161",
+      "paper_location": "Def. 2.9; Rem. 3.3",
+      "role": "catalog seed (gap)"
+    },
+    {
+      "key": "imag_place_K",
+      "symbol": "|i beta|",
+      "description": "modulus of the off-circle complex place of Q(5^{1/4})",
+      "minimal_polynomial": "x^4 + 5x^2 - 5 (imag root)",
+      "closed_form": "sqrt((5+3sqrt5)/2)",
+      "value": "2.419525153051665330964032180217076538652",
+      "paper_location": "Sec. 5 (closing)",
+      "role": "complex place OFF the unit circle"
+    },
+    {
+      "key": "fourth_root_5",
+      "symbol": "5^{1/4}",
+      "description": "fourth root of 5; other off-circle modulus in Q(5^{1/4})",
+      "minimal_polynomial": "x^4 - 5",
+      "closed_form": "5^{1/4}",
+      "value": "1.495348781221220541911898994140913395363",
+      "paper_location": "Sec. 5 (closing)",
+      "role": "complex place OFF the unit circle"
+    }
+  ],
+  "ordering_facts": {
+    "Mah(L) < mu_S": true,
+    "mu_S < phi": true,
+    "phi < beta_4": true,
+    "0 < log_mu_S < log_phi": true
+  }
+}

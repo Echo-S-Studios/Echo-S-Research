@@ -1,0 +1,34 @@
+{
+  "_source_paper": "papers/2026-06-residual-return-learning/residual_return_learning.tex",
+  "_generated_by": "code/2026-06-residual-return-learning/crossfield.py",
+  "problem": "non-disjoint compositum Q(sqrt2)(sqrt2+sqrt3) = Q(sqrt2,sqrt3)",
+  "K": "Q(sqrt2) = Q[x]/(x^2-2)",
+  "m": 2,
+  "beta": "sqrt2+sqrt3",
+  "m_beta": "x**4 - 10*x**2 + 1",
+  "deg_m_beta": 4,
+  "m_beta_factors_over_K": "(x^2-2*sqrt2*x-1)*(x^2+2*sqrt2*x-1)",
+  "factorisation_verified": true,
+  "effective_degree_e_prime": 2,
+  "true_compositum_degree": 4,
+  "tensor_degree_does_not_exist": 8,
+  "operator_polynomial_deg6": "x**6 - 25*x**4 + 91*x**2 - 75",
+  "operator_polynomial_factored": "(x**2 - 3)*(x**4 - 22*x**2 + 25)",
+  "selected_factor_m_theta": "x**4 - 22*x**2 + 25",
+  "selected_m_theta_coeffs": [
+    1,
+    0,
+    -22,
+    0,
+    25
+  ],
+  "spurious_factor": "x^2-3 (root sqrt3 from embedding alpha=-sqrt2)",
+  "beta_reconstruction": "beta = -7/20*theta + 1/20*theta^3",
+  "beta_coords_in_power_basis": [
+    "0",
+    "-7/20",
+    "0",
+    "1/20"
+  ],
+  "reconstruction_verified": true
+}

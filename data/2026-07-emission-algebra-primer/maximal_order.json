@@ -1,0 +1,24 @@
+{
+  "_source_paper": "papers/2026-07-emission-algebra-primer/emission_algebra_primer.tex",
+  "_generated_by": "code/2026-07-emission-algebra-primer/d1b_arithmetic_core.py",
+  "golden_seed": {
+    "defining_polynomial": "x^2 - x - 1",
+    "disc_of_polynomial": 5,
+    "field_disc_Q_sqrt5": 5,
+    "field_disc_rule": "5 = 1 (mod 4) so disc(Q(sqrt5)) = 5 (fundamental)",
+    "index_squared": 1,
+    "index_OK_over_ZR": 1,
+    "is_maximal_order": true,
+    "conclusion": "Z[R] = Z[phi] = O_{Q(sqrt5)} (nothing missing)"
+  },
+  "clumsy_seed_2phi": {
+    "element": "2*phi = 1 + sqrt5",
+    "minimal_polynomial": "x**2 - 2*x - 4",
+    "disc_of_polynomial": 20,
+    "disc_factored": "20 = 2^2 * 5",
+    "index_squared": 4,
+    "index_OK_over_suborder": 2,
+    "is_maximal_order": false,
+    "conclusion": "proper suborder of index 2 -- arithmetically defective"
+  }
+}

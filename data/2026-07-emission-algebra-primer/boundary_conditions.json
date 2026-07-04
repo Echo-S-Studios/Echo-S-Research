@@ -1,0 +1,37 @@
+{
+  "_source_paper": "papers/2026-07-emission-algebra-primer/emission_algebra_primer.tex",
+  "_generated_by": "code/2026-07-emission-algebra-primer/d5_cyclotomic_floor.py",
+  "B1_floor_identity": {
+    "statement": "M >= 1, equality exactly on the cyclotomic locus A_1; M=1 is the identity of the monoid ([1,inf), x)",
+    "M_golden": "1.61803398875",
+    "M_mu4": "1.0"
+  },
+  "B2_sub_semiring": {
+    "statement": "A_1 closed under +, x, psi^n (roots of unity stay so)",
+    "verified": true
+  },
+  "B3_collapse_to_charge": {
+    "statement": "on A_1 only chi survives; chi: mu_4 = <i> -> Z/4Z",
+    "iso_chi_i^k_eq_k": true,
+    "coupling_is_addition_mod4": true,
+    "adams_is_multiplication_mod4": true,
+    "mu4_charges": {
+      "1": 0,
+      "i": 1,
+      "-1": 2,
+      "-i": 3
+    }
+  },
+  "B4_isolation_gap": {
+    "statement": "in A's emission class M in {1} U [phi, inf); gap width >= phi-1",
+    "gap_width_phi_minus_1": "0.61803398875",
+    "gap_equals_inv_phi": true,
+    "next_emitted_value": "phi ~ 1.618 (the golden object)",
+    "lehmer_lies_in_open_gap": "1 < 1.176... < phi -- but Lehmer is OUTSIDE A",
+    "epistemic": "FORCED in-class; OPEN in general (Lehmer's problem)"
+  },
+  "B5_one_way": {
+    "statement": "x and + are magnitude-nondecreasing (each factor >= 1); A_1 is a closed superselection sector",
+    "verified": true
+  }
+}

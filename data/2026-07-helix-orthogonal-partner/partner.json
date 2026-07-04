@@ -1,0 +1,104 @@
+{
+  "_source_paper": "papers/2026-07-helix-orthogonal-partner/helix_orthogonal_partner.tex",
+  "_generated_by": "code/2026-07-helix-orthogonal-partner/partner.py",
+  "section": "6 -- The orthogonal partner completes Z/4Z",
+  "results": {
+    "prop_6_1_full_charge": {
+      "chi_Kf": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "real_axis_charges_{0,2}": [
+        0,
+        2
+      ],
+      "imaginary_axis_charges_{1,3}": [
+        1,
+        3
+      ],
+      "cardinal_point_charges": {
+        "chi(1)": 0,
+        "chi(-1)": 2,
+        "chi(i)": 1,
+        "chi(-i)": 3
+      },
+      "complex_roots_real_parts": [
+        "0",
+        "0"
+      ],
+      "orthogonal_to_golden": "{1,3} is the pi/2-rotate of {0,2}; disjoint union = Z/4Z"
+    },
+    "prop_6_2_parity_criterion": {
+      "Kf_is_even": true,
+      "cons_is_even": false,
+      "res_is_even": false,
+      "cons_factorisation_residual": "0",
+      "res_factorisation_residual": "0",
+      "cons_complex_block_real_part": "phi^2 = (3+sqrt5)/2",
+      "cons_real_part_residual": "0",
+      "res_complex_block_real_part": "-phi = -(1+sqrt5)/2",
+      "res_real_part_residual": "0",
+      "note": "even Kf -> complex roots purely imaginary; non-even cons/res -> nonzero Re, off (pi/2)Z"
+    },
+    "prop_6_2_quartic_invariants": [
+      {
+        "name": "Kf",
+        "poly": "x**4 + 5*x**2 - 5",
+        "even": true,
+        "real_roots": 2,
+        "complex_pairs": 1,
+        "field_signature_r1_r2": "(2,1)",
+        "generates_Q_fifth_root_5": true,
+        "galois_group": "D4",
+        "galois_order": 8,
+        "galois_transitive": true,
+        "reciprocal": false,
+        "is_salem": false,
+        "mahler_closed_form": "phi^2 sqrt5",
+        "mahler_decimal": "5.854101966249684544613760503096914353161",
+        "mahler_numeric_abs_error": "4.06e-55"
+      },
+      {
+        "name": "cons",
+        "poly": "x**4 - 6*x**3 + 26*x**2 - 16*x - 4",
+        "even": false,
+        "real_roots": 2,
+        "complex_pairs": 1,
+        "field_signature_r1_r2": "(2,1)",
+        "generates_Q_fifth_root_5": true,
+        "galois_group": "D4",
+        "galois_order": 8,
+        "galois_transitive": true,
+        "reciprocal": false,
+        "is_salem": false,
+        "mahler_closed_form": "2 phi^5 = 11+5 sqrt5",
+        "mahler_decimal": "22.1803398874989484820458683436563811772",
+        "mahler_numeric_abs_error": "1.35e-54"
+      },
+      {
+        "name": "res",
+        "poly": "x**4 + 2*x**3 + 39*x**2 - 52*x + 11",
+        "even": false,
+        "real_roots": 2,
+        "complex_pairs": 1,
+        "field_signature_r1_r2": "(2,1)",
+        "generates_Q_fifth_root_5": true,
+        "galois_group": "D4",
+        "galois_order": 8,
+        "galois_transitive": true,
+        "reciprocal": false,
+        "is_salem": false,
+        "mahler_closed_form": "12+19 phi = (43+19 sqrt5)/2",
+        "mahler_decimal": "42.74264578624800211588714985294712423669",
+        "mahler_numeric_abs_error": "5.74e-55"
+      }
+    ],
+    "prop_6_2_golden_field_identities": {
+      "phi5_equals_(11+5 sqrt5)/2_residual": "0",
+      "2 phi5_equals_11+5 sqrt5_residual": "0",
+      "12+19 phi_equals_(43+19 sqrt5)/2_residual": "0"
+    }
+  }
+}

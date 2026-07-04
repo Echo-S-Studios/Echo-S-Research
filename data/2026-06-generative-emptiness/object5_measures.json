@@ -1,0 +1,67 @@
+{
+  "_source_paper": "papers/2026-06-generative-emptiness/generative_emptiness.tex",
+  "_generated_by": "code/2026-06-generative-emptiness/object5_current.py",
+  "object": "V -- the conserved current",
+  "paper_result": "Proposition 6.1 (block-diagonal), Proposition 6.2 (clean growth)",
+  "orbit_n_objects": 26,
+  "block_diagonal_all_on_lattice": true,
+  "clean_growth_all_avoid_band": true,
+  "on_circle_all_roots_of_unity": true,
+  "listed_measures": [
+    {
+      "operator_word": "phi",
+      "poly": "x**2 - x - 1",
+      "mahler_measure": "1.6180339887498948482",
+      "mahler_rounded_2dp": 1.62,
+      "closed_form": "phi",
+      "matches_closed_form": true
+    },
+    {
+      "operator_word": "phi^2",
+      "poly": "x**2 - 3*x + 1",
+      "mahler_measure": "2.6180339887498948482",
+      "mahler_rounded_2dp": 2.62,
+      "closed_form": "phi^2",
+      "matches_closed_form": true
+    },
+    {
+      "operator_word": "phi^4",
+      "poly": "x**2 - 7*x + 1",
+      "mahler_measure": "6.8541019662496845446",
+      "mahler_rounded_2dp": 6.85,
+      "closed_form": "phi^4",
+      "matches_closed_form": true
+    },
+    {
+      "operator_word": "phi^4 (x) phi^4",
+      "poly": "x**4 - 49*x**3 + 96*x**2 - 49*x + 1",
+      "mahler_measure": "46.978713763747791812",
+      "mahler_rounded_2dp": 46.98,
+      "closed_form": "phi^8 = 46.98",
+      "matches_closed_form": true
+    },
+    {
+      "operator_word": "phi (x) K",
+      "poly": "x**8 + 15*x**6 - 10*x**4 - 75*x**2 + 25",
+      "mahler_measure": "76.631189606246319687",
+      "mahler_rounded_2dp": 76.63,
+      "closed_form": "76.63 (M of phi (x) K)"
+    },
+    {
+      "operator_word": "sq(phi) (+) [phi^4 (x) phi^4]",
+      "poly": "x**6 - 52*x**5 + 244*x**4 - 386*x**3 + 244*x**2 - 52*x + 1",
+      "mahler_measure": "122.99186938124421665",
+      "mahler_rounded_2dp": 122.99,
+      "closed_form": "phi^10 = 122.99",
+      "matches_closed_form": true
+    },
+    {
+      "operator_word": "phi (x) phi (x) K",
+      "poly": "x**16 + 45*x**14 + 155*x**12 - 1800*x**10 - 6600*x**8 + 9000*x**6 + 3875*x**4 - 5625*x**2 + 625",
+      "mahler_measure": "8049.9223594996214535",
+      "mahler_rounded_2dp": 8049.92,
+      "closed_form": "8049.92 (M of phi (x) phi (x) K)"
+    }
+  ],
+  "orbit_csv": "object5_orbit.csv"
+}

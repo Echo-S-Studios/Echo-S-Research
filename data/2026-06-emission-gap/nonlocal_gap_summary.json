@@ -1,0 +1,14 @@
+{
+  "_source_paper": "papers/2026-06-emission-gap/emission_gap_paper.tex",
+  "_generated_by": "code/2026-06-emission-gap/nonlocal_identity.py",
+  "channel_end_sqrt5": "2.2360679774997896964",
+  "height_end_phi": "1.6180339887498948482",
+  "entropy_end_log_phi": "0.48121182505960344750",
+  "three_endpoints_distinct": true,
+  "h_equals_log_M": {
+    "identity": "h = log M (Lind-Schmidt-Ward)",
+    "exp_log_phi_equals_phi": true,
+    "golden_seed_entropy": "0.4812118250596034"
+  },
+  "note": "the correspondence across domains is of emptiness, not a shared endpoint"
+}

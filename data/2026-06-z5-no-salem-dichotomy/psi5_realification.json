@@ -1,0 +1,32 @@
+{
+  "_source_paper": "papers/2026-06-z5-no-salem-dichotomy/Z5-no-salem-dichotomy-whitepaper.tex",
+  "_generated_by": "code/2026-06-z5-no-salem-dichotomy/purepower.py",
+  "theorem": "Thm. 5.1 (pure power) + Rem. 6.2(1) (psi^5 realification)",
+  "family": "x^5 - m realizes M in {1} cup [2, infty); mu(5)=2 at x^5-2",
+  "mu_5": 2,
+  "floor_object": "x^5 - 2",
+  "psi5_realification": {
+    "identity": "M(psi^5 O) = M(O)^5",
+    "x5_minus_2": {
+      "psi5_image": "(x - 2)^5",
+      "fifth_powers_all_equal_2": true,
+      "totally_positive": true,
+      "M_psi5_O": "32.0",
+      "M_O": "2.0",
+      "M_O_equals_32_pow_1_5": true
+    },
+    "minimizer_check": {
+      "polynomial": "x^4 - x^3 + 6x^2 + 4x + 1",
+      "M_O": "6.8541019662496845446137605031",
+      "M_psi5_O": "15126.9999338930386481040299345",
+      "M_psi5_equals_M_pow_5": true,
+      "equals_phi20": true
+    },
+    "realification_bound": {
+      "value": "2^(1/5)",
+      "value_dps": "1.14869835499703500679862694678",
+      "weaker_than_2": true,
+      "reason": "the totally-positive (1,2) gap on psi^5 O yields only M(O) >= 2^(1/5); the fifth power is unavoidable, so asking psi^5 O to clear 32 is the original claim restated (circular)."
+    }
+  }
+}

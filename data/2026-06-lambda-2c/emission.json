@@ -1,0 +1,74 @@
+{
+  "_source_paper": "papers/2026-06-lambda-2c/lambda_2c_paper.tex",
+  "_generated_by": "code/2026-06-lambda-2c/emission.py",
+  "lehmer_band": {
+    "L": "1.17628081825991750654407033847403505069341581",
+    "L_float": 1.1762808182599176,
+    "muS_plastic": "1.32471795724474602596090885447809734073440406",
+    "muS_float": 1.324717957244746,
+    "phi_float": 1.618033988749895,
+    "ordering_1_L_muS_phi": true
+  },
+  "angle_confinement": {
+    "catalog_args_in_halfpiZ": true,
+    "halfpiZ": [
+      0,
+      "pi/2",
+      "pi",
+      "3pi/2"
+    ],
+    "closed_under_addition_and_doubling": true,
+    "oncircle_emit_is_4th_root_of_unity": [
+      "1",
+      "i",
+      "-1",
+      "-i"
+    ],
+    "no_operation_takes_square_root": true
+  },
+  "salem_conjugate": {
+    "minpoly": "x^4-x^3-x^2-x+1",
+    "beta4": 1.7220838057390422,
+    "beta4_exceeds_phi": true,
+    "salem_signature": {
+      "outside": 1,
+      "oncircle": 2,
+      "inside": 1
+    },
+    "oncircle_conjugate_angle_over_halfpi": 2.548374229199174,
+    "angle_is_irrational_multiple": true
+  },
+  "self_action_difference_set": {
+    "spec_ad_R": [
+      "-sqrt(5)",
+      "0",
+      "sqrt(5)"
+    ],
+    "equals_zero_pm_sqrt5": true,
+    "phi_minus_psi_equals_sqrt5": true
+  },
+  "engine_table": {
+    "Mah_x2mD_equals_D": "Mah(x^2 - D) = D = 1 + 4C",
+    "det_G_equals_4D": true,
+    "two_sqrt6_equals_sqrt24": true,
+    "cost_floors": {
+      "24": {
+        "minpoly": "x^2-24",
+        "mahler": 24,
+        "cost_2logMah": 6.3561076606958915
+      },
+      "7": {
+        "minpoly": "x^2-7",
+        "mahler": 7,
+        "cost_2logMah": 3.8918202981106265
+      }
+    },
+    "clifford_unity": "tau = x^2 + x - 1 (C=1 gate) = T^2 + T = 1"
+  },
+  "resolution": {
+    "no_salem_emitted": true,
+    "cost_floor": "lambda log phi > 0, uniform at every matrix size",
+    "band_1_muS_disjoint_from_image": true,
+    "general_lehmer": "untouched (not needed)"
+  }
+}

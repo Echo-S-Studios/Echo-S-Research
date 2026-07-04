@@ -1,0 +1,47 @@
+{
+  "_source_paper": "papers/2026-06-salem-slot/salem_slot.tex",
+  "_generated_by": "code/2026-06-salem-slot/make_superselection.py",
+  "_description": "Superselection sector: reducibility of the tensor products (cyclotomic x grow), the (pi/2)Z lattice closure of the operators, and the beta_4 off-lattice lift (Section 'entry').",
+  "tensor_products": {
+    "phi_tensor_phi": {
+      "factored": "(x + 1)**2*(x**2 - 3*x + 1)",
+      "equals_(x+1)^2(x^2-3x+1)": true,
+      "on_circle_root": "-1 (2nd root of unity, order 2)",
+      "grow_block_roots": "phi^2, phi^-2 (roots of x^2-3x+1)"
+    },
+    "phi4_tensor_phi4": {
+      "phi4_min_poly": "x**2 - 7*x + 1",
+      "factored": "(x - 1)**2*(x**2 - 47*x + 1)",
+      "equals_(x-1)^2(x^2-47x+1)": true,
+      "on_circle_root": "+1 (1st root of unity, order 1)"
+    }
+  },
+  "lattice_closure_Thm_superselect": {
+    "lattice_units_of_half_pi_mod_4": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "doubling_2k_mod4": [
+      0,
+      2
+    ],
+    "doubling_closed": true,
+    "addition_jk_mod4": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "addition_closed": true,
+    "claim": "squaring doubles arguments (2*(pi/2)Z subset (pi/2)Z); tensor adds arguments ((pi/2)Z+(pi/2)Z subset (pi/2)Z)"
+  },
+  "beta4_offlattice_lift": {
+    "trace_root": "-1.302775638",
+    "on_unit_circle": true,
+    "arg_over_pi": "0.72581289",
+    "off_half_pi_lattice": true,
+    "note": "off-lattice captured position lifts to an irrational-angle Salem conjugate"
+  }
+}

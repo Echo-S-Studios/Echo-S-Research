@@ -1,0 +1,33 @@
+{
+  "_source_paper": "papers/2026-06-salem-slot/salem_slot.tex",
+  "_generated_by": "code/2026-06-salem-slot/make_redirection.py",
+  "_description": "Exact algebraic identities of the redirection map and its 'forced' status (Sections 3, 5, 6, 7). Each 'holds' is a symbolic sympy verification.",
+  "amgm_square_Lem3_1": {
+    "claim": "beta + 1/beta - 2 = (sqrt(beta) - 1/sqrt(beta))^2",
+    "holds": true,
+    "limit_at_1": "2"
+  },
+  "occupant_bound_Thm3_3": {
+    "claim": "tau0 = beta+1/beta > 2 > phi for every Salem beta>1",
+    "tau0_minus_2_equals_quad": true,
+    "two_gt_phi": true,
+    "two_minus_phi": "3/2 - sqrt(5)/2"
+  },
+  "entropy_trade_Cor5_1": {
+    "claim": "log(beta+1/beta) > log(beta) for beta>1",
+    "difference_tau0_minus_beta": "1/b",
+    "difference_positive_for_b_gt_1": true
+  },
+  "golden_trace_Lem6_1": {
+    "claim": "phi + 1/phi = sqrt5",
+    "holds": true
+  },
+  "forced_selfaction_equals_tracedown_Prop7_1": {
+    "claim": "seed x^2-a x-1: ad_R grow eigenvalue (phi_a - psi_a) = trace-down (phi_a + 1/phi_a) = sqrt(a^2+4)",
+    "psi_is_neg_reciprocal": true,
+    "product_of_roots_is_minus1": true,
+    "grow_eigenvalue_equals_trace_down": true,
+    "equals_sqrt_a2_plus_4": true,
+    "golden_seed_a1_value": "sqrt(5)"
+  }
+}

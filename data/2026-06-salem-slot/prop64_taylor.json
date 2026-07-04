@@ -1,0 +1,46 @@
+{
+  "_source_paper": "papers/2026-06-salem-slot/salem_slot.tex",
+  "_generated_by": "code/2026-06-salem-slot/make_golden_rate.py",
+  "_description": "Golden limit and its rate (Section 6). Includes the CORRECTED Prop 6.4 quadratic Taylor coefficient -(sqrt5-2) = -phi^-3.",
+  "golden_limit_Thm6_2": {
+    "beta_30": "1.618033210875639",
+    "phi": "1.618033988749895",
+    "approaches_from_below": true,
+    "tau0_30": "2.236067496747203",
+    "sqrt5": "2.23606797749979",
+    "tau0_to_sqrt5_gap": "4.80753e-7"
+  },
+  "linear_rate_and_taylor_Prop6_4": {
+    "trace_prime": "trace'(beta) = 1 - 1/beta^2",
+    "trace_prime_at_phi": "-1/2 + sqrt(5)/2",
+    "slope_equals_phi_inverse": true,
+    "slope_equals_sqrt5_minus_1_over_2": true,
+    "curvature_half_trace_second_at_phi": "-2 + sqrt(5)",
+    "curvature_equals_sqrt5_minus_2": true,
+    "curvature_equals_phi_inverse_cubed": true,
+    "taylor_of_sqrt5_minus_tau0": {
+      "variable": "u = phi - beta",
+      "expansion": "sqrt5 - tau0 = phi^-1 * u - (sqrt5-2) * u^2 + O(u^3)",
+      "coeff_u1_symbolic": "-1/2 + sqrt(5)/2",
+      "coeff_u1_equals_phi_inverse": true,
+      "coeff_u2_symbolic": "2 - sqrt(5)",
+      "coeff_u2_equals_minus_sqrt5_minus_2": true,
+      "coeff_u2_equals_minus_phi_inverse_cubed": true,
+      "coeff_u3_symbolic": "-7/2 + 3*sqrt(5)/2",
+      "note": "CORRECTED sign (errata 2026-07-04): the quadratic term is NEGATIVE, -(sqrt5-2) = -phi^-3, not +(sqrt5-2). The linear slope phi^-1 and the curvature MAGNITUDE sqrt5-2 are unchanged."
+    }
+  },
+  "proof_sketch_Thm6_6": {
+    "P": "x^2 - x - 1",
+    "Pstar": "-x**2 - x + 1",
+    "Pstar_equals_1_minus_x_minus_x2": true,
+    "Pstar_at_phi": "-sqrt(5) - 1",
+    "Pstar_at_phi_equals_minus_2phi": true,
+    "Pprime_at_phi": "sqrt(5)",
+    "Pprime_at_phi_equals_sqrt5": true
+  },
+  "geometric_rate_asymptotics_Thm6_6": {
+    "gap_times_phi_n_limit": "0.894427191 = 2/sqrt5",
+    "consecutive_ratio_limit": "1.61803398875 = phi"
+  }
+}

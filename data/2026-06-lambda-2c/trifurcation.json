@@ -1,0 +1,104 @@
+{
+  "_source_paper": "papers/2026-06-lambda-2c/lambda_2c_paper.tex",
+  "_generated_by": "code/2026-06-lambda-2c/gate_ladder.py",
+  "family": "x^2 + x = C,  D = 1 + 4C",
+  "companion": {
+    "R_C": [
+      [
+        "0",
+        "C"
+      ],
+      [
+        "1",
+        "-1"
+      ]
+    ],
+    "charpoly": "-C + x**2 + x",
+    "eigenvalue_plus": "sqrt(4*C + 1)/2 - 1/2",
+    "eigenvalue_minus": "-sqrt(4*C + 1)/2 - 1/2",
+    "spectral_gap": "sqrt(4*C + 1)"
+  },
+  "gate_levels": {
+    "C": [
+      "1/4",
+      "1/2",
+      "1"
+    ],
+    "D": [
+      2,
+      3,
+      5
+    ],
+    "seeds": [
+      "sqrt(2)",
+      "sqrt(3)",
+      "sqrt(5)"
+    ],
+    "fields": [
+      "Q(sqrt2)",
+      "Q(sqrt3)",
+      "Q(sqrt5)"
+    ],
+    "critical_coherence_at_C_half": "sqrt(3)/2"
+  },
+  "golden_gate": {
+    "polynomial": "x^2 + x - 1  (Clifford unity T^2+T=1)",
+    "roots": [
+      "-1/2 + sqrt(5)/2",
+      "-sqrt(5)/2 - 1/2"
+    ],
+    "roots_are_reciprocal_golden_pair": "{1/phi, -phi}",
+    "disc_tau_and_phi": [
+      5,
+      5
+    ]
+  },
+  "trifurcation": {
+    "ad_charpoly": "t**2*(-4*C + t**2 - 1)",
+    "ad_charpoly_target": "t**2*(-4*C + t**2 - 1)",
+    "spectrum": [
+      "-sqrt(4C+1)",
+      "0",
+      "+sqrt(4C+1)"
+    ],
+    "zero_eigenspace": "span{I, R_C}",
+    "golden_gate_spectrum": [
+      "-sqrt(5)",
+      "0",
+      "+sqrt(5)"
+    ],
+    "golden_gate_zero_multiplicity": 2,
+    "ad_rank_at_golden": 2
+  },
+  "gate_balance": {
+    "gate_balance_golden": "sqrt(5)*1 = sqrt(1+4) = sqrt(5)",
+    "gate_balance_holds": true,
+    "discriminant_seed_mahler": {
+      "2": {
+        "minpoly": "x^2-2",
+        "mahler": 2,
+        "r_RC_equals_sqrt_mahler": true
+      },
+      "3": {
+        "minpoly": "x^2-3",
+        "mahler": 3,
+        "r_RC_equals_sqrt_mahler": true
+      },
+      "5": {
+        "minpoly": "x^2-5",
+        "mahler": 5,
+        "r_RC_equals_sqrt_mahler": true
+      },
+      "7": {
+        "minpoly": "x^2-7",
+        "mahler": 7,
+        "r_RC_equals_sqrt_mahler": true
+      },
+      "24": {
+        "minpoly": "x^2-24",
+        "mahler": 24,
+        "r_RC_equals_sqrt_mahler": true
+      }
+    }
+  }
+}

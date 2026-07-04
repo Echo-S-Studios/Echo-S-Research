@@ -1,0 +1,36 @@
+{
+  "_source_paper": "papers/2026-06-residual-return-learning/residual_return_learning.tex",
+  "_generated_by": "code/2026-06-residual-return-learning/learning_and_witness.py",
+  "field": "Q(sqrt2+sqrt3) = Q[x]/(x^4-10x^2+1)",
+  "forced_basis_B": "columns {1, theta}",
+  "projector_P": [
+    [
+      "1",
+      "0",
+      "5",
+      "0"
+    ],
+    [
+      "0",
+      "1",
+      "0",
+      "49/5"
+    ],
+    [
+      "0",
+      "0",
+      "0",
+      "0"
+    ],
+    [
+      "0",
+      "0",
+      "0",
+      "0"
+    ]
+  ],
+  "idempotent_P2_eq_P": true,
+  "fixes_columns_PB_eq_B": true,
+  "largest_numerator": 49,
+  "largest_denominator": 5
+}

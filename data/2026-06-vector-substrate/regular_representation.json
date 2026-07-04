@@ -1,0 +1,129 @@
+{
+  "_source_paper": "papers/2026-06-vector-substrate/vector_substrate.tex",
+  "_generated_by": "code/2026-06-vector-substrate/regular_representation.py",
+  "regular_representation": {
+    "rho_phi": {
+      "coord": [
+        0,
+        1
+      ],
+      "matrix": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "charpoly": "x**2 - x - 1",
+      "minpoly": "x**2 - x - 1",
+      "field_trace": 1,
+      "field_norm": -1
+    },
+    "rho_sqrt5": {
+      "coord": [
+        -1,
+        2
+      ],
+      "matrix": [
+        [
+          -1,
+          2
+        ],
+        [
+          2,
+          1
+        ]
+      ],
+      "charpoly": "x**2 - 5",
+      "minpoly": "x**2 - 5",
+      "field_trace": 0,
+      "field_norm": -5
+    },
+    "rho_3_derogatory": {
+      "coord": [
+        3,
+        0
+      ],
+      "matrix": [
+        [
+          3,
+          0
+        ],
+        [
+          0,
+          3
+        ]
+      ],
+      "charpoly": "x**2 - 6*x + 9",
+      "minpoly": "x - 3",
+      "multiplicity_n_over_d": 2
+    },
+    "multiplicity_sqrt2_in_deg4": {
+      "coord": [
+        0,
+        "-9/2",
+        0,
+        "1/2"
+      ],
+      "charpoly": "x**4 - 4*x**2 + 4",
+      "minpoly": "x**2 - 2",
+      "n": 4,
+      "d": 2
+    }
+  },
+  "spectral_diagonalisation": {
+    "field": "Q(sqrt5)",
+    "M_rows_are_embeddings": [
+      [
+        1,
+        "1/2 + sqrt(5)/2"
+      ],
+      [
+        1,
+        "1/2 - sqrt(5)/2"
+      ]
+    ],
+    "diag_rho_phi": [
+      [
+        "1/2 + sqrt(5)/2",
+        0
+      ],
+      [
+        0,
+        "1/2 - sqrt(5)/2"
+      ]
+    ],
+    "diag_rho_sqrt5": [
+      [
+        "sqrt(5)",
+        0
+      ],
+      [
+        0,
+        "-sqrt(5)"
+      ]
+    ],
+    "charpoly_rho_phi": "x**2 - x - 1"
+  },
+  "quartic_spectrum": {
+    "poly": "x^4 - 10*x^2 + 1",
+    "conjugates_closed_form": [
+      "sqrt2+sqrt3",
+      "sqrt2-sqrt3",
+      "-sqrt2+sqrt3",
+      "-sqrt2-sqrt3"
+    ],
+    "eigenvalue_magnitudes": [
+      0.31783724519578227,
+      0.31783724519578227,
+      3.1462643699419726,
+      3.1462643699419726
+    ],
+    "num_outside_unit_circle": 2,
+    "mahler_measure_closed_form": "5 + 2*sqrt(6)",
+    "mahler_measure_float": 9.898979485566356
+  }
+}

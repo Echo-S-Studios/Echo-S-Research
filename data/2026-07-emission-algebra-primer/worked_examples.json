@@ -1,0 +1,100 @@
+{
+  "_source_paper": "papers/2026-07-emission-algebra-primer/emission_algebra_primer.tex",
+  "_generated_by": "code/2026-07-emission-algebra-primer/d7_depth_examples.py",
+  "Ex_2_12_sl2_triple_by_hand": {
+    "N+_N-": [
+      [
+        "5/2 - sqrt(5)/2",
+        "sqrt(5)"
+      ],
+      [
+        "sqrt(5)",
+        "sqrt(5)/2 + 5/2"
+      ]
+    ],
+    "N-_N+": [
+      [
+        "sqrt(5)/2 + 5/2",
+        "-sqrt(5)"
+      ],
+      [
+        "-sqrt(5)",
+        "5/2 - sqrt(5)/2"
+      ]
+    ],
+    "[N+,N-]_eq_sqrt5_H": true,
+    "phi^2-psi^2_eq_sqrt5": true
+  },
+  "Ex_3_8_tropical_vs_naive_coupling": {
+    "coupled_spectrum": [
+      "phi^3",
+      "-phi",
+      "phi^-1",
+      "-phi^-3"
+    ],
+    "outside_unit_circle_count": 2,
+    "M_tropical": "3*sqrt(5)/2 + 7/2",
+    "M_naive_M(A)M(B)": "2 + sqrt(5)",
+    "off_by_factor": "1/2 + sqrt(5)/2",
+    "superposition_does_factor": "2 + sqrt(5)"
+  },
+  "Ex_4_7_sym2_in_the_flesh": {
+    "eigenvalues": [
+      "sqrt(5)/2 + 3/2",
+      "-1",
+      "3/2 - sqrt(5)/2"
+    ],
+    "phi_psi_eq_minus1": true,
+    "H_over_sqrt5_weights": [
+      2,
+      0,
+      -2
+    ]
+  },
+  "Prop_6_4_Ex_6_5_the_flip": {
+    "discriminant_D": "4*C + 1",
+    "gram_det_equals_D": true,
+    "flip_at_C": "-1/4",
+    "C=1_terrain": {
+      "D": 5,
+      "roots": [
+        "-1/2 + sqrt(5)/2",
+        "-sqrt(5)/2 - 1/2"
+      ],
+      "note": "real roots {1/phi, -phi}; sqrt5 marks the golden gate"
+    },
+    "C=-1_rotation": {
+      "D": -3,
+      "roots": [
+        "-1/2 - sqrt(3)*I/2",
+        "-1/2 + sqrt(3)*I/2"
+      ],
+      "note": "complex pair = primitive cube roots of unity"
+    }
+  },
+  "Ex_7_5_floor_collapse_orbit": {
+    "start_{i,-i}": {
+      "M": "1.0",
+      "charge": [
+        1,
+        3
+      ]
+    },
+    "psi^2_->_{-1,-1}": {
+      "M": "1.0",
+      "charge": [
+        2
+      ],
+      "matches_2*{1,3}mod4": [
+        2
+      ]
+    },
+    "psi^2_->_{1}": {
+      "M": "1.0",
+      "charge": [
+        0
+      ]
+    },
+    "note": "M stays exactly 1 throughout; only the charge cycles 1,3 -> 2 -> 0"
+  }
+}

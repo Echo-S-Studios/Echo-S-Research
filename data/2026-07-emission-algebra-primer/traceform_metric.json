@@ -1,0 +1,36 @@
+{
+  "_source_paper": "papers/2026-07-emission-algebra-primer/emission_algebra_primer.tex",
+  "_generated_by": "code/2026-07-emission-algebra-primer/d6_traceform_duality.py",
+  "basis": [
+    "H",
+    "S",
+    "J"
+  ],
+  "gram_matrix_Tr(XY)": [
+    [
+      10,
+      0,
+      0
+    ],
+    [
+      0,
+      10,
+      0
+    ],
+    [
+      0,
+      0,
+      -2
+    ]
+  ],
+  "diagonal": [
+    10,
+    10,
+    -2
+  ],
+  "signature": "(2,1)  -- diag(10,10,-2)",
+  "space_like": "H, S  (<X,X> = 10 > 0)",
+  "time_like": "J  (<J,J> = -2 < 0)",
+  "invariance_verified": true,
+  "seed_length": "(1/2)Tr(H^2) = 5 = L_1^2 - 4(-1)^1"
+}

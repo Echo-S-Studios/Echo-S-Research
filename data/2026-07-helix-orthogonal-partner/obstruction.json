@@ -1,0 +1,62 @@
+{
+  "_source_paper": "papers/2026-07-helix-orthogonal-partner/helix_orthogonal_partner.tex",
+  "_generated_by": "code/2026-07-helix-orthogonal-partner/obstruction.py",
+  "section": "3 -- The self-coupling obstruction",
+  "results": {
+    "prop_3_1_cayley_hamilton_collapse": {
+      "characteristic_operator": "Phi_R(Y) = Y^2 - Tr(R) Y + det(R) I",
+      "Phi_R_of_R": "[[0, 0], [0, 0]]",
+      "Phi_R_of_R_is_zero": true,
+      "equals_R2_minus_R_minus_I_residual": "[[0, 0], [0, 0]]",
+      "self_bracket_[R,R]": "[[0, 0], [0, 0]]",
+      "generative_grade_vanishes": true
+    },
+    "lem_3_2_floor_fixed_point": {
+      "rule": "M(psi^2 A) = M(A)^2, so a fixed point requires M(A)^2=M(A), i.e. M(A)=1",
+      "golden_phi_is_fixed_point": false,
+      "cyclotomic_object": "{i, -i}",
+      "cyclotomic_mahler": "1",
+      "cyclotomic_mahler_after_squaring": "1",
+      "cyclotomic_is_fixed_point": true
+    },
+    "prop_3_3_charge_sublattice": {
+      "sublattice": [
+        0,
+        2
+      ],
+      "union_closure": [
+        0,
+        2
+      ],
+      "sum_mod4_closure": [
+        0,
+        2
+      ],
+      "doubling_mod4": [
+        0
+      ],
+      "semigroup_closure": [
+        0,
+        2
+      ],
+      "orthogonal_coset_{1,3}_unreachable": true
+    },
+    "prop_3_4_empty_salem_slot": {
+      "on_circle_trace": "theta+theta^{-1} = 2 cos(alpha) in [-2,2]",
+      "on_circle_identity_residual": "0",
+      "expanding_identity": "t - 2 = (theta-1)^2/theta > 0 for theta>1",
+      "expanding_identity_residual": "0",
+      "bands_disjoint": true,
+      "occupant_tau0": "beta + beta^{-1}, beta = sqrt((5+3 sqrt5)/2)",
+      "tau0_minus_2_identity_residual": "0",
+      "tau0_decimal": "2.83282939117406458991836514065820926814",
+      "ordering_tau0_gt_2_gt_phi": true
+    },
+    "cor_3_5_no_self_coupling": {
+      "generative_grade_zero": true,
+      "phase_pinned_to_{0,2}": true,
+      "mahler_grows_away_from_floor": true,
+      "closure_requires_orthogonal_{1,3}": true
+    }
+  }
+}

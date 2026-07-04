@@ -1,0 +1,103 @@
+{
+  "_source_paper": "papers/2026-06-generative-emptiness/generative_emptiness.tex",
+  "_generated_by": "code/2026-06-generative-emptiness/object4_normalform.py",
+  "object": "IV -- the graded normal form",
+  "paper_result": "Proposition 5.1 (prop:normal)",
+  "content_polynomial": "x^4 - 1 = (x-1)(x+1)(x^2+1)",
+  "diagnostics": [
+    {
+      "object": "phi (x) phi",
+      "poly": "x**4 - x**3 - 4*x**2 - x + 1",
+      "factorization": [
+        {
+          "factor": "x + 1",
+          "multiplicity": 2,
+          "mahler_measure": "1.0",
+          "sector": "on-circle (divides x^4-1)"
+        },
+        {
+          "factor": "x**2 - 3*x + 1",
+          "multiplicity": 1,
+          "mahler_measure": "2.6180339887498948482",
+          "sector": "off-circle grow"
+        }
+      ],
+      "grow_factor": "x**2 - 3*x + 1",
+      "grow_measure": "2.6180339887498948482",
+      "grow_measure_closed_form": "phi^2",
+      "grow_measure_rounded": 2.618,
+      "grow_matches_closed_form": true,
+      "object_measure": "2.6180339887498948482",
+      "off_circle_total_measure": "2.6180339887498948482",
+      "off_circle_measure_equals_object": true,
+      "on_circle_divides_x4_minus_1": true
+    },
+    {
+      "object": "phi^4 (x) phi^4",
+      "poly": "x**4 - 49*x**3 + 96*x**2 - 49*x + 1",
+      "factorization": [
+        {
+          "factor": "x - 1",
+          "multiplicity": 2,
+          "mahler_measure": "1.0",
+          "sector": "on-circle (divides x^4-1)"
+        },
+        {
+          "factor": "x**2 - 47*x + 1",
+          "multiplicity": 1,
+          "mahler_measure": "46.978713763747791812",
+          "sector": "off-circle grow"
+        }
+      ],
+      "grow_factor": "x**2 - 47*x + 1",
+      "grow_measure": "46.978713763747791812",
+      "grow_measure_closed_form": "phi^8",
+      "grow_measure_rounded": 46.979,
+      "grow_matches_closed_form": true,
+      "object_measure": "46.978713763747791812",
+      "off_circle_total_measure": "46.978713763747791812",
+      "off_circle_measure_equals_object": true,
+      "on_circle_divides_x4_minus_1": true
+    },
+    {
+      "object": "K (x) K",
+      "poly": "x**16 - 50*x**14 + 25*x**12 + 13750*x**10 + 122500*x**8 + 343750*x**6 + 15625*x**4 - 781250*x**2 + 390625",
+      "factorization": [
+        {
+          "factor": "x**2 - 5*x - 5",
+          "multiplicity": 2,
+          "mahler_measure": "5.8541019662496845446",
+          "sector": "off-circle grow"
+        },
+        {
+          "factor": "x**2 + 5*x - 5",
+          "multiplicity": 2,
+          "mahler_measure": "5.8541019662496845446",
+          "sector": "off-circle grow"
+        },
+        {
+          "factor": "x**2 + 5",
+          "multiplicity": 4,
+          "mahler_measure": "5.0",
+          "sector": "imaginary axis (charges 1,3)"
+        }
+      ],
+      "grow_factor": "x**2 - 5*x - 5",
+      "grow_measure": "5.8541019662496845446",
+      "grow_measure_closed_form": "(5+3*sqrt5)/2",
+      "grow_measure_rounded": 5.854,
+      "grow_matches_closed_form": true,
+      "object_measure": "734042.40255855924707",
+      "off_circle_total_measure": "734042.40255855924707",
+      "off_circle_measure_equals_object": true,
+      "on_circle_divides_x4_minus_1": true
+    }
+  ],
+  "imaginary_sector_identity": {
+    "a_squared": "(-5 + 3*sqrt5)/2",
+    "b_squared": "(5 + 3*sqrt5)/2",
+    "a2_times_b2_minus_5": 0,
+    "identity": "a * b = sqrt5  ->  imaginary sector x^2 + 5 (roots +-i*sqrt5)",
+    "x2_plus_5_has_root_i_sqrt5": true
+  }
+}

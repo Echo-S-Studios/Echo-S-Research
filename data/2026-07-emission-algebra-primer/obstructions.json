@@ -1,0 +1,41 @@
+{
+  "_source_paper": "papers/2026-07-emission-algebra-primer/emission_algebra_primer.tex",
+  "_generated_by": "code/2026-07-emission-algebra-primer/helix_orthogonal_partner.py",
+  "obstruction_1_generative_grade": {
+    "Phi_R(R)_eq_R^2-R-I": [
+      [
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0"
+      ]
+    ],
+    "is_zero": true,
+    "[R,R]_is_zero": true,
+    "reading": "self-application returns the keystone and annihilates; no new direction is generated"
+  },
+  "obstruction_2_charge_closed": {
+    "union_{0,2}": [
+      0,
+      2
+    ],
+    "sum_mod4_{0,2}": [
+      0,
+      2
+    ],
+    "double_{0,2}": [
+      0
+    ],
+    "reaches_{1,3}": false,
+    "reading": "the golden charge is trapped in the index-2 subgroup {0,2}"
+  },
+  "obstruction_3_salem_slot_empty": {
+    "trace_down_excess_identity": "theta+1/theta-2 = (theta-1)^2/theta",
+    "excess_is_zero_diff": true,
+    "on_unit_circle": "t = 2 cos(a) in [-2, 2]",
+    "real_growth": "t > 2 for real theta > 1 (disjoint regimes)",
+    "reading": "every golden combination stays real; no complex unit-circle (Salem) eigenvalue can arise"
+  }
+}

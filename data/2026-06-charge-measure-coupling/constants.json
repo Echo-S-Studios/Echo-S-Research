@@ -1,0 +1,82 @@
+{
+  "_source_paper": "papers/2026-06-charge-measure-coupling/charge-measure-coupling-whitepaper-v4.tex",
+  "_generated_by": "code/2026-06-charge-measure-coupling/constants.py",
+  "constants": {
+    "phi": {
+      "defining_poly": "x^2 - x - 1",
+      "closed_form": "(1+sqrt5)/2",
+      "value": "1.61803398874989484820458683436563811772",
+      "poly_check_zero": "0",
+      "paper_ref": "Sec 1.4 / 4.3"
+    },
+    "phi_conjugate": {
+      "closed_form": "(1-sqrt5)/2 = -1/phi",
+      "value": "-0.6180339887498948482045868343656381177203",
+      "is_negative_at_argument_pi": true,
+      "phi_times_conj": "-1",
+      "paper_ref": "Sec 4.3 / Lem 4.5"
+    },
+    "sqrt5": {
+      "identity": "sqrt5 = phi + 1/phi = phi - phi'",
+      "value": "2.236067977499789696409173668731276235441",
+      "check_phi_plus_inv": "0",
+      "check_phi_minus_conj": "0",
+      "paper_ref": "Sec 4.3"
+    },
+    "phi_squared": {
+      "closed_form": "(3+sqrt5)/2 = phi + 1",
+      "value": "2.61803398874989484820458683436563811772",
+      "check": "0",
+      "paper_ref": "Lem 2.6 / ledger G"
+    },
+    "phi_fourth": {
+      "closed_form": "(7+3*sqrt5)/2 = 3*phi + 2",
+      "value": "6.854101966249684544613760503096914353161",
+      "check": "0",
+      "paper_ref": "Thm 6.5 / ledger I"
+    },
+    "two_cos_72": {
+      "closed_form": "phi - 1",
+      "value": "0.6180339887498948482045868343656381177203",
+      "check": "0",
+      "root_of": "x^2 + x - 1",
+      "paper_ref": "Prop 6.1"
+    },
+    "two_cos_144": {
+      "closed_form": "-phi",
+      "value": "-1.61803398874989484820458683436563811772",
+      "check": "0",
+      "root_of": "x^2 + x - 1",
+      "galois_conjugate_of": "two_cos_72 under sqrt5 -> -sqrt5",
+      "paper_ref": "Prop 6.1"
+    },
+    "mu_S_plastic_number": {
+      "defining_poly": "x^3 - x - 1",
+      "value": "1.324717957244746025960908854478097340734",
+      "residual_at_root": "-1.56e-61",
+      "is_pisot_conjugate_moduli_below_1": true,
+      "description": "smallest Pisot number; forced non-reciprocal Mahler floor",
+      "paper_ref": "Lem 2.5 (Smyth)"
+    },
+    "lehmer_tau": {
+      "defining_poly": "x^10 + x^9 - x^7 - x^6 - x^5 - x^4 - x^3 + x + 1",
+      "value": "1.176280818259917506544070338474035050693",
+      "in_gap_1_phi": true,
+      "description": "smallest known Salem number; below the emission floor phi",
+      "paper_ref": "Prop 8.2 / ledger L"
+    },
+    "beta_4": {
+      "defining_poly": "x^4 - x^3 - x^2 - x + 1",
+      "value": "1.72208380573904224502706921215383146207",
+      "in_gap_phi_2": true,
+      "description": "minimal degree-4 Salem number; sits in the odd-charge gap (phi,2)",
+      "paper_ref": "ledger F"
+    },
+    "two_plus_sqrt3": {
+      "closed_form": "2 + sqrt3",
+      "value": "3.732050807568877293527446341505872366943",
+      "arises_as": "Mahler measure of Phi_5 * (x^2 - 4x + 1); reciprocal Z/5 window",
+      "paper_ref": "Thm 6.4 window {1, phi^2, 2+sqrt3}"
+    }
+  }
+}

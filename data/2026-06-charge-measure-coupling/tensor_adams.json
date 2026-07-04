@@ -1,0 +1,109 @@
+{
+  "_source_paper": "papers/2026-06-charge-measure-coupling/charge-measure-coupling-whitepaper-v4.tex",
+  "_generated_by": "code/2026-06-charge-measure-coupling/tensor_adams.py",
+  "phi_tensor_phi_tropical": {
+    "object": "(x^2-x-1) (x) (x^2-x-1)",
+    "eigenvalues_desc": "{phi^2, -1, -1, phi'^2}",
+    "charpoly": [
+      1,
+      -1,
+      -4,
+      -1,
+      1
+    ],
+    "charpoly_factored": "(x+1)^2 (x^2-3x+1)",
+    "mahler_tropical": "2.6180339887498948482",
+    "equals_phi_squared": true,
+    "retracted_factored_value_phi4": "6.8541019662496845446",
+    "tropical_differs_from_factored": true,
+    "charge_group": 2,
+    "paper_ref": "Prop 3.3 / ledger M"
+  },
+  "offcircle_tensor": {
+    "object": "(x^3-2) (x) (x^4-2)",
+    "charpoly": "x^12-128",
+    "mahler": "128.0",
+    "mahler_equals_128": true,
+    "all_products_off_unit_circle": true,
+    "factored_law_agrees_here": "yes (off-circle: (2^{7/12})^12 = 2^7)",
+    "charge_group": 12,
+    "paper_ref": "Thm 3.5 / ledger D"
+  },
+  "adams_measure_law": {
+    "law": "M(psi^k A) = M(A)^k",
+    "checks": [
+      {
+        "base": "x^3-2",
+        "k": 2,
+        "mahler_psi_k": "4.0",
+        "predicted_M_pow_k": 4,
+        "matches": true
+      },
+      {
+        "base": "x^3-2",
+        "k": 3,
+        "mahler_psi_k": "8.0",
+        "predicted_M_pow_k": 8,
+        "matches": true
+      },
+      {
+        "base": "x^5-2",
+        "k": 2,
+        "mahler_psi_k": "4.0",
+        "predicted_M_pow_k": 4,
+        "matches": true
+      },
+      {
+        "base": "x^5-2",
+        "k": 3,
+        "mahler_psi_k": "8.0",
+        "predicted_M_pow_k": 8,
+        "matches": true
+      }
+    ],
+    "paper_ref": "Sec 2.1 table"
+  },
+  "adams_primary_decomposition": {
+    "object": "x^6-2",
+    "base_charge_group": 6,
+    "psi^3_residual_charge_group": 2,
+    "psi^2_residual_charge_group": 3,
+    "realizes": "CRT projectors: psi^3 -> Z/2 (2-primary), psi^2 -> Z/3 (3-primary)",
+    "paper_ref": "Thm 3.4 / ledger C"
+  },
+  "sumset_charge_rule": {
+    "object": "(x^3-2) (x) (x^4-2)",
+    "composite_charges_Z12": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "sumset_prediction": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "matches": true,
+    "fills_full_Z12 (coprime)": true,
+    "rule": "charge(a (x) b) = charge(a) + charge(b) (sumset)",
+    "paper_ref": "Sec 2.1 table / Thm 3.5"
+  }
+}

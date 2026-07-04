@@ -1,0 +1,37 @@
+{
+  "_source_paper": "papers/2026-06-operator-algebra/operator-algebra-whitepaper.tex",
+  "_generated_by": "code/2026-06-operator-algebra/adams_plethysm.py",
+  "endomorphism_laws": {
+    "OA-PSI-01_additive": {
+      "statement": "psi^n(A (+) B) = psi^n A (+) psi^n B",
+      "holds": true
+    },
+    "OA-PSI-02_multiplicative": {
+      "statement": "psi^n(A (x) B) = psi^n A (x) psi^n B",
+      "holds": true
+    },
+    "OA-PSI-03_unit_fixed": {
+      "statement": "psi^n(1) = 1",
+      "holds": true
+    },
+    "OA-PSI-04_composition": {
+      "statement": "psi^m . psi^n = psi^{mn}",
+      "holds": true
+    },
+    "OA-PSI-05_doubling_tower": {
+      "statement": "psi^{2^k} : lambda -> lambda^{2^k}",
+      "holds": true
+    }
+  },
+  "newton_identities": {
+    "OA-PSI_p2": {
+      "statement": "p_2 = e_1^2 - 2 e_2  (degrees 2..5)",
+      "holds": true
+    },
+    "general_recursion": {
+      "statement": "p_k = sum_{i=1}^{k-1} (-1)^{i-1} e_i p_{k-i} + (-1)^{k-1} k e_k  (k<=4)",
+      "holds": true
+    }
+  },
+  "lambda_ring": "psi^n both additive and multiplicative -> the operator set is a lambda-ring, not merely a semiring with a unary map (Adams ops determined by exterior powers via Newton)."
+}

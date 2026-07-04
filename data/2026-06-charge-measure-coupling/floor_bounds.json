@@ -1,0 +1,132 @@
+{
+  "_source_paper": "papers/2026-06-charge-measure-coupling/charge-measure-coupling-whitepaper-v4.tex",
+  "_generated_by": "code/2026-06-charge-measure-coupling/floor_bounds.py",
+  "reciprocal_unit_bound": {
+    "claim": "integer-trace reciprocal unit: trace>=3 => r>=phi^2; trace 2 => r=1",
+    "phi_squared": "2.61803398874989485",
+    "rows": [
+      {
+        "trace": 2,
+        "larger_root": "1.0",
+        "ge_phi_squared": false,
+        "is_one": true
+      },
+      {
+        "trace": 3,
+        "larger_root": "2.61803398874989485",
+        "ge_phi_squared": true,
+        "is_one": false
+      },
+      {
+        "trace": 4,
+        "larger_root": "3.73205080756887729",
+        "ge_phi_squared": true,
+        "is_one": false
+      },
+      {
+        "trace": 5,
+        "larger_root": "4.79128784747792",
+        "ge_phi_squared": true,
+        "is_one": false
+      },
+      {
+        "trace": 6,
+        "larger_root": "5.8284271247461901",
+        "ge_phi_squared": true,
+        "is_one": false
+      },
+      {
+        "trace": 7,
+        "larger_root": "6.85410196624968454",
+        "ge_phi_squared": true,
+        "is_one": false
+      },
+      {
+        "trace": 8,
+        "larger_root": "7.87298334620741689",
+        "ge_phi_squared": true,
+        "is_one": false
+      },
+      {
+        "trace": 9,
+        "larger_root": "8.88748219369606103",
+        "ge_phi_squared": true,
+        "is_one": false
+      },
+      {
+        "trace": 10,
+        "larger_root": "9.8989794855663562",
+        "ge_phi_squared": true,
+        "is_one": false
+      },
+      {
+        "trace": 11,
+        "larger_root": "10.9083269131959839",
+        "ge_phi_squared": true,
+        "is_one": false
+      }
+    ],
+    "paper_ref": "Lem 2.6"
+  },
+  "realification_bound": {
+    "realification_bound_2_pow_1_5": "1.14869835499703501",
+    "smyth_floor_mu_S": "1.32471795724474603",
+    "smyth_strictly_stronger": true,
+    "note": "psi^5 O totally positive with M(psi^5 O)=M(O)^5 gives only M(O)>=2^{1/5}; Smyth upgrades this to mu_S",
+    "paper_ref": "Thm 6.4"
+  },
+  "pentagon_degree4_sector": {
+    "minimiser": "x^4-x^3+6x^2+4x+1",
+    "construction_expands_to_minimiser": true,
+    "mahler": "6.85410196624968454",
+    "mahler_closed_form": "phi^4",
+    "phi_fourth": "6.85410196624968454",
+    "root_geometry": {
+      "outer_pair_modulus": "2.61803398874989485",
+      "outer_pair_is_phi2": true,
+      "outer_pair_angle_over_2pi": "0.2",
+      "inner_pair_modulus": "0.381966011250105152",
+      "inner_pair_is_phi_minus2": true,
+      "inner_pair_angle_over_2pi": "0.4"
+    },
+    "degree4_sector_floor": "M in {1} U [phi^4, inf)",
+    "paper_ref": "Prop 6.1 / Thm 6.5"
+  },
+  "emission_gap_sanity": {
+    "claim": "admissible => M in {1} U [phi, inf)",
+    "all_pass": true,
+    "objects": [
+      {
+        "object": "Phi_5 (x^4+x^3+x^2+x+1)",
+        "mahler": "1.0",
+        "in_{1}U[phi,inf)": true
+      },
+      {
+        "object": "x^3-2",
+        "mahler": "2.0",
+        "in_{1}U[phi,inf)": true
+      },
+      {
+        "object": "q_2 = x^4+x^2-1",
+        "mahler": "1.61803398874989485",
+        "in_{1}U[phi,inf)": true
+      },
+      {
+        "object": "pentagon quartic",
+        "mahler": "6.85410196624968454",
+        "in_{1}U[phi,inf)": true
+      },
+      {
+        "object": "x^5-2",
+        "mahler": "2.0",
+        "in_{1}U[phi,inf)": true
+      },
+      {
+        "object": "x^2-3x+1",
+        "mahler": "2.61803398874989485",
+        "in_{1}U[phi,inf)": true
+      }
+    ],
+    "paper_ref": "Prop 2.2"
+  }
+}

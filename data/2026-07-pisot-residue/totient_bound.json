@@ -1,0 +1,50 @@
+{
+  "_source_paper": "papers/2026-07-pisot-residue/pisot_residue_whitepaper.tex",
+  "_generated_by": "code/2026-07-pisot-residue/totient_bound.py",
+  "description": "Lemma 2.3 completeness bound 2 phi(M)^2 >= M (equality iff M=2), derived scan bound M <= 2 n^4, and totient-filter candidate counts.",
+  "completeness_bound": {
+    "swept_to": 200000,
+    "violations": [],
+    "equality_cases": [
+      2
+    ],
+    "unique_tight_case_is_M2": true
+  },
+  "derived_scan_bounds": [
+    {
+      "n": 5,
+      "deg_Rat_p": 25,
+      "scan_bound_2n4": 1250,
+      "matches_paper": true
+    },
+    {
+      "n": 10,
+      "deg_Rat_p": 100,
+      "scan_bound_2n4": 20000,
+      "matches_paper": true
+    },
+    {
+      "n": 12,
+      "deg_Rat_p": 144,
+      "scan_bound_2n4": 41472,
+      "matches_paper": true
+    }
+  ],
+  "totient_filter_candidate_counts": {
+    "quintic_Rat": {
+      "K_equals_deg": 25,
+      "num_candidates": 53,
+      "largest_m": 90
+    },
+    "deg12_Salem": {
+      "K_equals_deg": 144,
+      "num_candidates": 290,
+      "largest_m": 630
+    },
+    "C2": {
+      "K_equals_deg": 400,
+      "num_candidates": 790,
+      "largest_m": 1680
+    }
+  }
+}

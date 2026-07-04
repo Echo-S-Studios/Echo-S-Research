@@ -1,0 +1,61 @@
+{
+  "_source_paper": "papers/2026-06-vector-substrate/vector_substrate.tex",
+  "_generated_by": "code/2026-06-vector-substrate/growth_threshold.py",
+  "worked_episode": {
+    "residual_is_2sqrt6": true,
+    "residual_norm2_gain": 96,
+    "residual_trace_zero": 0,
+    "pythagoras_total": 116,
+    "captured_part_theta_norm2": 20,
+    "residual_part_norm2": 96,
+    "cross_term_trace": 0,
+    "check_116_eq_20_plus_96": true
+  },
+  "floors": {
+    "mu_S": "1.32471795724475",
+    "mu_S_is_root_x3_minus_x_minus_1": true,
+    "log_mu_S": "0.281199574323",
+    "constant_floor_lambda2": "0.562399148646",
+    "mu_L": "1.17628081825992",
+    "mu_L_less_than_mu_S": true,
+    "degree_aware_floor_n4": "2.2496",
+    "degree_aware_floor_n8": "4.49919"
+  },
+  "certified_enclosures": {
+    "sqrt7": {
+      "mahler": 7,
+      "log_interval": [
+        "194591/100000",
+        "6081/3125"
+      ],
+      "cost_upper_bound": "12162/3125",
+      "gain": 56,
+      "certified_grow": true
+    },
+    "2sqrt6": {
+      "mahler": 24,
+      "log_interval": [
+        "63561/20000",
+        "158903/50000"
+      ],
+      "cost_upper_bound": "158903/25000",
+      "gain": 96,
+      "certified_grow": true
+    }
+  },
+  "lattice_noise": {
+    "residual_trace_zero": 0,
+    "residual_norm2": "1/10",
+    "constant_floor": "0.562399",
+    "stop_below_floor": true,
+    "floor0_would_grow": true
+  },
+  "golden_gate_scale": {
+    "c_at_C1": "sqrt(5)/2",
+    "lambda_eq_2c": "sqrt(5)",
+    "ladder_root": "-1/2 + sqrt(5)/2",
+    "root_is_1_over_phi": true,
+    "note": "cross-domain SELECTED scale; internal consistency only"
+  },
+  "lambda": 2
+}

@@ -1,0 +1,177 @@
+{
+  "_source_paper": "papers/2026-06-lehmers-box/lehmers_box.tex",
+  "_generated_by": "code/2026-06-lehmers-box/tracedown_door.py",
+  "_description": "The trace-down face (Section 6) and the one door (Section 7) of Lehmer's Box.",
+  "rho_cyclotomic_lattice": {
+    "rho": "rho(z) = z + 1/z",
+    "images": {
+      "1": "2",
+      "I": "0",
+      "-1": "-2",
+      "-I": "0"
+    },
+    "image_set": [
+      "-2",
+      "0",
+      "2"
+    ],
+    "cyclotomic_lattice": "{2, 0, -2}"
+  },
+  "flip_discriminant": {
+    "discriminant": "D = t^2 - 4",
+    "samples": [
+      {
+        "t": "-3",
+        "D": "5.0",
+        "location": "off-circle"
+      },
+      {
+        "t": "-2",
+        "D": "0.0",
+        "location": "boundary"
+      },
+      {
+        "t": "-1.7",
+        "D": "-1.11",
+        "location": "on-circle"
+      },
+      {
+        "t": "0",
+        "D": "-4.0",
+        "location": "on-circle"
+      },
+      {
+        "t": "1.3",
+        "D": "-2.31",
+        "location": "on-circle"
+      },
+      {
+        "t": "2",
+        "D": "0.0",
+        "location": "boundary"
+      },
+      {
+        "t": "2.3",
+        "D": "1.29",
+        "location": "off-circle"
+      }
+    ]
+  },
+  "selfaction_difference_spectrum": {
+    "seed": "R = companion(x^2 - x - 1) (golden)",
+    "spectrum_sorted": [
+      -2.2360679775,
+      0.0,
+      0.0,
+      2.2360679775
+    ],
+    "expected": [
+      -2.2360679775,
+      0.0,
+      0.0,
+      2.2360679775
+    ],
+    "difference_set": "{0, +sqrt5, -sqrt5}",
+    "matches": true
+  },
+  "circulant_no_salem": {
+    "eigenvalue_formula": "lambda_j = sum_k c_k omega^{jk}, omega = e^{2 pi i/n}",
+    "n_trials": 8,
+    "all_eigenvalue_formulas_match": true,
+    "any_salem_factor_found": false,
+    "trials": [
+      {
+        "n": 4,
+        "circulant_row": [
+          1,
+          1,
+          -2,
+          -1
+        ],
+        "salem_factor": false
+      },
+      {
+        "n": 6,
+        "circulant_row": [
+          2,
+          1,
+          -3,
+          1,
+          -3,
+          3
+        ],
+        "salem_factor": false
+      },
+      {
+        "n": 6,
+        "circulant_row": [
+          -1,
+          1,
+          -2,
+          -2,
+          2,
+          0
+        ],
+        "salem_factor": false
+      },
+      {
+        "n": 6,
+        "circulant_row": [
+          0,
+          2,
+          3,
+          -2,
+          -2,
+          2
+        ],
+        "salem_factor": false
+      },
+      {
+        "n": 4,
+        "circulant_row": [
+          3,
+          1,
+          0,
+          2
+        ],
+        "salem_factor": false
+      },
+      {
+        "n": 3,
+        "circulant_row": [
+          2,
+          3,
+          -3
+        ],
+        "salem_factor": false
+      },
+      {
+        "n": 4,
+        "circulant_row": [
+          3,
+          1,
+          -3,
+          -1
+        ],
+        "salem_factor": false
+      },
+      {
+        "n": 3,
+        "circulant_row": [
+          3,
+          3,
+          -1
+        ],
+        "salem_factor": false
+      }
+    ]
+  },
+  "shoda_commutator_door": {
+    "necessary_direction": "tr[X,Y] = 0 for all commutators",
+    "max_abs_trace_over_random_commutators": "0.0",
+    "traceless_lehmer_carrier": "companion(L) (+) [1], size 11, trace 0",
+    "carrier_trace": 0,
+    "lehmer_divides_carrier_charpoly": true,
+    "note": "Shoda's theorem makes any traceless matrix a commutator, so a FREE commutator is the one door out of the box."
+  }
+}

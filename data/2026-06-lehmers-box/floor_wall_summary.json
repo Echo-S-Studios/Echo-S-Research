@@ -1,0 +1,41 @@
+{
+  "_source_paper": "papers/2026-06-lehmers-box/lehmers_box.tex",
+  "_generated_by": "code/2026-06-lehmers-box/floor_wall.py",
+  "_description": "Exhaustive degree-two Mahler scan (Lemma 3.1) plus the operator floor arithmetic (Lemma 3.2 / Remark 3.3).",
+  "scan_bound_abs_b_c": 12,
+  "n_quadratics_scanned": 625,
+  "open_strip": "(1, phi)",
+  "phi": "1.61803398874989484820458683437",
+  "n_measures_in_open_strip_1_phi": 0,
+  "measures_in_open_strip_1_phi": [],
+  "minimiser_measure_above_1": "1.61803398874989484820458683437",
+  "minimiser_equals_phi": true,
+  "argmin_polynomials_b_c": [
+    [
+      -1,
+      -1
+    ],
+    [
+      1,
+      -1
+    ]
+  ],
+  "argmin_discriminants": [
+    5
+  ],
+  "operator_floor": {
+    "generators": {
+      "phi": "1.61803398874989485",
+      "2": "2.0",
+      "3": "3.0",
+      "5": "5.0",
+      "phi^4": "6.85410196624968454",
+      "beta^2": "5.85410196624968454"
+    },
+    "phi_squared": "2.61803398874989485",
+    "all_generators_at_or_above_floor": true,
+    "all_pairwise_products_ge_phi_squared": true,
+    "all_squares_ge_phi_squared": true,
+    "note": "product (direct sum) and squaring keep the image in {1} U [phi, inf); no realised value falls in (1, phi)."
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "_source_paper": "papers/2026-06-salem-slot/salem_slot.tex",
+  "_generated_by": "code/2026-06-salem-slot/make_trace_regions.py",
+  "_description": "Downstairs trace structure (Section 2) and lift/interval structure (Lemma 4.4).",
+  "flip_discriminant": {
+    "claim": "D(t) = discriminant_x(x^2 - t x + 1) = t^2 - 4",
+    "computed": "t**2 - 4",
+    "match": true
+  },
+  "trace_down_lehmer": {
+    "P_lehmer": "x**10 + x**9 - x**7 - x**6 - x**5 - x**4 - x**3 + x + 1",
+    "trace_down_T": "t**5 + t**4 - 5*t**3 - 5*t**2 + 4*t + 3",
+    "roundtrip_lift_equals_lehmer": true
+  },
+  "three_regions": [
+    {
+      "region": "captured (|t|<2)",
+      "theta": "e^(i*3pi/21)",
+      "t_real": "1.8019377358",
+      "t_imag": "-5.74e-42",
+      "two_cos_psi": "1.8019377358"
+    },
+    {
+      "region": "captured (|t|<2)",
+      "theta": "e^(i*7pi/21)",
+      "t_real": "1.0",
+      "t_imag": "-1.15e-41",
+      "two_cos_psi": "1.0"
+    },
+    {
+      "region": "captured (|t|<2)",
+      "theta": "e^(i*12pi/21)",
+      "t_real": "-0.445041867913",
+      "t_imag": "-1.15e-41",
+      "two_cos_psi": "-0.445041867913"
+    },
+    {
+      "region": "grow (t>2)",
+      "theta": "1.0001",
+      "t_real": "2.00000001",
+      "t_imag": "0",
+      "two_cos_psi": "-"
+    },
+    {
+      "region": "grow (t>2)",
+      "theta": "1.5",
+      "t_real": "2.16666666667",
+      "t_imag": "0",
+      "two_cos_psi": "-"
+    },
+    {
+      "region": "grow (t>2)",
+      "theta": "10.0",
+      "t_real": "10.1",
+      "t_imag": "0",
+      "two_cos_psi": "-"
+    },
+    {
+      "region": "decay (t<-2)",
+      "theta": "-1.0001",
+      "t_real": "-2.00000001",
+      "t_imag": "0",
+      "two_cos_psi": "-"
+    },
+    {
+      "region": "decay (t<-2)",
+      "theta": "-3.0",
+      "t_real": "-3.33333333333",
+      "t_imag": "0",
+      "two_cos_psi": "-"
+    }
+  ],
+  "no_fourth_channel": {
+    "claim": "(-2,2) intersect (2,oo) is empty; 'on-circle and expanding' is a contradiction",
+    "intersection": "EmptySet",
+    "disjoint": true
+  },
+  "lehmer_totally_real_split": {
+    "trace_down_T": "t**5 + t**4 - 5*t**3 - 5*t**2 + 4*t + 3",
+    "all_real": true,
+    "roots": [
+      -1.8866096452,
+      -1.4688760099,
+      -0.5846639955,
+      0.9137317013,
+      2.0264179492
+    ],
+    "count_past_2": 1,
+    "count_inside_pm2": 4,
+    "tau0_dominant": 2.0264179492
+  },
+  "lattice_lift_roots_of_unity": {
+    "t-2": {
+      "lift": "x**2 - 2*x + 1",
+      "equals": "x**2 - 2*x + 1",
+      "match": true
+    },
+    "t (=0)": {
+      "lift": "x**2 + 1",
+      "equals": "x**2 + 1",
+      "match": true
+    },
+    "t+2": {
+      "lift": "x**2 + 2*x + 1",
+      "equals": "x**2 + 2*x + 1",
+      "match": true
+    }
+  },
+  "interval_endpoints": {
+    "t=2": {
+      "lift": "x**2 - 2*x + 1",
+      "roots": [
+        "1"
+      ]
+    },
+    "t=sqrt5": {
+      "lift": "x^2 - sqrt5*x + 1",
+      "root_product": "1",
+      "root_sum": "sqrt(5)",
+      "golden_pair": true
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "_source_paper": "papers/2026-07-pisot-residue/pisot_residue_whitepaper.tex",
+  "_generated_by": "code/2026-07-pisot-residue/zstar_sharpness.py",
+  "description": "Proposition 3.4 witness Z* = x^4-3x^2+1 (scan {Phi_1^4,Phi_2^4}) and Remark 3.5 parent example x^4-2 (scan {Phi_1^4,Phi_2^4,Phi_4^4}); together they isolate every hypothesis of the modulus-pinning theorem.",
+  "Z_star_witness": {
+    "Z_star": "x^4 - 3x^2 + 1",
+    "factorization": "(x^2-x-1)(x^2+x-1)",
+    "factorization_exact": true,
+    "f1_irreducible": true,
+    "f2_irreducible": true,
+    "f1_roots": [
+      "1/2 - sqrt(5)/2",
+      "1/2 + sqrt(5)/2"
+    ],
+    "f2_roots": [
+      "-sqrt(5)/2 - 1/2",
+      "-1/2 + sqrt(5)/2"
+    ],
+    "shared_modulus_phi": true,
+    "cross_factor_ratio_phi_over_minus_phi": "-1",
+    "ratio_is_primitive_2nd_root_of_unity": true,
+    "deg_Rat": 16,
+    "scan": {
+      "factors": [
+        {
+          "m": 1,
+          "multiplicity": 4
+        },
+        {
+          "m": 2,
+          "multiplicity": 4
+        }
+      ],
+      "pretty": "{Phi_1^4, Phi_2^4}"
+    },
+    "scan_is_phi1_4_phi2_4": true
+  },
+  "x4_minus_2_sharpness": {
+    "polynomial": "x^4 - 2",
+    "irreducible": true,
+    "deg_Rat": 16,
+    "scan": {
+      "factors": [
+        {
+          "m": 1,
+          "multiplicity": 4
+        },
+        {
+          "m": 2,
+          "multiplicity": 4
+        },
+        {
+          "m": 4,
+          "multiplicity": 4
+        }
+      ],
+      "pretty": "{Phi_1^4, Phi_2^4, Phi_4^4}"
+    },
+    "scan_is_phi1_4_phi2_4_phi4_4": true
+  }
+}

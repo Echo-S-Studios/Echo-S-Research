@@ -1,0 +1,30 @@
+{
+  "_source_paper": "papers/2026-06-lambda-2c/lambda_2c_paper.tex",
+  "_generated_by": "code/2026-06-lambda-2c/kuramoto.py",
+  "division_of_labour": {
+    "dynamics_provides": "critical point z_c = sqrt3/2, mean-field sqrt exponent",
+    "frameshift_provides": "the gate lambda = 2c, lambda = sqrt5 at C=1"
+  },
+  "lorentzian_threshold": {
+    "density": "gamma / (pi (gamma^2 + omega^2))",
+    "g0": "1/(pi*gamma)",
+    "K_c": "2*gamma",
+    "K_c_equals_2gamma": true,
+    "density_integrates_to_1": true
+  },
+  "mean_field_exponent": {
+    "normal_form": "dr/dt = a r - b r^3",
+    "nontrivial_branch": "sqrt(a/b)",
+    "branch_is_sqrt_ab": true,
+    "order_parameter_scaling": "r ~ sqrt(K - K_c)",
+    "exponent": "1/2",
+    "exponent_is_half": true
+  },
+  "critical_coherence": {
+    "C": "1/2",
+    "D": 3,
+    "z_c": "sqrt(3)/2",
+    "z_c_float": 0.8660254037844386,
+    "z_c_equals_sqrt3_over_2": true
+  }
+}

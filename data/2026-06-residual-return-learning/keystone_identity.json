@@ -1,0 +1,49 @@
+{
+  "_source_paper": "papers/2026-06-residual-return-learning/residual_return_learning.tex",
+  "_generated_by": "code/2026-06-residual-return-learning/keystone_unify.py",
+  "proposition": "the phi-keystone is one object (Prop 6.2)",
+  "route1_companion_of_golden_law": [
+    [
+      "0",
+      "1"
+    ],
+    [
+      "1",
+      "1"
+    ]
+  ],
+  "route2_language_keystone_R": [
+    [
+      "0",
+      "1"
+    ],
+    [
+      "1",
+      "1"
+    ]
+  ],
+  "route3_clifford_cl_half_1_mhalf_0": [
+    [
+      "0",
+      "1"
+    ],
+    [
+      "1",
+      "1"
+    ]
+  ],
+  "all_three_equal": true,
+  "minimal_polynomial": "x**2 - x - 1",
+  "minimal_polynomial_coeffs": [
+    1,
+    -1,
+    -1
+  ],
+  "golden_law_R2_eq_R_plus_I": true,
+  "mahler_measure": "1.61803398874989484820458683436563811772",
+  "mahler_equals_phi": true,
+  "phi_value": "1/2 + sqrt(5)/2",
+  "TYPE_R_gen": true,
+  "det_R": -1,
+  "scalar_part_tau_R": "1/2"
+}

@@ -1,0 +1,119 @@
+{
+  "_source_paper": "papers/2026-06-emission-gap/emission_gap_paper.tex",
+  "_generated_by": "code/2026-06-emission-gap/mahler_gap.py",
+  "degree2_scan": {
+    "count": 625,
+    "any_in_open_gap_1_phi": false,
+    "min_measure_above_one": "1.6180339887498948482",
+    "min_equals_phi": true,
+    "phi": "1.6180339887498948482",
+    "mu_S": "1.3247179572447460260"
+  },
+  "reciprocal_jump_x2_minus_bx_plus_1": [
+    {
+      "b": 0,
+      "mahler_measure": "1.000000000000000",
+      "equals_one": true,
+      "ge_phi_squared": false
+    },
+    {
+      "b": 1,
+      "mahler_measure": "1.000000000000000",
+      "equals_one": true,
+      "ge_phi_squared": false
+    },
+    {
+      "b": 2,
+      "mahler_measure": "1.000000000000000",
+      "equals_one": true,
+      "ge_phi_squared": false
+    },
+    {
+      "b": 3,
+      "mahler_measure": "2.618033988749895",
+      "equals_one": false,
+      "ge_phi_squared": true
+    },
+    {
+      "b": 4,
+      "mahler_measure": "3.732050807568877",
+      "equals_one": false,
+      "ge_phi_squared": true
+    },
+    {
+      "b": 5,
+      "mahler_measure": "4.791287847477920",
+      "equals_one": false,
+      "ge_phi_squared": true
+    },
+    {
+      "b": 6,
+      "mahler_measure": "5.828427124746190",
+      "equals_one": false,
+      "ge_phi_squared": true
+    },
+    {
+      "b": 7,
+      "mahler_measure": "6.854101966249685",
+      "equals_one": false,
+      "ge_phi_squared": true
+    },
+    {
+      "b": 8,
+      "mahler_measure": "7.872983346207417",
+      "equals_one": false,
+      "ge_phi_squared": true
+    },
+    {
+      "b": 9,
+      "mahler_measure": "8.887482193696061",
+      "equals_one": false,
+      "ge_phi_squared": true
+    },
+    {
+      "b": 10,
+      "mahler_measure": "9.898979485566356",
+      "equals_one": false,
+      "ge_phi_squared": true
+    },
+    {
+      "b": 11,
+      "mahler_measure": "10.90832691319598",
+      "equals_one": false,
+      "ge_phi_squared": true
+    },
+    {
+      "b": 12,
+      "mahler_measure": "11.91607978309962",
+      "equals_one": false,
+      "ge_phi_squared": true
+    }
+  ],
+  "oplus_multiplicativity": {
+    "identity": "M(p (+) q) = M(p) M(q)",
+    "M_phi": "1.618033988749895",
+    "M_sqrt2": "2.000000000000000",
+    "M_phi_oplus_sqrt2": "3.236067977499790",
+    "product_M_phi_times_M_sqrt2": "3.236067977499790",
+    "holds": true,
+    "equals_3p236": true
+  },
+  "squaring_squares_measure": {
+    "identity": "M(theta -> theta^2) = M(theta)^2",
+    "M_phi_squared_minpoly": "x^2 - 3x + 1",
+    "M_of_that": "2.618033988749895",
+    "M_phi_squared": "2.618033988749895",
+    "holds": true
+  },
+  "kron_sample": {
+    "count": 25,
+    "any_in_open_gap_1_phi": false,
+    "min_nontrivial_measure": "2.6180339887498948482",
+    "min_equals_phi_squared": true
+  },
+  "cyclotomic_quadratics_measure_one": {
+    "x^2-x+1": "1.00000",
+    "x^2+1": "1.00000",
+    "x-1": "1.00000"
+  }
+}

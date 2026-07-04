@@ -1,0 +1,164 @@
+{
+  "_source_paper": "papers/2026-06-vector-substrate/vector_substrate.tex",
+  "_generated_by": "code/2026-06-vector-substrate/invariant_factors.py",
+  "bridge_2sqrt6": {
+    "coord": [
+      -5,
+      0,
+      1,
+      0
+    ],
+    "matrix": [
+      [
+        -5,
+        0,
+        -1,
+        0
+      ],
+      [
+        0,
+        -5,
+        0,
+        -1
+      ],
+      [
+        1,
+        0,
+        5,
+        0
+      ],
+      [
+        0,
+        1,
+        0,
+        5
+      ]
+    ],
+    "matches_rho_of_coord": true,
+    "invariant_factors": [
+      "x**2 - 24",
+      "x**2 - 24"
+    ],
+    "minpoly_from_matrix": "x**2 - 24",
+    "minpoly_from_sympy": "x**2 - 24",
+    "largest_invariant_factor": "x**2 - 24",
+    "product_if_equals_charpoly": true,
+    "square_is_24": true,
+    "monic_integer_admissible": true,
+    "n_over_d": 2
+  },
+  "charpoly_insufficient": {
+    "block_sum": {
+      "matrix": [
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          1,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ]
+      ],
+      "charpoly_factored": "(x**2 - x - 1)**2",
+      "trace": 2,
+      "invariant_factors": [
+        "x**2 - x - 1",
+        "x**2 - x - 1"
+      ],
+      "annihilated_by_x2mxm1": true
+    },
+    "companion_of_square": {
+      "matrix": [
+        [
+          0,
+          0,
+          0,
+          -1
+        ],
+        [
+          1,
+          0,
+          0,
+          -2
+        ],
+        [
+          0,
+          1,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          1,
+          2
+        ]
+      ],
+      "charpoly_factored": "(x**2 - x - 1)**2",
+      "trace": 2,
+      "invariant_factors": [
+        "x**4 - 2*x**3 - x**2 + 2*x + 1"
+      ],
+      "annihilated_by_x2mxm1": false
+    },
+    "similar": false
+  },
+  "jordan_full_list": {
+    "A1_J2plusJ2": {
+      "charpoly": "x**4",
+      "minpoly": "x**2",
+      "invariant_factors": [
+        "x**2",
+        "x**2"
+      ],
+      "rank": 2
+    },
+    "A2_J2plusJ1plusJ1": {
+      "charpoly": "x**4",
+      "minpoly": "x**2",
+      "invariant_factors": [
+        "x",
+        "x",
+        "x**2"
+      ],
+      "rank": 1
+    },
+    "similar": false
+  },
+  "completeness_derogatory": {
+    "matrix": [
+      [
+        3,
+        0
+      ],
+      [
+        0,
+        3
+      ]
+    ],
+    "invariant_factors": [
+      "x - 3",
+      "x - 3"
+    ],
+    "product": "x**2 - 6*x + 9",
+    "charpoly": "x**2 - 6*x + 9",
+    "largest_if": "x - 3",
+    "minpoly": "x - 3"
+  }
+}

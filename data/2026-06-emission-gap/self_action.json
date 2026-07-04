@@ -1,0 +1,83 @@
+{
+  "_source_paper": "papers/2026-06-emission-gap/emission_gap_paper.tex",
+  "_generated_by": "code/2026-06-emission-gap/self_action.py",
+  "golden_discriminant": {
+    "poly": "x^2 - x - 1",
+    "disc_b2_minus_4ac": 5,
+    "sqrt_disc": "2.2360679774997896964",
+    "note": "channel threshold sqrt(D) = sqrt5"
+  },
+  "adR_spectrum": {
+    "host": "R = companion(x^2 - x - 1)",
+    "operator": "ad_R = R (x) I - I (x) R^T on 2x2 matrix space (dim 4)",
+    "spectrum": [
+      -2.2360679775,
+      0.0,
+      0.0,
+      2.2360679775
+    ],
+    "expected": [
+      -2.23606797749979,
+      0.0,
+      0.0,
+      2.23606797749979
+    ],
+    "matches_pm_sqrt5_and_0": true,
+    "off_unit_circle": true
+  },
+  "difference_spectrum_general": {
+    "M": [
+      [
+        3.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        -2.0,
+        4.0
+      ],
+      [
+        1.0,
+        0.0,
+        5.0
+      ]
+    ],
+    "difference_set": [
+      -7.126709,
+      -4.515988,
+      -2.610721,
+      0.0,
+      0.0,
+      0.0,
+      2.610721,
+      4.515988,
+      7.126709
+    ],
+    "ad_M_spectrum": [
+      -7.126709,
+      -4.515988,
+      -2.610721,
+      0.0,
+      -0.0,
+      0.0,
+      2.610721,
+      4.515988,
+      7.126709
+    ],
+    "matches": true
+  },
+  "K_difference_2K": {
+    "derivation": "substitute x -> u/2 into x^4+5x^2-5 and clear denominators",
+    "min_poly_of_2K": "x**4 + 20*x**2 - 80",
+    "matches_substitution": true,
+    "signature_r1_r2": [
+      2,
+      1
+    ],
+    "complex_place_modulus": "4.83905030610",
+    "two_beta": "4.83905030610",
+    "complex_place_off_circle": true,
+    "is_salem": false
+  }
+}

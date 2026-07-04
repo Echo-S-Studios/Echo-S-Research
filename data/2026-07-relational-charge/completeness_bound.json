@@ -1,0 +1,118 @@
+{
+  "_source_paper": "papers/2026-07-relational-charge/relational_charge_paper.tex",
+  "_generated_by": "code/2026-07-relational-charge/completeness_bound.py",
+  "lemma_4_5_totient_bound": {
+    "inequality": "2 phi(M)^2 >= M for all M >= 1",
+    "range_checked": 200000,
+    "violations": [],
+    "tight_cases": [
+      2
+    ],
+    "unique_tight_case_is_2": true,
+    "status": "[forced] (proof) + [computed] (sieve, ledger N)"
+  },
+  "sieve_matches_sympy_totient_to_3000": true,
+  "prime_power_steps": {
+    "two_part_phi_2a_equals_2a_minus_1": true,
+    "odd_prime_power_phi_ge_sqrt": true
+  },
+  "phi_le_deg_forces_M_le_2deg2": [
+    {
+      "deg_cap": 1,
+      "max_M_with_phi_le_cap": 2,
+      "any_M_beyond_2dcap2_with_phi_le_cap": false
+    },
+    {
+      "deg_cap": 2,
+      "max_M_with_phi_le_cap": 6,
+      "any_M_beyond_2dcap2_with_phi_le_cap": false
+    },
+    {
+      "deg_cap": 5,
+      "max_M_with_phi_le_cap": 12,
+      "any_M_beyond_2dcap2_with_phi_le_cap": false
+    },
+    {
+      "deg_cap": 10,
+      "max_M_with_phi_le_cap": 30,
+      "any_M_beyond_2dcap2_with_phi_le_cap": false
+    },
+    {
+      "deg_cap": 16,
+      "max_M_with_phi_le_cap": 60,
+      "any_M_beyond_2dcap2_with_phi_le_cap": false
+    },
+    {
+      "deg_cap": 40,
+      "max_M_with_phi_le_cap": 150,
+      "any_M_beyond_2dcap2_with_phi_le_cap": false
+    },
+    {
+      "deg_cap": 100,
+      "max_M_with_phi_le_cap": 420,
+      "any_M_beyond_2dcap2_with_phi_le_cap": false
+    },
+    {
+      "deg_cap": 144,
+      "max_M_with_phi_le_cap": 630,
+      "any_M_beyond_2dcap2_with_phi_le_cap": false
+    },
+    {
+      "deg_cap": 256,
+      "max_M_with_phi_le_cap": 1050,
+      "any_M_beyond_2dcap2_with_phi_le_cap": false
+    }
+  ],
+  "quoted_scan_bounds": [
+    {
+      "object": "Rat_beta4",
+      "rat_degree": 16,
+      "scan_bound_2d2": 512,
+      "quoted_in_paper": 512,
+      "matches": true
+    },
+    {
+      "object": "Rat_Lehmer",
+      "rat_degree": 100,
+      "scan_bound_2d2": 20000,
+      "quoted_in_paper": 20000,
+      "matches": true
+    },
+    {
+      "object": "Rat_S6",
+      "rat_degree": 36,
+      "scan_bound_2d2": 2592,
+      "quoted_in_paper": 2592,
+      "matches": true
+    },
+    {
+      "object": "Rat_S8",
+      "rat_degree": 64,
+      "scan_bound_2d2": 8192,
+      "quoted_in_paper": 8192,
+      "matches": true
+    },
+    {
+      "object": "census_deg12 Rat",
+      "rat_degree": 144,
+      "scan_bound_2d2": 41472,
+      "quoted_in_paper": 41472,
+      "matches": true
+    },
+    {
+      "object": "mixed Rat_{L,beta4}",
+      "rat_degree": 40,
+      "scan_bound_2d2": 3200,
+      "quoted_in_paper": 3200,
+      "matches": true
+    },
+    {
+      "object": "nested Rat_{Rat_p} x^4-x+1",
+      "rat_degree": 256,
+      "scan_bound_2d2": 131072,
+      "quoted_in_paper": 131072,
+      "matches": true
+    }
+  ],
+  "all_quoted_bounds_match": true
+}

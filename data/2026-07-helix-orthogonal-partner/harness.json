@@ -1,0 +1,44 @@
+{
+  "_source_paper": "papers/2026-07-helix-orthogonal-partner/helix_orthogonal_partner.tex",
+  "_generated_by": "code/2026-07-helix-orthogonal-partner/harness.py",
+  "section": "8 -- The harness: constraint-import as verification",
+  "results": {
+    "prop_8_4_filter_asymmetry": {
+      "refutation_from_one_witness": {
+        "universal": "every a in {0,2} satisfies a == 0 (mod 4)",
+        "counterexample": [
+          2
+        ],
+        "verdict": "dashv (refuted) -- decisive from a single exact instance"
+      },
+      "finite_range_never_promotes": {
+        "universal": "n^2+n+41 is prime for all n>=0",
+        "passes_range_0_to_39": true,
+        "fails_at_n_40": true,
+        "demotion_certificate": "f(40) = 1681 = 41*41",
+        "sound_tag_on_passed_range": "computed (never forced)"
+      }
+    },
+    "prop_8_6_generator_inert": {
+      "reachable_charges": [
+        0,
+        2
+      ],
+      "casualty_set_C_dashv": [],
+      "generator_is_inert": true,
+      "substantive_import_has_a_falsifiable_member": true,
+      "example_refutation": "[R,R]=0 refutes 'a helix couples to a copy of itself' (Cor. 3.5)"
+    },
+    "rem_8_9_transferable_kernel": {
+      "kernel_identity": "sqrt5 = phi + phi^{-1} = phi - psi",
+      "phi_plus_inv_residual": "0",
+      "phi_minus_psi_residual": "0",
+      "role": "the single differential fact crossing between constructions (2-to-1 fold boundary)"
+    },
+    "table_2_ledger_counts": {
+      "survivor": 5,
+      "casualty": 3,
+      "residue": 2
+    }
+  }
+}

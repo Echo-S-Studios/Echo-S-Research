@@ -1,0 +1,86 @@
+{
+  "_source_paper": "papers/2026-06-operator-algebra/operator-algebra-whitepaper.tex",
+  "_generated_by": "code/2026-06-operator-algebra/fixed_points.py",
+  "fixed_point_equation": {
+    "statement": "M(psi^2 A) = M(A)  <=>  M(A)^2 = M(A)",
+    "solutions_of_M2_eq_M": [
+      0,
+      1
+    ],
+    "feasible_with_M_ge_1": [
+      1
+    ],
+    "conclusion": "only Adams-fixed measure is M(A)=1 (cyclotomic / Kronecker locus)"
+  },
+  "cyclotomic_objects_are_adams_fixed": [
+    {
+      "object": "Phi_4 = x^2+1",
+      "degree": 2,
+      "M": "1",
+      "M_is_1": true,
+      "all_eigenvalues_on_unit_circle": true,
+      "M_psi2": "1",
+      "adams_fixed": true
+    },
+    {
+      "object": "Phi_3 = x^2+x+1",
+      "degree": 2,
+      "M": "1",
+      "M_is_1": true,
+      "all_eigenvalues_on_unit_circle": true,
+      "M_psi2": "1",
+      "adams_fixed": true
+    },
+    {
+      "object": "Phi_8 = x^4+1",
+      "degree": 4,
+      "M": "1",
+      "M_is_1": true,
+      "all_eigenvalues_on_unit_circle": true,
+      "M_psi2": "1",
+      "adams_fixed": true
+    },
+    {
+      "object": "Phi_9 = x^6+x^3+1",
+      "degree": 6,
+      "M": "1",
+      "M_is_1": true,
+      "all_eigenvalues_on_unit_circle": true,
+      "M_psi2": "1",
+      "adams_fixed": true
+    },
+    {
+      "object": "Phi_1 = x-1",
+      "degree": 1,
+      "M": "1",
+      "M_is_1": true,
+      "all_eigenvalues_on_unit_circle": true,
+      "M_psi2": "1",
+      "adams_fixed": true
+    },
+    {
+      "object": "Phi_2 = x+1",
+      "degree": 1,
+      "M": "1",
+      "M_is_1": true,
+      "all_eigenvalues_on_unit_circle": true,
+      "M_psi2": "1",
+      "adams_fixed": true
+    }
+  ],
+  "golden_not_adams_fixed": {
+    "object": "golden = x^2-x-1",
+    "M": "1/2 + sqrt(5)/2",
+    "M_gt_1": true,
+    "M_psi2": "sqrt(5)/2 + 3/2",
+    "adams_fixed": false,
+    "squares_instead_M_psi2_eq_M_squared": true
+  },
+  "spectrum_preserving_idempotents": {
+    "object": "golden rebuilt from minpoly x^2-x-1",
+    "spectrum_preserved": true,
+    "measure_preserved": true,
+    "charge_preserved": true,
+    "charge_multiset": "0^1; 2^1"
+  }
+}

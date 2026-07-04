@@ -1,0 +1,35 @@
+{
+  "_source_paper": "papers/2026-07-emission-algebra-primer/emission_algebra_primer.tex",
+  "_generated_by": "code/2026-07-emission-algebra-primer/d2_core_mechanics.py",
+  "adR_spectrum_on_M2": {
+    "-sqrt(5)": 1,
+    "sqrt(5)": 1,
+    "0": 2
+  },
+  "adR_spectrum_note": "{0: 2, sqrt5: 1, -sqrt5: 1}; the irrational eigenvalue sqrt5 = phi - psi = phi + 1/phi is the coupling",
+  "root_vector_N_plus": [
+    [
+      "1",
+      "1/2 - sqrt(5)/2"
+    ],
+    [
+      "1/2 + sqrt(5)/2",
+      "-1"
+    ]
+  ],
+  "root_vector_N_minus": [
+    [
+      "1",
+      "1/2 + sqrt(5)/2"
+    ],
+    [
+      "1/2 - sqrt(5)/2",
+      "-1"
+    ]
+  ],
+  "eigen_eq_N_plus": "[R, N_+] = +sqrt5 N_+  : True",
+  "eigen_eq_N_minus": "[R, N_-] = -sqrt5 N_- : True",
+  "zero_space_dimension": 2,
+  "zero_space_is_span_I_R": true,
+  "decomposition": "M_2 = span{I,R} (0-space, dim 2) (+) C N_+ (+sqrt5) (+) C N_- (-sqrt5)"
+}

@@ -1,0 +1,9 @@
+{
+  "_source_paper": "papers/2026-07-emission-algebra-primer/emission_algebra_primer.tex",
+  "_generated_by": "code/2026-07-emission-algebra-primer/d5_cyclotomic_floor.py",
+  "polynomial": "x^10 + x^9 - x^7 - x^6 - x^5 - x^4 - x^3 + x + 1",
+  "mahler_measure": "1.176280818259917506544070338474035050693",
+  "mahler_measure_short": "1.176280818",
+  "inside_open_gap_1_phi": true,
+  "note": "smallest known Mahler measure > 1; sits inside the golden gap (1, phi) yet is NOT an emission object of A -- this is why (B4) is FORCED in-class but the universal gap is OPEN (Lehmer's problem)"
+}

@@ -1,0 +1,75 @@
+{
+  "_source_paper": "papers/2026-07-pisot-residue/pisot_residue_whitepaper.tex",
+  "_generated_by": "code/2026-07-pisot-residue/ledger_arithmetic.py",
+  "description": "Sections 7.3 & 8 exact arithmetic tallies: ledger-M signature accounting, box sizes, Burnside counts, and the N3/P5 extension.",
+  "ledger_M": {
+    "canonical_signatures": 14,
+    "census_salem": 37,
+    "quartic_pisots": 103,
+    "quintic_pisots": 83,
+    "total_signatures": 237,
+    "matches_paper_237": true,
+    "decision_paths_per_signature": 2,
+    "scan_executions": 474,
+    "matches_paper_474": true
+  },
+  "quintic_box": {
+    "size": 3125,
+    "reject_tally": [
+      625,
+      50,
+      638,
+      1318,
+      411
+    ],
+    "certified_pisot": 83,
+    "partitions_box": true,
+    "pattern_split": {
+      "real5": 0,
+      "mixed": 16,
+      "two_pair": 67,
+      "sums_to_83": true
+    },
+    "scan_sizes": {
+      "deg_Rat": 25,
+      "bound_2n4": 1250,
+      "deg_C2": 400
+    }
+  },
+  "salem_burnside": {
+    "palindromic_vectors": 729,
+    "twist_fixed": 27,
+    "orbits": 378,
+    "matches_paper_378": true,
+    "corrected_cascade": {
+      "pm1": 39,
+      "trace_sturm_reject": 256,
+      "reducible": 46,
+      "salem": 37,
+      "combined": 302,
+      "sums_to_378": true
+    },
+    "scan_sizes": {
+      "deg_Rat": 144,
+      "bound_2n4": 41472
+    }
+  },
+  "quartic_box": {
+    "size": 2401,
+    "complex_pair": 102,
+    "totally_real": 1,
+    "certified_pisot": 103,
+    "matches_paper_103": true
+  },
+  "n3_census_extension": {
+    "vectors": 15625,
+    "twist_fixed": 125,
+    "burnside_orbits": 7875,
+    "matches_paper_7875": true,
+    "burnside_even": true
+  },
+  "lehmer_scan_sizes": {
+    "deg_Rat": 100,
+    "bound_2n4": 20000
+  }
+}

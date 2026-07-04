@@ -1,0 +1,43 @@
+{
+  "_source_paper": "papers/2026-07-relational-charge/relational_charge_paper.tex",
+  "_generated_by": "code/2026-07-relational-charge/showcase_x4_minus_x_plus_1.py",
+  "object": "x^4 - x + 1",
+  "basic_structure": {
+    "irreducible": true,
+    "reciprocal": false,
+    "real_roots": 0,
+    "pinning_silent": "no uniquely attained modulus (two conjugate-pair shells r != 1/r)"
+  },
+  "kronecker_square_factorization": {
+    "charpoly_C_x_C": "S_6(x)^2 * (x^4+2x^2-x+1)",
+    "matches_expected": true,
+    "psi2_factor_irreducible": true
+  },
+  "shell_scan_Rat_p": {
+    "rat_degree": 16,
+    "contact_signature": "{Phi_1^4}",
+    "inert_shell": true
+  },
+  "nested_nu_scan_Rat_Rat_p": {
+    "nested_degree": 256,
+    "scan_bound_2d2": 131072,
+    "contact_signature": "{Phi_1^28}",
+    "phi1_multiplicity": 28,
+    "predicted_multiplicity_16_4_8": 28,
+    "matches_prediction": true
+  },
+  "galois_group": {
+    "order": 24,
+    "transitive": true,
+    "is_S4": true
+  },
+  "mahler_measure": {
+    "value": "1.4012683679398549151",
+    "equals_tau_S6": true,
+    "tau_S6": "1.4012683679398549151",
+    "strictly_between_theta0_and_phi": true,
+    "note": "smallest degree-6 Salem number, in (theta0, phi)"
+  },
+  "verdict": "fully relationally inert (rigidity imported across (x) via S_6)",
+  "status": "[forced] per instance (ledger X)"
+}

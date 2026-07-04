@@ -1,0 +1,69 @@
+{
+  "_source_paper": "papers/2026-06-z5-no-salem-dichotomy/Z5-no-salem-dichotomy-whitepaper.tex",
+  "_generated_by": "code/2026-06-z5-no-salem-dichotomy/pentagon.py",
+  "theorem": "Thm. 4.1 (pure pentagon, degree four)",
+  "factored_object": "(x^2 - s(phi-1)x + s^2)(x^2 + t*phi*x + t^2)",
+  "coefficient_forms": {
+    "x^3": {
+      "claimed_form": "s + (1/2 + sqrt(5)/2)*(-s + t)",
+      "residual": "0"
+    },
+    "x^2": {
+      "claimed_form": "s**2 - s*t + t**2",
+      "residual": "0"
+    },
+    "x^1": {
+      "claimed_form": "s*t*(t + (1/2 + sqrt(5)/2)*(s - t))",
+      "residual": "0"
+    },
+    "x^0": {
+      "claimed_form": "s**2*t**2",
+      "residual": "0"
+    }
+  },
+  "galois_reduction": {
+    "sqrt5_part_of_each_coeff_after_t_eq_sigma_s": {
+      "x^3": "0",
+      "x^2": "0",
+      "x^1": "0",
+      "x^0": "0"
+    },
+    "x^2_equals_k2_minus_3m_residual": "0",
+    "x^0_equals_m2_residual": "0",
+    "k_is_trace_s_plus_t": true,
+    "m_is_norm_s_times_t": true
+  },
+  "minimizer": {
+    "k_m": [
+      3,
+      1
+    ],
+    "s_equals_phi2": "0",
+    "t_equals_phi_minus2": "0",
+    "s_plus_t": "3",
+    "s_times_t": "1",
+    "coeffs": [
+      1,
+      -1,
+      6,
+      4,
+      1
+    ],
+    "polynomial": "x^4 - x^3 + 6x^2 + 4x + 1",
+    "charge_group": 5,
+    "irreducible": true,
+    "reciprocal": false,
+    "mahler": "6.854101966249684544613760503096914353161",
+    "mahler_closed_form": "phi^4",
+    "mahler_equals_phi4": true,
+    "measure_as_product_of_moduli_squared": "max(1,s)^2 * max(1,t)^2 = (phi^2)^2 = phi^4"
+  },
+  "gap": {
+    "measure_set": "{1} cup [phi^4, infty)",
+    "phi4_value": "6.854101966249684544613760503096914353161",
+    "phi4_exceeds_2": true,
+    "empty_interval": "(1, phi^4)",
+    "no_measure_in_1_2": true,
+    "global_minimum_over_nontrivial_regimes": "phi^4 at (k,m)=(3,1)"
+  }
+}

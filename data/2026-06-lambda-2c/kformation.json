@@ -1,0 +1,36 @@
+{
+  "_source_paper": "papers/2026-06-lambda-2c/lambda_2c_paper.tex",
+  "_generated_by": "code/2026-06-lambda-2c/kformation.py",
+  "quartic": "x^4 + 5x^2 - 5",
+  "reduced_quadratic": "y^2 + 5y - 5  (y = x^2)",
+  "y_roots": {
+    "y_plus": "-5/2 + 3*sqrt(5)/2",
+    "y_plus_float": 0.8541019662496846,
+    "y_minus": "-3*sqrt(5)/2 - 5/2",
+    "y_minus_float": -5.854101966249685,
+    "straddle_zero": true,
+    "match_solved": true
+  },
+  "real_roots": {
+    "K": "5^(1/4)/phi",
+    "K_float": 0.9241763718304448,
+    "K_equals_sqrt_yplus": true,
+    "inside_unit_circle": true
+  },
+  "imaginary_roots": {
+    "beta": "5/2 + 3*sqrt(5)/2 under sqrt",
+    "beta_float": 2.4195251530516653,
+    "beta_equals_sqrt_absyminus": true
+  },
+  "mahler": {
+    "mahler_exact": "(5+3 sqrt5)/2 = beta^2",
+    "mahler_float": 5.854101966249685,
+    "independent_mahler_matches_beta2": true
+  },
+  "complex_place_off_circle": {
+    "abs_i_beta": 2.4195251530516653,
+    "abs_fifthroot_i": 1.4953487812212205,
+    "both_off_unit_circle": true,
+    "interpretation": "Lorentzian without Salem: complex embedding far from the circle"
+  }
+}

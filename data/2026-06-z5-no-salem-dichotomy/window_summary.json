@@ -1,0 +1,66 @@
+{
+  "_source_paper": "papers/2026-06-z5-no-salem-dichotomy/Z5-no-salem-dichotomy-whitepaper.tex",
+  "_generated_by": "code/2026-06-z5-no-salem-dichotomy/enumerate_window.py",
+  "section_7_window_summary": {
+    "window": "quartics |c|<=10, quintics |c|<=4, sextics |c|<=3",
+    "total_charge5_objects": 17,
+    "quartics": {
+      "count": 3,
+      "distinct_measures": [
+        "1",
+        "phi^4"
+      ],
+      "none_in_open_1_2": true
+    },
+    "non_reciprocal": {
+      "count": 13,
+      "realized_minimum": "2.0",
+      "realized_minimum_closed_form": "2",
+      "x5_minus_2_present": true,
+      "all_obey_smyth_floor_mu_S": true,
+      "count_in_muS_to_2": 0,
+      "residual_window_empty": true
+    },
+    "reciprocal": {
+      "count": 4,
+      "distinct_measures": [
+        "1",
+        "phi^2",
+        "2+sqrt3"
+      ],
+      "none_in_open_1_2": true,
+      "objects": [
+        {
+          "poly": "x**4 + x**3 + x**2 + x + 1",
+          "factorization": "Phi_5",
+          "mahler_closed_form": "1"
+        },
+        {
+          "poly": "x**5 - 1",
+          "factorization": "(x - 1)*Phi_5",
+          "mahler_closed_form": "1"
+        },
+        {
+          "poly": "x**6 - 2*x**5 - x**4 - x**3 - x**2 - 2*x + 1",
+          "factorization": "(x**2 - 3*x + 1)*Phi_5",
+          "mahler_closed_form": "phi^2"
+        },
+        {
+          "poly": "x**6 - 3*x**5 - 2*x**4 - 2*x**3 - 2*x**2 - 3*x + 1",
+          "factorization": "(x**2 - 4*x + 1)*Phi_5",
+          "mahler_closed_form": "2+sqrt3"
+        }
+      ]
+    },
+    "overall": {
+      "count_in_open_1_2": 0,
+      "no_charge5_object_in_open_1_2": true,
+      "realized_floor": "2.0"
+    },
+    "constants_used": {
+      "mu_S": "1.324717957244746026",
+      "phi^2": "2.6180339887498948482",
+      "phi^4": "6.8541019662496845446"
+    }
+  }
+}

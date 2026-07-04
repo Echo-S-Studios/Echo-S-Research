@@ -1,0 +1,53 @@
+{
+  "_source_paper": "papers/2026-07-helix-orthogonal-partner/helix_orthogonal_partner.tex",
+  "_generated_by": "code/2026-07-helix-orthogonal-partner/flip.py",
+  "section": "4 -- The flip: D = 1 + 4C",
+  "results": {
+    "def_4_1_thm_4_2_flip": {
+      "gate": "g_C(x) = x^2 + x - C",
+      "discriminant_D": "4*C + 1",
+      "D_equals_1_plus_4C": true,
+      "roots": "(-1 +/- sqrt(D))/2",
+      "double_root_at_flip": "[-1/2]",
+      "flip_location_C": "-1/4",
+      "trace_form_Gram": [
+        [
+          "2",
+          "-1"
+        ],
+        [
+          "-1",
+          "2*C + 1"
+        ]
+      ],
+      "gram_det": "4*C + 1",
+      "gram_det_equals_D": true,
+      "golden_face_C1_D": 5,
+      "golden_face_sqrtD_is_sqrt5": true
+    },
+    "thm_4_2_rotation_channel_C_minus_1": {
+      "C": "-1",
+      "D": -3,
+      "companion": "[[0, -1], [1, -1]]",
+      "ad_spectrum": "{0, 0, +i sqrt|D|, -i sqrt|D|}",
+      "mult_zero": 2,
+      "mult_plus_i_root": 1,
+      "mult_minus_i_root": 1,
+      "sqrt_abs_D_decimal": "1.732050807568877293527446341505872366943"
+    },
+    "signature_examples": {
+      "D_positive_C1": {
+        "signature": "(2,0)",
+        "detail": "(2, 0, 0)"
+      },
+      "D_zero_Cminus_quarter": {
+        "signature": "degenerate",
+        "detail": "(1, 0, 1)"
+      },
+      "D_negative_Cminus1": {
+        "signature": "(1,1)",
+        "detail": "(1, 1, 0)"
+      }
+    }
+  }
+}

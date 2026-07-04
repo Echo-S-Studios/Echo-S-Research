@@ -1,0 +1,99 @@
+{
+  "_source_paper": "papers/2026-06-generative-emptiness/generative_emptiness.tex",
+  "_generated_by": "code/2026-06-generative-emptiness/object2_content.py",
+  "object": "II -- the content polynomial x^4 - 1",
+  "paper_result": "Proposition 3.1 (prop:content), Remark 3.2",
+  "cyclotomic_factorization": {
+    "content_polynomial": "x^4 - 1",
+    "factors": {
+      "Phi_1": "x - 1",
+      "Phi_2": "x + 1",
+      "Phi_4": "x**2 + 1"
+    },
+    "product_equals_x4_minus_1": true
+  },
+  "content_roots": [
+    {
+      "root": [
+        "1.0",
+        "0.0"
+      ],
+      "arg_over_halfpi": 0,
+      "arg_radians": 0.0,
+      "charge": 0
+    },
+    {
+      "root": [
+        "0.0",
+        "1.0"
+      ],
+      "arg_over_halfpi": 1,
+      "arg_radians": 1.570796326795,
+      "charge": 1
+    },
+    {
+      "root": [
+        "-1.0",
+        "0.0"
+      ],
+      "arg_over_halfpi": 2,
+      "arg_radians": 3.14159265359,
+      "charge": 2
+    },
+    {
+      "root": [
+        "0.0",
+        "-1.0"
+      ],
+      "arg_over_halfpi": 3,
+      "arg_radians": 4.712388980385,
+      "charge": 3
+    }
+  ],
+  "realised_on_circle": [
+    {
+      "object": "phi (x) phi",
+      "poly": "x**4 - x**3 - 4*x**2 - x + 1",
+      "root_minus_1": true,
+      "root_plus_1": false,
+      "contributes": "-1 (charge 2)"
+    },
+    {
+      "object": "phi^4 (x) phi^4",
+      "poly": "x**4 - 49*x**3 + 96*x**2 - 49*x + 1",
+      "root_minus_1": false,
+      "root_plus_1": true,
+      "contributes": "+1 (charge 0)"
+    }
+  ],
+  "K_imaginary_place": {
+    "n_imaginary_roots": 2,
+    "beta": "2.419525153051665331",
+    "beta_closed_form": "sqrt((5 + 3*sqrt5)/2)",
+    "beta_rounded_4dp": 2.4195,
+    "matches_closed_form": true,
+    "off_unit_circle": true
+  },
+  "charge_vs_circle": {
+    "on_circle_roots_seen": [
+      [
+        -1,
+        0
+      ],
+      [
+        1,
+        0
+      ]
+    ],
+    "on_circle_is_Z2": true,
+    "imaginary_units_on_circle": false,
+    "charge_group_via_K": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "x2_minus_1_has_root_i": false,
+    "x4_minus_1_has_root_i": true
+  }
+}

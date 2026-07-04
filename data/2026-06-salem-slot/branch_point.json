@@ -1,0 +1,53 @@
+{
+  "_source_paper": "papers/2026-06-salem-slot/salem_slot.tex",
+  "_generated_by": "code/2026-06-salem-slot/make_branch_point.py",
+  "_description": "The flip t=2 as a square-root branch point of the trace cover (Section 4): sqrt-edge series (Lem 4.1), quadratic redirection (Prop 4.2), and the monodromy swap (Section 'entry').",
+  "sqrt_edge_series_Lem4_1": {
+    "variable": "s = sqrt(t-2)",
+    "series": "beta = 1 + s + s^2/2 + s^3/8 + O(s^4)",
+    "coeff_s0": "1",
+    "coeff_s1": "1",
+    "coeff_s2": "1/2",
+    "coeff_s3": "1/8",
+    "matches_paper": true
+  },
+  "sqrt_edge_asymptotic_Lem4_1": {
+    "claim": "(beta-1)/sqrt(t-2) -> 1 and log(beta)/(beta-1) -> 1 as t->2+",
+    "samples": [
+      {
+        "t_minus_2": "0.0001",
+        "beta_minus_1_over_sqrt": "1.00501249992",
+        "logbeta_over_beta_minus_1": "0.995008354083"
+      },
+      {
+        "t_minus_2": "1.0e-6",
+        "beta_minus_1_over_sqrt": "1.000500125",
+        "logbeta_over_beta_minus_1": "0.999500083354"
+      },
+      {
+        "t_minus_2": "1.0e-8",
+        "beta_minus_1_over_sqrt": "1.00005000125",
+        "logbeta_over_beta_minus_1": "0.999950000833"
+      }
+    ]
+  },
+  "quadratic_redirection_Prop4_2": {
+    "exact_identity": "tau0 - 2 = (beta-1)^2 / beta",
+    "exact_holds": true,
+    "near_floor_expansion": "tau0 = 2 + delta^2/(1+delta) = 2 + delta^2 + O(delta^3)",
+    "series_coeff_delta0": "2",
+    "series_coeff_delta1": "0",
+    "series_coeff_delta2": "1",
+    "lehmer_beta_minus_1": "0.17628082",
+    "lehmer_tau0_minus_2": "0.026417949",
+    "lehmer_quad_check": "0.026417949"
+  },
+  "monodromy_swap": {
+    "claim": "analytic continuation of beta(t) once around t=2 sends beta -> 1/beta; the two branches are the two roots of x^2 - t x + 1 (product = 1)",
+    "t": "2.3",
+    "beta_plus": "1.717890835",
+    "beta_minus": "0.5821091654",
+    "product": "1.0",
+    "beta_minus_is_inverse": true
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "_source_paper": "papers/2026-06-lambda-2c/lambda_2c_paper.tex",
+  "_generated_by": "code/2026-06-lambda-2c/flip.py",
+  "flip_event": "sign of D = 1 + 4C changes once at C = -1/4 (double root -1/2)",
+  "four_readings": [
+    "eigenvalues real<->complex",
+    "field totally-real<->complex place",
+    "trace-form signature Riemannian<->Lorentzian",
+    "channels growth<->rotation"
+  ],
+  "det_G_signature": {
+    "gap_basis": "{1, sqrt D},  sqrt D = 2 theta + 1",
+    "G_symbolic": "diag(2, 2D)",
+    "det_G": "16*C + 4",
+    "det_G_equals_4D": true,
+    "traces": {
+      "Tr(1)": 2,
+      "Tr(sqrtD)": 0,
+      "Tr(D)": "2D"
+    },
+    "signature_by_D": {
+      "5": {
+        "det_G": 20,
+        "signature": "positive-definite (Riemannian)"
+      },
+      "1": {
+        "det_G": 4,
+        "signature": "positive-definite (Riemannian)"
+      },
+      "0": {
+        "det_G": 0,
+        "signature": "degenerate"
+      },
+      "-3": {
+        "det_G": -12,
+        "signature": "indefinite (1,1) Lorentzian"
+      },
+      "-7": {
+        "det_G": -28,
+        "signature": "indefinite (1,1) Lorentzian"
+      }
+    },
+    "Qi_instance": {
+      "gram": [
+        [
+          2,
+          0
+        ],
+        [
+          0,
+          -2
+        ]
+      ],
+      "det": -4,
+      "D": -1,
+      "det_equals_4D": true
+    }
+  },
+  "two_flips_meet": {
+    "C": -1,
+    "polynomial": "x^2+x+1",
+    "roots": "e^{+-2pi i/3}",
+    "discriminant": -3,
+    "mahler": 1.0,
+    "on_unit_circle": true,
+    "meaning": "additive flip's rotation regime (D<0) meets multiplicative flip's marginal vertex |lambda|=1"
+  },
+  "perfect_square_pinning": {
+    "z_definition": "z = sqrt(D)/2 = |x + 1/2|",
+    "D_equals_4z2": true,
+    "C_equals_z2_minus_quarter": true,
+    "real_flow_keeps_D_nonneg": "D = 4z^2 >= 0 for real z; equality iff z=0 (the flip)",
+    "gate_coherences": {
+      "C=1/4": "sqrt(2)/2",
+      "C=1/2": "sqrt(3)/2",
+      "C=1": "sqrt(5)/2"
+    }
+  }
+}

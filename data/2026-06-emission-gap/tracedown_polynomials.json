@@ -1,0 +1,138 @@
+{
+  "_source_paper": "papers/2026-06-emission-gap/emission_gap_paper.tex",
+  "_generated_by": "code/2026-06-emission-gap/salem_flip.py",
+  "lehmer_trace_down": {
+    "T": "t**5 + t**4 - 5*t**3 - 5*t**2 + 4*t + 3",
+    "roots": [
+      -1.8866,
+      -1.4689,
+      -0.5847,
+      0.9137,
+      2.0264
+    ],
+    "n_roots_gt_2": 1,
+    "n_roots_in_minus2_2": 4,
+    "flip_straddle": true
+  },
+  "beta4_trace_down": {
+    "T": "t**2 - t - 3",
+    "equals_t2_minus_t_minus_3": true,
+    "flip_straddle": true
+  },
+  "fourth_roots_of_unity_trace_downs": {
+    "1": 2.0,
+    "i": 0.0,
+    "-1": -2.0,
+    "-i": -0.0
+  },
+  "fourth_root_trace_down_set": [
+    -2.0,
+    0.0,
+    2.0
+  ],
+  "traceless_reciprocal_quartic_family": [
+    {
+      "b": -8,
+      "trace_down_T": "t**2 - 10",
+      "equals_t2_plus_b_minus_2": true,
+      "flip_straddle": false
+    },
+    {
+      "b": -7,
+      "trace_down_T": "t**2 - 9",
+      "equals_t2_plus_b_minus_2": true,
+      "flip_straddle": false
+    },
+    {
+      "b": -6,
+      "trace_down_T": "t**2 - 8",
+      "equals_t2_plus_b_minus_2": true,
+      "flip_straddle": false
+    },
+    {
+      "b": -5,
+      "trace_down_T": "t**2 - 7",
+      "equals_t2_plus_b_minus_2": true,
+      "flip_straddle": false
+    },
+    {
+      "b": -4,
+      "trace_down_T": "t**2 - 6",
+      "equals_t2_plus_b_minus_2": true,
+      "flip_straddle": false
+    },
+    {
+      "b": -3,
+      "trace_down_T": "t**2 - 5",
+      "equals_t2_plus_b_minus_2": true,
+      "flip_straddle": false
+    },
+    {
+      "b": -2,
+      "trace_down_T": "t**2 - 4",
+      "equals_t2_plus_b_minus_2": true,
+      "flip_straddle": false
+    },
+    {
+      "b": -1,
+      "trace_down_T": "t**2 - 3",
+      "equals_t2_plus_b_minus_2": true,
+      "flip_straddle": false
+    },
+    {
+      "b": 0,
+      "trace_down_T": "t**2 - 2",
+      "equals_t2_plus_b_minus_2": true,
+      "flip_straddle": false
+    },
+    {
+      "b": 1,
+      "trace_down_T": "t**2 - 1",
+      "equals_t2_plus_b_minus_2": true,
+      "flip_straddle": false
+    },
+    {
+      "b": 2,
+      "trace_down_T": "t**2",
+      "equals_t2_plus_b_minus_2": true,
+      "flip_straddle": false
+    },
+    {
+      "b": 3,
+      "trace_down_T": "t**2 + 1",
+      "equals_t2_plus_b_minus_2": true,
+      "flip_straddle": false
+    },
+    {
+      "b": 4,
+      "trace_down_T": "t**2 + 2",
+      "equals_t2_plus_b_minus_2": true,
+      "flip_straddle": false
+    },
+    {
+      "b": 5,
+      "trace_down_T": "t**2 + 3",
+      "equals_t2_plus_b_minus_2": true,
+      "flip_straddle": false
+    },
+    {
+      "b": 6,
+      "trace_down_T": "t**2 + 4",
+      "equals_t2_plus_b_minus_2": true,
+      "flip_straddle": false
+    },
+    {
+      "b": 7,
+      "trace_down_T": "t**2 + 5",
+      "equals_t2_plus_b_minus_2": true,
+      "flip_straddle": false
+    },
+    {
+      "b": 8,
+      "trace_down_T": "t**2 + 6",
+      "equals_t2_plus_b_minus_2": true,
+      "flip_straddle": false
+    }
+  ],
+  "any_traceless_quartic_straddles": false
+}

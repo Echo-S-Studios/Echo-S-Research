@@ -1,0 +1,53 @@
+{
+  "_source_paper": "papers/2026-06-residual-return-learning/residual_return_learning.tex",
+  "_generated_by": "code/2026-06-residual-return-learning/language.py",
+  "matrix_iso": "mat(a+b e1+c e2+d i) = [[a+c, b-d],[b+d, a-c]]",
+  "generator_relations": {
+    "e1^2=1": true,
+    "e2^2=1": true,
+    "i^2=-1": true,
+    "i=e1e2": true
+  },
+  "keystone_R": {
+    "mat": [
+      [
+        "0",
+        "1"
+      ],
+      [
+        "1",
+        "1"
+      ]
+    ],
+    "symmetric": true,
+    "golden_law_R2_eq_R_plus_I": true,
+    "charpoly": "x**2 - x - 1",
+    "scalar_part_tau": "1/2",
+    "det": -1,
+    "TYPE": [
+      "gen"
+    ]
+  },
+  "gate_P0": {
+    "mat": [
+      [
+        "1",
+        "0"
+      ],
+      [
+        "0",
+        "0"
+      ]
+    ],
+    "idempotent": true,
+    "symmetric": true,
+    "TYPE": [
+      "idem",
+      "rest"
+    ]
+  },
+  "cayley_hamilton_X2_minus_trX_plus_detI": {
+    "on_keystone": true,
+    "on_generic_holding": true
+  }
+}

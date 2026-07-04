@@ -1,0 +1,40 @@
+{
+  "_source_paper": "papers/2026-06-operator-algebra/operator-algebra-whitepaper.tex",
+  "_generated_by": "code/2026-06-operator-algebra/unified.py",
+  "meeting_point_identities": {
+    "sqrt5 = phi + phi^-1": {
+      "holds": true,
+      "sqrt5_decimal": "2.23606797749978969640917366873",
+      "phi_plus_inv_decimal": "2.23606797749978969640917366873"
+    },
+    "phi - phi^-1 = 1": {
+      "holds": true
+    },
+    "phi^-1 = phi - 1": {
+      "holds": true,
+      "phi_inv_decimal": "0.618033988749894848204586834366"
+    }
+  },
+  "phi_is_floor_and_grow_generator": {
+    "M(golden) = phi": true,
+    "M(golden (+) golden) = phi^2": true,
+    "note": "least Mahler generator (floor) = additive self-action base"
+  },
+  "lambda_ring_endomorphism_axiom_on_golden_plus_K": {
+    "psi^2(A (+) B) = psi^2 A (+) psi^2 B": true,
+    "psi^2(A (x) B) = psi^2 A (x) psi^2 B": true
+  },
+  "two_characters_on_K": {
+    "Character_I_M(K)": "5/2 + 3*sqrt(5)/2",
+    "M(K) = phi^2 sqrt5 = beta^2": true,
+    "M(K)_decimal": "5.85410196624968454461376050310",
+    "Character_II_charge(K)": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "charge(K)_multiset": "0^1; 1^1; 2^1; 3^1",
+    "charge(K) = full Z/4Z": true
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "_source_paper": "papers/2026-06-lambda-2c/lambda_2c_paper.tex",
+  "_generated_by": "code/2026-06-lambda-2c/gate_forced.py",
+  "ternary_lock": {
+    "channel_formula": "d^2 - d + 1",
+    "equals_3_iff": [
+      2
+    ],
+    "degree2_channels": 3,
+    "degree3_channels": 7
+  },
+  "min_mahler_quadratics": {
+    "minimum": 1.618033988749895,
+    "minimum_exact": "phi = (1+sqrt5)/2",
+    "phi_highprec": "1.61803398874989484820458683436563811772030918",
+    "minimizers_bc": [
+      [
+        -1,
+        -1
+      ],
+      [
+        1,
+        -1
+      ]
+    ],
+    "minimizers_minpoly": [
+      "x^2-x-1",
+      "x^2+x-1"
+    ],
+    "both_discriminant_5": true
+  },
+  "cubic_objection": {
+    "min_mahler_cubics": 1.3247179572447452,
+    "argmin_abc": [
+      -1,
+      0,
+      1
+    ],
+    "plastic_number_muS": "1.32471795724474602596090885447809734073440406",
+    "plastic_below_phi": true,
+    "excluded_by": "ternary lock (cubic seed gives 7 channels, not 3)"
+  },
+  "firewall": {
+    "quartic": "x^4+5x^2-5",
+    "reduced": "y^2+5y-5",
+    "substitution": "y=x^2",
+    "substitution_recovers_quartic": true,
+    "discriminant": 45,
+    "disc_factorization": "9*5",
+    "y_roots": [
+      "-5/2 + 3*sqrt(5)/2",
+      "-3*sqrt(5)/2 - 5/2"
+    ],
+    "roots_in_Q_sqrt5": true
+  },
+  "keystone_relations": {
+    "golden_x2mx m1": {
+      "relation": "R^2 = R + I",
+      "holds": true
+    },
+    "conjugate_tau": {
+      "relation": "R^2 = I - R",
+      "holds": true
+    },
+    "radicands": {
+      "x2m2": {
+        "relation": "R^2 = 2 I",
+        "holds": true
+      },
+      "x2m3": {
+        "relation": "R^2 = 3 I",
+        "holds": true
+      },
+      "x2m5": {
+        "relation": "R^2 = 5 I",
+        "holds": true
+      }
+    }
+  },
+  "forced_value": {
+    "C": 1,
+    "c": "sqrt(5)/2",
+    "c_float": 1.118033988749895,
+    "lambda": "sqrt(5)",
+    "lambda_float": 2.23606797749979,
+    "lambda_equals_phi_minus_psi": true,
+    "gate_balance_holds": true
+  }
+}

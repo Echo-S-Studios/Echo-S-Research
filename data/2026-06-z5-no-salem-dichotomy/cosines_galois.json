@@ -1,0 +1,50 @@
+{
+  "_source_paper": "papers/2026-06-z5-no-salem-dichotomy/Z5-no-salem-dichotomy-whitepaper.tex",
+  "_generated_by": "code/2026-06-z5-no-salem-dichotomy/cosines_galois.py",
+  "proposition_3_1_and_symbolic_rows": {
+    "two_cos_72": {
+      "identity": "2*cos(72 deg) = phi - 1",
+      "closed_form_Q_sqrt5": "-1/2 + sqrt(5)/2",
+      "value_40dps": "0.6180339887498948482045868343656381177203",
+      "residual_minus_(phi-1)": "0",
+      "annihilates_x2_plus_x_minus_1": "0",
+      "is_rational": false
+    },
+    "two_cos_144": {
+      "identity": "2*cos(144 deg) = -phi",
+      "closed_form_Q_sqrt5": "-sqrt(5)/2 - 1/2",
+      "value_40dps": "-1.618033988749894848204586834365638117720",
+      "residual_minus_(-phi)": "0",
+      "annihilates_x2_plus_x_minus_1": "0",
+      "is_rational": false
+    },
+    "shared_minimal_polynomial": {
+      "polynomial": "x^2 + x - 1",
+      "roots": [
+        "-1/2 + sqrt(5)/2",
+        "-sqrt(5)/2 - 1/2"
+      ],
+      "cosine_set_matches_roots": true,
+      "sum_equals_minus1": "0",
+      "product_equals_minus1": "0"
+    },
+    "galois_conjugacy": {
+      "map": "sqrt5 -> -sqrt5",
+      "sigma_of_2cos72_minus_2cos144": "0",
+      "sigma_of_2cos144_minus_2cos72": "0",
+      "conjugate_pair": true,
+      "note": "the two cosines are swapped by sigma; this forced coupling is what Z/3Z never needs (Sec. 4)."
+    },
+    "z3_contrast": {
+      "identity": "2*cos(120 deg) = -1 (rational)",
+      "residual_plus_1": "0",
+      "is_rational": true,
+      "consequence": "rational cosine lets the Z/3Z search collapse to x^3-2 (M=2); at Z/5Z the cosines are irrational, so integrality requires the Galois-partner coupling."
+    },
+    "cross_term_collapse": {
+      "identity": "phi^2 - phi = 1",
+      "residual": "0",
+      "role": "collapses the quartic cross term in the pentagon expansion (Thm. 4.1)."
+    }
+  }
+}
