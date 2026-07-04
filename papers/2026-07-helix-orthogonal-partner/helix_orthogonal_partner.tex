@@ -1,0 +1,500 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage[expansion=false]{microtype}
+\setlength{\emergencystretch}{3em}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% --- epistemic tags (matching the pipeline papers) ---
+\definecolor{forcedc}{RGB}{15,110,86}
+\definecolor{declaredc}{RGB}{24,95,165}
+\definecolor{positedc}{RGB}{170,105,20}
+\definecolor{openc}{RGB}{163,45,45}
+\definecolor{estabc}{RGB}{95,95,95}
+\definecolor{refutedc}{RGB}{140,20,20}
+\newcommand{\forced}{\textup{\textcolor{forcedc}{\textsc{[forced]}}}}
+\newcommand{\computed}{\textup{\textcolor{forcedc}{\textsc{[computed]}}}}
+\newcommand{\declared}{\textup{\textcolor{declaredc}{\textsc{[declared]}}}}
+\newcommand{\posited}{\textup{\textcolor{positedc}{\textsc{[posited]}}}}
+\newcommand{\openq}{\textup{\textcolor{openc}{\textsc{[open]}}}}
+\newcommand{\established}{\textup{\textcolor{estabc}{\textsc{[established]}}}}
+\newcommand{\refuted}{\textup{\textcolor{refutedc}{\textsc{[refuted]}}}}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Cx}{\mathbb{C}}
+\newcommand{\tr}{\operatorname{Tr}}
+\newcommand{\Mah}{\mathrm{M}}
+\newcommand{\adR}{\operatorname{ad}_R}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\Kf}{\mathrm{K}}
+
+\title{\textbf{The Dissolved Helix and Its Orthogonal Partner}\\[3pt]
+\large Terrain, rotation, and the completion of $\Z/4\Z$}
+\author{Echo-S Studios \;\textperiodcentered\; \texttt{math-research-pipelines}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The self-action of the golden companion $R$ ($R^2=R+I$) is a single real-axis mode: its
+commutator spectrum is $\{0,\pm\sqrt5\}$ and its angle charge lies in the sublattice
+$\{0,2\}\subset\Z/4\Z$. We show, entirely from the exact structure, that this mode cannot
+\emph{couple to a copy of itself} into a bound state --- the generative grade $[R,R]$ vanishes,
+self-composition keeps the charge in $\{0,2\}$ while the Mahler measure grows without ever
+returning to the cyclotomic floor, and the ``on-circle-and-expanding'' (Salem) channel is empty.
+Closure requires the orthogonal charges $\{1,3\}$, and these are supplied by exactly one seed: the
+quartic $\Kf=x^4+5x^2-5$, whose real roots $\pm K$ are the \emph{terrain} (in the field
+$\Q(5^{1/4})\supset\Q(\sqrt5)$) and whose imaginary roots $\pm i\beta$ are a \emph{$\tfrac{\pi}{2}$
+rotation about the origin}. The discriminant flip $D=1+4C$ makes terrain and rotation the two faces
+of one event; the golden strand is the $D>0$ face and $\Kf$ straddles the fold, re-adjoining the
+$D<0$ face. Every result carries an epistemic tag and, where it exists, the repository file that
+checks it; all displayed constants are machine-verified in exact arithmetic. The ``helix'' reading is
+a $\posited$ overlay on a $\forced$ substrate --- but the terrain/rotation anatomy it rests on is the
+repository's own. Finally we abstract the procedure that produced these results: a \emph{harness} that imports
+an external structure, adjudicates each of its claims against the exact substrate, and partitions them into
+survivors, casualties, and residue (\S\ref{sec:harness}). The helix is its first worked instance; the
+transferable object is the harness, not the helix.
+\end{abstract}
+
+\section{Epistemic conventions}\label{sec:conv}
+Claims are tagged. $\forced$: a theorem of the exact structure, machine-checked in the pipelines.
+$\computed$: an exact fact derived here (symbolic, no floating point crosses a decision). $\established$:
+standard external mathematics. $\posited$: an interpretive overlay (the ``helix'' language), grounded but
+not load-bearing. $\openq$: acknowledged open. \emph{No float crosses a decision boundary}: every constant
+below is decided over $\Q$, $\Q(\sqrt5)$, or $\Q(5^{1/4})$. Appendix~\ref{app:verify} lists the checks.
+A claim the substrate \emph{falsifies} (its negation forced by an exact counterexample) is marked $\refuted$;
+equivalently $\refuted\,\gamma \equiv \forced\,\neg\gamma$.
+
+\section{The keystone: the golden generator}\label{sec:keystone}
+
+\begin{definition}[Golden data]\label{def:golden}
+Let $\varphi=\tfrac{1+\sqrt5}{2}$ and $\psi=\tfrac{1-\sqrt5}{2}=1-\varphi=-\varphi^{-1}$, the roots of
+$x^2-x-1$. Let $R=\left(\begin{smallmatrix}0&1\\1&1\end{smallmatrix}\right)$ be the Fibonacci companion.
+\end{definition}
+
+\begin{proposition}[The keystone]\label{prop:keystone}
+$\operatorname{charpoly}(R)=\lambda^2-\lambda-1$, so $\tr R=1$, $\det R=-1$, $\operatorname{spec}(R)=\{\varphi,\psi\}$,
+and $R^2=R+I$. Moreover $\varphi\psi=-1$, $\varphi+\psi=1$, and
+\begin{equation}\label{eq:root5}
+\varphi-\psi=\sqrt5=\varphi+\varphi^{-1}.
+\end{equation}
+\forced\ (drop-one keystone appendix of the $\lambda=2c$ paper; \texttt{test\_p1\_05\_keystone.py}).
+\end{proposition}
+\begin{proof}
+$\det(\lambda I-R)=\lambda(\lambda-1)-1=\lambda^2-\lambda-1$, whose roots are $\varphi,\psi$; Vieta gives
+$\varphi+\psi=1$, $\varphi\psi=-1$. Cayley--Hamilton yields $R^2-R-I=0$. Finally
+$\varphi-\psi=\tfrac{(1+\sqrt5)-(1-\sqrt5)}{2}=\sqrt5$, and $\varphi+\varphi^{-1}=\varphi+(\varphi-1)=2\varphi-1=\sqrt5$.
+\end{proof}
+
+\begin{proposition}[The self-action]\label{prop:selfaction}
+Let $\adR=[R,\cdot]$ act on $M_2(\R)\cong\R^4$. Then
+\begin{equation}\label{eq:adspec}
+\operatorname{spec}(\adR)=\{0,\,0,\,+\sqrt5,\,-\sqrt5\}=\{0,\pm\sqrt5\},
+\end{equation}
+and $\sqrt5$ (the sole irrational in the spectrum) is the \emph{coupling}
+$\varphi+\varphi^{-1}=\varphi-\psi$. \forced\ (\texttt{test\_p2\_07\_uniform.py}, Lem.~8.1).
+\end{proposition}
+\begin{proof}
+For a diagonalisable $R$ with eigenvalues $\mu_1,\mu_2$, the operator $[R,\cdot]$ has eigenvalues
+$\{\mu_i-\mu_j\}_{i,j}$ on $M_2$. Here $\{\varphi-\varphi,\ \varphi-\psi,\ \psi-\varphi,\ \psi-\psi\}
+=\{0,\ \sqrt5,\ -\sqrt5,\ 0\}$ by \eqref{eq:root5}.
+\end{proof}
+
+\begin{definition}[The two characters]\label{def:chars}
+An \emph{object} is a finite multiset $A=\{\lambda_1,\dots,\lambda_d\}$ of nonzero algebraic integers
+(an eigenvalue multiset). Its two characters are
+\[
+\Mah(A)=\prod_i\max(1,\abs{\lambda_i})\qquad(\text{Character I, magnitude}),
+\]
+\[
+\chi(A)=\Bigl\{\bigl\lfloor \tfrac{2\arg\lambda_i}{\pi}\bigr\rceil \bmod 4\Bigr\}\subset\Z/4\Z
+\qquad(\text{Character II, phase}).
+\]
+The \emph{golden object} is $A_\varphi=\operatorname{spec}(R)=\{\varphi,\psi\}$, with
+$\Mah(A_\varphi)=\varphi$ (since $\abs\psi=\varphi^{-1}<1$) and $\chi(A_\varphi)=\{0,2\}$
+($\varphi>0\Rightarrow0$, $\psi<0\Rightarrow2$). The operators are $\oplus$ (multiset union;
+$\Mah$ multiplies, $\chi$ unions), $\otimes$ (products $\{\lambda\mu\}$; $\chi$ sums mod $4$), and the
+Adams power $\psi^2$ (squaring; $\Mah\mapsto\Mah^2$, $\chi\mapsto 2\chi \bmod 4$). \forced\ (S1--S6).
+\end{definition}
+
+\section{The self-coupling obstruction}\label{sec:obstruction}
+
+We now show the golden mode cannot bind to a copy of itself. Three independent facts converge.
+
+\begin{proposition}[Cayley--Hamilton collapse]\label{prop:collapse}
+Let $\Phi_R(Y)=Y^2-\tr(R)\,Y+\det(R)\,I$ be $R$'s characteristic operator. Then
+\begin{equation}\label{eq:phicollapse}
+\Phi_R(R)=R^2-R-I=0,\qquad [R,R]=0.
+\end{equation}
+Self-application under $R$'s own seed law returns the golden recurrence $R^2=R+I$ and vanishes; the
+\emph{generative} grade (the commutator/wedge $[R,R]$) is identically zero. \forced\ (\texttt{KL\_DTA.py}).
+\end{proposition}
+\begin{proof}
+$\Phi_R(R)=R^2-1\cdot R+(-1)I=R^2-R-I=0$ by Proposition~\ref{prop:keystone}. $[R,R]=R^2-R^2=0$ by
+antisymmetry of the Lie bracket. \established/$\forced$.
+\end{proof}
+
+\begin{lemma}[The magnitude never returns to the floor]\label{lem:grow}
+$\Mah(A\oplus A)=\Mah(A)^2$ and $\Mah(\psi^2A)=\Mah(A)^2$. Since $\Mah(A_\varphi)=\varphi>1$, every
+self-composite has $\Mah\in\{\varphi^2,\varphi^4,\dots\}$; the cyclotomic locus $\Mah=1$ is never
+reached. \forced\ (S4; S10: $\Mah(\psi^2A)=\Mah(A)\iff\Mah(A)=1$).
+\end{lemma}
+\begin{proof}
+$\oplus$ concatenates multisets, so $\Mah$ multiplies; $\psi^2$ squares each $\lambda$, so each
+$\max(1,\abs\lambda)$ squares. Iterating $\varphi>1$ diverges from $1$ monotonically.
+\end{proof}
+
+\begin{proposition}[The charge sublattice is closed]\label{prop:sublattice}
+The golden charge $\{0,2\}$ is invariant under $\oplus,\otimes,\psi^2$ and never reaches $\{1,3\}$:
+\[
+\{0,2\}\cup\{0,2\}=\{0,2\},\qquad \{0,2\}+\{0,2\}\bmod4=\{0,2\},\qquad 2\cdot\{0,2\}\bmod4=\{0\}.
+\]
+\forced\ (S6).
+\end{proposition}
+\begin{proof}
+Direct: $0+0=0,\,0+2=2,\,2+2=4\equiv0$; and $2\cdot0=0,\,2\cdot2=4\equiv0$. The sub-semigroup of
+$(\Z/4\Z,+)$ generated by $\{0,2\}$ is $\{0,2\}$, the unique index-$2$ subgroup; $\{1,3\}$ is its
+nontrivial coset and is unreachable.
+\end{proof}
+
+\begin{proposition}[The empty Salem slot]\label{prop:salem}
+Let $t=\theta+\theta^{-1}$ be the trace-down. On the unit circle ($\abs\theta=1$), $t=2\Re\theta\in[-2,2]$;
+for real $\theta>1$ (expanding), $t=\theta+\theta^{-1}>2$, since $t-2=(\theta-1)^2/\theta>0$. The two
+regions are disjoint, so ``on-circle \emph{and} expanding'' --- the Salem condition --- has no slot: the flip
+$t=\pm2$ cuts $\R$ into three channels, with no fourth. A would-be Salem $\beta>1$ is redirected by $t$ into
+the grow channel as the totally real Perron number
+\begin{equation}\label{eq:occupant}
+\tau_0=\beta+\beta^{-1}>2>\varphi,\qquad \tau_0-2=\frac{(\beta-1)^2}{\beta}\ \ (\text{exact, AM--GM}).
+\end{equation}
+\forced\ (\emph{Occupant of the Salem Slot}; \emph{Emission-Gap Theorem}).
+\end{proposition}
+\begin{proof}
+On the circle $\theta=e^{i\alpha}$ gives $t=2\cos\alpha\in[-2,2]$. For real $\theta>1$, AM--GM gives
+$\theta+\theta^{-1}\ge2$ with equality iff $\theta=1$, and $\theta+\theta^{-1}-2=(\theta-1)^2/\theta$; hence
+$t>2$. Disjointness is immediate. Redirection sends $\beta$ (one root outside, would-be on-circle rest) to
+$\tau_0=\beta+\beta^{-1}$, which lies strictly right of the flip.
+\end{proof}
+
+\begin{corollary}[No self-coupling]\label{cor:noselfcouple}
+The golden mode cannot couple to a copy of itself into a bound (on-circle-and-expanding) structure:
+the generative grade vanishes (Prop.~\ref{prop:collapse}); self-composition keeps the phase in
+$\{0,2\}$ (Prop.~\ref{prop:sublattice}) while the magnitude grows away from the closure locus
+$\Mah=1$ (Lem.~\ref{lem:grow}); and the Salem channel is empty (Prop.~\ref{prop:salem}). Closure requires
+the orthogonal phases $\{1,3\}$, which no self-operation supplies. \forced
+\end{corollary}
+
+\section{The flip: $D=1+4C$}\label{sec:flip}
+
+\begin{definition}[Gate family]\label{def:gate}
+For $C\in\R$ let $g_C(x)=x^2+x-C$, with discriminant $D=1+4C$.
+\end{definition}
+
+\begin{theorem}[The canonical flip]\label{thm:flip}
+The sign of $D$ simultaneously fixes: (i) the roots $\tfrac{-1\pm\sqrt D}{2}$ (real if $D>0$, a complex
+conjugate pair if $D<0$, the double root $-\tfrac12$ if $D=0$); (ii) the field (real quadratic vs.\
+imaginary); (iii) the trace-form signature; (iv) the channel character (real \emph{growth} vs.\
+\emph{rotation}). Concretely, in the power basis $\{1,\theta\}$ of $\Q(\theta)$ with $\theta^2+\theta=C$,
+the trace-form Gram is
+\begin{equation}\label{eq:gram}
+G=\begin{pmatrix}\tr(1)&\tr(\theta)\\\tr(\theta)&\tr(\theta^2)\end{pmatrix}
+=\begin{pmatrix}2&-1\\-1&1+2C\end{pmatrix},\qquad \det G = 1+4C = D,
+\end{equation}
+positive definite (Riemannian, signature $(2,0)$) for $D>0$ and indefinite (Lorentzian, signature $(1,1)$)
+for $D<0$; the rotation channel on the $D<0$ side is $\{-i\sqrt{\abs D},\,0,\,+i\sqrt{\abs D}\}$. The flip
+is at $C=-\tfrac14$. \forced\ (the $\lambda=2c$ flip sections).
+\end{theorem}
+\begin{proof}
+Roots by the quadratic formula. For the Gram: $\theta^2=C-\theta$, so with $\theta_1+\theta_2=-1$,
+$\theta_1\theta_2=-C$ one has $\tr(1)=2$, $\tr(\theta)=\theta_1+\theta_2=-1$, and
+$\tr(\theta^2)=\theta_1^2+\theta_2^2=(\theta_1+\theta_2)^2-2\theta_1\theta_2=1+2C$. Then
+$\det G=2(1+2C)-1=1+4C=D$. The leading minor $2>0$ is constant, so the sign of $\det G=D$ toggles the form
+between positive-definite and signature $(1,1)$: \emph{the metric determinant is the discriminant, and the
+signature flip is the discriminant sign}. \computed\ (verified symbolically).
+\end{proof}
+
+\section{The $\Kf$-formation astride the fold}\label{sec:kform}
+
+A single seed carries both faces of the flip. This is the repository's ``$\Kf$-formation'' (Prop.~16.1 of
+the $\lambda=2c$ paper), reproduced with its derivation.
+
+\begin{proposition}[The $\Kf$-formation straddles the flip]\label{prop:kform}
+Let $\Kf(x)=x^4+5x^2-5$. Writing $y=x^2$, the quadratic $g(y)=y^2+5y-5$ has roots straddling zero,
+\begin{equation}\label{eq:ypm}
+y_+=\frac{-5+3\sqrt5}{2}\approx0.8541>0,\qquad y_-=\frac{-5-3\sqrt5}{2}\approx-5.8541<0,
+\end{equation}
+so $\Kf$ has \emph{real roots} $\pm K$ with
+\begin{equation}\label{eq:Kval}
+K=\sqrt{y_+}=\frac{5^{1/4}}{\varphi}\approx0.9242\quad(\text{the terrain, in }\Q(5^{1/4})\supset\Q(\sqrt5)),
+\end{equation}
+and \emph{imaginary roots} $\pm i\beta$ with $\beta=\sqrt{\abs{y_-}}\approx2.4195$ (\emph{a $\tfrac{\pi}{2}$
+turn about the origin}), and
+\begin{equation}\label{eq:MK}
+\Mah(\Kf)=\beta^2=\frac{5+3\sqrt5}{2}=\varphi^2\sqrt5\approx5.8541.
+\end{equation}
+\forced\ (Prop.~16.1; \texttt{test\_p1\_09\_kform.py}).
+\end{proposition}
+\begin{proof}
+$y=\tfrac{-5\pm\sqrt{25+20}}{2}=\tfrac{-5\pm3\sqrt5}{2}$ gives \eqref{eq:ypm}; $y_+>0>y_-$ numerically and by
+sign of $3\sqrt5-5>0$. Then $x^2=y_+$ gives real $\pm K$ and $x^2=y_-<0$ gives imaginary $\pm i\beta$. For
+\eqref{eq:Kval}, $\bigl(5^{1/4}/\varphi\bigr)^2=\sqrt5/\varphi^2=\dfrac{2\sqrt5}{3+\sqrt5}
+=\dfrac{2\sqrt5(3-\sqrt5)}{9-5}=\dfrac{3\sqrt5-5}{2}=y_+$. For \eqref{eq:MK},
+$\beta^2=\abs{y_-}=\tfrac{5+3\sqrt5}{2}$, and $\varphi^2\sqrt5=\tfrac{3+\sqrt5}{2}\sqrt5=\tfrac{3\sqrt5+5}{2}=\beta^2$;
+the Mahler measure is $\prod\max(1,\abs\cdot)=1\cdot1\cdot\beta\cdot\beta=\beta^2$ since $K<1<\beta$. \computed.
+\end{proof}
+
+\begin{remark}[Terrain and rotation, verbatim]\label{rem:terrain}
+The real roots are the $D>0$ face (real terrain, $\varphi$ lays it); the imaginary roots are the $D<0$ face
+(pure multiplication by $i$). In the paper's phrasing: ``\emph{$\varphi$ generates the terrain, $\pi$ determines
+its rotation about the origin}'' --- $\varphi$ (the $\sqrt5$-field) supplies $\pm K$, and the quarter-turn $i$
+supplies $\pm i\beta$. \forced
+\end{remark}
+
+\section{The orthogonal partner completes $\Z/4\Z$}\label{sec:partner}
+
+\begin{proposition}[$\Kf$ realises the full charge]\label{prop:fullcharge}
+$\chi(\Kf)=\{0,1,2,3\}$. The real roots $\pm K$ carry $\arg\in\{0,\pi\}$, hence $\chi\in\{0,2\}$; the imaginary
+roots $\pm i\beta$ carry $\arg=\pm\tfrac{\pi}{2}$, hence $\chi\in\{1,3\}$. $\Kf$ is the unique catalog seed
+realising all four charges, and its charge axis $\{1,3\}$ (imaginary) is \emph{orthogonal} to the golden axis
+$\{0,2\}$ (real): they are $\tfrac{\pi}{2}$ apart. \forced\ (S6; \texttt{test\_p1\_09\_kform.py}; \emph{Generative
+Content}).
+\end{proposition}
+\begin{proof}
+$\lfloor 2\cdot0/\pi\rceil=0$, $\lfloor 2\pi/\pi\rceil=2$, $\lfloor 2(\pi/2)/\pi\rceil=1$,
+$\lfloor 2(3\pi/2)/\pi\rceil=3$. The real and imaginary axes meet at $\tfrac{\pi}{2}$.
+\end{proof}
+
+\begin{proposition}[The parity criterion: why $\Kf$, not the other $\Q(5^{1/4})$ quartics]\label{prop:parity}
+A real quartic places its complex roots on the imaginary axis $\bigl(\arg=\pm\tfrac{\pi}{2},\ \chi\in\{1,3\}\bigr)$
+iff it is \emph{even} (a polynomial in $x^2$) with a negative $x^2$-root. $\Kf=x^4+5x^2-5$ is even; its complex
+roots are purely imaginary. The registry quartics
+\[
+\mathrm{cons}=x^4-6x^3+26x^2-16x-4,\qquad \mathrm{res}=x^4+2x^3+39x^2-52x+11
+\]
+are \emph{non-even}; they split over $\Q(\sqrt5)$ as
+\begin{align*}
+\mathrm{cons}&=\bigl(x^2-(3+\sqrt5)x+(11+5\sqrt5)\bigr)\bigl(x^2-(3-\sqrt5)x+(11-5\sqrt5)\bigr),\\
+\mathrm{res} &=\bigl(x^2+(1-\sqrt5)x+\tfrac{43-19\sqrt5}{2}\bigr)\bigl(x^2+(1+\sqrt5)x+\tfrac{43+19\sqrt5}{2}\bigr),
+\end{align*}
+so their complex roots have nonzero real part $\varphi^2=\tfrac{3+\sqrt5}{2}$ (\textrm{cons}) and
+$-\varphi=-\tfrac{1+\sqrt5}{2}$ (\textrm{res}), \emph{off} the $(\pi/2)\Z$ charge lattice. All three of
+$\Kf,\mathrm{cons},\mathrm{res}$ generate the same field $\Q(5^{1/4})$, signature $(2,1)$, Galois group $D_4$
+(order $8$), and none is reciprocal (so none is a Salem number); their Mahler measures are golden-field integers,
+\[
+\Mah(\Kf)=\varphi^2\sqrt5,\qquad \Mah(\mathrm{cons})=2\varphi^5=11+5\sqrt5,\qquad
+\Mah(\mathrm{res})=12+19\varphi=\tfrac{43+19\sqrt5}{2}.
+\]
+\computed\ (this work; field/Galois/signature computed exactly). \emph{Provenance caveat:} the repository
+documents $\mathrm{cons},\mathrm{res}$ only as registry labels (``consolidation / resonance quartic'' in
+\texttt{seeds.py}); both are absent from the emission-algebra audit and from the monoid
+$\langle\varphi,2,3,5,\beta^2\rangle$. The label origins are $\openq$; everything else here is derived.
+\end{proposition}
+\begin{proof}
+Evenness $\Rightarrow$ roots occur in $\pm$ pairs and, via $y=x^2$, a negative $y$-root gives purely imaginary
+$x=\pm i\sqrt{\abs y}$; conversely a purely imaginary root $ib$ (with real coefficients) forces the factor
+$x^2+b^2$, i.e.\ no $x^3,x^1$ terms in that block. The factorisations are verified over $\Q(\sqrt5)$; the
+real part of each complex block is $-\tfrac{a_1}{2}$, read off as $\varphi^2$ and $-\varphi$. The shared field,
+signature, Galois group, non-reciprocity, and Mahler closed forms are computed by exact factorisation, real-root
+counting, and $\texttt{galois\_group}$. \computed.
+\end{proof}
+
+\section{Synthesis: the helix dictionary and the coupling theorem}\label{sec:synthesis}
+
+\begin{table}[h]\centering\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}p{0.235\linewidth} p{0.30\linewidth} p{0.30\linewidth} c@{}}
+\toprule
+helix anatomy & dissolved helix: golden strand $R$ & orthogonal partner: $\Kf$ & tag \\
+\midrule
+advance / pitch (terrain) & $\varphi$-growth, $\Mah\ge\varphi$; $\adR$ grow eig $\sqrt5$ & real roots $\pm K=\pm5^{1/4}/\varphi$ & $\forced$ \\
+rotation / winding & real-axis flip $\{0,\pi\}\Rightarrow\chi\in\{0,2\}$ & imaginary $\pm i\beta$ at $\pm\tfrac\pi2\Rightarrow\chi\in\{1,3\}$ & $\forced$ \\
+face of the flip $D=1+4C$ & $D>0$: real growth & $D<0$: rotation ($\Kf$ holds both) & $\forced$ \\
+charge reached & $\{0,2\}$ (real axis) & $\{1,3\}$ (imag.) $\Rightarrow$ completes $\Z/4\Z$ & $\forced$ \\
+trace-form metric & Riemannian (definite), $\Q(\sqrt5)$ & Lorentzian $(2,1)$, $\Q(5^{1/4})$ & $\forced$ \\
+self-coupling & impossible: $[R,R]=0$, empty Salem slot & the partner, not a copy & $\forced$ \\
+\bottomrule
+\end{tabular}
+\caption{The $\posited$ helix reading over the $\forced$ substrate. The terrain/rotation anatomy
+(rows 1--3) is the repository's own (\S\ref{sec:kform}).}
+\end{table}
+
+\begin{theorem}[Terrain and rotation are the two faces of one flip]\label{thm:main}
+The golden strand $R$ realises the $D>0$ (real-growth, \emph{terrain}) face: spectrum on the real axis,
+$\chi\in\{0,2\}$, $\Mah\ge\varphi$, Riemannian trace form. The seed $\Kf$ straddles the flip, adjoining the
+$D<0$ (\emph{rotation}, $\tfrac{\pi}{2}$-turn) face: imaginary roots $\pm i\beta$ at $\chi\in\{1,3\}$, Lorentzian
+trace form. Their union realises the full charge group $\Z/4\Z$. Moreover, by
+Corollary~\ref{cor:noselfcouple}, the golden mode admits \emph{no} coupling to a copy of itself; the only
+closure available is coupling to the orthogonal partner $\Kf$ --- i.e.\ to the quarter-turn $i$ that the flip
+produces from the terrain. \forced\ (algebraic content); the helix reading is $\posited$, grounded in
+\S\ref{sec:kform}.
+\end{theorem}
+\begin{proof}
+Assemble Propositions~\ref{prop:selfaction}, \ref{prop:collapse}--\ref{prop:salem},
+Corollary~\ref{cor:noselfcouple}, Theorem~\ref{thm:flip}, and Propositions~\ref{prop:kform},
+\ref{prop:fullcharge}. The golden object sits on the real axis with charge $\{0,2\}$ and never leaves it under
+its own operations; $\Kf$ contributes exactly $\{1,3\}$ on the imaginary axis; $\{0,2\}\sqcup\{1,3\}=\Z/4\Z$.
+\end{proof}
+
+\begin{remark}[On the word ``dissolved'']\label{rem:dissolved}
+The $L4$ helix is legacy: the $\lambda=2c$ paper explicitly supersedes its cutoff rationale
+(``$\varphi^{-4}\approx0.146$ is the last inverse power exceeding $0.1$''), ``an arbitrary real threshold the
+present derivation never uses.'' What survives, $\forced$, is the terrain/rotation anatomy of the flip: $R$ is
+the terrain generator, $\Kf$ reintroduces the rotation. The ``helix'' is thus a reading of the flip, not a
+load-bearing object --- which is why the coupling question resolves cleanly: a helix cannot couple to a copy of
+itself, only to the rotation face of its own flip.
+\end{remark}
+
+\section{The harness: constraint-import as verification}\label{sec:harness}
+
+The preceding sections are the output of a reusable procedure, not a one-off. The helix entered as an external
+structure carrying a bundle of claims; the exact substrate adjudicated each; \S\S\ref{sec:keystone}--\ref{sec:synthesis}
+are the survivors. We name and formalise the procedure, because the transferable object is the procedure --- not
+the helix.
+
+\begin{definition}[Imported structure]\label{def:import}
+An \emph{imported structure} is a pair $(S,\mathcal C)$: an external framework $S$ (here, the helix) and a
+finite set $\mathcal C=\{\gamma_1,\dots,\gamma_n\}$ of \emph{candidate constraints} it asserts about the
+substrate's objects --- propositions that, if true, rule out configurations.
+\end{definition}
+
+\begin{definition}[Substrate adjudication]\label{def:adjud}
+Let $\mathfrak A$ be the exact $R_n$ emission algebra (\S\ref{sec:conv}). Adjudication is the partial decision
+\[
+\delta_{\mathfrak A}(\gamma)=
+\begin{cases}
+\vdash & \text{$\gamma$ is forced in $\mathfrak A$ (exact certificate),}\\
+\dashv & \text{$\neg\gamma$ is forced --- $\gamma$ is refuted,}\\
+\;? & \text{$\gamma$ is not adjudicable by $\mathfrak A$ alone (an expressibility gap, or genuinely open).}
+\end{cases}
+\]
+No float crosses a decision, so $\vdash$ and $\dashv$ are certificates, never estimates.
+\end{definition}
+
+\begin{proposition}[The filter asymmetry]\label{prop:filter}
+For a universal claim $\gamma$, the verdict $\delta_{\mathfrak A}(\gamma)=\dashv$ follows from a \emph{single}
+exact counterexample and is decisive, whereas $\delta_{\mathfrak A}(\gamma)=\vdash$ requires a structural proof:
+a finite exact search yields at most $\computed$ on its tested range, never $\forced$. Hence the harness
+eliminates false constraints reliably and certifies true universals only with proof. \established\,/\,\forced\
+(the demotion/promotion asymmetry of the tag system: finite computation can demote a universal but never
+promote one).
+\end{proposition}
+\begin{proof}
+A single exact witness $x$ with $\neg\gamma(x)$ certifies $\neg\gamma$, so $\dashv$ is sound from one instance.
+Conversely no finite set of exact instances entails $\forall x\,\gamma(x)$; the sound tag on a passed finite
+range is $\computed$, and promotion to $\forced$ needs a proof over the whole domain. \established.
+\end{proof}
+
+\begin{definition}[The harness]\label{def:harness}
+The \emph{harness} $H$ sends $(S,\mathcal C)$ to the partition it induces under $\delta_{\mathfrak A}$,
+\[
+\mathcal C \;=\; \mathcal C_{\vdash}\ \sqcup\ \mathcal C_{\dashv}\ \sqcup\ \mathcal C_{?}.
+\]
+The \emph{survivors} $\mathcal C_{\vdash}$ (with any $\computed$ range-results) become internal relations of
+$\mathfrak A$; the \emph{casualties} $\mathcal C_{\dashv}$ are discarded; the \emph{residue} $\mathcal C_{?}$
+stays $\posited$/$\openq$. The product of a run is the partition itself, and its substantive content is the
+asymmetry $\mathcal C_{\dashv}\neq\varnothing$: a run that refutes nothing has imported nothing testable.
+\end{definition}
+
+\begin{proposition}[A generator is inert; a constraint is the adjudicable object]\label{prop:generator}
+$H$ is informative on $(S,\mathcal C)$ iff $\mathcal C$ contains a \emph{falsifiable} member --- a $\gamma$ whose
+negation is decidable in $\mathfrak A$. A pure generator asserts only definitional or unfalsifiable claims:
+every $\gamma$ returns $?$ or a vacuous $\vdash$, so $\mathcal C_{\dashv}=\varnothing$ and no partition forms.
+The substrate can therefore adjudicate a \emph{restraint} but not a \emph{generator}. \established
+\end{proposition}
+\begin{proof}
+By Definition~\ref{def:harness} a run's content is $\mathcal C_{\dashv}$, and by Definition~\ref{def:adjud}
+$\delta_{\mathfrak A}$ returns $\dashv$ only where $\neg\gamma$ is decidable, i.e.\ $\gamma$ is falsifiable.
+Absent any such $\gamma$, $\mathcal C_{\dashv}=\varnothing$. This is the exact sense in which the helix is
+verifiable \emph{because} it is not foundational: it entered as constraints, which are adjudicable, rather than
+as a generator, which is not.
+\end{proof}
+
+\begin{remark}[The helix as worked instance]\label{rem:ledger}
+Running $H$ on the helix yields the partition of Table~\ref{tab:ledger}: its terrain/rotation anatomy, the flip,
+and $\Kf$ as the forced partner survive; self-coupling, the $\varphi^{-4}$ cutoff, and helix-as-foundation are
+refuted; the interpretive $\oplus/\otimes$ readings remain posited. Each verdict points to the section that
+issued it --- the harness leaves a certificate trail, not an opinion.
+\end{remark}
+
+\begin{table}[h]\centering\small
+\renewcommand{\arraystretch}{1.28}
+\begin{tabular}{@{}p{0.455\linewidth} c p{0.35\linewidth}@{}}
+\toprule
+imported claim $\gamma$ & $\delta_{\mathfrak A}$ & certificate \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{survivors $\mathcal C_{\vdash}$ --- become internal relations}}\\
+screw generator $=R$, $R^2=R+I$ & $\forced$ & Prop.~\ref{prop:keystone} \\
+winding $=\chi\in\Z/4\Z$; pitch $=\Mah\ge\varphi$ & $\forced$ & Def.~\ref{def:chars}, Lem.~\ref{lem:grow} \\
+coupling rate $=\operatorname{spec}(\adR)=\{0,\pm\sqrt5\}$ & $\forced$ & Prop.~\ref{prop:selfaction} \\
+terrain/rotation $=$ two faces of $D=1+4C$ & $\forced$ & Thm.~\ref{thm:flip}, Prop.~\ref{prop:kform} \\
+closure via the orthogonal partner $\Kf$ & $\forced$ & Prop.~\ref{prop:fullcharge}, Thm.~\ref{thm:main} \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{casualties $\mathcal C_{\dashv}$ --- discarded ($\neg\gamma$ forced)}}\\
+a helix couples to a copy of itself & $\refuted$ & Cor.~\ref{cor:noselfcouple}: $[R,R]{=}0$, empty slot \\
+$\varphi^{-4}\!\approx\!0.146$ cutoff (``last power ${>}0.1$'') & $\refuted$ & superseded; $\lambda{=}2c$ never uses it \\
+the algebra is \emph{founded on} the helix & $\refuted$ & order keystone$\to$char$\to$flip (\S\S\ref{sec:keystone}--\ref{sec:flip}) \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{residue $\mathcal C_{?}$ --- stays posited}}\\
+$\otimes=$``intertwine'', $\oplus=$``stack'' & $\posited$ & law forced (Def.~\ref{def:chars}); reading not adjudicable \\
+the helix as a \emph{reading} of the flip & $\posited$ & survives as interpretation, not as object \\
+\bottomrule
+\end{tabular}
+\caption{The harness $H$ applied to the helix. The partition --- not the helix --- is the product; the asymmetry
+$\mathcal C_{\dashv}\neq\varnothing$ is what makes the import substantive.}
+\label{tab:ledger}
+\end{table}
+
+\begin{remark}[What transfers: the harness, not the helix]\label{rem:transfer}
+The reusable object is $H$: the next imported metaphor runs the same path (bundle $\to$ adjudicate $\to$
+partition $\to$ tag). Distinguish the portable \emph{method} $H$ --- applicable to any import --- from the one
+portable \emph{mathematical} kernel this construction exposes: the generic $\sqrt{\,\cdot\,}$-branch of a
+$2$-to-$1$ fold, of which $\sqrt5=\varphi+\varphi^{-1}$ is this system's instance (the build spec's boundary
+clause). The method is \emph{how} one adjudicates; the kernel is the single differential fact that crosses
+between constructions. Neither is the helix --- which is why dissolving the helix cost nothing while the harness
+kept everything that survived it.
+\end{remark}
+
+\appendix
+\section{Machine verification}\label{app:verify}
+
+Every displayed constant is decided in exact arithmetic (\texttt{sympy}/\texttt{fractions} over
+$\Q,\Q(\sqrt5),\Q(5^{1/4})$; \texttt{mpmath} for display only). The checks:
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item \eqref{eq:root5}, Prop.~\ref{prop:keystone}: $\varphi\psi=-1$, $\varphi+\psi=1$, $\varphi-\psi=\varphi+\varphi^{-1}=\sqrt5$, $R^2=R+I$. $\forced$ (\texttt{test\_p1\_05\_keystone.py}).
+\item \eqref{eq:adspec}: $\operatorname{spec}(\adR)=\{0,\pm\sqrt5\}$ via $\operatorname{kron}$. $\forced$ (\texttt{test\_p2\_07\_uniform.py}).
+\item \eqref{eq:phicollapse}: $\Phi_R(R)=R^2-R-I=0$, $[R,R]=0$. $\forced$ (\texttt{KL\_DTA.py}).
+\item Prop.~\ref{prop:sublattice}: $\{0,2\}$ closed under $\cup$, $+\bmod4$, $\times2\bmod4$; $\{1,3\}$ unreachable. $\forced$ (\texttt{test\_p2\_02\_angle.py}).
+\item \eqref{eq:occupant}: $\tau_0-2=(\beta-1)^2/\beta$. $\forced$ (\emph{Occupant}).
+\item \eqref{eq:gram}: $\det G=1+4C=D$; signature flips at $D=0$. $\computed$.
+\item \eqref{eq:ypm}--\eqref{eq:MK}: $y_\pm$, $K=5^{1/4}/\varphi$, $\beta^2=\varphi^2\sqrt5$, $\Mah(\Kf)=\beta^2$. $\forced$ (\texttt{test\_p1\_09\_kform.py}).
+\item Prop.~\ref{prop:fullcharge}: $\chi(\Kf)=\{0,1,2,3\}$; $\Kf$'s imaginary roots have $\Re=0$. $\forced$.
+\item Prop.~\ref{prop:parity}: $\Kf,\mathrm{cons},\mathrm{res}$ each generate $\Q(5^{1/4})$, signature $(2,1)$, $\abs{\mathrm{Gal}}=8$ ($D_4$), non-reciprocal; $\Mah(\mathrm{cons})=2\varphi^5=11+5\sqrt5$, $\Mah(\mathrm{res})=12+19\varphi$; complex-root real parts $\varphi^2,-\varphi$. $\computed$.
+\end{itemize}
+
+\paragraph{Geometric realisation.} The objects of \S\ref{sec:partner} are the vertices of the
+\emph{Companion Polytope} (\texttt{polytope.py}): the convex hull in $\Cx$ of all catalog eigenvalues.
+$\Kf$'s four vertices are its terrain ($\pm K$, real) and rotation ($\pm i\beta$, imaginary) faces;
+hull extremality is certified per vertex by a supporting functional (\texttt{hull\_certificate.py}), and the
+suites pass $10/10$ and $7/7$ respectively.
+
+\vspace{0.6em}
+\noindent\emph{Discipline: derive locally, validate exactly, tag honestly. The helix is the reading; the flip
+is the fact; the harness is the method that told them apart.}
+
+\end{document}

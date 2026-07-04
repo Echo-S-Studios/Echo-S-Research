@@ -1,0 +1,786 @@
+% Compile with: xelatex (unicode-math + Latin Modern Math)
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amsthm,mathtools,amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\setmainfont{Latin Modern Roman}
+\setmathfont{Latin Modern Math}
+\setmonofont{Latin Modern Mono}[Scale=0.90]
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{3em}
+
+\newcommand{\A}{𝔄}
+\newcommand{\OK}{𝒪}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{intuition}[theorem]{Intuition}
+
+\definecolor{forcedc}{RGB}{15,110,86}
+\definecolor{estabc}{RGB}{95,95,95}
+\definecolor{positedc}{RGB}{170,105,20}
+\definecolor{openc}{RGB}{163,45,45}
+\newcommand{\Forced}{\textcolor{forcedc}{[FORCED]}}
+\newcommand{\Computed}{\textcolor{forcedc}{[COMPUTED]}}
+\newcommand{\Estab}{\textcolor{estabc}{[ESTABLISHED]}}
+\newcommand{\Posited}{\textcolor{positedc}{[POSITED]}}
+\newcommand{\Openq}{\textcolor{openc}{[OPEN]}}
+
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\Mah}{\mathrm{M}}
+\newcommand{\ad}{\operatorname{ad}}
+\newcommand{\spec}{\operatorname{spec}}
+\newcommand{\dd}{\mathrm{d}}
+
+\title{\textbf{The Emission Algebra $\A$}\\[4pt]
+\large A self-contained primer: one matrix, one relation, three layers}
+\author{Echo-S Studios \,·\, \texttt{math-research-pipelines}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This is a primer on the \emph{emission algebra} $\A$ --- a small, exact mathematical world built from a single $2×2$ matrix $R=\bigl(\begin{smallmatrix}0&1\\1&1\end{smallmatrix}\bigr)$ and a single relation $R^{2}=R+I$. From that seed three layers grow, and we develop each from scratch, with full proofs and worked numerical examples: an \emph{associative core}, the ring $ℤ[R]=\OK_{ℚ(\sqrt5)}$ of integers of the golden field; a \emph{Lie layer}, the self-action $\ad_R$ which turns out to be $𝔰𝔩_2$ of signature $(2,1)$ with root length $\sqrt5$; and a \emph{semiring layer} carrying two characters --- a magnitude $\Mah$ (Mahler measure) and a charge $χ∈ℤ/4ℤ$ (phase) --- with operators $⊕$, $⊗$, and the Adams family $ψ^{n}$. An invariant trace form then ties the layers together: the deviation operator $X_n=2R^{n}-L_nI$ collapses to $F_nH$, giving the duality $\tfrac12\Tr(X_n^{2})=5F_n^{2}=L_n^{2}-4(-1)^{n}$, on which $ψ^{n}$ acts as a pure dilation of the Cartan axis and the Casimir of the coupled representations ($\tfrac{15}{2}$ on $V_3$, $12$ on $V_4$) tracks the deviation length exactly. We then ask the questions that organise the subject: can the golden mode couple to a copy of itself? (no --- three independent obstructions); what completes its charge to all of $ℤ/4ℤ$? (a unique orthogonal partner $K$); and where does the semiring bottom out? (the cyclotomic floor $\Mah=1$, where magnitude becomes pure charge). Every claim is tagged for epistemic status, and every displayed constant is verified in exact arithmetic. No prior acquaintance with the framework is assumed; a reader comfortable with linear algebra and elementary number theory can learn the algebra here end to end.
+\end{abstract}
+
+{\small\tableofcontents}
+
+\section*{Introduction: what this algebra is, and how to read it}
+\addcontentsline{toc}{section}{Introduction}
+
+Most algebraic structures are introduced by a list of axioms. The emission algebra is introduced by an \emph{object}: the companion matrix of the golden ratio. Everything else is forced. If you accept the one matrix $R$ and the one relation it satisfies, $R^{2}=R+I$, then the ring it generates, the Lie algebra it acts on, the two numerical characters that grade its objects, the representation theory, and the boundary where that grading collapses are all consequences --- not choices. The pleasure of the subject, and its discipline, is that almost nothing is posited; the structure unfolds from the seed.
+
+\paragraph{The seed and the three layers.} The golden ratio $φ=\tfrac{1+\sqrt5}{2}$ satisfies $φ^{2}=φ+1$. Encode it as a matrix --- its companion matrix $R$ --- and that scalar identity becomes the matrix identity $R^{2}=R+I$, the \emph{keystone}. From $R$ we build:
+\begin{description}[leftmargin=1.6em,style=nextline,itemsep=2pt]
+\item[The associative core (Part~\ref{sec:core}).] The ring $ℤ[R]$ of integer polynomials in $R$. We will see it is a rank-$2$ lattice with Fibonacci multiplication, and that it is exactly $\OK_{ℚ(\sqrt5)}$, the ring of integers of the golden field --- the largest possible such ring, with nothing missing.
+\item[The Lie layer (Part~\ref{sec:lie}).] The way $R$ acts on the space of $2×2$ matrices by the commutator, $\ad_R=[R,\,\cdot\,]$. Its spectrum is $\{0,\pm\sqrt5\}$, and the whole layer assembles into a copy of $𝔰𝔩_2$ --- the Lie algebra of the group of area-preserving linear maps --- of Lorentzian signature $(2,1)$, with the golden number $\sqrt5$ as its characteristic root length.
+\item[The semiring layer (Parts~\ref{sec:semiring}--\ref{sec:reps}).] Two numbers attached to every object: how much it stretches (its \emph{magnitude}, the Mahler measure $\Mah$) and which way it points (its \emph{charge}, a residue $χ∈ℤ/4ℤ$). These grade the objects, and three operators --- superposition $⊕$, coupling $⊗$, and the scaling family $ψ^{n}$ --- move objects around while transforming the two characters in fixed ways.
+\end{description}
+
+\paragraph{The three questions.} With the machinery built, the subject is driven by three questions, answered in Parts~\ref{sec:selfcouple}--\ref{sec:floor}:
+\begin{enumerate}[leftmargin=1.9em,itemsep=1pt]
+\item \emph{Can the golden mode couple to a copy of itself into a bound state?} No: three independent obstructions forbid it (Part~\ref{sec:selfcouple}).
+\item \emph{What object completes the golden charge to all of $ℤ/4ℤ$?} A unique orthogonal partner, the quartic $K=x^{4}+5x^{2}-5$ (Part~\ref{sec:selfcouple}).
+\item \emph{Where does the magnitude grading bottom out?} At the cyclotomic floor $\Mah=1$, where magnitude collapses to its identity and the object becomes pure charge (Part~\ref{sec:floor}).
+\end{enumerate}
+
+\paragraph{The discipline: exactness and tags.} Two rules run through everything. First, \emph{no floating-point number ever crosses a decision boundary}: every equality, every inequality that the argument turns on, is settled over the rationals $ℚ$, the golden field $ℚ(\sqrt5)$, or its quartic extension $ℚ(5^{1/4})$; decimals appear only to illustrate. Second, every claim carries a bracketed \emph{epistemic tag}:
+\begin{center}\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+tag & meaning \\
+\midrule
+\Forced & a theorem of the exact structure, machine-verified \\
+\Computed & an exact fact worked out here (symbolic, no float in the decision) \\
+\Estab & standard external mathematics we cite \\
+\Posited & an interpretive overlay --- a lens, not a further theorem \\
+\Openq & an acknowledged open problem \\
+\bottomrule
+\end{tabular}
+\end{center}
+The tags are load-bearing: a forced claim phrased loosely still earns \Forced; a metaphor, however apt, earns only \Posited; and where a claim is proved only within the framework's own class of objects but is open in general mathematics, both tags appear. This honesty about status is not decoration --- it is how the subject keeps itself from mistaking a suggestive picture for a proof.
+
+\paragraph{Prerequisites and notation.} We assume linear algebra (eigenvalues, the characteristic polynomial, the commutator of matrices), a first course in abstract algebra (rings, ideals, fields), and a little number theory (algebraic integers, the ring of integers of a quadratic field). Throughout, $φ=\tfrac{1+\sqrt5}{2}$ and $ψ=\tfrac{1-\sqrt5}{2}=1-φ=-φ^{-1}$ are the two roots of $x^{2}-x-1$; $\{F_n\}_{n∈ℤ}$ is the Fibonacci sequence ($F_0=0$, $F_1=1$, extended to negative indices by $F_{n-1}=F_{n+1}-F_n$), and $\{L_n\}$ is the Lucas sequence ($L_0=2$, $L_1=1$). We write $I$ for the $2×2$ identity and $M_2$ for the algebra of $2×2$ complex matrices.
+
+\section{The associative core: the golden order}\label{sec:core}
+
+\subsection{Encoding a number as a matrix}
+An algebraic number is a root of a monic integer polynomial; the cleanest way to \emph{carry} such a number inside linear algebra is its companion matrix. For a monic quadratic $x^{2}+bx+c$, the companion matrix is the $2×2$ integer matrix whose characteristic polynomial is exactly that quadratic and whose action realises ``multiply by a root.''
+
+\begin{definition}[The golden generator]\label{def:R}
+The golden ratio $φ=\tfrac{1+\sqrt5}{2}$ is a root of $x^{2}-x-1$. Its companion matrix is
+\[
+R=\begin{pmatrix}0&1\\1&1\end{pmatrix},\qquad\text{with}\quad \det(xI-R)=x^{2}-x-1 .
+\]
+The emission algebra $\A$ is generated, as an algebra over $ℤ$, by $R$.
+\end{definition}
+
+\begin{intuition}
+Think of $R$ as ``the golden ratio, wearing a matrix costume.'' Its two eigenvalues are the two roots $φ$ and $ψ$ of $x^{2}-x-1$, so any polynomial identity satisfied by $φ$ is automatically satisfied by $R$ (with $I$ standing in for the constant $1$). The whole first layer of the algebra is just this dictionary between the number $φ$ and the matrix $R$, made precise.
+\end{intuition}
+
+\subsection{The keystone relation}
+\begin{proposition}[The keystone]\label{prop:keystone}
+$R$ satisfies
+\begin{equation}\label{eq:keystone}
+R^{2}=R+I,
+\end{equation}
+its eigenvalues are $φ,ψ$, and $\Tr R=1$, $\det R=-1$. Moreover $φ+ψ=1$, $φψ=-1$, and
+\begin{equation}\label{eq:root5}
+φ-ψ=\sqrt5=φ+φ^{-1}.
+\end{equation}
+\Forced
+\end{proposition}
+\begin{proof}
+The characteristic polynomial is $\det(xI-R)=\det\bigl(\begin{smallmatrix}x&-1\\-1&x-1\end{smallmatrix}\bigr)=x(x-1)-1=x^{2}-x-1$, so $\Tr R=1$, $\det R=-1$, and the eigenvalues are its roots $φ,ψ$. The Cayley--Hamilton theorem says every matrix satisfies its own characteristic polynomial; applied here, $R^{2}-R-I=0$, which is \eqref{eq:keystone}. Vieta's formulas give $φ+ψ=1$ and $φψ=-1$. Finally $φ-ψ=\tfrac{(1+\sqrt5)-(1-\sqrt5)}{2}=\sqrt5$, and since $φ^{-1}=φ-1$ (divide $φ^{2}=φ+1$ by $φ$), we get $φ+φ^{-1}=φ+(φ-1)=2φ-1=\sqrt5$.
+\end{proof}
+
+Equation \eqref{eq:keystone} is the entire content of the first layer, compressed: it says $R^{2}$ is not a new matrix but lies in the span of $R$ and $I$. Every structural fact below is a consequence of iterating this one reduction.
+
+\subsection{Powers, and the appearance of Fibonacci}
+Let us simply compute. Using \eqref{eq:keystone} to reduce every $R^{2}$:
+\[
+\begin{aligned}
+R^{2}&=R+I,\\
+R^{3}&=R\cdot R^{2}=R(R+I)=R^{2}+R=(R+I)+R=2R+I,\\
+R^{4}&=R\cdot R^{3}=R(2R+I)=2R^{2}+R=2(R+I)+R=3R+2I,\\
+R^{5}&=R\cdot R^{4}=R(3R+2I)=3R^{2}+2R=3(R+I)+2R=5R+3I.
+\end{aligned}
+\]
+The coefficients $(1,1),(2,1),(3,2),(5,3),\dots$ are consecutive Fibonacci numbers. This is not a coincidence but a theorem.
+
+\begin{theorem}[The power law]\label{thm:power}
+For every integer $n$ (positive, zero, or negative),
+\begin{equation}\label{eq:power}
+R^{n}=F_nR+F_{n-1}I=\begin{pmatrix}F_{n-1}&F_n\\ F_n&F_{n+1}\end{pmatrix}.
+\end{equation}
+\Forced
+\end{theorem}
+\begin{proof}
+We induct on $n\ge 0$. For $n=0$: $F_0R+F_{-1}I=0\cdot R+1\cdot I=I=R^{0}$ (here $F_{-1}=1$). For $n=1$: $F_1R+F_0I=R$. Assume \eqref{eq:power} holds for some $n\ge 1$. Then
+\[
+R^{n+1}=R\cdot R^{n}=R(F_nR+F_{n-1}I)=F_nR^{2}+F_{n-1}R\overset{\eqref{eq:keystone}}{=}F_n(R+I)+F_{n-1}R=(F_n+F_{n-1})R+F_nI=F_{n+1}R+F_nI,
+\]
+using the Fibonacci recurrence $F_{n+1}=F_n+F_{n-1}$. This completes the induction for $n\ge0$. Because $\det R=-1\ne0$, $R$ is invertible, and running the same recurrence backwards (equivalently, since $F_n$ is defined for negative $n$) extends \eqref{eq:power} to all $n∈ℤ$. The matrix form follows by substituting $R=\bigl(\begin{smallmatrix}0&1\\1&1\end{smallmatrix}\bigr)$: $F_nR+F_{n-1}I=\bigl(\begin{smallmatrix}F_{n-1}&F_n\\ F_n&F_n+F_{n-1}\end{smallmatrix}\bigr)=\bigl(\begin{smallmatrix}F_{n-1}&F_n\\ F_n&F_{n+1}\end{smallmatrix}\bigr)$.
+\end{proof}
+
+\begin{example}\label{ex:power}
+$R^{5}=F_5R+F_4I=5R+3I=\bigl(\begin{smallmatrix}3&5\\5&8\end{smallmatrix}\bigr)$, matching the direct computation above. As a sanity check on the negative direction, $R^{-1}=F_{-1}R+F_{-2}I=1\cdot R+(-1)\cdot I=\bigl(\begin{smallmatrix}-1&1\\1&0\end{smallmatrix}\bigr)$, and indeed $R\cdot R^{-1}=\bigl(\begin{smallmatrix}0&1\\1&1\end{smallmatrix}\bigr)\bigl(\begin{smallmatrix}-1&1\\1&0\end{smallmatrix}\bigr)=\bigl(\begin{smallmatrix}1&0\\0&1\end{smallmatrix}\bigr)=I$.
+\end{example}
+
+\subsection{Trace, determinant, and three classical identities}
+The power law immediately yields the standard Fibonacci--Lucas identities; we derive them because they recur throughout the algebra.
+
+\begin{corollary}\label{cor:identities}
+For all $n∈ℤ$:
+\begin{enumerate}[label=\textup{(\alph*)},leftmargin=2em,itemsep=1pt]
+\item \textbf{Lucas trace:} $\Tr(R^{n})=L_n=φ^{n}+ψ^{n}$.
+\item \textbf{Determinant:} $\det(R^{n})=(-1)^{n}$.
+\item \textbf{Cassini:} $F_{n-1}F_{n+1}-F_n^{2}=(-1)^{n}$.
+\item \textbf{Binet / the eigenvalue shadow:} $φ^{n}=F_nφ+F_{n-1}$, hence $F_n=\dfrac{φ^{n}-ψ^{n}}{\sqrt5}$.
+\end{enumerate}
+\Forced
+\end{corollary}
+\begin{proof}
+(a) From \eqref{eq:power}, $\Tr(R^{n})=F_{n-1}+F_{n+1}$. Since $F_{n+1}=F_n+F_{n-1}$, this is $F_n+2F_{n-1}=(F_n+F_{n-1})+F_{n-1}=F_{n+1}+F_{n-1}$, which is the definition of the Lucas number $L_n$; that $L_n=φ^{n}+ψ^{n}$ follows because $\Tr(R^{n})$ is the sum of the eigenvalues $φ^{n},ψ^{n}$ of $R^{n}$.
+(b) $\det(R^{n})=(\det R)^{n}=(-1)^{n}$.
+(c) Combining (b) with the matrix form \eqref{eq:power}: $\det(R^{n})=\det\bigl(\begin{smallmatrix}F_{n-1}&F_n\\ F_n&F_{n+1}\end{smallmatrix}\bigr)=F_{n-1}F_{n+1}-F_n^{2}$, so this equals $(-1)^{n}$.
+(d) Apply \eqref{eq:power} to the eigenvector for $φ$: since $Rv=φv$ implies $R^{n}v=φ^{n}v$, and $R^{n}=F_nR+F_{n-1}I$, we get $φ^{n}v=(F_nφ+F_{n-1})v$, so $φ^{n}=F_nφ+F_{n-1}$; likewise $ψ^{n}=F_nψ+F_{n-1}$. Subtracting and dividing by $φ-ψ=\sqrt5$ gives Binet's formula.
+\end{proof}
+
+\begin{example}\label{ex:cassini}
+At $n=5$: $R^{5}=\bigl(\begin{smallmatrix}3&5\\5&8\end{smallmatrix}\bigr)$. Then $\Tr=11=L_5$; $\det=3\cdot8-5\cdot5=24-25=-1=(-1)^{5}$; Cassini reads $F_4F_6-F_5^{2}=3\cdot8-5^{2}=-1$; and Binet gives $φ^{5}=5φ+3\approx 5(1.618)+3=11.09$, matching $φ^{5}\approx11.09$.
+\end{example}
+
+\subsection{The core is the maximal order}
+So far the powers of $R$ live in the $ℤ$-span of $I$ and $R$. That span is a ring, and we now identify it exactly.
+
+\begin{theorem}[The golden order]\label{thm:order}
+The ring $ℤ[R]$ of integer polynomials in $R$ is the free rank-$2$ lattice $ℤ\!\cdot\! I⊕ℤ\!\cdot\! R$, and
+\[
+ℤ[R]\;≅\;ℤ[x]/(x^{2}-x-1)\;=\;ℤ[φ]\;=\;\OK_{ℚ(\sqrt5)},
+\]
+the ring of integers of the golden field. \Forced
+\end{theorem}
+\begin{proof}
+\emph{Closure and rank.} By Theorem~\ref{thm:power} every power $R^{n}$ lies in $ℤ\!\cdot\! I⊕ℤ\!\cdot\! R$, so this lattice is closed under multiplication and equals $ℤ[R]$. The set $\{I,R\}$ is linearly independent over $ℚ$ (if $aI+bR=0$ then reading the off-diagonal entry gives $b=0$, then $a=0$), so $ℤ[R]$ is free of rank $2$.
+
+\emph{The isomorphism.} The evaluation map $ℤ[x]→ℤ[R]$, $x↦R$, is a surjective ring homomorphism; its kernel is the ideal of polynomials vanishing at $R$, which is generated by the minimal polynomial $x^{2}-x-1$ (irreducible, so the kernel is exactly $(x^{2}-x-1)$). Hence $ℤ[R]≅ℤ[x]/(x^{2}-x-1)$. Sending $x↦φ$ identifies this with $ℤ[φ]⊂ℚ(\sqrt5)$.
+
+\emph{Maximality.} Recall that the ring of integers $\OK_{K}$ of a number field $K$ is the largest subring that is finitely generated as a $ℤ$-module, and an \emph{order} is any full-rank subring; orders sit inside $\OK_K$ with finite index, and $\operatorname{disc}(\text{order})=[\,\OK_K:\text{order}\,]^{2}\,\operatorname{disc}(K)$. The order $ℤ[φ]$ has discriminant equal to the discriminant of its defining polynomial, $\operatorname{disc}(x^{2}-x-1)=1^{2}+4=5$. For $K=ℚ(\sqrt5)$, because $5≡1\pmod4$, the field discriminant is $\operatorname{disc}(K)=5$ as well. Thus $[\OK_K:ℤ[φ]]^{2}=5/5=1$, so the index is $1$ and $ℤ[φ]=\OK_{ℚ(\sqrt5)}$.
+\end{proof}
+
+\begin{intuition}
+``Maximal order'' means nothing is missing: $ℤ[φ]$ already contains every algebraic integer of the golden field, so the core of $\A$ is the arithmetically complete home of $φ$. Had we started from a clumsier seed --- say $2φ$, with defining polynomial of discriminant $20=2^{2}\cdot5$ --- we would have landed in a proper suborder of index $2$, arithmetically defective. The companion matrix of $x^{2}-x-1$, with its \emph{fundamental} discriminant $5$, is exactly the choice that makes the core complete. This is the first instance of a recurring theme: the golden seed is not arbitrary but optimal.
+\end{intuition}
+
+\begin{exercise}\label{exr:order}
+Show that $R^{-2}=\bigl(\begin{smallmatrix}2&-1\\-1&1\end{smallmatrix}\bigr)$ two ways: from $R^{-2}=F_{-2}R+F_{-3}I$ (with $F_{-2}=-1$, $F_{-3}=2$), and by squaring $R^{-1}$ from Example~\ref{ex:power}. Verify $\det(R^{-2})=1=(-1)^{-2}$ and $\Tr(R^{-2})=3=L_{-2}$.
+\end{exercise}
+
+\section{The Lie layer: an $𝔰𝔩_2$ with golden root length}\label{sec:lie}
+
+\subsection{The self-action}
+The associative core tells us how $R$ multiplies. The Lie layer tells us how $R$ \emph{acts on its own surroundings} --- on the whole $4$-dimensional space $M_2$ of $2×2$ matrices --- through the commutator. This is the same operation that governs infinitesimal symmetry in physics: the bracket $[R,X]=RX-XR$ measures how $X$ fails to commute with $R$.
+
+\begin{definition}[Self-action]\label{def:adR}
+The \emph{self-action} of $R$ is the linear map $\ad_R\colon M_2→M_2$, $\ad_R(X)=[R,X]=RX-XR$.
+\end{definition}
+
+\begin{proposition}[Spectrum of the self-action]\label{prop:adspec}
+$\ad_R$ has spectrum $\{0,0,+\sqrt5,-\sqrt5\}$ on $M_2$; equivalently $\spec(\ad_R)=\{0,\pm\sqrt5\}$ with the $0$-eigenvalue doubled. The unique irrational eigenvalue is the \emph{coupling} $\sqrt5=φ-ψ=φ+φ^{-1}$. \Forced
+\end{proposition}
+\begin{proof}
+Diagonalise $R$: there is a basis of $ℂ^{2}$ of eigenvectors $v_φ,v_ψ$ with $Rv_φ=φv_φ$, $Rv_ψ=ψv_ψ$. The four rank-one matrices $E_{ab}=v_a v_b^{\!\top}$ (for $a,b∈\{φ,ψ\}$) form a basis of $M_2$, and a short computation shows $\ad_R(E_{ab})=(a-b)E_{ab}$: indeed $R E_{ab}=R v_a v_b^{\!\top}=a\,E_{ab}$, while $E_{ab}R=v_a v_b^{\!\top}R=v_a(R^{\!\top}v_b)^{\!\top}=b\,E_{ab}$ because $R$ is symmetric, so $[R,E_{ab}]=(a-b)E_{ab}$. The eigenvalues are therefore the differences $\{φ-φ,\ φ-ψ,\ ψ-φ,\ ψ-ψ\}=\{0,\sqrt5,-\sqrt5,0\}$, using \eqref{eq:root5}.
+\end{proof}
+
+\begin{intuition}
+The self-action splits $M_2$ into three eigenspaces: a $2$-dimensional ``centre'' fixed by $R$ (eigenvalue $0$), and two $1$-dimensional ``root'' directions along which $R$ shears at rate $\pm\sqrt5$. That the shear rate is exactly $\sqrt5$ --- the golden discriminant, and the same $\sqrt5=φ+φ^{-1}$ that measures the gap between the two eigenvalues --- is the first sign that the Lie layer is not generic but tuned to the golden field.
+\end{intuition}
+
+\subsection{The root spaces, explicitly}
+We now write down the three eigenspaces as concrete matrices. Because $R$ is symmetric and $φψ=-1$, its eigenvectors are orthogonal: with $v_φ=\bigl(\begin{smallmatrix}1\\φ\end{smallmatrix}\bigr)$ and $v_ψ=\bigl(\begin{smallmatrix}1\\ψ\end{smallmatrix}\bigr)$, we have $v_φ^{\!\top}v_ψ=1+φψ=1+(-1)=0$.
+
+\begin{theorem}[Root spaces and the $0$-space]\label{thm:rootspaces}
+Set
+\[
+N_{+}=v_φ v_ψ^{\!\top}=\begin{pmatrix}1&ψ\\ φ&-1\end{pmatrix},\qquad
+N_{-}=v_ψ v_φ^{\!\top}=\begin{pmatrix}1&φ\\ ψ&-1\end{pmatrix}.
+\]
+Then $[R,N_{+}]=+\sqrt5\,N_{+}$ and $[R,N_{-}]=-\sqrt5\,N_{-}$, while the $0$-eigenspace of $\ad_R$ (the matrices commuting with $R$) is exactly $\operatorname{span}\{I,R\}$. Thus $M_2=\underbrace{\operatorname{span}\{I,R\}}_{\text{$0$-space, }\dim 2}\ \oplus\ \underbrace{ℂ N_{+}}_{+\sqrt5}\ \oplus\ \underbrace{ℂ N_{-}}_{-\sqrt5}.$ \Forced
+\end{theorem}
+\begin{proof}
+The entries follow from $φψ=-1$: e.g.\ the $(2,2)$ entry of $v_φv_ψ^{\!\top}$ is $φψ=-1$. The eigen-equations are the case $a=φ,b=ψ$ (resp.\ $a=ψ,b=φ$) of the computation in Proposition~\ref{prop:adspec}. For the $0$-space: $X$ commutes with $R$ iff $\ad_R(X)=0$; solving the linear system $RX=XR$ for $X=\bigl(\begin{smallmatrix}p&q\\ r&s\end{smallmatrix}\bigr)$ gives a $2$-parameter family, and since $I$ and $R$ are two independent solutions (a non-scalar matrix like $R$ has centraliser exactly the polynomials in it), they span it.
+\end{proof}
+
+\subsection{The $𝔰𝔩_2$-triple}
+The three-dimensional space of traceless matrices $𝔰𝔩_2=\{X:\Tr X=0\}$ is a Lie algebra under the commutator. Our root vectors $N_\pm$ are traceless, and the traceless part of the $0$-space is spanned by $H:=2R-I=\bigl(\begin{smallmatrix}-1&2\\2&1\end{smallmatrix}\bigr)$. Together they form the canonical building block of Lie theory.
+
+\begin{theorem}[The Lie layer is $𝔰𝔩_2$]\label{thm:sl2}
+$\{H,N_{+},N_{-}\}$ is an $𝔰𝔩_2$-triple: writing $\ad_H=2\ad_R$ (since $\ad_I=0$),
+\[
+[H,N_{+}]=2\sqrt5\,N_{+},\qquad [H,N_{-}]=-2\sqrt5\,N_{-},\qquad [N_{+},N_{-}]=\sqrt5\,H .
+\]
+Normalising by $h=H/\sqrt5$, $e=N_{+}$, $f=N_{-}/5$ puts this in the standard form $[h,e]=2e$, $[h,f]=-2f$, $[e,f]=h$. Hence the Lie layer of $\A$ is a copy of $𝔰𝔩_2$ whose \emph{root length is the golden coupling} $\sqrt5$. \Forced
+\end{theorem}
+\begin{proof}
+$[H,N_+]=2[R,N_+]=2\sqrt5 N_+$ and likewise for $N_-$. For $[N_+,N_-]$: the Jacobi identity gives $\ad_R[N_+,N_-]=[\ad_R N_+,N_-]+[N_+,\ad_R N_-]=\sqrt5[N_+,N_-]-\sqrt5[N_+,N_-]=0$, so $[N_+,N_-]$ lies in the $0$-space $\operatorname{span}\{I,R\}$; being traceless, it is a multiple of $H=2R-I$. Direct multiplication gives $[N_+,N_-]=\sqrt5\,H$. The normalisation is a routine check: $[h,e]=\tfrac1{\sqrt5}[H,N_+]=\tfrac1{\sqrt5}(2\sqrt5)N_+=2e$, etc.
+\end{proof}
+
+\begin{intuition}
+$𝔰𝔩_2$ is the most important small Lie algebra in mathematics --- it controls angular momentum in quantum mechanics, the geometry of the hyperbolic plane, and the representation theory of countless larger structures. To find it sitting inside $\A$, generated by nothing but the golden companion and its commutator, is what makes the Lie layer worth studying: the golden number appears not as a decoration but as the intrinsic scale (root length) of a universal object.
+\end{intuition}
+
+\subsection{Signature $(2,1)$: boosts, a rotation, and null directions}
+The three basis elements have a definite geometric character, visible from their squares.
+
+\begin{proposition}[Lorentzian signature]\label{prop:sig}
+With $S:=N_{+}+N_{-}=\bigl(\begin{smallmatrix}2&1\\1&-2\end{smallmatrix}\bigr)$ and $J:=\bigl(\begin{smallmatrix}0&-1\\1&0\end{smallmatrix}\bigr)$,
+\[
+H^{2}=S^{2}=5I\quad(\text{two ``boosts''}),\qquad J^{2}=-I\quad(\text{one ``rotation''}),\qquad N_{+}^{2}=N_{-}^{2}=0\quad(\text{null}).
+\]
+Thus the Lie layer carries a Lorentzian signature $(2,1)$: two hyperbolic (real-eigenvalue) directions and one elliptic (imaginary-eigenvalue) direction, with $N_\pm$ the null (nilpotent) root vectors. \Forced
+\end{proposition}
+\begin{proof}
+Direct computation: $H^{2}=\bigl(\begin{smallmatrix}-1&2\\2&1\end{smallmatrix}\bigr)^{2}=\bigl(\begin{smallmatrix}5&0\\0&5\end{smallmatrix}\bigr)$, similarly $S^{2}=5I$; $J^{2}=\bigl(\begin{smallmatrix}0&-1\\1&0\end{smallmatrix}\bigr)^{2}=-I$. For nilpotence, $N_{+}^{2}=v_φ(v_ψ^{\!\top}v_φ)v_ψ^{\!\top}=0$ because $v_ψ^{\!\top}v_φ=0$ (orthogonality); similarly $N_{-}^{2}=0$. A matrix squaring to $+5I$ has eigenvalues $\pm\sqrt5$ (hyperbolic); one squaring to $-I$ has eigenvalues $\pm i$ (elliptic); giving signature $(2,1)$.
+\end{proof}
+
+This is the same $(2,1)$ Lorentzian signature that will reappear when we meet the orthogonal partner $K$ in Part~\ref{sec:selfcouple}: the golden structure is Lorentzian at its Lie core.
+
+\subsection{The un-split rational basis and how $\sqrt5$ splits it}
+There are two natural bases for this one $𝔰𝔩_2$, and the passage between them is where the golden field enters visibly. Over the rationals we can use $\{H,S,J\}$ --- all three matrices have integer entries. Over $ℚ(\sqrt5)$ we can use the eigenbasis $\{H,N_+,N_-\}$, in which $\ad_H$ is diagonal. The point is that the second requires $\sqrt5$, and \emph{exactly} $\sqrt5$.
+
+\begin{proposition}[Rational structure constants and the splitting obstruction]\label{prop:rational}
+The basis $\{H,S,J\}$ is defined over $ℚ$ with rational structure constants
+\[
+[H,S]=10J,\qquad [H,J]=2S,\qquad [S,J]=-2H .
+\]
+Restricted to the plane $\operatorname{span}\{S,J\}$, the operator $\ad_H$ is the rational matrix $\bigl(\begin{smallmatrix}0&2\\10&0\end{smallmatrix}\bigr)$, whose characteristic polynomial is $λ^{2}-20$ with roots $\pm2\sqrt5\notin ℚ$. Hence over $ℚ$ the Cartan $H$ is \emph{not} diagonalisable on this plane; the minimal field extension that diagonalises it is $ℚ(\sqrt{20})=ℚ(\sqrt5)$. \Forced
+\end{proposition}
+\begin{proof}
+Compute the three brackets directly, e.g.\ $[H,S]=HS-SH$ with $HS=\bigl(\begin{smallmatrix}-1&2\\2&1\end{smallmatrix}\bigr)\bigl(\begin{smallmatrix}2&1\\1&-2\end{smallmatrix}\bigr)=\bigl(\begin{smallmatrix}0&-5\\5&0\end{smallmatrix}\bigr)$ and $SH=\bigl(\begin{smallmatrix}0&5\\-5&0\end{smallmatrix}\bigr)$, so $[H,S]=\bigl(\begin{smallmatrix}0&-10\\10&0\end{smallmatrix}\bigr)=10J$. The matrix of $\ad_H$ on $\{S,J\}$ has columns the coordinates of $[H,S]=10J$ and $[H,J]=2S$, namely $\bigl(\begin{smallmatrix}0&2\\10&0\end{smallmatrix}\bigr)$; its characteristic polynomial is $λ^{2}-2\cdot10=λ^{2}-20$.
+\end{proof}
+
+\begin{theorem}[The transition: an orthonormal-to-null change of frame]\label{thm:transition}
+Adjoining $\sqrt5$, the split eigenbasis is obtained from the rational basis by the ``null-frame'' change
+\[
+N_{+}=\tfrac12\!\left(S+\sqrt5\,J\right),\qquad N_{-}=\tfrac12\!\left(S-\sqrt5\,J\right)
+\qquad\Longleftrightarrow\qquad
+S=N_{+}+N_{-},\quad \sqrt5\,J=N_{+}-N_{-}.
+\]
+In coordinates $aH+bS+cJ\ \longleftrightarrow\ pH+qN_{+}+rN_{-}$, the transition matrices are
+\[
+M_{𝓡→𝓔}=\begin{pmatrix}1&0&0\\[1pt]0&1&\tfrac{1}{\sqrt5}\\[3pt]0&1&-\tfrac{1}{\sqrt5}\end{pmatrix},
+\qquad
+M_{𝓔→𝓡}=M_{𝓡→𝓔}^{-1}=\begin{pmatrix}1&0&0\\[1pt]0&\tfrac12&\tfrac12\\[3pt]0&\tfrac{\sqrt5}{2}&-\tfrac{\sqrt5}{2}\end{pmatrix},
+\]
+with $\det M_{𝓡→𝓔}=-2/\sqrt5\notin ℚ$ --- the determinant itself certifies that the change of basis genuinely leaves $ℚ$. Underlying it is the $2×2$ conjugator $V=[\,v_φ\ v_ψ\,]=\bigl(\begin{smallmatrix}1&1\\ φ&ψ\end{smallmatrix}\bigr)$ (the eigenvectors of $R$), which diagonalises the Cartan and triangularises the root vectors:
+\[
+V^{-1}HV=\operatorname{diag}(\sqrt5,-\sqrt5),\qquad
+V^{-1}N_{+}V=\begin{pmatrix}0&\tfrac{5-\sqrt5}{2}\\0&0\end{pmatrix},\qquad
+V^{-1}N_{-}V=\begin{pmatrix}0&0\\ \tfrac{5+\sqrt5}{2}&0\end{pmatrix}.
+\]
+\Forced
+\end{theorem}
+\begin{proof}
+The formulas $N_\pm=\tfrac12(S\pm\sqrt5 J)$ are the inverse of $S=N_++N_-$, $\sqrt5 J=N_+-N_-$, which one reads off Theorem~\ref{thm:rootspaces} using $φ=\tfrac{1+\sqrt5}{2}$, $ψ=\tfrac{1-\sqrt5}{2}$. The coordinate matrices follow directly and satisfy $M_{𝓡→𝓔}M_{𝓔→𝓡}=I$. For the conjugator, $V^{-1}HV=\operatorname{diag}(\sqrt5,-\sqrt5)$ because $H=2R-I$ has eigenvalues $2φ-1=\sqrt5$, $2ψ-1=-\sqrt5$; and $V^{-1}N_+V=V^{-1}v_φv_ψ^{\!\top}V=e_1(v_ψ^{\!\top}V)$, where $v_ψ^{\!\top}V=[\,v_ψ^{\!\top}v_φ,\ v_ψ^{\!\top}v_ψ\,]=[0,\ \tfrac{5-\sqrt5}{2}]$ by orthogonality, giving the strictly-upper matrix shown.
+\end{proof}
+
+\begin{intuition}[The physical reading]
+Signature $(2,1)$ is the signature of $2{+}1$-dimensional spacetime: two space-like ``boost'' directions $H,S$ and one time-like ``rotation'' $J$. The rational basis $\{H,S,J\}$ is an ordinary (orthonormal-type) frame. The eigenbasis $\{H,N_+,N_-\}$ is a \emph{light-cone} frame: $N_\pm$ are the null directions $N_\pm=\tfrac12(S\pm\sqrt5 J)$, combinations of the boost $S$ and the rotation $J$ moving at the ``speed'' set by $\sqrt5$. Passing from the un-split rational form to the split golden form is precisely the change from an orthonormal frame to light-cone coordinates --- and the golden number $\sqrt5$ is the rapidity scale of that boost. \Posited
+\end{intuition}
+
+\begin{example}[The triple, by hand]\label{ex:triple}
+Take the split root vectors $N_{+}=\bigl(\begin{smallmatrix}1&ψ\\ φ&-1\end{smallmatrix}\bigr)$, $N_{-}=\bigl(\begin{smallmatrix}1&φ\\ ψ&-1\end{smallmatrix}\bigr)$ and multiply directly. Using $φψ=-1$ and $φ-ψ=\sqrt5$,
+\[
+N_{+}N_{-}=\begin{pmatrix}1+ψ^{2}&φ-ψ\\ φ-ψ&φ^{2}+1\end{pmatrix},\qquad
+N_{-}N_{+}=\begin{pmatrix}1+φ^{2}&ψ-φ\\ ψ-φ&ψ^{2}+1\end{pmatrix},
+\]
+so $[N_{+},N_{-}]=N_{+}N_{-}-N_{-}N_{+}=\bigl(\begin{smallmatrix}ψ^{2}-φ^{2}&2(φ-ψ)\\ 2(φ-ψ)&φ^{2}-ψ^{2}\end{smallmatrix}\bigr)$. Since $φ^{2}-ψ^{2}=(φ-ψ)(φ+ψ)=\sqrt5\cdot1=\sqrt5$ and $2(φ-ψ)=2\sqrt5$, this is $\sqrt5\bigl(\begin{smallmatrix}-1&2\\2&1\end{smallmatrix}\bigr)=\sqrt5\,H$, confirming $[N_{+},N_{-}]=\sqrt5\,H$ from Theorem~\ref{thm:sl2} entry by entry.
+\end{example}
+
+\begin{exercise}\label{exr:structure}
+Verify the three rational structure constants of Proposition~\ref{prop:rational} by direct multiplication: $[H,J]=2S$, $[S,J]=-2H$, and $[H,S]=10J$. (Compute e.g.\ $HJ$ and $JH$ from $H=\bigl(\begin{smallmatrix}-1&2\\2&1\end{smallmatrix}\bigr)$, $J=\bigl(\begin{smallmatrix}0&-1\\1&0\end{smallmatrix}\bigr)$, and subtract.) Note that all three constants are integers --- the structure is defined over $ℚ$ --- yet diagonalising $\ad_H$ needs $\sqrt5$, the tension resolved in Theorem~\ref{thm:transition}.
+\end{exercise}
+
+\section{The semiring layer: magnitude and phase}\label{sec:semiring}
+
+\subsection{Two numbers for every object}
+The core and the Lie layer describe $R$ itself. The semiring layer describes the \emph{objects} $\A$ deals with: finite collections of algebraic numbers (eigenvalue multisets), which we may add, multiply, and rescale. To every such object we attach two numbers, capturing two independent aspects.
+
+\begin{intuition}
+An algebraic number, viewed in the complex plane, has a size and a direction. The semiring layer measures both: a \emph{magnitude} that records how much the object stretches (formally, its Mahler measure), and a \emph{charge} that records which way it points, read off coarsely as one of four compass directions ($ℤ/4ℤ$). Magnitude is multiplicative and unbounded above; charge is cyclic. They are orthogonal --- knowing one tells you nothing about the other --- and the whole subject can be read as the interplay of these two characters.
+\end{intuition}
+
+\begin{definition}[Objects and the two characters]\label{def:chars}
+An \emph{object} is a finite multiset $A=\{λ_1,\dots,λ_d\}$ of nonzero algebraic integers (typically the spectrum of a companion matrix). Its two characters are
+\[
+\Mah(A)=\prod_{i}\max(1,|λ_i|)\ ∈\ [1,∞)\qquad\text{(\emph{magnitude}, the Mahler measure)},
+\]
+\[
+χ(A)=\Bigl\{\,\Bigl\lfloor \tfrac{2\arg λ_i}{π}\Bigr\rceil \bmod 4\,\Bigr\}\ ⊂\ ℤ/4ℤ\qquad\text{(\emph{charge})},
+\]
+where $\lfloor\cdot\rceil$ is rounding to the nearest integer. The \emph{golden object} is $A_φ=\{φ,ψ\}=\spec(R)$.
+\end{definition}
+
+\begin{example}[The golden object]\label{ex:golden}
+Since $|φ|=φ≈1.618>1$ and $|ψ|=φ^{-1}≈0.618<1$, only $φ$ contributes to the product: $\Mah(A_φ)=φ$. For the charge, $φ>0$ lies at angle $0$ so contributes $0$, while $ψ<0$ lies at angle $π$ so contributes $\lfloor 2π/π\rceil=2$; hence $χ(A_φ)=\{0,2\}$. The golden object has magnitude $φ$ and charge $\{0,2\}$ --- it points only along the real axis.
+\end{example}
+
+\begin{example}[Roots of unity and $μ_4$]\label{ex:mu4}
+For any root of unity $ζ$, $|ζ|=1$, so $\Mah(\{ζ\})=1$: roots of unity are weightless. Their charges partition the circle into four quadrants. The fourth roots of unity are exact: $χ(1)=0$, $χ(i)=1$, $χ(-1)=2$, $χ(-i)=3$, so $χ$ identifies $μ_4=\{1,i,-1,-i\}$ with $ℤ/4ℤ$. (Other roots of unity round to the nearest quadrant, e.g.\ a primitive cube root $e^{2πi/3}$ at angle $\tfrac{2π}{3}$ rounds to charge $1$.)
+\end{example}
+
+\subsection{The three operators}
+Objects combine and transform by three operators. Their effect on the two characters is fixed by simple laws, which is what makes $(\Mah,χ)$ a \emph{grading}.
+
+\begin{definition}[Operators]\label{def:ops}
+For objects $A,B$:
+\begin{description}[leftmargin=1.6em,style=nextline,itemsep=2pt]
+\item[Superposition $A⊕B$] is the multiset union (all eigenvalues of both).
+\item[Coupling $A⊗B$] is the multiset of products $\{α_iβ_j\}$ (the spectrum of the tensor product of the underlying matrices).
+\item[Adams scaling $ψ^{n}(A)$] raises each eigenvalue to the $n$-th power, $\{λ_i^{n}\}$ (the spectrum of the $n$-th symmetric or Adams power).
+\end{description}
+\end{definition}
+
+\begin{proposition}[The grading laws]\label{prop:laws}
+The two characters transform as follows. \Forced
+\[
+\begin{array}{l|ll}
+ & \Mah & χ \\ \hline
+A⊕B & \Mah(A)\,\Mah(B) & χ(A)∪χ(B) \\[2pt]
+A⊗B & \displaystyle\prod_{i,j}\max\!\bigl(1,|α_iβ_j|\bigr) & χ(A)+χ(B)\ (\bmod\,4) \\[8pt]
+ψ^{n}(A) & \Mah(A)^{n} & n\,χ(A)\ (\bmod\,4)
+\end{array}
+\]
+In particular, in \emph{logarithmic} magnitude the coupling law is the tropical (``$\max$-plus'') rule $\log\Mah(A⊗B)=\sum_{i,j}\max(0,\log|α_iβ_j|)$, and $ψ^{n}$ acts as multiplication by $n$ on both $\log\Mah$ and on $χ$.
+\end{proposition}
+\begin{proof}
+Superposition: $\Mah$ is a product over eigenvalues, so a union multiplies it; charges accumulate as a multiset union. Coupling: the eigenvalues of the product object are the pairwise products $α_iβ_j$, so $\Mah(A⊗B)=\prod_{i,j}\max(1,|α_iβ_j|)$ by definition, and $\arg(α_iβ_j)=\arg α_i+\arg β_j$ makes the (rounded) charges add mod $4$. Adams: $λ↦λ^{n}$ multiplies each $|λ|$'s contribution's logarithm by $n$ and multiplies each argument by $n$.
+\end{proof}
+
+\begin{remark}[A subtlety in the coupling law]\label{rem:tropical}
+It is tempting to write $\Mah(A⊗B)=\Mah(A)\Mah(B)$ by analogy with $⊕$, but this is \emph{false in general}: it holds only when no product $α_iβ_j$ crosses the unit circle. The correct, always-valid law is the tropical product $\prod_{i,j}\max(1,|α_iβ_j|)$. This is precisely the kind of place where a plausible shortcut, taken uncritically, would corrupt every downstream magnitude; the discipline of the framework is to use the exact tropical rule. \Forced
+\end{remark}
+
+\begin{example}[The tropical law bites]\label{ex:tropical}
+Couple two honest golden objects: $A=\spec(R^{2})=\{φ^{2},ψ^{2}\}$ (with $\Mah(A)=φ^{2}$, since $|ψ^{2}|=φ^{-2}<1$) and $B=\spec(R)=\{φ,ψ\}$ ($\Mah(B)=φ$). The coupled spectrum is the four products
+\[
+A⊗B=\{φ^{2}\!\cdot\!φ,\ φ^{2}\!\cdot\!ψ,\ ψ^{2}\!\cdot\!φ,\ ψ^{2}\!\cdot\!ψ\}=\{φ^{3},\,-φ,\,φ^{-1},\,-φ^{-3}\},
+\]
+using $φψ=-1$. Only $φ^{3}$ and $-φ$ lie outside the unit circle, so the tropical law gives $\Mah(A⊗B)=φ^{3}\cdot φ=φ^{4}$. The naive product would predict $\Mah(A)\Mah(B)=φ^{2}\cdot φ=φ^{3}$ --- wrong by a factor of $φ$, because the cross-term $ψ^{2}\!\cdot\!φ=φ^{-1}$ fell \emph{through} the unit circle and must be floored to $1$. Contrast $⊕$, which does factor: $\Mah(A⊕B)=\Mah(\{φ^{2},ψ^{2},φ,ψ\})=φ^{2}\cdot φ=φ^{3}=\Mah(A)\Mah(B)$.
+\end{example}
+
+\begin{exercise}\label{exr:adams-grade}
+Apply the Adams operator $ψ^{3}$ to the golden object and check both grading laws: show $ψ^{3}(A_φ)=\{φ^{3},ψ^{3}\}$ has $\Mah=φ^{3}=\Mah(A_φ)^{3}$ and $χ=3\cdot\{0,2\}\equiv\{0,2\}\ (\bmod4)$. Then verify the exponent is multiplicative, $ψ^{3}(ψ^{2}(A_φ))=ψ^{6}(A_φ)=\{φ^{6},ψ^{6}\}$, so $\Mah=φ^{6}$.
+\end{exercise}
+
+\subsection{Adams scaling reaches back into the core}
+The Adams operator $ψ^{n}$ is defined on objects, but on the golden object it connects straight back to the power law of Part~\ref{sec:core}.
+
+\begin{proposition}[$ψ^{n}$ pulls back to the core]\label{prop:adams-core}
+On the golden object, $ψ^{n}(A_φ)=\{φ^{n},ψ^{n}\}$, and by Binet (Corollary~\ref{cor:identities}d) each eigenvalue is the golden-order element $φ^{n}=F_nφ+F_{n-1}$, realised by the matrix $R^{n}=F_nR+F_{n-1}I$. The special case $ψ^{2}$ \emph{is the keystone}: it sends $φ↦φ^{2}=φ+1$, i.e.\ $R↦R^{2}=R+I$, and its iterates build the magnitude tower $φ,φ^{2},φ^{4},\dots,φ^{2^{k}}$ with Fibonacci coordinates $F_{2^{k}}$. However, $ψ^{n}$ is a \emph{semiring} endomorphism (it respects $⊗$: $ψ^{n}(A⊗B)=ψ^{n}(A)⊗ψ^{n}(B)$) but \emph{not} a ring endomorphism of $ℤ[φ]$, because $φ↦φ^{n}$ is not additive. \Forced
+\end{proposition}
+\begin{proof}
+$ψ^{n}(A_φ)=\{φ^{n},ψ^{n}\}$ by definition; the closed forms are Corollary~\ref{cor:identities}(d) and Theorem~\ref{thm:power}. For $ψ^{2}$: $φ^{2}=φ+1$ is the keystone. Multiplicativity on $⊗$ holds because $(α_iβ_j)^{n}=α_i^{n}β_j^{n}$. Non-additivity: e.g.\ $ψ^{2}(φ+1)=(φ+1)^{2}=φ^{2}+2φ+1$, whereas $ψ^{2}(φ)+ψ^{2}(1)=φ^{2}+1$; these differ by $2φ$, so $ψ^{2}$ does not preserve addition.
+\end{proof}
+
+\begin{intuition}
+The Adams family is the ``zoom knob'' of the semiring: $ψ^{n}$ dilates magnitude by the exponent $n$ and rotates charge by multiplication by $n$. Because it is multiplicative but not additive, it lives naturally on the semiring (where the operations are $⊕,⊗$) and not on the ring (where addition is available). This is the precise sense in which the semiring layer is a genuinely different structure from the associative core, not a repackaging of it.
+\end{intuition}
+
+\section{Representation theory: the dimensions are the exponents}\label{sec:reps}
+
+The Lie layer is $𝔰𝔩_2$, whose representation theory is completely known and rigidly simple; and it dovetails exactly with the Adams tower of the semiring. This section is where the two upper layers meet.
+
+\begin{theorem}[Irreducible representations]\label{thm:irreps}
+The irreducible finite-dimensional representations of $𝔰𝔩_2$ are $\{V_m\}_{m∈ℤ_{≥0}}$, one for each highest weight $m$, with
+\[
+\dim V_m=m+1,\qquad \text{$h$-weights }\{m,m-2,\dots,-m\}\ (\text{multiplicity }1),\qquad \text{Casimir }\tfrac12 m(m+2).
+\]
+So the possible dimensions are exactly the positive integers, one representation of each. \Estab
+\end{theorem}
+
+\begin{definition}[Symmetric-power representation]\label{def:sympow}
+For $n≥0$, the \emph{$n$-th symmetric power} $\operatorname{Sym}^{n}(ℂ^{2})$ is the space of degree-$n$ homogeneous polynomials in two variables $x,y$, with basis the monomials $\{x^{n-k}y^{k}:k=0,\dots,n\}$ (dimension $n+1$). A $2×2$ matrix $A$ acts as the derivation $ρ_n(A)=(ax+by)\partial_x+(cx+dy)\partial_y$; if $A$ has eigenvalues $α,β$ on $ℂ^{2}$, then $ρ_n(A)$ has eigenvalues $\{(n-k)α+kβ\}_{k=0}^{n}$ (sums of the base eigenvalues).
+\end{definition}
+
+\begin{proposition}[The representations $\A$ realises]\label{prop:reps-in-A}
+Inside $\A$:
+\[
+\begin{array}{llll}
+V_0=ℤ\!\cdot\! I & (\dim 1) & \text{the centre (trivial)} & \text{Casimir }0\\
+V_1=ℂ^{2} & (\dim 2) & \text{the defining space, where $R$ acts} & \text{Casimir }\tfrac32\\
+V_2=𝔰𝔩_2 & (\dim 3) & \text{the adjoint: the root spaces }N_+,H,N_- & \text{Casimir }4\\
+V_n=\operatorname{Sym}^{n}(ℂ^{2}) & (\dim n{+}1) & \text{the $n$-th Adams/symmetric power} & \text{Casimir }\tfrac12 n(n{+}2)
+\end{array}
+\]
+On $V_n$ the semisimple part $R$ carries the eigenvalue \emph{tower}
+\[
+\spec\bigl(R|_{V_n}\bigr)=\{\,φ^{\,n-k}ψ^{\,k}:k=0,\dots,n\,\},
+\]
+the same Fibonacci/golden tower as the Adams operator $ψ^{n}$ of the semiring. Under $ad_R$, the whole matrix space decomposes as $M_2=V_2⊕V_0$ ($\dim 4=3+1$), recovering the eigenspace count $\{0,0,\pm\sqrt5\}$ of Proposition~\ref{prop:adspec}. \Forced
+\end{proposition}
+\begin{proof}
+$V_1=ℂ^{2}$ is the defining representation. By Definition~\ref{def:sympow} its $n$-th symmetric power $\operatorname{Sym}^{n}(ℂ^{2})$ has dimension $n+1$, and on it the group-like element $R$ (eigenvalues $φ,ψ$) acts diagonally on the monomial eigenbasis with eigenvalues $\{φ^{n-k}ψ^{k}\}_{k=0}^{n}$ --- the products of $n$ base eigenvalues, i.e.\ the golden tower. Correspondingly the Lie element $H=2R-I$ acts as the derivation $ρ_n(H)$ with eigenvalues $(n-k)\sqrt5+k(-\sqrt5)=\sqrt5\,(n-2k)$, so the normalised Cartan $H/\sqrt5$ carries the integer weights $\{n,n-2,\dots,-n\}$ of the highest-weight-$n$ irreducible; hence $\operatorname{Sym}^{n}(ℂ^{2})≅V_n$. The two low cases are concrete: $V_0=ℂ\!\cdot\! I$ is the trivial centre, and $V_2=𝔰𝔩_2$ is the adjoint (the root spaces $N_+,H,N_-$), so under $\ad_R$ the full matrix space is $M_2=V_2⊕V_0$ of dimension $3+1=4$, whose $\ad_R$-eigenvalues $\{0,0,\pm\sqrt5\}$ are exactly those of Proposition~\ref{prop:adspec}. The Casimir values are Theorem~\ref{thm:irreps} evaluated at $m=0,1,2,n$.
+\end{proof}
+
+\begin{theorem}[Coupling is Clebsch--Gordan]\label{thm:cg}
+The coupling operator $⊗$ decomposes representations by the Clebsch--Gordan rule
+\[
+V_a⊗V_b=\bigoplus_{j=|a-b|}^{a+b}\!{}^{\,\prime}\,V_j\qquad(\text{$j$ in steps of }2),
+\]
+consistent with dimensions: $(a+1)(b+1)=\sum_j(j+1)$. \Forced
+\end{theorem}
+
+\begin{example}\label{ex:cg}
+$V_1⊗V_1=V_0⊕V_2$: dimensions $2\cdot2=4=1+3$. Concretely, coupling the defining space with itself splits into the antisymmetric line (the determinant, $V_0$) and the symmetric adjoint ($V_2$). Likewise $V_2⊗V_2=V_0⊕V_2⊕V_4$ ($9=1+3+5$), and $V_3⊗V_3=V_0⊕V_2⊕V_4⊕V_6$ ($16=1+3+5+7$).
+\end{example}
+
+\begin{example}[$\operatorname{Sym}^{2}$ in the flesh]\label{ex:sym2}
+Take $V_2=\operatorname{Sym}^{2}(ℂ^{2})$ with monomial basis $\{x^{2},xy,y^{2}\}$. The group element $R$ acts with eigenvalues the degree-$2$ products $\{φ^{2},\,φψ,\,ψ^{2}\}=\{φ^{2},\,-1,\,ψ^{2}\}$ (three values, $\dim V_2=3$). The Cartan $H$ acts as the derivation $ρ_2(H)$ with eigenvalues $\sqrt5\{2,0,-2\}=\{2\sqrt5,0,-2\sqrt5\}$, so $H/\sqrt5$ has the integer weights $\{2,0,-2\}$ --- exactly the weight string of the adjoint $V_2$. This is the same space as $𝔰𝔩_2$ under $\ad_R$, now seen as symmetric quadratics.
+\end{example}
+
+\begin{exercise}\label{exr:cg-decomp}
+Decompose $V_1⊗V_1$ by hand. Show $ℂ^{2}⊗ℂ^{2}$ splits into the antisymmetric line $\Lambda^{2}(ℂ^{2})=ℂ\,(x{\wedge}y)$ (dimension $1$, the determinant, $=V_0$) and the symmetric part $\operatorname{Sym}^{2}(ℂ^{2})$ (dimension $3$, $=V_2$), confirming $V_1⊗V_1=V_0⊕V_2$ with $2\cdot2=1+3$. Which charge does the $V_0$ summand carry?
+\end{exercise}
+
+\begin{intuition}
+Three descriptions coincide: the $(n{+}1)$-dimensional irreducible representation $V_n$, the $n$-th symmetric power $\operatorname{Sym}^n(ℂ^2)$, and the $n$-th Adams scaling $ψ^{n}$ of the semiring. The representation's dimension is the Adams exponent plus one; its eigenvalues are the golden tower $φ^{n-k}ψ^k$; and coupling representations is exactly the $⊗$ operator. The two upper layers of $\A$ are, at this point, one structure seen from two sides.
+\end{intuition}
+
+\section{The trace form: deviation, duality, and dilation}\label{sec:traceform}
+
+The three layers are built. Before turning to the questions that drive the subject, we install one further piece of structure --- an invariant inner product on the Lie layer --- and use it to see the Fibonacci--Lucas identities of Part~\ref{sec:core}, the Adams family of Part~\ref{sec:semiring}, and the representations of Part~\ref{sec:reps} as three views of a single object.
+
+\subsection{The trace form and the Lorentzian metric}
+
+\begin{definition}[Trace form]\label{def:traceform}
+The \emph{trace form} on $𝔰𝔩_2$ is the symmetric bilinear pairing $⟨X,Y⟩=\Tr(XY)$. The \emph{hyperbolic length} of $X$ is $⟨X,X⟩=\Tr(X^{2})$.
+\end{definition}
+
+\begin{proposition}[The metric is Lorentzian]\label{prop:metric}
+On the rational basis $\{H,S,J\}$ the trace form is diagonal,
+\[
+\bigl(⟨\cdot,\cdot⟩\bigr)_{\{H,S,J\}}=\operatorname{diag}(10,\,10,\,-2),
+\]
+of signature $(2,1)$: the boosts $H,S$ are space-like ($⟨H,H⟩=⟨S,S⟩=10>0$) and the rotation $J$ is time-like ($⟨J,J⟩=-2<0$). The form is invariant, $⟨[Z,X],Y⟩+⟨X,[Z,Y]⟩=0$. \Forced
+\end{proposition}
+\begin{proof}
+By Proposition~\ref{prop:sig}, $\Tr(H^{2})=\Tr(5I)=10$, $\Tr(S^{2})=\Tr(5I)=10$, $\Tr(J^{2})=\Tr(-I)=-2$; the off-diagonal entries vanish, e.g.\ $\Tr(HS)=\Tr\bigl(\begin{smallmatrix}0&-5\\5&0\end{smallmatrix}\bigr)=0$. Invariance is cyclicity of the trace: $\Tr([Z,X]Y)+\Tr(X[Z,Y])=\Tr(ZXY-XZY+XZY-XYZ)=0$.
+\end{proof}
+
+This recovers the signature $(2,1)$ of Proposition~\ref{prop:sig} as the signature of an intrinsic metric, not merely of the individual squares: the Lie layer is a $2{+}1$ Lorentzian space and the trace form is its metric.
+
+\subsection{The deviation operator}
+
+Among all elements of the Lie layer, the powers of $R$ single out one family: subtract from $2R^{n}$ its own trace, and what remains is a pure Cartan element.
+
+\begin{definition}[Deviation operator]\label{def:deviation}
+For $n∈ℤ$, the \emph{deviation operator} is $X_n=2R^{n}-L_nI$, the traceless part of $2R^{n}$.
+\end{definition}
+
+\begin{proposition}[The deviation collapses to the Cartan]\label{prop:deviation}
+$X_n=F_nH$; in particular $X_n∈𝔰𝔩_2(ℤ)$, and the whole family lies on the single Cartan axis $ℝH$, sampled at Fibonacci scale. \Forced
+\end{proposition}
+\begin{proof}
+Using the power law (Theorem~\ref{thm:power}) and $L_n=F_{n-1}+F_{n+1}$ (Corollary~\ref{cor:identities}a),
+\[
+X_n=2(F_nR+F_{n-1}I)-L_nI=2F_nR+(2F_{n-1}-L_n)I=2F_nR-F_nI=F_n(2R-I)=F_nH,
+\]
+since $2F_{n-1}-L_n=2F_{n-1}-(F_{n-1}+F_{n+1})=F_{n-1}-F_{n+1}=-F_n$. As $H$ is traceless with integer entries, so is $X_n$.
+\end{proof}
+
+\begin{example}\label{ex:deviation}
+$X_1=2R-L_1I=2R-I=H$; \ $X_3=2R^{3}-L_3I=2(2R+I)-4I=4R-2I=2H$ (and $F_3=2$); \ $X_5=2R^{5}-L_5I=2(5R+3I)-11I=10R-5I=5H$ (and $F_5=5$). The coefficients are Fibonacci, exactly as $X_n=F_nH$ predicts.
+\end{example}
+
+\subsection{The Trace-Form Duality}
+
+\begin{theorem}[Trace-Form Duality]\label{thm:duality}
+For every $n∈ℤ$,
+\[
+\tfrac12\Tr(X_n^{2})=5F_n^{2}=L_n^{2}-4(-1)^{n}=(φ^{n}-ψ^{n})^{2}.
+\]
+The hyperbolic length of the deviation operator is the Fibonacci square $5F_n^{2}$; equivalently, it is the squared gap between the two Adams-scaled eigenvalues $φ^{n},ψ^{n}$. \Forced
+\end{theorem}
+\begin{proof}
+By Proposition~\ref{prop:deviation} and $H^{2}=5I$ (Proposition~\ref{prop:sig}), $X_n^{2}=F_n^{2}H^{2}=5F_n^{2}I$, so $\tfrac12\Tr(X_n^{2})=\tfrac12\cdot5F_n^{2}\cdot2=5F_n^{2}$. The identity $L_n^{2}-5F_n^{2}=4(-1)^{n}$ --- the companion of Cassini (Corollary~\ref{cor:identities}c) --- rearranges to $5F_n^{2}=L_n^{2}-4(-1)^{n}$. Finally $5F_n^{2}=(F_n\sqrt5)^{2}=(φ^{n}-ψ^{n})^{2}$ by Binet (Corollary~\ref{cor:identities}d).
+\end{proof}
+
+\begin{intuition}
+The deviation operator measures how far $R^{n}$ leans off the identity, in the Lie layer's own metric. That this lean is exactly $5F_n^{2}$ --- and equally $L_n^{2}-4(-1)^{n}$ --- braids the two classical sequences through the trace form: Fibonacci supplies the length, Lucas the trace, and their difference is the same constant $\pm4$ that governs Cassini. The three expressions of Theorem~\ref{thm:duality} are one number wearing three coats.
+\end{intuition}
+
+\subsection{The Adams operation as a dilation of the Cartan axis}
+
+The deviation family is indexed by the same integer $n$ as the Adams operators $ψ^{n}$, and this is no accident: $ψ^{n}$ generates the family by dilation.
+
+\begin{theorem}[$ψ^{n}$ dilates the axis]\label{thm:dilation}
+The Adams operation $ψ^{n}$ (on the core, $R↦R^{n}$) acts on the deviation structure as a pure dilation of the Cartan axis $ℝH$, at three levels:
+\begin{enumerate}[label=\textup{(\alph*)},leftmargin=2em,itemsep=1pt]
+\item \emph{Spectrum:} $\{φ,ψ\}↦\{φ^{n},ψ^{n}\}$, so the eigenvalue gap dilates $φ-ψ=\sqrt5↦φ^{n}-ψ^{n}=F_n\sqrt5$.
+\item \emph{Operator:} $\ad_{R^{n}}=F_n\,\ad_R$, hence $H=X_1↦X_n=F_nH$; and since $ψ^{n}∘ψ^{m}=ψ^{nm}$, the index is multiplicative, $ψ^{n}\colon X_m↦X_{nm}$.
+\item \emph{Invariant:} the seed length $\tfrac12\Tr(H^{2})=5=L_1^{2}-4(-1)^{1}$ lifts to $\tfrac12\Tr(X_n^{2})=5F_n^{2}=L_n^{2}-4(-1)^{n}$.
+\end{enumerate}
+\Forced
+\end{theorem}
+\begin{proof}
+(a) is the definition of $ψ^{n}$ together with \eqref{eq:root5}. (b): $\ad_{R^{n}}(Y)=[R^{n},Y]=F_n[R,Y]+F_{n-1}[I,Y]=F_n\,\ad_R(Y)$, because $R^{n}=F_nR+F_{n-1}I$ and $\ad_I=0$; and applying $ψ^{n}$ to the object $\{φ^{m},ψ^{m}\}$ behind $X_m$ yields $\{φ^{nm},ψ^{nm}\}$, whose deviation is $X_{nm}$. (c) is Theorem~\ref{thm:duality} at indices $1$ and $n$.
+\end{proof}
+
+\begin{intuition}
+$ψ^{n}$ does exactly one thing to this structure: it stretches the Cartan axis by the factor $F_n$. The direction $ℝH$ is fixed; the operator scales linearly ($F_n$); the length scales quadratically ($F_n^{2}$), because length is the square of the gap and $ψ^{n}$ dilates the gap. The whole Trace-Form Duality is the $ψ^{n}$-image of the single seed fact $\tfrac12\Tr(H^{2})=5$.
+\end{intuition}
+
+\subsection{The Casimir on coupled representations, and the deviation ladder}
+
+Finally we couple the deviation operator into the higher representations of Part~\ref{sec:reps} and record how its length interlocks with the Casimir.
+
+\begin{proposition}[Casimir on coupled targets]\label{prop:casimir-coupled}
+The quadratic Casimir acts on $V_m$ as the scalar $\tfrac12 m(m+2)$; on the tensor-coupled targets
+\[
+V_1⊗V_2=V_1⊕V_3\ \ (\text{Casimirs }\tfrac32,\tfrac{15}{2}),\qquad
+V_2⊗V_2=V_0⊕V_2⊕V_4\ \ (\text{Casimirs }0,4,12),
+\]
+so the top components carry $\operatorname{Cas}(V_3)=\tfrac{15}{2}$ and $\operatorname{Cas}(V_4)=12$. \Forced
+\end{proposition}
+
+\begin{theorem}[The deviation ladder]\label{thm:ladder}
+Carried into $V_m$, the deviation operator has hyperbolic length
+\[
+\tfrac12\Tr_{V_m}(X_n^{2})=5F_n^{2}\,\tbinom{m+2}{3}=\tfrac{5F_n^{2}}{3}\,\dim(V_m)\,\operatorname{Cas}(V_m),
+\]
+so its length is locked to the Casimir of the target. In particular $V_3$ gives $50F_n^{2}$ and $V_4$ gives $100F_n^{2}$: the base length $5F_n^{2}$ scaled by $\binom{5}{3}=10$ and $\binom{6}{3}=20$. \Forced
+\end{theorem}
+\begin{proof}
+On $V_m$ the normalised Cartan $H/\sqrt5$ has weights $\{m,m-2,\dots,-m\}$, so $X_n=F_nH$ gives $\Tr_{V_m}(X_n^{2})=5F_n^{2}\sum_{k=0}^{m}(m-2k)^{2}=5F_n^{2}\cdot\tfrac{m(m+1)(m+2)}{3}$. Since $\tfrac{m(m+1)(m+2)}{3}=2\binom{m+2}{3}$ and $\dim(V_m)\operatorname{Cas}(V_m)=(m+1)\cdot\tfrac12 m(m+2)=\tfrac12 m(m+1)(m+2)=3\binom{m+2}{3}$, both stated forms follow, and halving gives the result.
+\end{proof}
+
+\begin{intuition}
+The single Cartan direction, dilated by $F_n$ under $ψ^{n}$ and by $\binom{m+2}{3}$ under coupling into $V_m$, carries the golden number up two independent ladders at once --- the Adams ladder in $n$ and the representation ladder in $m$ --- while the target's Casimir $\tfrac12 m(m+2)$ tracks it exactly. This is where the associative core (Fibonacci), the Lie layer (the trace form), and the representation theory (the Casimir) fuse into one interlocking system.
+\end{intuition}
+
+\begin{exercise}\label{exr:deviation}
+Compute $X_4$ and confirm the Trace-Form Duality end to end. From $R^{4}=3R+2I$ (Theorem~\ref{thm:power}) show $X_4=2R^{4}-L_4I=3H$ (with $F_4=3$, $L_4=7$), hence
+\[
+\tfrac12\Tr(X_4^{2})=5F_4^{2}=45=L_4^{2}-4(-1)^{4}=(φ^{4}-ψ^{4})^{2}.
+\]
+Then carry it up the ladder: verify $\tfrac12\Tr_{V_2}(X_4^{2})=5F_4^{2}\binom{4}{3}=180$, the base length scaled by $\binom{4}{3}=4$, and identify the factor by which $ψ^{5}$ would further dilate it.
+\end{exercise}
+
+\section{The three questions: self-coupling, the flip, and the orthogonal partner}\label{sec:selfcouple}
+
+With the three layers built, the subject acquires its driving questions. All concern the golden mode --- the object $A_φ=\{φ,ψ\}$, magnitude $φ$, charge $\{0,2\}$ --- and whether it can generate more from itself.
+
+\subsection{Can the golden mode couple to a copy of itself?}
+A natural hope is that coupling the golden mode with a copy of itself might produce a genuinely new bound object --- something on the unit circle (recurrent) yet expanding (growing), the signature of a \emph{Salem number}. The answer is no, and three independent obstructions --- algebraic, arithmetic, and geometric --- all forbid it. Their agreement is the point: the confinement of the golden mode to the real axis is overdetermined.
+
+\begin{proposition}[Obstruction 1: the generative grade vanishes]\label{prop:obs1}
+Let $Φ_R(Y)=Y^{2}-\Tr(R)\,Y+\det(R)\,I$ be the characteristic operator of $R$. Then
+\[
+Φ_R(R)=R^{2}-R-I=0,\qquad\text{and}\qquad [R,R]=0 .
+\]
+Applying $R$ to itself under its own law returns the keystone relation and annihilates; the ``generative grade'' --- the commutator/wedge $[R,R]$ that would measure a genuinely new direction --- is identically zero. \Forced
+\end{proposition}
+\begin{proof}
+$Φ_R(R)=R^{2}-1\cdot R+(-1)I=R^{2}-R-I=0$ by the keystone \eqref{eq:keystone}; $[R,R]=R^{2}-R^{2}=0$ by antisymmetry of the bracket.
+\end{proof}
+
+\begin{proposition}[Obstruction 2: the charge sublattice is closed]\label{prop:obs2}
+The golden charge $\{0,2\}$ is closed under all three operators and never reaches the orthogonal charges $\{1,3\}$:
+\[
+\{0,2\}∪\{0,2\}=\{0,2\},\qquad \{0,2\}+\{0,2\}\equiv\{0,2\}\ (\bmod 4),\qquad 2\cdot\{0,2\}\equiv\{0\}\ (\bmod 4).
+\]
+\Forced
+\end{proposition}
+\begin{proof}
+Direct in $ℤ/4ℤ$: $0+0=0$, $0+2=2$, $2+2=4\equiv0$; and doubling gives $0,0$. The sub-semigroup generated by $\{0,2\}$ is the index-$2$ subgroup $\{0,2\}$; its complement $\{1,3\}$ is a coset, unreachable by these operations.
+\end{proof}
+
+\begin{proposition}[Obstruction 3: the Salem slot is empty]\label{prop:obs3}
+Write the trace-down $t=θ+θ^{-1}$. On the unit circle ($|θ|=1$) it is real with $t=2\cosθ∈[-2,2]$; for a real expanding $θ>1$ it satisfies $t>2$, since $t-2=(θ-1)^{2}/θ>0$. The two regimes are disjoint. Because every eigenvalue of every $⊕/⊗/ψ^{n}$-combination of $A_φ$ is a product of the reals $φ,ψ$ and hence real, the golden mode never places an eigenvalue on the unit circle at a non-real angle: the ``on-circle and expanding'' (Salem) configuration has no slot. A would-be Salem occupant $β>1$ is instead redirected by the trace-down to the real growth axis as $τ_0=β+β^{-1}>2>φ$. \Forced
+\end{proposition}
+\begin{proof}
+On $|θ|=1$, $θ^{-1}=\bar θ$ so $t=2\operatorname{Re}θ∈[-2,2]$. For real $θ>1$, the AM--GM inequality gives $θ+θ^{-1}>2$ with the exact excess $(θ-1)^2/θ$. Closure of $A_φ$ under the operators keeps all eigenvalues real (products/powers/unions of $\{φ,ψ\}⊂ℝ$), so no complex unit-circle eigenvalue arises; the Salem condition, which requires exactly such an eigenvalue, is unsatisfiable.
+\end{proof}
+
+\begin{intuition}
+Three languages, one fact. \emph{Algebra:} self-application collapses to the defining relation and produces no new direction ($[R,R]=0$). \emph{Arithmetic:} the charge is trapped in $\{0,2\}$ and cannot reach $\{1,3\}$. \emph{Geometry:} the golden mode lives on the real axis and cannot climb onto the complex unit circle. The golden mode is confined; to escape confinement it needs a \emph{partner} carrying the missing charges $\{1,3\}$ --- an object perpendicular to it.
+\end{intuition}
+
+\subsection{The flip: terrain and rotation are two faces of one threshold}
+Before producing the partner, we name the mechanism that separates ``real growth'' from ``rotation.''
+
+\begin{proposition}[The flip]\label{prop:flip}
+For a parameter $C∈ℝ$, the gate polynomial $g_C(x)=x^{2}+x-C$ has discriminant $D=1+4C$. Its sign governs everything at once: for $D>0$ the roots are real (growth / \emph{terrain}); for $D<0$ they are a complex conjugate pair (rotation); the flip occurs at $C=-\tfrac14$. On the golden field this is the same $\sqrt5$ story: the trace-form Gram determinant of the associated quadratic extension equals $D$, so $D>0$ is Riemannian and $D<0$ is Lorentzian. \Forced
+\end{proposition}
+\begin{proof}
+The discriminant of $x^{2}+x-C$ is $1^{2}-4(1)(-C)=1+4C=D$; two real roots iff $D>0$, a complex conjugate pair iff $D<0$, a double root at $D=0$ (i.e.\ $C=-\tfrac14$). For the metric reading, let $θ$ be a root, so $θ^{2}=C-θ$, and take the trace form on the basis $\{1,θ\}$ of $ℚ(θ)$: with the field trace $\Tr(1)=2$, $\Tr(θ)=θ+θ'=-1$, and $\Tr(θ^{2})=\Tr(C-θ)=2C+1$, the Gram matrix is $\bigl(\begin{smallmatrix}2&-1\\-1&2C+1\end{smallmatrix}\bigr)$ with determinant $2(2C+1)-1=4C+1=D$. So the same $D$ that flips the roots flips the signature of the trace form.
+\end{proof}
+
+\begin{example}[Both sides of the flip]\label{ex:flip}
+At $C=1$ the discriminant is $D=5>0$: $g_1(x)=x^{2}+x-1$ has real roots $\tfrac{-1\pm\sqrt5}{2}=\{φ^{-1},-φ\}$ --- pure terrain, and the appearance of $\sqrt5$ marks this as the golden gate. At $C=-1$ the discriminant is $D=-3<0$: $g_{-1}(x)=x^{2}+x+1$ has the complex pair $\tfrac{-1\pm i\sqrt3}{2}$ (primitive cube roots of unity) --- pure rotation. The Gram determinant $D$ is $+5$ and $-3$ respectively, Riemannian then Lorentzian, exactly tracking the root type.
+\end{example}
+
+\begin{intuition}
+``Terrain'' is real, hyperbolic growth (like the boost directions $H,S$ of the Lie layer); ``rotation'' is elliptic, angular motion (like $J$). The flip is the single threshold that turns one into the other. The golden mode lives entirely on the terrain side; its missing complement must live on the rotation side.
+\end{intuition}
+
+\subsection{The orthogonal partner $K$}
+There is a unique seed that supplies the missing charges by straddling the flip: it carries both a real (terrain) part and an imaginary (rotation) part.
+
+\begin{theorem}[The orthogonal partner]\label{thm:K}
+Let $K(x)=x^{4}+5x^{2}-5$. Substituting $y=x^{2}$ gives $y^{2}+5y-5$ with roots straddling zero,
+\[
+y_{+}=\tfrac{-5+3\sqrt5}{2}≈0.854>0,\qquad y_{-}=\tfrac{-5-3\sqrt5}{2}≈-5.854<0,
+\]
+so $K$ has real roots $\pm K$ with $K=\sqrt{y_+}=\dfrac{5^{1/4}}{φ}≈0.924$ (the \emph{terrain}, in $ℚ(5^{1/4})⊃ℚ(\sqrt5)$) and imaginary roots $\pm iβ$ with $β=\sqrt{|y_-|}≈2.420$ (the \emph{rotation}, a quarter-turn about the origin), with magnitude
+\[
+\Mah(K)=β^{2}=\tfrac{5+3\sqrt5}{2}=φ^{2}\sqrt5≈5.854 .
+\]
+Its charge is $χ(K)=\{0,1,2,3\}$: the real roots supply $\{0,2\}$ and the imaginary roots $\pm iβ$, at angles $\pm\tfrac{π}{2}$, supply exactly the missing $\{1,3\}$. Thus $K$ completes the golden charge to all of $ℤ/4ℤ$, and is the unique catalogue seed to do so. \Forced
+\end{theorem}
+\begin{proof}
+The quadratic formula gives $y=\tfrac{-5\pm\sqrt{45}}{2}=\tfrac{-5\pm3\sqrt5}{2}$; $y_+>0>y_-$. Then $x^{2}=y_+$ yields real $\pm K$ and $x^{2}=y_-<0$ yields imaginary $\pm iβ$. That $K=5^{1/4}/φ$: $(5^{1/4}/φ)^{2}=\sqrt5/φ^{2}=\tfrac{2\sqrt5}{3+\sqrt5}=\tfrac{3\sqrt5-5}{2}=y_+$. The magnitude is the product over roots outside the unit circle: $|{\pm}K|=K<1$ contribute $1$, while $|{\pm}iβ|=β>1$ give $β^{2}$; and $β^{2}=|y_-|=\tfrac{5+3\sqrt5}{2}=φ^{2}\sqrt5$. For the charge, $\arg(\pm iβ)=\pm\tfrac{π}{2}$ rounds to $\{1,3\}$, while $\arg(\pm K)∈\{0,π\}$ gives $\{0,2\}$.
+\end{proof}
+
+\begin{proposition}[Why $K$: the parity criterion]\label{prop:parity}
+A real quartic places its complex roots on the imaginary axis (angles $\pm\tfrac{π}{2}$, charges $\{1,3\}$) \emph{iff} it is \emph{even} --- a polynomial in $x^{2}$ --- with a negative $x^{2}$-root. $K=x^{4}+5x^{2}-5$ is even, so its complex roots are purely imaginary and it completes the charge. By contrast the non-even quartics of the same field $ℚ(5^{1/4})$ place their complex roots at generic angles, off the charge lattice. So it is \emph{parity}, not the field, that singles out $K$. \Computed
+\end{proposition}
+\begin{proof}
+Evenness makes the roots come in $\pm$ pairs; through $y=x^{2}$ a negative $y$-root gives $x=\pm i\sqrt{|y|}$, purely imaginary. Conversely a purely imaginary root $ib$ (with real coefficients) forces the factor $x^{2}+b^{2}$, i.e.\ the absence of odd-degree terms in that block.
+\end{proof}
+
+\begin{intuition}
+The golden mode is a real screw --- terrain without rotation, charges $\{0,2\}$. The partner $K$ re-introduces the quarter-turn: its imaginary roots $\pm iβ$ are the rotation the golden mode structurally lacked, exactly perpendicular (charges $\{1,3\}$) to the golden real axis. The two together span all of $ℤ/4ℤ$. And $K$ can do this only because it is \emph{even}: parity, the humblest of symmetries, is what places its rotation precisely on the imaginary axis. The resolution of ``can the golden mode close on itself?'' is therefore: not on itself, and not with a copy --- only with its parity-conjugate partner, which supplies the rotation face of the flip that the mode's own terrain lacked.
+\end{intuition}
+
+\begin{exercise}\label{exr:parity-floor}
+The partner $K$ completes the charge with an \emph{expanding} even quartic ($\Mah(K)=φ^{2}\sqrt5>1$). Find an even quartic that completes the charge at the \emph{floor} instead: show $x^{4}-1=(x-1)(x+1)(x^{2}+1)$ has roots $\{1,-1,i,-i\}$ with charges $\{0,2,1,3\}=ℤ/4ℤ$ but $\Mah=1$ (all roots on the unit circle). Contrast with $K$: same charge completion, opposite side of the magnitude floor. Which theorem of Part~\ref{sec:floor} explains why $x^{4}-1$ has $\Mah=1$?
+\end{exercise}
+
+\section{The cyclotomic floor: where magnitude becomes charge}\label{sec:floor}
+
+The magnitude character is bounded below by $1$. We close by studying that floor, where the semiring's grading partially collapses.
+
+\begin{theorem}[Kronecker: what the floor is]\label{thm:kronecker}
+For a monic integer polynomial, $\Mah=1$ if and only if every root is a root of unity --- i.e.\ the polynomial is a product of cyclotomic polynomials. Consequently $\Mah≥1$ always, and the floor locus $\A_1=\{A:\Mah(A)=1\}$ is exactly the cyclotomic objects. \Estab
+\end{theorem}
+
+\begin{theorem}[The five boundary conditions at $\Mah=1$]\label{thm:boundary}
+\leavevmode
+\begin{description}[leftmargin=2.4em,style=nextline,itemsep=3pt]
+\item[\normalfont(B1) Floor and identity.] $\Mah≥1$, with equality exactly on $\A_1$; $\Mah=1$ is the multiplicative identity of the magnitude monoid $([1,∞),×)$. \Forced
+\item[\normalfont(B2) Sub-semiring.] $\A_1$ is closed under $⊕,⊗,ψ^{n}$: products, unions, and Adams powers of roots of unity are roots of unity. \Forced
+\item[\normalfont(B3) Collapse to charge.] On $\A_1$ the magnitude is constant ($\Mah≡1$) and only $χ$ survives. The fourth roots $μ_4=⟨i⟩$ give an isomorphism $χ:μ_4≅ℤ/4ℤ$ under which $⊗↦{+}$ and $ψ^{n}↦{×n}\ (\bmod4)$: at the floor, the semiring is the charge group. \Forced
+\item[\normalfont(B4) Isolation.] In $\A$'s emission class, $\Mah∈\{1\}∪[φ,∞)$ --- the floor is isolated by a gap of width $≥φ-1≈0.618$, with the golden object realising the next value $\Mah=φ$. Over general non-cyclotomic polynomials the interval $(1,φ)$ is populated (Lehmer's number $≈1.176$), which lies outside $\A$; deciding a universal gap is Lehmer's problem. \Forced\ (in class); \Openq\ (general)
+\item[\normalfont(B5) One-way.] $⊗$ and $⊕$ are magnitude-nondecreasing (each factor is $≥1$), so the floor is never left downward and never reached from $\Mah>1$: $\A_1$ is a closed superselection sector. \Forced
+\end{description}
+\end{theorem}
+\begin{proof}
+(B1) is the Mahler bound with Theorem~\ref{thm:kronecker}. (B2): a product/power of unit-modulus numbers has unit modulus, and $\Mah(A⊕B)=\Mah(A)\Mah(B)=1$. (B3): $χ(i^{k})=k\bmod4$ is the isomorphism, $χ(i^ai^b)=(a+b)\bmod4$ realises $⊗↦{+}$, and $χ((i^a)^n)=na\bmod4$ realises $ψ^{n}↦{×n}$, while $\Mah≡1$. (B4) is the in-class emission gap; the general statement is Lehmer's open problem. (B5): $\Mah(A⊗B)=\prod\max(1,|α_iβ_j|)≥1$ and cannot fall below any factor.
+\end{proof}
+
+\begin{intuition}
+At the floor the magnitude collapses to its identity and the object becomes pure phase; the phase lives on the circle $U(1)$, of which the four points $μ_4$ are the exact charge readout $ℤ/4ℤ$. The rest of $\A$ sits a golden gap above and cannot descend, because magnitude, once created, never decays under the semiring operations. Reading $\Mah=1$ as a ``vacuum'' and $χ$ as a superselection charge is a suggestive physical picture --- but that reading is a lens, carrying no content beyond (B1)--(B5). \Posited
+\end{intuition}
+
+\begin{example}[The floor, the gap, and beyond]\label{ex:floor}
+Three objects locate the geometry of the floor exactly.
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item \emph{On the floor:} $Φ_4=x^{2}+1$ gives $\{i,-i\}$, with $\Mah=1$ (both on the unit circle) and $χ=\{1,3\}$ --- pure charge, and in fact the generator of $μ_4≅ℤ/4ℤ$. Likewise $Φ_3=x^{2}+x+1$ gives $e^{\pm2πi/3}$ with $\Mah=1$, $χ=\{1,3\}$.
+\item \emph{First rung above:} the golden object $A_φ=\{φ,ψ\}$ has $\Mah=φ≈1.618$ --- the smallest magnitude above $1$ that $\A$ emits, realising the isolation gap of (B4).
+\item \emph{Outside $\A$:} Lehmer's polynomial $x^{10}+x^{9}-x^{7}-x^{6}-x^{5}-x^{4}-x^{3}+x+1$ has $\Mah≈1.17628$, which sits \emph{inside} the gap $(1,φ)$. It is not an emission object of $\A$; that such polynomials exist, yet none is known below $1.17628$, is Lehmer's problem --- the reason (B4) is \Forced\ in-class but \Openq\ in general.
+\end{itemize}
+\end{example}
+
+\begin{exercise}\label{exr:floor-collapse}
+Check the floor collapse (B2)--(B3) on a worked orbit. Starting from $\{i,-i\}$ (charge $\{1,3\}$), apply $ψ^{2}$: show $ψ^{2}(\{i,-i\})=\{i^{2},(-i)^{2}\}=\{-1,-1\}$, which has $\Mah=1$ still and charge $\{2\}$ --- matching the group law $2\cdot\{1,3\}\equiv\{2\}\ (\bmod4)$. Then apply $ψ^{2}$ once more to reach $\{1\}$ (charge $\{0\}$), the identity. The magnitude never moves off $1$; only the charge cycles.
+\end{exercise}
+
+\appendix
+\section{The algebra at a glance}\label{app:glance}
+
+Everything in this primer grows from one matrix and one relation. The map:
+\begin{center}\small
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{@{}p{0.19\linewidth}p{0.37\linewidth}p{0.36\linewidth}@{}}
+\toprule
+layer & object & key facts \\
+\midrule
+seed & $R=\bigl(\begin{smallmatrix}0&1\\1&1\end{smallmatrix}\bigr)$, \ $R^{2}=R+I$ & the golden ratio in matrix form (§\ref{sec:core}) \\
+associative core & ring $ℤ[R]$ & $=\OK_{ℚ(\sqrt5)}$, the golden order; $R^{n}=F_nR+F_{n-1}I$ (Thm~\ref{thm:order},~\ref{thm:power}) \\
+Lie layer & $\ad_R=[R,\cdot]$ & $=𝔰𝔩_2$, signature $(2,1)$, root length $\sqrt5$; null frame via $ℚ(\sqrt5)$ (Thm~\ref{thm:sl2},~\ref{thm:transition}) \\
+semiring layer & characters $(\Mah,χ)$; operators $⊕,⊗,ψ^{n}$ & magnitude $\Mah≥1$, charge $χ∈ℤ/4ℤ$; grading laws (Prop~\ref{prop:laws}) \\
+representations & $V_n=\operatorname{Sym}^n(ℂ^2)$ & $\dim=n+1$; eigenvalue tower $φ^{n-k}ψ^k$; $⊗=$ Clebsch--Gordan (Prop~\ref{prop:reps-in-A}, Thm~\ref{thm:cg}) \\
+trace form & metric $⟨X,Y⟩=\Tr(XY)$; deviation $X_n=F_nH$ & $\tfrac12\Tr(X_n^{2})=5F_n^{2}=L_n^{2}-4(-1)^{n}$; $ψ^{n}$ dilates axis by $F_n$; ladder $5F_n^{2}\binom{m+2}{3}$ (Thm~\ref{thm:duality}--\ref{thm:ladder}) \\
+\midrule
+question 1 & self-coupling of the golden mode & \emph{impossible}: $[R,R]=0$, charge trapped in $\{0,2\}$, empty Salem slot (Prop~\ref{prop:obs1}--\ref{prop:obs3}) \\
+question 2 & completing the charge & the orthogonal partner $K=x^4+5x^2-5$; parity criterion (Thm~\ref{thm:K}, Prop~\ref{prop:parity}) \\
+question 3 & the magnitude floor & cyclotomic floor $\Mah=1$: pure charge, isolated by the golden gap (Thm~\ref{thm:boundary}) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent The unifying thread is the golden number: it is the eigenvalue of the core, the root length $\sqrt5$ of the Lie layer, the magnitude floor-plus-gap $φ$ of the semiring, and (as $5^{1/4}$) the terrain scale of the partner $K$. The algebra is, throughout, the golden field made structural.
+
+\section{Machine verification}\label{app:verify}
+Every displayed constant is settled in exact arithmetic (\texttt{sympy}/\texttt{fractions} over $ℚ$, $ℚ(\sqrt5)$, $ℚ(5^{1/4})$; \texttt{mpmath}/numeric only to illustrate cited theorems such as Kronecker). The reproducible scripts:
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item \texttt{d1\_keystone\_powerlaw.py} --- §\ref{sec:core}: power law $R^{n}=F_nR+F_{n-1}I$, Lucas trace, Cassini, Binet, verified for $n∈[-16,16]$. \Forced
+\item \texttt{d1b\_arithmetic\_core.py} --- Thm~\ref{thm:order}: $\operatorname{disc}=5$ fundamental $⇒ ℤ[R]=\OK_{ℚ(\sqrt5)}$ (index $1$). \Forced
+\item \texttt{d2\_core\_mechanics.py} --- §\ref{sec:lie},~\ref{sec:semiring}: $\ad_R$ spectrum and root spaces, the grading laws, $ψ^{n}$ pullback. \Forced
+\item \texttt{d3\_sl2\_reps.py} --- §\ref{sec:reps}: $\dim V_m=m+1$, weights, Casimir $\tfrac12 m(m+2)$, Clebsch--Gordan, the $\operatorname{Sym}^n$ tower. \Forced
+\item \texttt{d4\_transition.py} --- Thm~\ref{thm:sl2}--\ref{thm:transition}: signature $(2,1)$, rational structure constants, transition matrices, the conjugator $V$. \Forced
+\item \texttt{d5\_cyclotomic\_floor.py} --- Thm~\ref{thm:boundary}: the five boundary conditions, $μ_4≅ℤ/4ℤ$, the golden gap. \Forced
+\item \texttt{d6\_traceform\_duality.py} --- Thm~\ref{thm:duality}: $X_n=F_nH$, $\tfrac12\Tr(X_n^{2})=5F_n^{2}=L_n^{2}-4(-1)^{n}$, verified $n∈[-8,8]$. \Forced
+\item \texttt{d6b\_psi\_casimir\_map.py} --- Thm~\ref{thm:dilation},~\ref{thm:ladder}: $ψ^{n}$ axis-dilation, $\operatorname{Cas}(V_3)=\tfrac{15}{2}$, $\operatorname{Cas}(V_4)=12$, and the deviation ladder $5F_n^{2}\binom{m+2}{3}$. \Forced
+\item \texttt{d7\_depth\_examples.py} --- the worked examples and exercises of §\ref{sec:lie}--\ref{sec:floor}: the explicit $𝔰𝔩_2$ triple, the tropical-vs-naive coupling, $\operatorname{Sym}^{2}$ weights, the flip Gram determinant, and the floor orbits (incl.\ Lehmer's $\Mah≈1.17628$). \Forced
+\end{itemize}
+The partner $K$ (Thm~\ref{thm:K}, Prop~\ref{prop:parity}) is verified in the companion derivation \texttt{helix\_orthogonal\_partner} (real/imaginary root split, $\Mah(K)=φ^{2}\sqrt5$, $χ(K)=\{0,1,2,3\}$, the parity criterion, and the field/signature/Galois data of the non-even quartics).
+
+\section*{Epilogue: what to prove next}
+\addcontentsline{toc}{section}{Epilogue}
+Two honest frontiers remain visible from here. First, the \emph{universal} magnitude gap: whether $(1,φ)$, or even $(1,1+\varepsilon)$, is truly empty over \emph{all} non-cyclotomic polynomials is Lehmer's problem --- open since 1933, and the reason (B4) carries an in-class qualifier rather than a bare \Forced. Second, the reach of the framework: the constructions here are local to the golden field and its immediate neighbours, and one should resist the temptation to export them as if universal. The single genuinely portable kernel is differential --- a two-to-one fold carries a $\sqrt{\ }$-branch point generically, of which $\sqrt5=φ+φ^{-1}$ is this construction's own instance. Everything else in this primer is the golden field's private structure, developed exactly, and tagged for exactly what it is.
+
+\vspace{0.8em}
+\noindent\emph{The core is the golden order; the Lie layer is $𝔰𝔩_2$ of signature $(2,1)$; the semiring floors at the cyclotomic locus, where magnitude becomes charge. One matrix, one relation, and the golden field does the rest.}
+
+\end{document}

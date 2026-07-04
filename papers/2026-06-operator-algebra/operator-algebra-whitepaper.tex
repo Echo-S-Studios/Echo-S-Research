@@ -1,0 +1,266 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[expansion=false]{microtype}
+\usepackage[T1]{fontenc}
+\usepackage{mathpazo}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\definecolor{tagcol}{RGB}{120,95,30}
+\newcommand{\stag}[1]{{\small\textsf{\textcolor{tagcol}{[#1]}}}}
+\newcommand{\bk}[1]{{\small\textsf{(#1)}}}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\Sring}{\mathcal{S}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\psitwo}{\psi^{2}}
+\newcommand{\dsum}{\oplus}
+\newcommand{\dten}{\otimes}
+\newcommand{\Mahler}{\mathrm{M}}
+\newcommand{\Sym}{\mathrm{Sym}}
+\newcommand{\charge}{\chi}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\spec}{spec}
+\newcommand{\pos}[1]{{#1}^{+}}
+
+\title{\textbf{The Operator Algebra of the Emission Semiring}\\[2pt]
+\large A $\lambda$--Ring, the Adams Square, and Two Characters}
+\author{Echo--Squirrel Research}
+\date{A Companion to \emph{Lehmer's Box}, \emph{The Emission--Gap Theorem},\\
+\emph{The Occupant of the Salem Slot}, and \emph{The Generative Content of a Conserved Emptiness}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The companion papers treat the spectral operators $\dsum$ (direct sum), $\dten$ (tensor), and $(\cdot)^2$ (squaring) one at a time. This note treats them \emph{in relation} --- to each other and to themselves --- and finds that they are not an ad hoc collection but a $\lambda$--ring. The pair $(\dsum,\dten)$ is a commutative semiring with $\dten$ distributing over $\dsum$; the squaring operator is the Adams operation $\psitwo$, a semiring endomorphism tied to the exterior powers by Newton's identity, and equal to the diagonal of the tensor square. Two characters resolve the structure completely. The Mahler measure is \emph{additive} on $\dsum$ --- a monoid homomorphism onto $\langle \varphi,2,3,5,\beta^2\rangle$ whose least generator is the cost floor $\varphi$ --- but \emph{tropical} on $\dten$: $\log\Mahler(A\dten B)$ is a $(\max,+)$ convolution of the log--spectra, never a product. The angle charge is a finite character onto $\Z/4\Z$, the sumset under $\dten$ and doubling under $\psitwo$. The three self--iterations are the structure's three powers: additive ($\Mahler=\varphi^{k}$, linear), Adams ($\Mahler=\varphi^{2^{k}}$, a doubling tower at fixed degree), and multiplicative ($\Mahler=\varphi^{S_k}$ with $S_k=k\binom{k-1}{\lfloor(k-1)/2\rfloor}$, super--exponential). Every relation below is machine--verified in exact arithmetic; the backing check identifiers are named inline.
+\end{abstract}
+
+\section{Introduction: the operators in relation}
+The construction analysed in the companion papers grows an exact symbolic state by applying a fixed set of operators to a seed catalogue. The \emph{spectral} operators --- those whose effect on the output spectrum is forced by the inputs --- are direct sum $\dsum$, tensor (Kronecker) product $\dten$, squaring $(\cdot)^2$, and the spectrum--preserving $\mathrm{minpoly}$ and $\Phi$. Each was studied in isolation: $\dsum$ multiplies Mahler measures, $\dten$ adds angle charge, $(\cdot)^2$ doubles it. The question this note answers is structural: \emph{how do these operators relate to one another, and to themselves?}
+
+The answer is a single named object. We show (\S\ref{sec:semiring}--\ref{sec:adams}) that $(\dsum,\dten)$ make the algebra's spectra a commutative semiring and that squaring is the Adams operation $\psitwo$ of the associated $\lambda$--ring --- a semiring endomorphism, the Newton power map, and the diagonal of the tensor square, all at once. We then show (\S\ref{sec:measure}--\ref{sec:charge}) that the two invariants the companion papers use are exactly the two characters of this structure: the Mahler measure, additive on $\dsum$ and \emph{tropical} on $\dten$, and the angle charge, a finite character onto $\Z/4\Z$. The three ways an operator can act on itself (\S\ref{sec:self}) are the three powers of the semiring, with the rates already recorded. Fixed points and the spectrum--preserving operators close the picture (\S\ref{sec:fixed}). The unifying statement (\S\ref{sec:unified}) is that the floor $\varphi$ and the superselection charge are not two facts but one $\lambda$--ring seen through its two characters.
+
+\section{The emission semiring}\label{sec:semiring}
+
+\begin{definition}[Objects and operators]\label{def:objects}
+An \emph{object} is a finite multiset $A=\{\lambda_1,\dots,\lambda_d\}$ of nonzero algebraic numbers --- the eigenvalue multiset of a catalogue matrix or any object built from them. Write $\Sring$ for the set of objects. Define
+\[
+A\dsum B = A\uplus B \quad(\text{multiset union}),\qquad
+A\dten B = \{\lambda\mu : \lambda\in A,\ \mu\in B\}\quad(\text{with multiplicity}),
+\]
+realised on matrices by block diagonal sum and Kronecker product. Let $\mathbf 0=\varnothing$ and $\mathbf 1=\{1\}$.
+\end{definition}
+
+These are the spectra of $\dsum$ and $\dten$: $\spec(A\dsum B)=\spec A\uplus\spec B$ and $\spec(A\dten B)=\{\lambda\mu\}$. The structure is the positive cone of the monoid ring $\N[\C^\times]$ restricted to the eigenvalue group the catalogue generates.
+
+\begin{theorem}[The emission semiring]\label{thm:semiring}
+$(\Sring,\dsum,\dten,\mathbf 0,\mathbf 1)$ is a commutative semiring: $\dsum$ and $\dten$ are commutative and associative, $\dten$ distributes over $\dsum$,
+\[
+A\dten(B\dsum C)=(A\dten B)\dsum(A\dten C),
+\]
+$\mathbf 0$ is the additive identity and a multiplicative annihilator, and $\mathbf 1$ is the multiplicative identity. \stag{forced} \bk{OA-SR-01..08}
+\end{theorem}
+
+\begin{proof}
+Multiset union is commutative, associative, and has identity $\varnothing$. The elementwise product is commutative and associative because multiplication in $\C^\times$ is. Distributivity is the multiset identity $\{\lambda\nu : \lambda\in A,\ \nu\in B\uplus C\}=\{\lambda\mu\}\uplus\{\lambda\rho\}$ over $\mu\in B$, $\rho\in C$. The identity $\{1\}$ fixes every object under $\dten$, and $\varnothing\dten A=\varnothing$.
+\end{proof}
+
+The Mahler measure and the angle charge will be the two morphisms \emph{out} of this semiring. Before defining them we identify the third operator.
+
+\section{The Adams square}\label{sec:adams}
+
+\begin{definition}[Power operations]
+For $n\ge 1$ let $\psi^n(A)=\{\lambda^n:\lambda\in A\}$ with multiplicity. The squaring operator of the companion papers is $(\cdot)^2=\psitwo$.
+\end{definition}
+
+\begin{theorem}[Squaring is the Adams operation]\label{thm:adams}
+Each $\psi^n$ is a semiring endomorphism of $(\Sring,\dsum,\dten)$:
+\[
+\psi^n(A\dsum B)=\psi^n A\dsum\psi^n B,\qquad
+\psi^n(A\dten B)=\psi^n A\dten\psi^n B,\qquad
+\psi^n(\mathbf 1)=\mathbf 1,
+\]
+and they compose by $\psi^m\circ\psi^n=\psi^{mn}$. On power sums $p_n=\tr\psi^n$ they obey Newton's identities; in particular
+\[
+\tr\psitwo A \;=\; p_2 \;=\; e_1^2-2e_2,
+\]
+the relation that expresses $\psitwo$ through the exterior powers $e_1=\tr A$, $e_2=\tr\Lambda^2 A$. \stag{forced} \bk{OA-PSI-01..05}
+\end{theorem}
+
+\begin{proof}
+$\psi^n$ acts on eigenvalues by $\lambda\mapsto\lambda^n$. Under $\dsum$ this permutes the union; under $\dten$, $(\lambda\mu)^n=\lambda^n\mu^n$, so $\psi^n(A\dten B)=\psi^n A\dten\psi^n B$. Composition is $(\lambda^n)^m=\lambda^{mn}$. Newton's identity $p_2=e_1^2-2e_2$ is the case $k=2$ of $p_k=e_1p_{k-1}-\cdots\pm k e_k$, verified symbolically for the catalogue degrees.
+\end{proof}
+
+That $\psitwo$ is multiplicative as well as additive is what makes the operator set a $\lambda$--ring rather than merely a semiring with an extra unary map: in the Grothendieck completion $K(\Sring)=\Z[\text{eigenvalue group}]$ the Adams operations $\psi^n$ are precisely the ring endomorphisms determined by the $\lambda$--operations (exterior powers) through Newton's identities (Grothendieck; Adams; Atiyah; Knutson). The next proposition gives the geometric content of $\psitwo$.
+
+\begin{proposition}[Plethysm: the square is a diagonal]\label{prop:plethysm}
+For every object $A$,
+\[
+A\dten A=\Sym^2 A\;\dsum\;\Lambda^2 A,\qquad
+\Sym^2 A=\{\lambda_i\lambda_j: i\le j\},\quad \Lambda^2 A=\{\lambda_i\lambda_j: i<j\},
+\]
+and $\psitwo A=\{\lambda_i^2\}$ is exactly the diagonal $i=j$ inside $\Sym^2 A$. Their traces are
+\[
+\tr\Sym^2 A=\tfrac12(p_1^2+p_2),\qquad \tr\Lambda^2 A=\tfrac12(p_1^2-p_2)=e_2. 
+\]
+\stag{forced} \bk{OA-PLE-01..06}
+\end{proposition}
+
+\noindent Thus the squaring operator is not a fourth primitive: it is the diagonal restriction of the tensor square, the off--diagonal part being the exterior square $\Lambda^2$. Iterating, $\psi^{2^{k}}=(\psitwo)^{\circ k}$ sends each $\lambda$ to $\lambda^{2^k}$ \bk{OA-PSI-05}.
+
+\section{Character I: the Mahler measure}\label{sec:measure}
+
+\begin{definition}
+$\Mahler(A)=\prod_{\lambda\in A}\max(1,|\lambda|)$, the Mahler measure of the object.
+\end{definition}
+
+\begin{theorem}[The measure is additive on $\dsum$ and tropical on $\dten$]\label{thm:measure}
+The Mahler measure satisfies
+\[
+\Mahler(A\dsum B)=\Mahler(A)\,\Mahler(B),\qquad
+\Mahler(\psitwo A)=\Mahler(A)^2,
+\]
+so it is a monoid homomorphism $(\Sring,\dsum)\to(\R_{\ge1},\cdot)$ intertwining $\psitwo$ with squaring. On the tensor it is \emph{not} multiplicative; instead, writing $\pos{x}=\max(0,x)$,
+\[
+\log\Mahler(A\dten B)\;=\;\sum_{\lambda\in A}\sum_{\mu\in B}\big(\log|\lambda|+\log|\mu|\big)^{+},
+\]
+a $(\max,+)$ (tropical) convolution of the log--spectra. \stag{forced} \bk{OA-M-01..07}
+\end{theorem}
+
+\begin{proof}
+For $\dsum$ the root multiset is the union and $\max(1,\cdot)$ is multiplicative across it. For $\psitwo$, $\max(1,|\lambda^2|)=\max(1,|\lambda|)^2$. For $\dten$ the eigenvalues are the products $\lambda\mu$, so $\log\Mahler=\sum\log^+|\lambda\mu|=\sum(\log|\lambda|+\log|\mu|)^+$. Non--multiplicativity is exhibited by $\,\text{golden}\dten(x^2-2)$: $\Mahler=2\varphi^2=5.2360\ldots$ while $\Mahler(\varphi)\Mahler(x^2-2)=2\varphi=3.2360\ldots$.
+\end{proof}
+
+\noindent So the two ring operations map under $\log\Mahler$ to two different arithmetics: $\dsum$ to ordinary addition, $\dten$ to the tropical semiring. The image of the additive part is the object of the companion note on the spectrum.
+
+\begin{theorem}[The $\dsum$--image is the spectrum monoid; the floor is its least generator]\label{thm:floor}
+$\Mahler(\Sring,\dsum)=\langle\varphi,2,3,5,\beta^2\rangle$ multiplicatively, with the single relation $\beta^2=\varphi^2\sqrt5$. The generators $\varphi,2,3,5$ are multiplicatively independent (norms $-1,4,9,25$ in $\Q(\sqrt5)$); the monoid has five atoms but rank four, hence is not factorial, with $\beta^2\!\cdot\!\beta^2=5\cdot\varphi^4$. Its least generator is $\varphi$, so the monoid contains no element in $(1,\varphi)$ --- the cost floor. \stag{forced/computed} \bk{OA-M-08; GA-01..13}
+\end{theorem}
+
+\noindent The cost floor of the growth rule is therefore an intrinsic feature of Character~I: it is the smallest generator of the additive character's image, and $\lambda\log\varphi$ is $\lambda$ times that generator.
+
+\section{Character II: the angle charge}\label{sec:charge}
+
+\begin{definition}
+For an object whose eigenvalues lie at arguments in $\tfrac\pi2\Z$, let $\charge(A)$ be the multiset of charges $q=\lfloor 2\arg\lambda/\pi\rceil \bmod 4 \in\Z/4\Z$.
+\end{definition}
+
+\begin{theorem}[The charge is a finite character]\label{thm:charge}
+On the emission algebra the angle charge transforms by
+\[
+\charge(A\dten B)=\charge(A)+\charge(B)\ (\text{sumset mod }4),\qquad
+\charge(\psitwo A)=2\,\charge(A),\qquad
+\charge(A\dsum B)=\charge(A)\uplus\charge(B).
+\]
+The full group $\Z/4\Z$ is realised: the real seeds carry $\{0,2\}$, and the Lorentzian seed $K=x^4+5x^2-5$ carries $\{0,1,2,3\}$, its imaginary pair $\pm i\beta$ at $\pm\tfrac\pi2$. \stag{forced/computed} \bk{OA-CH-01..05}
+\end{theorem}
+
+\begin{proof}
+$\arg(\lambda\mu)=\arg\lambda+\arg\mu$ gives the sumset on $\dten$; $\arg(\lambda^2)=2\arg\lambda$ gives doubling on $\psitwo$; $\dsum$ unions the spectra. The catalogue charges are computed directly.
+\end{proof}
+
+\noindent Character~II is the superselection rule of the companion paper: the Salem regime is the off--charge sector ($\arg\notin\tfrac\pi2\Z$), and because $\charge$ is preserved by $\dsum,\dten,\psitwo$, no finite word reaches it. Where Character~I records growth, Character~II records the on--circle alphabet --- and the doubling $\charge(\psitwo A)=2\charge A$ is the charge--level shadow of $\Mahler(\psitwo A)=\Mahler(A)^2$.
+
+\section{Self--action: the three powers}\label{sec:self}
+
+An operator applied to itself produces one of three rates --- the additive, Adams, and multiplicative powers of the semiring. From the golden seed (degree $2$, $\Mahler=\varphi$):
+
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}lccl@{}}
+\toprule
+power & degree$(k)$ & $\Mahler(k)$ & character of the rate \\
+\midrule
+$\dsum^{k}$ \ (additive) & $2k$ & $\varphi^{k}$ & linear; $\log\Mahler/\deg=\tfrac12\log\varphi$ constant \\
+$(\psitwo)^{\circ k}$ \ (Adams) & $2$ & $\varphi^{2^{k}}$ & doubling tower at fixed degree \\
+$\dten^{k}$ \ (multiplicative) & $2^{k}$ & $\varphi^{S_k}$ & super--exponential \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{proposition}[Rates]\label{prop:rates}
+With $S_k=k\binom{k-1}{\lfloor(k-1)/2\rfloor}$ $(=1,2,6,12,30,60,140,\dots)$, the $k$--fold direct sum, Adams iterate, and tensor power of the golden seed have the measures tabulated above; $S_k\sim 2^k\sqrt{k/2\pi}$, and $S_k$ is the mean--absolute--deviation sum of the symmetric binomial. \stag{forced/computed} \bk{OA-IT-01..04; GR-table}
+\end{proposition}
+
+\noindent The additive power holds a \emph{constant} entropy density $\tfrac12\log\varphi$ per dimension --- the floor expressed as a rate --- while the Adams and multiplicative powers raise it. The three are the same semiring's three notions of exponentiation: repeated addition, repeated Frobenius, repeated multiplication.
+
+\section{Fixed points and the spectrum--preserving operators}\label{sec:fixed}
+
+\begin{proposition}[Adams--fixed measures are cyclotomic]\label{prop:fixed}
+$\Mahler(\psitwo A)=\Mahler(A)$ holds iff $\Mahler(A)=1$, i.e.\ iff every eigenvalue of $A$ is a root of unity or $0$. The only measure fixed by squaring is the trivial one. \stag{forced} \bk{OA-FX-01}
+\end{proposition}
+
+\begin{proof}
+$\Mahler(A)^2=\Mahler(A)$ forces $\Mahler(A)\in\{0,1\}$; as $\Mahler\ge1$, $\Mahler(A)=1$, the Kronecker locus.
+\end{proof}
+
+The operators $\mathrm{minpoly}$ and $\Phi$ (re--companion of the radical) act as the identity on the spectrum: they re--present an object without changing its eigenvalue multiset, hence fix both characters. They are the idempotents of the structure \bk{OA-FX-02}, and play no role in either the floor or the grading.
+
+\section{The unified picture}\label{sec:unified}
+
+\begin{theorem}[One $\lambda$--ring, two characters]\label{thm:unified}
+The spectral operators of the emission algebra form a commutative $\lambda$--ring: $(\dsum,\dten)$ the semiring (Thm.~\ref{thm:semiring}), $\psitwo$ the Adams operation (Thm.~\ref{thm:adams}, Prop.~\ref{prop:plethysm}). The Mahler measure and the angle charge are its two characters: Character~I (Thm.~\ref{thm:measure}--\ref{thm:floor}) is additive on $\dsum$ and tropical on $\dten$, with image the spectrum monoid whose least generator is the floor $\varphi$; Character~II (Thm.~\ref{thm:charge}) is finite, onto $\Z/4\Z$, the sumset on $\dten$ and doubling on $\psitwo$. The companion results are the two characters read off: the cost floor is Character~I's least generator, the Salem--free emission is Character~II's conserved sector, and $\sqrt5=\varphi+\varphi^{-1}$ is where the two meet --- the $\dten$--logarithm of the floor and the grow generator of the self--action. \stag{forced}
+\end{theorem}
+
+\noindent What looked like three unrelated operators and two unrelated invariants is one algebraic object. The floor and the superselection charge are not independent theorems; they are the two ways a single $\lambda$--ring projects to a value monoid and to a finite group. The tropical face of the measure on $\dten$ is the reason the floor survives composition: a $(\max,+)$ convolution of log--spectra bounded below by $\log\varphi$ stays bounded below by $\log\varphi$, no matter how deep the word.
+
+\section{Epistemic ledger}\label{sec:ledger}
+Statuses follow the companion discipline: \stag{forced}/\stag{computed} are proved here and re--derived in exact arithmetic; \stag{declared} marks a framing. Backing identifiers index the machine checks ($38$ in the operator suite, plus the cited generator and rate suites; all green).
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}p{0.62\linewidth}ll@{}}
+\toprule
+Claim & Status & Backing \\
+\midrule
+$(\dsum,\dten)$ a commutative semiring; $\dten$ distributes over $\dsum$ & \stag{forced} & OA-SR-01..08 \\
+$\psitwo$ a semiring endomorphism; $\psi^m\!\circ\psi^n=\psi^{mn}$; Newton $p_2=e_1^2-2e_2$ & \stag{forced} & OA-PSI-01..05 \\
+Plethysm $A\dten A=\Sym^2 A\dsum\Lambda^2 A$; $\psitwo$ the diagonal of $\Sym^2$ & \stag{forced} & OA-PLE-01..06 \\
+$\Mahler$ additive on $\dsum$, $\Mahler(\psitwo A)=\Mahler(A)^2$ & \stag{forced} & OA-M-01..02 \\
+$\Mahler(A\dten B)$ tropical: $\log\Mahler=\sum(\log|\lambda|+\log|\mu|)^+$ & \stag{forced} & OA-M-03..07 \\
+$\dsum$--image $=\langle\varphi,2,3,5,\beta^2\rangle$, $\beta^2=\varphi^2\sqrt5$; least generator $\varphi$ & \stag{forced/computed} & OA-M-08; GA-01..13 \\
+Charge a finite character: sumset on $\dten$, doubling on $\psitwo$, union on $\dsum$ & \stag{forced/computed} & OA-CH-01..05 \\
+Self--action rates: $\varphi^k$, $\varphi^{2^k}$, $\varphi^{S_k}$, $S_k=k\binom{k-1}{\lfloor(k-1)/2\rfloor}$ & \stag{forced/computed} & OA-IT-01..04 \\
+Adams--fixed measures $=$ cyclotomic locus $\Mahler=1$ & \stag{forced} & OA-FX-01 \\
+$\mathrm{minpoly},\Phi$ idempotent, spectrum-- and character--preserving & \stag{forced} & OA-FX-02 \\
+One $\lambda$--ring, two characters (synthesis) & \stag{forced} & Thm.~\ref{thm:unified} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Closing statement.} The emission operators are a $\lambda$--ring, and the construction's two load--bearing invariants are its two characters. Reading the operators in relation rather than one at a time turns a list of separate facts --- $\dsum$ multiplies measures, $\dten$ adds charge, $(\cdot)^2$ doubles it, the floor is $\varphi$, no Salem is emitted --- into a single statement with one structure behind it. The square is the Adams operation; the measure is additive then tropical; the charge is the finite character; and the floor is the least generator of the one and the fixed point of the other.
+
+\begin{thebibliography}{9}
+\small
+\bibitem{groth} A.\ Grothendieck et al., \emph{Th\'eorie des intersections et th\'eor\`eme de Riemann--Roch (SGA 6)}, Lecture Notes in Math.\ \textbf{225}, Springer (1971) --- $\lambda$--rings.
+\bibitem{adams} J.\ F.\ Adams, \emph{Vector fields on spheres}, Ann.\ of Math.\ \textbf{75} (1962) --- the Adams operations $\psi^k$.
+\bibitem{atiyah} M.\ F.\ Atiyah, \emph{$K$--Theory}, Benjamin (1967).
+\bibitem{knutson} D.\ Knutson, \emph{$\lambda$--Rings and the Representation Theory of the Symmetric Group}, Lecture Notes in Math.\ \textbf{308}, Springer (1973).
+\bibitem{macdonald} I.\ G.\ Macdonald, \emph{Symmetric Functions and Hall Polynomials}, 2nd ed., Oxford (1995) --- Newton's identities, plethysm.
+\bibitem{tropical} D.\ Maclagan, B.\ Sturmfels, \emph{Introduction to Tropical Geometry}, GSM \textbf{161}, AMS (2015) --- the $(\max,+)$ semiring.
+\bibitem{smyth} C.\ J.\ Smyth, \emph{On the product of the conjugates outside the unit circle of an algebraic integer}, Bull.\ LMS \textbf{3} (1971).
+\bibitem{lehmer} D.\ H.\ Lehmer, \emph{Factorization of certain cyclotomic functions}, Ann.\ of Math.\ \textbf{34} (1933).
+\bibitem{companions} Echo--Squirrel Research, \emph{Lehmer's Box}; \emph{The Emission--Gap Theorem}; \emph{The Occupant of the Salem Slot}; \emph{The Generative Content of a Conserved Emptiness} (companion papers).
+\end{thebibliography}
+
+\noindent\rule{\linewidth}{0.4pt}\\
+{\footnotesize All non--trivial claims were re--derived from definitions in exact arithmetic (\texttt{sympy}/\texttt{mpmath}; eigenvalue multisets to $45$ digits). Citations are for orientation; bibliographic details should be confirmed before relying on them. This is a companion to the Echo--Squirrel emission--algebra stack.}
+
+\end{document}

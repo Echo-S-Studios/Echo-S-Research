@@ -4,20 +4,23 @@
 % Provenance: harvested and de-duplicated from the inline
 % \begin{thebibliography} environments of the LaTeX sources under papers/.
 % No external .bib or .bbl files existed in the source material, so every
-% entry below is reconstructed from a \bibitem. 42 unique keys.
+% entry below is reconstructed from a \bibitem. 51 unique keys (42 from the
+% original intake + 9 added from operator-algebra-whitepaper.tex, whose LaTeX
+% source arrived after the first pass).
 %
 % Keys are preserved VERBATIM from the source \bibitem labels so that existing
-% \cite{} calls in the papers keep resolving. Every key is used by at least one
-% \cite in the corpus except {Kuramoto, Strogatz, corpus, repo}, which appear
-% in reference lists but were not matched to a \cite.
+% \cite{} calls in the papers keep resolving. NOTE that operator-algebra uses
+% lowercase citation keys, so `lehmer` and `smyth` are kept as separate entries
+% duplicating `Lehmer` and `Smyth` (same works, different \cite keys).
 %
 % INCOMPLETE / INTERNAL entries (see papers/COVERAGE.md):
 %   CMC, relcharge        share Zenodo DOI 10.5281/zenodo.21121863 (the
 %                         math-research-pipelines repository deposit, v1.0.0);
 %                         CMC has no named author in the source bibitem.
 %   EG, VectorSubstrate,  internal companion manuscripts -- unpublished,
-%   corpus                no external venue or DOI.
+%   corpus, companions    no external venue or DOI.
 %   repo                  repository / live-site URL, not a formal publication.
+%   lehmer, smyth         lowercase-key duplicates of Lehmer, Smyth (see note above).
 %   Rissanen, Yuzvinskii  the source bibitem bundled a second work; the second
 %                         reference is preserved in a note field.
 %   Bertin                source lists "et al." (author list incomplete).
@@ -388,4 +391,91 @@
   title        = {math-research-pipelines (repository and live site)},
   howpublished = {\url{https://echo-s-studios.github.io/math-research-pipelines/}},
   year         = {2026},
+}
+
+% ---------------------------------------------------------------------------
+% Added from operator-algebra-whitepaper.tex (LaTeX source received later).
+% This paper uses lowercase citation keys; `lehmer` and `smyth` intentionally
+% duplicate the existing `Lehmer` and `Smyth` entries.
+% ---------------------------------------------------------------------------
+
+@article{adams,
+  author  = {Adams, J. F.},
+  title   = {Vector fields on spheres},
+  journal = {Annals of Mathematics},
+  volume  = {75},
+  year    = {1962},
+  note    = {The Adams operations $\psi^k$},
+}
+
+@book{atiyah,
+  author    = {Atiyah, M. F.},
+  title     = {{K}-Theory},
+  publisher = {Benjamin},
+  year      = {1967},
+}
+
+@misc{companions,
+  author = {{Echo--Squirrel Research}},
+  title  = {Lehmer's Box; The Emission--Gap Theorem; The Occupant of the Salem Slot; The Generative Content of a Conserved Emptiness},
+  note   = {Companion papers},
+  year   = {2026},
+}
+
+@book{groth,
+  author    = {Grothendieck, Alexander and others},
+  title     = {Th{\'e}orie des intersections et th{\'e}or{\`e}me de {Riemann--Roch} (SGA 6)},
+  series    = {Lecture Notes in Mathematics},
+  volume    = {225},
+  publisher = {Springer},
+  year      = {1971},
+  note      = {$\lambda$-rings},
+}
+
+@book{knutson,
+  author    = {Knutson, Donald},
+  title     = {$\lambda$-Rings and the Representation Theory of the Symmetric Group},
+  series    = {Lecture Notes in Mathematics},
+  volume    = {308},
+  publisher = {Springer},
+  year      = {1973},
+}
+
+@article{lehmer,
+  author  = {Lehmer, Derrick Henry},
+  title   = {Factorization of certain cyclotomic functions},
+  journal = {Annals of Mathematics},
+  volume  = {34},
+  year    = {1933},
+  pages   = {461--479},
+  note    = {Lowercase-key duplicate of \texttt{Lehmer}, used by the operator-algebra paper},
+}
+
+@book{macdonald,
+  author    = {Macdonald, I. G.},
+  title     = {Symmetric Functions and Hall Polynomials},
+  edition   = {2},
+  publisher = {Oxford University Press},
+  year      = {1995},
+  note      = {Newton's identities, plethysm},
+}
+
+@article{smyth,
+  author  = {Smyth, Christopher J.},
+  title   = {On the product of the conjugates outside the unit circle of an algebraic integer},
+  journal = {Bulletin of the London Mathematical Society},
+  volume  = {3},
+  year    = {1971},
+  pages   = {169--175},
+  note    = {Lowercase-key duplicate of \texttt{Smyth}, used by the operator-algebra paper},
+}
+
+@book{tropical,
+  author    = {Maclagan, Diane and Sturmfels, Bernd},
+  title     = {Introduction to Tropical Geometry},
+  series    = {Graduate Studies in Mathematics},
+  volume    = {161},
+  publisher = {American Mathematical Society},
+  year      = {2015},
+  note      = {The $(\max,+)$ semiring},
 }

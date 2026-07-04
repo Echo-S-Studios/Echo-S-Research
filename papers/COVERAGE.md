@@ -3,6 +3,10 @@
 Generated 2026-07-03 while populating `papers/` from local research work on this
 machine. **Originals were only ever copied, never moved or deleted.**
 
+_Updated 2026-07-03: the five originally source-less PDFs received their LaTeX
+sources (uploaded to `Downloads\Zenodo\`); all 14 papers are now matched
+`.tex` + `.pdf` pairs, and `references.bib` grew from 42 to 51 entries._
+
 ## Search scope
 
 Recursively searched `C:\Users\acead\projects`, `C:\Users\acead\Downloads`, and
@@ -14,19 +18,19 @@ exist anywhere in the source material.
 
 | Metric | Count |
 |--------|-------|
-| `.tex` files found | 11 (9 distinct papers; 2 are older duplicate copies) |
+| `.tex` files found | 18 (14 distinct papers + 4 duplicate/older-version copies) |
 | `.pdf` files found | 23 |
 | Distinct papers archived | 14 |
-| — with matched `.tex` + `.pdf` | 9 |
-| — PDF only (no LaTeX source) | 5 |
+| — with matched `.tex` + `.pdf` | 14 |
+| — PDF only (no LaTeX source) | 0 |
 | `.tex` with no compiled PDF | 0 |
 | PDFs excluded (non-paper / out of scope) | 4 |
 | Superseded/duplicate PDFs not copied | 5 |
-| Consolidated references in `references.bib` | 42 |
+| Consolidated references in `references.bib` | 51 |
 
 ---
 
-## Matched `.tex` + `.pdf` pairs (9)
+## Matched `.tex` + `.pdf` pairs (14)
 
 Each was placed in its `papers/<folder>/` with both source and compiled PDF.
 
@@ -41,6 +45,13 @@ Each was placed in its `papers/<folder>/` with both source and compiled PDF.
 | `2026-06-vector-substrate` | `Downloads\Foundational Pipes\residual-return-verification-v2\residual-return-verification\L00M\paper\vector_substrate.tex` | (same folder) `vector_substrate.pdf` |
 | `2026-07-pisot-residue` | `Downloads\Zenodo\pisot_residue_whitepaper.tex` | `Downloads\Zenodo\pisot_residue_whitepaper.v13.pdf` |
 | `2026-07-relational-charge` | `Downloads\Zenodo\relational_charge_paper.tex` | `Downloads\Zenodo\relational_charge_paper.l.pdf` |
+| `2026-06-generative-emptiness` | `Downloads\Zenodo\generative_emptiness.tex` † | `Downloads\Foundational Pipes\papers\generative_emptiness.pdf` |
+| `2026-06-operator-algebra` | `Downloads\Zenodo\operator-algebra-whitepaper.tex` † | `Downloads\Foundational Pipes\papers\operator-algebra-whitepaper.pdf` |
+| `2026-06-salem-slot` | `Downloads\Zenodo\salem_slot.tex` † | `Downloads\Foundational Pipes\papers\salem_slot.pdf` |
+| `2026-07-emission-algebra-primer` | `Downloads\Zenodo\emission_algebra_primer.tex` † | `Downloads\Foundational Pipes\papers\emission_algebra_primer.pdf` |
+| `2026-07-helix-orthogonal-partner` | `Downloads\Zenodo\helix_orthogonal_partner.tex` † | `Downloads\Foundational Pipes\papers\helix_orthogonal_partner.pdf` |
+
+† LaTeX source uploaded 2026-07-03, after the initial intake; the PDF was already archived as source-less. Titles in the `.tex` exactly match the archived PDFs.
 
 Titles (from `\title{}`):
 - *The Charge–Measure Coupling on a Spectral Semiring*
@@ -52,28 +63,24 @@ Titles (from `\title{}`):
 - *The Vector Substrate: Number Fields as Exact Learning Geometry*
 - *The Pisot Cross-Shell Residue*
 - *Relational Charge on the Spectral Semiring*
+- *The Generative Content of a Conserved Emptiness*
+- *The Operator Algebra of the Emission Semiring*
+- *The Occupant of the Salem Slot*
+- *The Emission Algebra 𝔄*
+- *The Dissolved Helix and Its Orthogonal Partner*
 
 ---
 
-## Missing LaTeX — PDFs archived with NO source (5)
+## Missing LaTeX — PDFs archived with NO source (0)
 
-These are genuine papers but only a compiled PDF was found. Listed with the full
-original path and where it was placed.
-
-| Original path | Placed in | Title (from PDF) | Pages |
-|---------------|-----------|------------------|-------|
-| `Downloads\Foundational Pipes\papers\emission_algebra_primer.pdf` | `papers/2026-07-emission-algebra-primer/` | *The Emission Algebra 𝔄 — A self-contained primer* | 21 |
-| `Downloads\Foundational Pipes\papers\generative_emptiness.pdf` | `papers/2026-06-generative-emptiness/` | *The Generative Content of a Conserved Emptiness* | 7 |
-| `Downloads\Foundational Pipes\papers\helix_orthogonal_partner.pdf` | `papers/2026-07-helix-orthogonal-partner/` | *The Dissolved Helix and Its Orthogonal Partner* | 8 |
-| `Downloads\Foundational Pipes\papers\operator-algebra-whitepaper.pdf` | `papers/2026-06-operator-algebra/` | *The Operator Algebra of the Emission Semiring* | 6 |
-| `Downloads\Foundational Pipes\papers\salem_slot.pdf` | `papers/2026-06-salem-slot/` | *The Occupant of the Salem Slot* | 11 |
-
-> If LaTeX sources for any of these exist elsewhere (e.g. inside the tarballs
-> noted below, or on another machine), drop them into the matching folder later.
+**None — resolved.** All five originally source-less PDFs (emission-algebra-primer,
+generative-emptiness, helix-orthogonal-partner, operator-algebra, salem-slot)
+received their LaTeX sources on 2026-07-03. The sources were copied into the
+matching folders and the papers moved to the matched-pairs table above.
 
 ## `.tex` with no compiled PDF
 
-**None.** All 9 LaTeX sources had a corresponding compiled PDF.
+**None.** All 14 LaTeX sources have a corresponding compiled PDF.
 
 ---
 
@@ -108,6 +115,13 @@ original path and where it was placed.
 7. **Folder dates.** `YYYY-MM` uses the paper's `\date{}` where present, else the
    file's modification month. Several `.tex` had an empty `\date{}`; those used
    the file date (all June 2026).
+8. **Late-arriving sources (2026-07-03).** The five LaTeX sources uploaded to
+   `Downloads\Zenodo\` were matched to already-archived PDFs by identical filename
+   stem and exact title match. The same upload also included an older
+   `charge-measure-coupling-whitepaper-v2.tex` and a re-uploaded
+   `Z5-no-salem-dichotomy-whitepaper.tex`; **both were ignored** because those
+   papers already have their canonical sources archived (v4 and the Foundational
+   Pipes copy, respectively).
 
 ---
 
@@ -144,11 +158,16 @@ alone: `emission-algebra-compendium.html`, `lehmers_box_instrument.html`,
 
 ## `references.bib`
 
-42 unique entries, harvested and de-duplicated from the inline
-`\begin{thebibliography}` environments of the 11 `.tex` sources (no `.bib`/`.bbl`
-existed). Keys are preserved verbatim so existing `\cite{}` calls resolve. Entries
-flagged as incomplete or internal (shared/again missing DOIs, unpublished
-companion manuscripts): `CMC`, `relcharge`, `EG`, `VectorSubstrate`, `corpus`,
-`repo`, plus `Rissanen` and `Yuzvinskii` (source bundled a second work into one
-bibitem, preserved in a `note`) and `Bertin` (source author list was "et al.").
-Validated: parses with 42/42 unique keys.
+51 unique entries, harvested and de-duplicated from the inline
+`\begin{thebibliography}` environments of the `.tex` sources (no `.bib`/`.bbl`
+existed). 42 came from the initial intake; 9 more were added from
+`operator-algebra-whitepaper.tex` when its source arrived on 2026-07-03. Keys are
+preserved verbatim so existing `\cite{}` calls resolve — note that operator-algebra
+uses lowercase keys, so `lehmer` and `smyth` are kept as separate entries
+duplicating `Lehmer` and `Smyth` (same works, different `\cite` keys).
+
+Entries flagged as incomplete or internal: `CMC`, `relcharge`, `EG`,
+`VectorSubstrate`, `corpus`, `companions`, `repo` (shared/missing DOIs or
+unpublished companion material), plus `Rissanen` and `Yuzvinskii` (source bundled
+a second work into one bibitem, preserved in a `note`) and `Bertin` (source author
+list was "et al."). Validated: parses with 51/51 unique keys.
