@@ -1,0 +1,20 @@
+# Contribution contract for papers/2026-06-generative-emptiness/  (see docs/ANTI_DRIFT.md)
+shortname: 2026-06-generative-emptiness
+member: AceTheDactyl
+title: The Generative Content of a Conserved Emptiness
+domain: math
+artifacts:
+- papers/2026-06-generative-emptiness/generative_emptiness.pdf
+- papers/2026-06-generative-emptiness/generative_emptiness.tex
+- papers/2026-06-generative-emptiness/paper.cff
+- code/2026-06-generative-emptiness
+- data/2026-06-generative-emptiness
+- tests/2026-06-generative-emptiness
+- figures/2026-06-generative-emptiness
+checks:
+- name: producers
+  run: '{PY} scripts/run_producers.py 2026-06-generative-emptiness'
+  produces:
+  - data/2026-06-generative-emptiness
+- name: tests
+  verify: '{PY} -m pytest tests/2026-06-generative-emptiness -q -p no:cacheprovider'

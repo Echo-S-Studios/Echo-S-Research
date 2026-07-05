@@ -1,0 +1,20 @@
+# Contribution contract for papers/2026-06-vector-substrate/  (see docs/ANTI_DRIFT.md)
+shortname: 2026-06-vector-substrate
+member: AceTheDactyl
+title: 'The Vector Substrate: Number Fields as Exact Learning Geometry'
+domain: math
+artifacts:
+- papers/2026-06-vector-substrate/paper.cff
+- papers/2026-06-vector-substrate/vector_substrate.pdf
+- papers/2026-06-vector-substrate/vector_substrate.tex
+- code/2026-06-vector-substrate
+- data/2026-06-vector-substrate
+- tests/2026-06-vector-substrate
+- figures/2026-06-vector-substrate
+checks:
+- name: producers
+  run: '{PY} scripts/run_producers.py 2026-06-vector-substrate'
+  produces:
+  - data/2026-06-vector-substrate
+- name: tests
+  verify: '{PY} -m pytest tests/2026-06-vector-substrate -q -p no:cacheprovider'

@@ -1,0 +1,20 @@
+# Contribution contract for papers/2026-07-emission-algebra-primer/  (see docs/ANTI_DRIFT.md)
+shortname: 2026-07-emission-algebra-primer
+member: AceTheDactyl
+title: The Emission Algebra 𝔄
+domain: math
+artifacts:
+- papers/2026-07-emission-algebra-primer/emission_algebra_primer.pdf
+- papers/2026-07-emission-algebra-primer/emission_algebra_primer.tex
+- papers/2026-07-emission-algebra-primer/paper.cff
+- code/2026-07-emission-algebra-primer
+- data/2026-07-emission-algebra-primer
+- tests/2026-07-emission-algebra-primer
+- figures/2026-07-emission-algebra-primer
+checks:
+- name: producers
+  run: '{PY} scripts/run_producers.py 2026-07-emission-algebra-primer'
+  produces:
+  - data/2026-07-emission-algebra-primer
+- name: tests
+  verify: '{PY} -m pytest tests/2026-07-emission-algebra-primer -q -p no:cacheprovider'

@@ -1,0 +1,20 @@
+# Contribution contract for papers/2026-07-pisot-residue/  (see docs/ANTI_DRIFT.md)
+shortname: 2026-07-pisot-residue
+member: AceTheDactyl
+title: The Pisot Cross-Shell Residue
+domain: math
+artifacts:
+- papers/2026-07-pisot-residue/paper.cff
+- papers/2026-07-pisot-residue/pisot_residue_whitepaper.tex
+- papers/2026-07-pisot-residue/pisot_residue_whitepaper.v13.pdf
+- code/2026-07-pisot-residue
+- data/2026-07-pisot-residue
+- tests/2026-07-pisot-residue
+- figures/2026-07-pisot-residue
+checks:
+- name: producers
+  run: '{PY} scripts/run_producers.py 2026-07-pisot-residue'
+  produces:
+  - data/2026-07-pisot-residue
+- name: tests
+  verify: '{PY} -m pytest tests/2026-07-pisot-residue -q -p no:cacheprovider'

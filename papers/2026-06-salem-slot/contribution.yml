@@ -1,0 +1,20 @@
+# Contribution contract for papers/2026-06-salem-slot/  (see docs/ANTI_DRIFT.md)
+shortname: 2026-06-salem-slot
+member: AceTheDactyl
+title: The Occupant of the Salem Slot
+domain: math
+artifacts:
+- papers/2026-06-salem-slot/paper.cff
+- papers/2026-06-salem-slot/salem_slot.pdf
+- papers/2026-06-salem-slot/salem_slot.tex
+- code/2026-06-salem-slot
+- data/2026-06-salem-slot
+- tests/2026-06-salem-slot
+- figures/2026-06-salem-slot
+checks:
+- name: producers
+  run: '{PY} scripts/run_producers.py 2026-06-salem-slot'
+  produces:
+  - data/2026-06-salem-slot
+- name: tests
+  verify: '{PY} -m pytest tests/2026-06-salem-slot -q -p no:cacheprovider'

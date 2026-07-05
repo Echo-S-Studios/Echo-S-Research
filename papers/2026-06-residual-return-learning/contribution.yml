@@ -1,0 +1,20 @@
+# Contribution contract for papers/2026-06-residual-return-learning/  (see docs/ANTI_DRIFT.md)
+shortname: 2026-06-residual-return-learning
+member: AceTheDactyl
+title: 'Residual Return: Exact Learning Dynamics and Language over the Vector Substrate'
+domain: math
+artifacts:
+- papers/2026-06-residual-return-learning/paper.cff
+- papers/2026-06-residual-return-learning/residual_return_learning.pdf
+- papers/2026-06-residual-return-learning/residual_return_learning.tex
+- code/2026-06-residual-return-learning
+- data/2026-06-residual-return-learning
+- tests/2026-06-residual-return-learning
+- figures/2026-06-residual-return-learning
+checks:
+- name: producers
+  run: '{PY} scripts/run_producers.py 2026-06-residual-return-learning'
+  produces:
+  - data/2026-06-residual-return-learning
+- name: tests
+  verify: '{PY} -m pytest tests/2026-06-residual-return-learning -q -p no:cacheprovider'

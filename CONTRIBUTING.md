@@ -1,75 +1,72 @@
 # Contributing to Echo S Research
 
-This archive follows one consistent pattern for every contribution, exemplified by
-**AceTheDactyl's existing papers**. Copy that pattern and the CI stays green.
+Every contribution — **any field**: math, engineering, physics theory, music
+theory, bio, metacybernetics, or pure prose — follows one small, domain-neutral
+contract: a **`contribution.yml` manifest** at the root of your
+`papers/<folder>/`. Satisfy the manifest and both CI checks stay green. You do
+**not** need to do math, use LaTeX, or write code.
 
-**Reference example to copy:** [`papers/2026-06-salem-slot/`](papers/2026-06-salem-slot)
-together with its parallel folders
-[`tests/2026-06-salem-slot/`](tests/2026-06-salem-slot),
-[`code/2026-06-salem-slot/`](code/2026-06-salem-slot),
-[`data/2026-06-salem-slot/`](data/2026-06-salem-slot),
-[`figures/2026-06-salem-slot/`](figures/2026-06-salem-slot).
+**Start here:** [`docs/ANTI_DRIFT.md`](docs/ANTI_DRIFT.md) — a plain checklist with
+worked examples for several domains. This file is the short version.
+
+**Reference examples:**
+- Computational (math): [`papers/2026-06-salem-slot/`](papers/2026-06-salem-slot)
+  and its `code/ data/ tests/ figures/` folders + its
+  [`contribution.yml`](papers/2026-06-salem-slot/contribution.yml).
+- Pure prose: use `checks: none` with a `reason` (see ANTI_DRIFT.md, example 3).
 
 ## 0. Be in the registry
 
-Every contributor is listed in [`.github/members.yml`](.github/members.yml)
-(`github_handle -> display_name`) — the single source of truth. If you're a new
-teammate, add **one line** there first (or uncomment a reserved slot). Nothing
-else needs to change; the workflows and generator are registry-driven.
+Your GitHub handle must be in [`.github/members.yml`](.github/members.yml) — the
+single source of truth. New teammate? Add **one line** (or uncomment a reserved
+slot). Nothing else needs changing; everything is registry-driven.
 
 ## 1. Scaffold your contribution
 
 ```bash
-py scripts/new_contribution.py --member <your-github-handle> --shortname spectral-gap --date 2026-08
+py scripts/new_contribution.py --member <your-handle> --shortname my-idea \
+    --date 2026-08 --domain <your-field> [--trees code,data,tests,figures]
 ```
 
-This validates your handle against the registry and creates the **five parallel
-folders**, all named `YYYY-MM-shortname`, with attribution pre-filled from the
-registry:
+This validates your handle, then creates `papers/<folder>/` with a paper stub,
+`paper.cff` (attribution pre-filled), and a **`contribution.yml`** manifest.
+`--domain` is free text. Add `--trees` only for the output folders you actually
+want (a prose-only piece needs none). The generator refuses unregistered handles
+and existing folders.
 
-| Tree | Stub files created |
-|------|--------------------|
-| `papers/<folder>/` | `paper.cff` (your `name`/`alias` filled in), `<shortname>.tex` |
-| `tests/<folder>/` | `test_example.py`, `NOTES.md` |
-| `code/<folder>/` | `producer.py`, `README.md` |
-| `data/<folder>/` | `README.md` |
-| `figures/<folder>/` | `README.md` |
+## 2. Fill it in
 
-The generator **refuses** to run for a handle that isn't in the registry, or if
-the folders already exist.
+- **Your paper** goes in `papers/<folder>/` — the `.tex` stub, or your own
+  `.md`/`.pdf`. List every file you keep under `artifacts` in the manifest.
+- **`contribution.yml`** is the contract. Set `title`/`domain`, and choose:
+  - **`checks: none`** + a `reason` — for pure theory/prose (passes cleanly), or
+  - a **`checks:`** list — one entry per thing that should keep reproducing:
+    `run` regenerates an output, `produces` diffs it against the committed copy,
+    `verify` runs a command that must exit 0 (a test, linter, schema, notebook…).
+    `{PY}` = the Python interpreter (portable). See ANTI_DRIFT.md for the shapes.
+- **Keep reproducible outputs deterministic** — seed RNG, round floats, sort
+  before writing (ANTI_DRIFT.md §c). That's the whole trick to a green `drift`.
+- **Citations** go in the one shared
+  [`papers/references.bib`](papers/references.bib); attribution rules are in
+  [`docs/ATTRIBUTION.md`](docs/ATTRIBUTION.md) (org credit stays org-only;
+  per-paper credit lives in your `paper.cff` / manifest `member`).
 
-## 2. Fill it in (matching the reference example)
+## 3. Pre-flight, then open a PR
 
-- **`papers/<folder>/<shortname>.tex`** — write your paper; keep the `\author{}`
-  line as the generator set it. Compile the PDF with **XeLaTeX or LuaLaTeX**
-  (the archive uses Unicode math) and commit `<shortname>.pdf` alongside.
-- **`papers/<folder>/paper.cff`** — set the real `title`; the author block is
-  already filled. Its `alias` must stay a handle in `.github/members.yml`.
-- **`code/<folder>/`** — turn `producer.py` into real **producer** scripts that
-  recompute your results and **emit** CSV/JSON to `data/<folder>/` (stamp each
-  output with provenance — see the reference `code/2026-06-salem-slot/`). Keep
-  producers **deterministic** (seed any RNG) so the drift CI stays green. If your
-  paper has figures, add `make_figures.py`.
-- **`tests/<folder>/`** — write **independent verifiers** that re-derive each
-  claim and assert it. Do **not** import from `code/` — the two stay independent.
-- **`data/<folder>/`** — generated by running your producers; don't hand-edit.
-- **`figures/<folder>/`** — the reconstructed figures + a README mapping each to
-  its paper Figure (or a note that the paper has none).
-- **Citations** — add any new references to the one shared
-  [`papers/references.bib`](papers/references.bib); do not start a per-paper `.bib`.
+Run the **exact same checks CI runs**, locally, before pushing:
 
-Attribution rules are in [`docs/ATTRIBUTION.md`](docs/ATTRIBUTION.md); the umbrella
-org (`.zenodo.json`) stays org-only, per-paper credit lives in your `paper.cff`.
+```bash
+py scripts/check.py <your-folder>     # your contribution (fast)
+py scripts/check.py                   # everything
+```
 
-## 3. Open a PR — CI checks it
+Green here → green in CI. Then commit and open a PR. Two GitHub Actions run
+(details in [`docs/MAINTAINING.md`](docs/MAINTAINING.md)):
 
-Two GitHub Actions run automatically (see [`docs/MAINTAINING.md`](docs/MAINTAINING.md)):
+- **structure** — manifest present & valid; your handle is registered; declared
+  artifacts exist; you have exactly the `code/ data/ tests/ figures/` folders your
+  manifest declares; naming is `YYYY-MM-shortname`; repo metadata is valid.
+- **drift** — runs each contribution's declared `checks` and diffs `produces`
+  against committed; `checks: none` contributions are skipped, not failed.
 
-- **structure** — every paper has its required files, every `paper.cff` `alias`
-  is in the registry, the four parallel trees each have a matching folder for
-  every paper, names are `YYYY-MM-shortname`, and `references.bib` / `.zenodo.json`
-  / `CITATION.cff` are valid.
-- **drift** — re-runs every producer under `code/` and fails if the regenerated
-  `data/` differs from what's committed, then runs the full `pytest` suite.
-
-Green badges at the top of the [README](README.md) mean the repo is consistent.
+Two green badges at the top of the [README](README.md) mean the repo is consistent.

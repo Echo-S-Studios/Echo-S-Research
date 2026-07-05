@@ -39,18 +39,19 @@ files are consistent, not conflicting.
 
 When you add a paper, follow these four steps.
 
-**a. Scaffold the folders** — run the generator. It validates your handle against
-[`.github/members.yml`](../.github/members.yml) and creates all five parallel
-folders (`papers/`, `tests/`, `code/`, `data/`, `figures/`) named
-`YYYY-MM-shortname`, each with the required stub files and your attribution
-pre-filled from the registry:
+**a. Scaffold the folder** — run the generator. It validates your handle against
+[`.github/members.yml`](../.github/members.yml) and creates `papers/YYYY-MM-shortname/`
+with a paper stub, `paper.cff` (attribution pre-filled), and a `contribution.yml`
+manifest. Add `--trees code,data,tests,figures` for any compute folders you want:
 
 ```bash
-py scripts/new_contribution.py --member <your-github-handle> --shortname my-new-result --date 2026-08
+py scripts/new_contribution.py --member <your-github-handle> --shortname my-new-result --date 2026-08 --domain <your-field>
 ```
 
-See [`CONTRIBUTING.md`](../CONTRIBUTING.md) for the full end-to-end workflow, and
-copy an existing paper (e.g. [`papers/2026-06-salem-slot/`](../papers/2026-06-salem-slot))
+Attribution is carried by the manifest's `member` field (validated against the
+registry) and, if present, your `paper.cff` `alias`. See
+[`CONTRIBUTING.md`](../CONTRIBUTING.md) and [`ANTI_DRIFT.md`](ANTI_DRIFT.md) for the
+end-to-end workflow, and copy [`papers/2026-06-salem-slot/`](../papers/2026-06-salem-slot)
 as the reference example.
 
 **b. Set the LaTeX author** — in your `.tex`, set `\author{}` to your author string

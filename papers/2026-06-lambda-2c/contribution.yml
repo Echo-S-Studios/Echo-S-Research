@@ -1,0 +1,20 @@
+# Contribution contract for papers/2026-06-lambda-2c/  (see docs/ANTI_DRIFT.md)
+shortname: 2026-06-lambda-2c
+member: AceTheDactyl
+title: 'The Exchange Rate λ = 2c: A Conformal Identity, Its Gate, and Its Flip'
+domain: math
+artifacts:
+- papers/2026-06-lambda-2c/lambda_2c_paper.pdf
+- papers/2026-06-lambda-2c/lambda_2c_paper.tex
+- papers/2026-06-lambda-2c/paper.cff
+- code/2026-06-lambda-2c
+- data/2026-06-lambda-2c
+- tests/2026-06-lambda-2c
+- figures/2026-06-lambda-2c
+checks:
+- name: producers
+  run: '{PY} scripts/run_producers.py 2026-06-lambda-2c'
+  produces:
+  - data/2026-06-lambda-2c
+- name: tests
+  verify: '{PY} -m pytest tests/2026-06-lambda-2c -q -p no:cacheprovider'

@@ -1,0 +1,20 @@
+# Contribution contract for papers/2026-06-charge-measure-coupling/  (see docs/ANTI_DRIFT.md)
+shortname: 2026-06-charge-measure-coupling
+member: AceTheDactyl
+title: The Charge–Measure Coupling on a Spectral Semiring
+domain: math
+artifacts:
+- papers/2026-06-charge-measure-coupling/charge-measure-coupling-whitepaper-v4.pdf
+- papers/2026-06-charge-measure-coupling/charge-measure-coupling-whitepaper-v4.tex
+- papers/2026-06-charge-measure-coupling/paper.cff
+- code/2026-06-charge-measure-coupling
+- data/2026-06-charge-measure-coupling
+- tests/2026-06-charge-measure-coupling
+- figures/2026-06-charge-measure-coupling
+checks:
+- name: producers
+  run: '{PY} scripts/run_producers.py 2026-06-charge-measure-coupling'
+  produces:
+  - data/2026-06-charge-measure-coupling
+- name: tests
+  verify: '{PY} -m pytest tests/2026-06-charge-measure-coupling -q -p no:cacheprovider'

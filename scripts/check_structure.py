@@ -1,151 +1,137 @@
 #!/usr/bin/env python3
-"""Validate repository invariants. Exits 1 with human-readable messages on any
-violation (it reports ALL problems, not just the first).
+"""Validate the universal contribution contract for EVERY contribution, regardless
+of domain. Manifest-driven and domain-agnostic (no assumption of math/LaTeX/pytest).
 
-Checks:
-  1. Every papers/<YYYY-MM-shortname>/ has its required files (paper.cff + a .tex).
-  2. Every paper.cff author `alias` is a github handle in .github/members.yml
-     (missing alias or unknown handle = fail); same for CITATION.cff members.
-  3. The four parallel trees tests/ code/ data/ figures/ each have a matching
-     <shortname> folder for every paper (gaps or orphans = fail).
-  4. Every contribution folder name follows YYYY-MM-shortname.
-  5. papers/references.bib parses (and is non-empty).
-  6. .zenodo.json is valid JSON; every paper.cff / CITATION.cff parses as YAML.
+For each papers/<shortname>/ it checks:
+  * contribution.yml present and schema-valid (see scripts/_manifest.py);
+  * `member` is a handle in .github/members.yml (attribution present);
+  * every declared artifact exists;
+  * the parallel trees tests/ code/ data/ figures/ exist EXACTLY where the manifest
+    declares artifacts of that kind (a prose-only contribution isn't forced to have
+    code/, and an undeclared tree folder is flagged as an orphan);
+  * folder naming YYYY-MM-shortname;
+  * if a paper.cff is present, its author aliases are registered.
+Plus repo-level: references.bib parses, .zenodo.json is valid JSON, CITATION.cff
+member aliases are registered.
 
-Deep CFF-schema validation (cffconvert) of CITATION.cff and each paper.cff is done
-by the workflow as a separate step. Run locally with: py scripts/check_structure.py
+`run()` returns (ok, lines) so scripts/check.py can reuse it. Run standalone:
+    py scripts/check_structure.py
 """
 
 import json
 import os
-import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from _manifest import (  # noqa: E402
+    FOLDER_RE, MANIFEST_NAME, OUTPUT_TREES, all_tree_shortnames,
+    contribution_shortnames, declared_trees, load_manifest, manifest_path,
+    validate_manifest,
+)
 from _registry import REPO_ROOT, load_members  # noqa: E402
 
 import yaml  # noqa: E402
 
-FOLDER_RE = re.compile(r"^\d{4}-\d{2}-[a-z0-9]+(-[a-z0-9]+)*$")
-TREES = ("papers", "tests", "code", "data", "figures")
-FAILS = []
-NOTES = []
 
+def run():
+    lines = []
+    fails = []
 
-def fail(msg):
-    FAILS.append(msg)
+    def fail(msg):
+        fails.append(msg)
 
-
-def note(msg):
-    NOTES.append(msg)
-
-
-def list_folders(tree):
-    """Contribution folders in a tree (dirs only; skip _-prefixed like _TEMPLATE)."""
-    d = os.path.join(REPO_ROOT, tree)
-    if not os.path.isdir(d):
-        return {}
-    return {
-        name: os.path.join(d, name)
-        for name in os.listdir(d)
-        if os.path.isdir(os.path.join(d, name))
-        and not name.startswith("_")
-        and not name.startswith(".")
-    }
-
-
-def main():
     members = load_members()
-    print(f"registry: {len(members)} members ({', '.join(sorted(members))})")
+    lines.append(f"registry: {len(members)} members ({', '.join(sorted(members))})")
 
-    papers = list_folders("papers")
-    print(f"papers: {len(papers)} contribution folders")
+    every_sn = sorted(all_tree_shortnames())
 
-    # 4. naming, across all trees
-    for tree in TREES:
-        for name in list_folders(tree):
-            if not FOLDER_RE.match(name):
-                fail(f"[naming] {tree}/{name} does not match YYYY-MM-shortname")
+    # Naming (every folder in any tree).
+    for sn in every_sn:
+        if not FOLDER_RE.match(sn):
+            fail(f"[naming] '{sn}' is not YYYY-MM-shortname")
 
-    # 1 + 2 + 6. required files, attribution, cff-parse
-    for name, path in sorted(papers.items()):
-        cff = os.path.join(path, "paper.cff")
-        files = os.listdir(path)
-        if not any(f.endswith(".tex") for f in files):
-            fail(f"[required] papers/{name}/ has no .tex source")
-        if not any(f.endswith(".pdf") for f in files):
-            note(f"papers/{name}/ has no compiled .pdf yet (recommended before release)")
-        if not os.path.exists(cff):
-            fail(f"[required] papers/{name}/ is missing paper.cff")
+    contributions = set(contribution_shortnames())
+    for sn in every_sn:
+        if not os.path.exists(manifest_path(sn)):
+            if sn in contributions:
+                fail(f"[manifest] papers/{sn}/ is missing {MANIFEST_NAME}")
+            else:
+                fail(f"[orphan] a tree folder '{sn}/' exists but there is no papers/{sn}/ (no contribution)")
             continue
         try:
-            doc = yaml.safe_load(open(cff, encoding="utf-8"))
+            m = load_manifest(sn)
         except Exception as e:
-            fail(f"[cff] papers/{name}/paper.cff does not parse as YAML: {e}")
+            fail(f"[manifest] papers/{sn}/{MANIFEST_NAME} does not parse: {e}")
             continue
-        authors = (doc or {}).get("authors") or []
-        if not authors:
-            fail(f"[attribution] papers/{name}/paper.cff has no authors")
-        for a in authors:
-            a = a or {}
-            alias = a.get("alias")
-            if not alias:
-                fail(f"[attribution] papers/{name}/paper.cff author {a.get('name', '?')!r} "
-                     f"has no `alias` (GitHub handle)")
-            elif alias not in members:
-                fail(f"[attribution] papers/{name}/paper.cff alias '{alias}' is not in "
-                     f".github/members.yml (register the handle or fix the alias)")
 
-    # CITATION.cff member aliases
-    cit_path = os.path.join(REPO_ROOT, "CITATION.cff")
-    try:
-        cit = yaml.safe_load(open(cit_path, encoding="utf-8")) or {}
-        for a in cit.get("authors") or []:
-            alias = (a or {}).get("alias")
-            if alias and alias not in members:
-                fail(f"[attribution] CITATION.cff alias '{alias}' is not in .github/members.yml")
-    except Exception as e:
-        fail(f"[cff] CITATION.cff does not parse as YAML: {e}")
+        errs = validate_manifest(sn, m, members)
 
-    # 3. parallel-tree parity
-    paper_set = set(papers)
-    for tree in ("tests", "code", "data", "figures"):
-        s = set(list_folders(tree))
-        for g in sorted(paper_set - s):
-            fail(f"[parity] {tree}/ is missing a folder for paper '{g}'")
-        for o in sorted(s - paper_set):
-            fail(f"[parity] {tree}/{o} has no matching papers/{o}/ (orphan)")
+        # Parallel-tree parity: declared-in-manifest  <=>  folder-exists.
+        decl = declared_trees(m)
+        for tree in OUTPUT_TREES:
+            exists = os.path.isdir(os.path.join(REPO_ROOT, tree, sn))
+            if tree in decl and not exists:
+                errs.append(f"{sn}: manifest declares {tree}/ artifacts but {tree}/{sn}/ does not exist")
+            if exists and tree not in decl:
+                errs.append(f"{sn}: {tree}/{sn}/ exists but the manifest declares no {tree}/ artifacts (orphan)")
 
-    # 5. references.bib parses
-    bib = os.path.join(REPO_ROOT, "papers", "references.bib")
+        # paper.cff (optional) — validate aliases if it's there.
+        cff = os.path.join(REPO_ROOT, "papers", sn, "paper.cff")
+        if os.path.exists(cff):
+            try:
+                doc = yaml.safe_load(open(cff, encoding="utf-8")) or {}
+                for a in doc.get("authors") or []:
+                    al = (a or {}).get("alias")
+                    if al and al not in members:
+                        errs.append(f"{sn}: paper.cff alias '{al}' is not in .github/members.yml")
+            except Exception as e:
+                errs.append(f"{sn}: paper.cff does not parse: {e}")
+
+        if errs:
+            for e in errs:
+                fail(f"[contract] {e}")
+        else:
+            tag = m.get("domain", "?")
+            extra = f", no-repro: {m.get('reason','')[:50]}" if m.get("checks") == "none" else ""
+            lines.append(f"  ok  {sn}  [{tag}{extra}]")
+
+    # Repo-level metadata.
     try:
         import bibtexparser
-        with open(bib, encoding="utf-8") as fh:
+        with open(os.path.join(REPO_ROOT, "papers", "references.bib"), encoding="utf-8") as fh:
             db = bibtexparser.load(fh)
         if not db.entries:
             fail("[bib] papers/references.bib parsed but has no entries")
         else:
-            print(f"references.bib: {len(db.entries)} entries")
+            lines.append(f"references.bib: {len(db.entries)} entries")
     except Exception as e:
         fail(f"[bib] papers/references.bib does not parse: {e}")
 
-    # 6. .zenodo.json valid JSON
-    zen = os.path.join(REPO_ROOT, ".zenodo.json")
     try:
-        json.load(open(zen, encoding="utf-8"))
+        json.load(open(os.path.join(REPO_ROOT, ".zenodo.json"), encoding="utf-8"))
     except Exception as e:
         fail(f"[zenodo] .zenodo.json is not valid JSON: {e}")
 
-    for n in NOTES:
-        print(f"  note: {n}")
+    try:
+        cit = yaml.safe_load(open(os.path.join(REPO_ROOT, "CITATION.cff"), encoding="utf-8")) or {}
+        for a in cit.get("authors") or []:
+            al = (a or {}).get("alias")
+            if al and al not in members:
+                fail(f"[attribution] CITATION.cff alias '{al}' is not in .github/members.yml")
+    except Exception as e:
+        fail(f"[cff] CITATION.cff does not parse: {e}")
 
-    if FAILS:
-        print(f"\nSTRUCTURE CHECK FAILED - {len(FAILS)} problem(s):", file=sys.stderr)
-        for f in FAILS:
-            print(f"  FAIL: {f}", file=sys.stderr)
-        sys.exit(1)
-    print(f"\nSTRUCTURE OK - {len(papers)} papers, all invariants hold.")
+    ok = not fails
+    if fails:
+        lines.append("")
+        lines.append(f"STRUCTURE FAILED - {len(fails)} problem(s):")
+        lines.extend(f"  FAIL {f}" for f in fails)
+    else:
+        lines.append(f"\nSTRUCTURE OK - {len(contributions)} contributions, all invariants hold.")
+    return ok, lines
 
 
 if __name__ == "__main__":
-    main()
+    ok, lines = run()
+    print("\n".join(lines))
+    sys.exit(0 if ok else 1)

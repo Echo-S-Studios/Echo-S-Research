@@ -7,7 +7,10 @@ Research papers and their computational products from **Echo S Studios Research 
 
 > A red **structure** or **drift** badge means the repo went inconsistent — see
 > [`docs/MAINTAINING.md`](docs/MAINTAINING.md) for what each workflow checks and how
-> to read a failure. New contributors: start with [`CONTRIBUTING.md`](CONTRIBUTING.md).
+> to read a failure. Contributors in **any field** (math, physics theory, music
+> theory, bio, metacybernetics, prose, …) keep the repo green by following one small
+> per-contribution manifest: start with [`docs/ANTI_DRIFT.md`](docs/ANTI_DRIFT.md)
+> and [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 This repository is the group's permanent archive for mathematics research. Each paper is stored alongside the data, figures, and code needed to reproduce its results, and every tagged release is mirrored to [Zenodo](https://zenodo.org/) with a citable DOI.
 

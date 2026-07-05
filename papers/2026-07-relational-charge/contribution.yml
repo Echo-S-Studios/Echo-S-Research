@@ -1,0 +1,20 @@
+# Contribution contract for papers/2026-07-relational-charge/  (see docs/ANTI_DRIFT.md)
+shortname: 2026-07-relational-charge
+member: AceTheDactyl
+title: Relational Charge on the Spectral Semiring
+domain: math
+artifacts:
+- papers/2026-07-relational-charge/paper.cff
+- papers/2026-07-relational-charge/relational_charge_paper.l.pdf
+- papers/2026-07-relational-charge/relational_charge_paper.tex
+- code/2026-07-relational-charge
+- data/2026-07-relational-charge
+- tests/2026-07-relational-charge
+- figures/2026-07-relational-charge
+checks:
+- name: producers
+  run: '{PY} scripts/run_producers.py 2026-07-relational-charge'
+  produces:
+  - data/2026-07-relational-charge
+- name: tests
+  verify: '{PY} -m pytest tests/2026-07-relational-charge -q -p no:cacheprovider'

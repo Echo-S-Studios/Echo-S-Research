@@ -1,0 +1,31 @@
+# Contribution contract for papers/__FOLDER__/  (see ../../docs/ANTI_DRIFT.md)
+# scripts/new_contribution.py generates this. Edit `checks` when you have
+# something reproducible; otherwise keep `checks: none` with an honest `reason`.
+shortname: __FOLDER__
+member: __HANDLE__
+title: "__TITLE__"
+domain: __DOMAIN__
+artifacts:
+  # Every file/dir this contribution owns (all must exist). The tests/code/data/
+  # figures folders are validated ONLY where you declare artifacts under them, so a
+  # prose-only contribution simply lists its document(s) and nothing else.
+  - papers/__FOLDER__/__SHORTNAME__.tex
+  - papers/__FOLDER__/paper.cff
+
+# `checks` is EITHER the literal `none` (pure theory/prose — no automated
+# reproduction) with a required `reason`, OR a list of named checks.
+checks: none
+reason: "No automated reproduction (pure prose/theory). Replace this whole block with a `checks:` list if you add anything reproducible — see the example below and docs/ANTI_DRIFT.md."
+
+# --- Example checks list (delete the `checks: none` + `reason` above to use it) ---
+# checks:
+#   - name: producers               # regenerate outputs, then diff them against the committed copy
+#     run: "{PY} code/__FOLDER__/producer.py"
+#     produces:
+#       - data/__FOLDER__           # a file or a whole directory
+#   - name: tests                   # any command that must exit 0 (test runner, linter, schema, notebook)
+#     verify: "{PY} -m pytest tests/__FOLDER__ -q"
+#
+# {PY} is substituted with the Python interpreter (portable across your machine and CI).
+# For non-Python tools, write the command directly (e.g. `node analyze.js`,
+# `Rscript check.R`) and self-install deps inside `run` if they aren't pre-installed.

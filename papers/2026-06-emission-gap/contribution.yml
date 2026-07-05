@@ -1,0 +1,20 @@
+# Contribution contract for papers/2026-06-emission-gap/  (see docs/ANTI_DRIFT.md)
+shortname: 2026-06-emission-gap
+member: AceTheDactyl
+title: The Emission–Gap Theorem
+domain: math
+artifacts:
+- papers/2026-06-emission-gap/emission_gap_paper.pdf
+- papers/2026-06-emission-gap/emission_gap_paper.tex
+- papers/2026-06-emission-gap/paper.cff
+- code/2026-06-emission-gap
+- data/2026-06-emission-gap
+- tests/2026-06-emission-gap
+- figures/2026-06-emission-gap
+checks:
+- name: producers
+  run: '{PY} scripts/run_producers.py 2026-06-emission-gap'
+  produces:
+  - data/2026-06-emission-gap
+- name: tests
+  verify: '{PY} -m pytest tests/2026-06-emission-gap -q -p no:cacheprovider'

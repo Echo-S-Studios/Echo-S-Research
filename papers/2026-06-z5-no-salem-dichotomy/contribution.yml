@@ -1,0 +1,20 @@
+# Contribution contract for papers/2026-06-z5-no-salem-dichotomy/  (see docs/ANTI_DRIFT.md)
+shortname: 2026-06-z5-no-salem-dichotomy
+member: AceTheDactyl
+title: The Z₅ Case of the No–Salem Dichotomy
+domain: math
+artifacts:
+- papers/2026-06-z5-no-salem-dichotomy/Z5-no-salem-dichotomy-whitepaper.pdf
+- papers/2026-06-z5-no-salem-dichotomy/Z5-no-salem-dichotomy-whitepaper.tex
+- papers/2026-06-z5-no-salem-dichotomy/paper.cff
+- code/2026-06-z5-no-salem-dichotomy
+- data/2026-06-z5-no-salem-dichotomy
+- tests/2026-06-z5-no-salem-dichotomy
+- figures/2026-06-z5-no-salem-dichotomy
+checks:
+- name: producers
+  run: '{PY} scripts/run_producers.py 2026-06-z5-no-salem-dichotomy'
+  produces:
+  - data/2026-06-z5-no-salem-dichotomy
+- name: tests
+  verify: '{PY} -m pytest tests/2026-06-z5-no-salem-dichotomy -q -p no:cacheprovider'

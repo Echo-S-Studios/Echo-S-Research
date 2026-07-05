@@ -1,0 +1,20 @@
+# Contribution contract for papers/2026-06-operator-algebra/  (see docs/ANTI_DRIFT.md)
+shortname: 2026-06-operator-algebra
+member: AceTheDactyl
+title: The Operator Algebra of the Emission Semiring
+domain: math
+artifacts:
+- papers/2026-06-operator-algebra/operator-algebra-whitepaper.pdf
+- papers/2026-06-operator-algebra/operator-algebra-whitepaper.tex
+- papers/2026-06-operator-algebra/paper.cff
+- code/2026-06-operator-algebra
+- data/2026-06-operator-algebra
+- tests/2026-06-operator-algebra
+- figures/2026-06-operator-algebra
+checks:
+- name: producers
+  run: '{PY} scripts/run_producers.py 2026-06-operator-algebra'
+  produces:
+  - data/2026-06-operator-algebra
+- name: tests
+  verify: '{PY} -m pytest tests/2026-06-operator-algebra -q -p no:cacheprovider'

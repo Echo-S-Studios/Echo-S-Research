@@ -1,0 +1,20 @@
+# Contribution contract for papers/2026-07-helix-orthogonal-partner/  (see docs/ANTI_DRIFT.md)
+shortname: 2026-07-helix-orthogonal-partner
+member: AceTheDactyl
+title: The Dissolved Helix and Its Orthogonal Partner
+domain: math
+artifacts:
+- papers/2026-07-helix-orthogonal-partner/helix_orthogonal_partner.pdf
+- papers/2026-07-helix-orthogonal-partner/helix_orthogonal_partner.tex
+- papers/2026-07-helix-orthogonal-partner/paper.cff
+- code/2026-07-helix-orthogonal-partner
+- data/2026-07-helix-orthogonal-partner
+- tests/2026-07-helix-orthogonal-partner
+- figures/2026-07-helix-orthogonal-partner
+checks:
+- name: producers
+  run: '{PY} scripts/run_producers.py 2026-07-helix-orthogonal-partner'
+  produces:
+  - data/2026-07-helix-orthogonal-partner
+- name: tests
+  verify: '{PY} -m pytest tests/2026-07-helix-orthogonal-partner -q -p no:cacheprovider'

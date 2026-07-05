@@ -1,73 +1,73 @@
 # Maintaining Echo S Research
 
-Two GitHub Actions keep the archive internally consistent. Both run on every
-`push` and `pull_request`, and both are **registry-driven** (from
-[`.github/members.yml`](../.github/members.yml)) and **convention-driven** (folder
-globs) — onboarding a member or adding a paper needs **no workflow edit**.
+Two GitHub Actions keep the archive internally consistent across **every domain**.
+Both run on every `push` and `pull_request`. Everything is driven by the
+per-contribution manifest (`papers/<sn>/contribution.yml`), the member registry
+([`.github/members.yml`](../.github/members.yml)), and folder conventions — so
+onboarding a member or adding a contribution needs **no workflow edit**.
 
 The status badges at the top of the [README](../README.md) are the at-a-glance
-signal: two green badges = consistent repo; a red badge = something went haywire.
+signal: two green badges = consistent repo; a red badge = something drifted.
+Contributors keep themselves green with [`docs/ANTI_DRIFT.md`](ANTI_DRIFT.md) and
+the `scripts/check.py` pre-flight; this page is what the maintainers see.
+
+## The contract
+
+Each `papers/<sn>/contribution.yml` declares `shortname`, `member`, `title`,
+`domain` (free text), `artifacts` (files/dirs it owns), and `checks` — either a
+list of named checks (`run` / `produces` / `verify`) or the literal `none` with a
+`reason`. The schema lives in one place:
+[`scripts/_manifest.py`](../scripts/_manifest.py). Both workflows are thin wrappers
+over that contract, so the *contract* is what you maintain, not the YAML.
 
 ## `structure` — [`.github/workflows/structure.yml`](../.github/workflows/structure.yml)
 
-Validates repository invariants via [`scripts/check_structure.py`](../scripts/check_structure.py)
-plus `cffconvert`. It reports **all** problems at once. It fails if:
+Runs [`scripts/check_structure.py`](../scripts/check_structure.py) (reports **all**
+problems at once) plus `cffconvert`. Failure prefixes:
 
-| Check | Failure message prefix | Meaning |
-|-------|------------------------|---------|
-| Required files | `[required]` | a `papers/<folder>/` is missing `paper.cff` or a `.tex` |
-| Attribution | `[attribution]` | a `paper.cff` (or `CITATION.cff`) author has no `alias`, or an `alias` that isn't a handle in `.github/members.yml` |
-| Parallel-tree parity | `[parity]` | `tests/`, `code/`, `data/`, or `figures/` is missing a folder for some paper, or has an orphan folder with no matching paper |
-| Naming | `[naming]` | a contribution folder isn't named `YYYY-MM-shortname` |
-| Bibliography | `[bib]` | `papers/references.bib` doesn't parse |
-| Metadata | `[zenodo]` / `[cff]` | `.zenodo.json` isn't valid JSON, or a `.cff` doesn't parse / isn't valid CFF 1.2.0 |
+| Prefix | Meaning |
+|--------|---------|
+| `[manifest]` | `contribution.yml` missing or doesn't parse |
+| `[contract]` | a manifest field is wrong: unknown `member`, missing `title`/`domain`, a declared artifact doesn't exist, a bad `checks` block, or a tree folder present/absent that disagrees with what the manifest declares |
+| `[orphan]` | a `tests/ code/ data/ figures/` folder exists with no matching `papers/<sn>/` (no manifest) |
+| `[naming]` | a folder isn't `YYYY-MM-shortname` |
+| `[attribution]` | a `CITATION.cff`/`paper.cff` alias isn't a registered handle |
+| `[bib]` / `[zenodo]` / `[cff]` | `references.bib` won't parse, `.zenodo.json` isn't valid JSON, or a `.cff` isn't valid CFF 1.2.0 |
 
-**How to read a failure:** open the failed run, read the `✗ [...]` lines — each
-names the exact file and the fix. Reproduce locally with:
-
-```bash
-py scripts/check_structure.py
-cffconvert --validate -i CITATION.cff
-```
-
-Most common causes: forgot to add your handle to `members.yml`; created only some
-of the five folders (use the generator, which makes all of them); a typo in a
-folder name.
+Note it's **domain-neutral**: a prose contribution with `checks: none` and no
+`code/` folder passes. Reproduce locally: `py scripts/check_structure.py`.
 
 ## `drift` — [`.github/workflows/drift.yml`](../.github/workflows/drift.yml)
 
-Guards the "code produces data" contract. It snapshots the committed `data/`,
-re-runs **every producer** under `code/` via
-[`scripts/regen_all.py`](../scripts/regen_all.py), and diffs the regenerated
-`data/` against the snapshot (line-ending-agnostic). If anything differs it fails
-with `Data drift detected` and prints the diff. It then runs the full `pytest`
-suite across `tests/`.
+Runs [`scripts/run_drift.py`](../scripts/run_drift.py): for each contribution it
+executes the manifest's declared `checks` — runs each `run`, diffs every
+`produces` against the committed copy (line-ending-agnostic), and runs each
+`verify` (must exit 0). `checks: none` contributions are **skipped and logged**
+(`skip <sn>: no-repro (reason)`), never failed.
 
-Figure builders (`make_figures.py`) and helper libraries (modules without a
-`__main__` guard) are skipped — the check is about **data**, and figures need TeX.
+The base image pins Python 3.12 + `sympy`/`mpmath`/`numpy`/`pytest` to the versions
+that generated the committed math data (so a library upgrade can't masquerade as
+drift). Contributions needing other tools install them inside their own check
+commands.
 
-**A red drift badge means one of two things:**
+**A red drift badge means, for the named contribution:**
 
-1. **Stale data.** You changed a producer but didn't commit the regenerated data.
-   Fix: `py scripts/regen_all.py`, then commit the updated `data/`.
-2. **Nondeterministic producer.** A producer emits different output each run
-   (unseeded RNG, timestamps, unordered `set` iteration). Fix: make it
-   deterministic — seed RNG (`random.seed`, `np.random.seed`), sort before
-   emitting, don't write wall-clock time.
+1. **Stale output** — a producer changed but its committed `produces` file wasn't
+   regenerated. Fix: rerun the producer and commit the output.
+2. **Nondeterministic producer** — unseeded RNG, timestamps, unordered `set`,
+   signed-zero (`-0.0` vs `0.0`), or an unpinned dependency. Fix per
+   [ANTI_DRIFT.md §c](ANTI_DRIFT.md).
+3. **A failing `verify`** — that contribution's test/lint/schema command returned
+   non-zero.
 
-Reproduce locally:
-
-```bash
-py scripts/regen_all.py
-git diff -- data          # any output here = drift
-py -m pytest tests -q
-```
+The failure line names the contribution and check. Reproduce locally:
+`py scripts/run_drift.py <sn>` (or the whole pre-flight, `py scripts/check.py`).
 
 ## When you change things
 
 - **New teammate:** one-line edit to [`.github/members.yml`](../.github/members.yml).
-  Both workflows pick it up automatically.
-- **New paper:** `py scripts/new_contribution.py --member <handle> --shortname <name> --date YYYY-MM`
-  creates all five folders in the right shape; fill them in and both workflows validate them.
-- **Never** edit a workflow to accommodate a new member or paper — if you feel the
-  need to, the registry or the folder convention is the thing to change instead.
+- **New contribution (any domain):**
+  `py scripts/new_contribution.py --member <handle> --shortname <name> --date YYYY-MM --domain <field>`
+  (add `--trees …` for compute folders). Fill in the manifest; both workflows validate it.
+- **Never** edit a workflow to accommodate a member or contribution — change the
+  registry, the manifest, or the folder convention instead.
