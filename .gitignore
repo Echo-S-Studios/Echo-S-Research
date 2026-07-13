@@ -39,6 +39,9 @@ env/
 .mypy_cache/
 .ruff_cache/
 
+# ---- GitHub Pages build output (assembled by site/build_site.py in CI) ----
+/_site/
+
 # ---- OS / editor cruft ----
 .DS_Store
 Thumbs.db

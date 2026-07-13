@@ -1,0 +1,75 @@
+name: Deploy GitHub Pages
+
+# Publishes the landing page (site/index.html) as an archive index: one card per
+# papers/YYYY-MM-shortname/ contribution, built by site/build_site.py from each
+# paper's contribution.yml (title, member) and paper.cff (date-released), with card
+# copy from site/blurbs.json. The site SERVES THE COMMITTED PDFs — the same sealed
+# builds Zenodo archives on each release — rather than recompiling the .tex, so the
+# page always matches the archive (see docs/ANTI_DRIFT.md). Adding a paper by the
+# normal contribution contract makes a card appear here with no edit to this workflow.
+# Static deploy via the official GitHub Actions Pages pipeline (no Jekyll).
+# NOTE: this is the SOLE GitHub Pages deployer. Do not add another Pages workflow
+# (e.g. the "Static HTML" starter) — it would race this build and could publish the
+# raw repository tree instead of the assembled _site/.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'site/**'
+      - 'papers/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+# Least-privilege permissions required by the Pages deploy action.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment; don't cancel an in-progress production deploy.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install build dependencies
+        run: python -m pip install --upgrade pip pyyaml pypdf
+
+      - name: Assemble the site
+        run: |
+          python site/build_site.py
+          echo "Assembled site:" && find _site -type f | sort
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    # The deploy step polls the Pages deployment status; GitHub-side slowness can
+    # exceed the action's default 10-minute budget ("Timeout reached, aborting!").
+    # Give it 30 minutes and tolerate more transient poll errors.
+    timeout-minutes: 35
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          timeout: 1800000
+          error_count: 15

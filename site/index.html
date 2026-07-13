@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Echo S Research — the archive</title>
+<meta name="description" content="The permanent, versioned archive of Echo S Studios Research Developments: @COUNT@ mathematics papers stored with the data, figures, and code that reproduce them. Every tagged release is mirrored to Zenodo with a citable DOI.">
+<meta name="author" content="Echo S Studios Research Developments">
+<meta name="theme-color" content="#05060b">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Echo S Research — the archive">
+<meta property="og:description" content="@COUNT@ mathematics papers, archived with their LaTeX sources and computational products. Tagged releases are mirrored to Zenodo with citable DOIs.">
+<meta property="og:site_name" content="Echo S Research">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Echo S Research — the archive">
+<meta name="twitter:description" content="@COUNT@ mathematics papers, archived with their LaTeX sources and computational products. Tagged releases are mirrored to Zenodo with citable DOIs.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='7'%20fill='%2305060b'/%3E%3Ctext%20x='16'%20y='23'%20font-size='19'%20text-anchor='middle'%20fill='%23e9c46a'%20font-family='Georgia,serif'%3E%E2%84%B0%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Echo S Research — the archive",
+  "description": "Permanent, versioned archive of mathematics research from Echo S Studios Research Developments. Papers are stored with their LaTeX sources, data, figures, and code; tagged releases are mirrored to Zenodo with citable DOIs.",
+  "author": { "@type": "Organization", "name": "Echo S Studios Research Developments" },
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "url": "https://github.com/Echo-S-Studios/Echo-S-Research"
+}
+</script>
+<style>
+  :root{
+    --void:#05060b; --panel0:#0b0d18; --panel1:#0f1120; --ink:#ececf4; --muted:#a2a7c0;
+    --line:#23273d; --edge:#2a2e44; --gold:#e9c46a; --teal:#5cc9c0; --violet:#8fb6ff;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"URW Palladio L",Georgia,"Times New Roman",serif;
+    --ui:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+  }
+  *{ box-sizing:border-box }
+  html,body{ margin:0 }
+  body{
+    background:radial-gradient(130% 100% at 50% 0%, #11142a 0%, var(--panel0) 44%, var(--void) 100%);
+    color:var(--ink); font-family:var(--ui); min-height:100vh; padding:0 0 72px;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  }
+  .wrap{ max-width:1100px; margin:0 auto; padding:0 clamp(16px,3vw,34px) }
+  a{ color:inherit }
+
+  /* skip-link */
+  .skip{ position:absolute; left:-9999px; top:0; background:var(--gold); color:#0a0b12;
+    font-family:var(--mono); font-size:12px; padding:8px 14px; border-radius:0 0 8px 0; z-index:50 }
+  .skip:focus{ left:0 }
+
+  /* masthead */
+  header{ padding:clamp(34px,6vw,68px) 0 8px }
+  .eyebrow{ font-family:var(--mono); font-size:11px; letter-spacing:.28em; text-transform:uppercase;
+    color:var(--muted); margin:0 0 14px }
+  h1{ font-family:var(--serif); font-weight:500; font-size:clamp(32px,6vw,56px); line-height:.98; margin:0;
+    letter-spacing:.004em; background:linear-gradient(180deg,#fff,#d9c79a 70%,#b8975a);
+    -webkit-background-clip:text; background-clip:text; color:transparent }
+  .thesis{ font-family:var(--serif); font-style:italic; font-size:clamp(15px,2.4vw,19px); color:#cfd3e6;
+    margin:16px 0 0; max-width:64ch; opacity:.95 }
+  .lede{ font-size:15px; line-height:1.65; color:#c4c8dd; max-width:70ch; margin:20px 0 0 }
+  .lede b{ color:#e7ebf8; font-weight:600 }
+  .lede a{ color:var(--gold); text-decoration:none; border-bottom:1px solid var(--edge) }
+
+  /* section heads */
+  h2{ font-family:var(--mono); font-size:11px; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--muted); font-weight:600; margin:42px 0 16px; padding-bottom:10px; border-bottom:1px solid var(--line) }
+
+  /* card grid */
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(330px,1fr)); gap:18px }
+  .card{ display:flex; flex-direction:column; gap:12px; text-decoration:none;
+    border:1px solid var(--line); border-radius:16px; padding:22px 22px 20px;
+    background:linear-gradient(180deg, rgba(15,17,32,.7), rgba(11,13,24,.7));
+    transition:border-color .2s, transform .2s, box-shadow .2s; position:relative; overflow:hidden }
+  .card::before{ content:""; position:absolute; inset:0 0 auto 0; height:2px;
+    background:linear-gradient(90deg, var(--gold), var(--teal)); opacity:.0; transition:opacity .2s }
+  .card:hover, .card:focus-visible{ border-color:#454c70; transform:translateY(-3px);
+    box-shadow:0 14px 38px -18px rgba(0,0,0,.8); outline:none }
+  .card:hover::before, .card:focus-visible::before{ opacity:.9 }
+  .card:focus-visible{ outline:2px solid var(--gold); outline-offset:2px }
+  .card .toprow{ display:flex; align-items:center; justify-content:space-between; gap:10px }
+  .tag{ font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+    padding:4px 9px; border-radius:999px; border:1px solid var(--edge); color:var(--muted) }
+  .tag.pdf{ color:var(--gold); border-color:rgba(233,196,106,.4) }
+  .pp{ font-family:var(--mono); font-size:11px; color:var(--muted) }
+  .card h3{ font-family:var(--serif); font-weight:500; font-size:22px; line-height:1.15; margin:2px 0 0 }
+  .series{ font-family:var(--mono); font-size:11px; letter-spacing:.04em; color:var(--violet); margin:0 }
+  .card p{ font-size:13.5px; line-height:1.6; color:#b9bdd4; margin:2px 0 0 }
+  .go{ margin-top:auto; padding-top:10px; font-family:var(--mono); font-size:12px; letter-spacing:.06em;
+    color:var(--gold); display:inline-flex; align-items:center; gap:7px }
+  .card:hover .go .arr{ transform:translateX(3px) }
+  .arr{ transition:transform .2s }
+
+  /* archive note */
+  .note{ margin-top:26px; font-size:13px; line-height:1.65; color:var(--muted); max-width:78ch }
+  .note a{ color:var(--muted); text-decoration:none; border-bottom:1px solid var(--edge); transition:color .18s }
+  .note a:hover, .note a:focus-visible{ color:var(--ink); outline:none }
+
+  /* footer */
+  footer{ margin-top:54px; padding-top:22px; border-top:1px solid var(--line);
+    font-family:var(--mono); font-size:12px; color:var(--muted); display:flex; flex-wrap:wrap; gap:8px 20px }
+  footer a{ color:var(--muted); text-decoration:none; border-bottom:1px solid transparent; transition:color .18s, border-color .18s }
+  footer a:hover, footer a:focus-visible{ color:var(--ink); border-color:var(--edge); outline:none }
+  footer a:focus-visible{ outline:2px solid var(--gold); outline-offset:2px }
+
+  @media (max-width:560px){
+    .grid{ grid-template-columns:1fr }
+  }
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{ transition:none !important; animation:none !important; scroll-behavior:auto !important }
+  }
+  @media print{
+    body{ background:#fff; color:#111 }
+    h1{ -webkit-text-fill-color:#111; color:#111 }
+    .card{ border-color:#ccc; background:#fff; break-inside:avoid }
+    .skip{ display:none }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<main class="wrap" id="main">
+  <header>
+    <p class="eyebrow">Echo S Studios · Research Developments</p>
+    <h1>Mathematics, archived with its evidence.</h1>
+    <p class="thesis">@COUNT@ papers — each stored beside the LaTeX source, data, figures, and code that reproduce its results, in one permanent, versioned archive.</p>
+    <p class="lede">Every card below serves the <b>committed PDF</b> — the same sealed build that
+      <a href="https://zenodo.org/">Zenodo</a> preserves when a release is tagged, so what you read here is what the archive
+      cites. Sources, computational products, and the contribution contract live in the
+      <a href="https://github.com/Echo-S-Studios/Echo-S-Research">source repository</a>; each tagged release mints a citable <b>DOI</b>.</p>
+  </header>
+
+  <section aria-labelledby="papers-head">
+    <h2 id="papers-head">The papers</h2>
+    <div class="grid">
+<!--@CARDS@-->
+    </div>
+    <p class="note">Each paper's LaTeX source, and the shared
+      <a href="https://github.com/Echo-S-Studios/Echo-S-Research/blob/main/papers/references.bib">consolidated bibliography</a>,
+      are in the repository under <a href="https://github.com/Echo-S-Studios/Echo-S-Research/tree/main/papers">papers/</a>.
+      A machine-readable index of everything on this page is at <a href="papers/catalog.json">papers/catalog.json</a>.
+      To contribute in any field, follow the one-page contract in
+      <a href="https://github.com/Echo-S-Studios/Echo-S-Research/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a>.
+      Site assembled @UPDATED@.</p>
+  </section>
+
+  <footer>
+    <span>© 2026 Echo S Studios Research Developments</span>
+    <a href="https://github.com/Echo-S-Studios/Echo-S-Research">Source on GitHub</a>
+    <a href="https://github.com/Echo-S-Studios/Echo-S-Research/releases">Releases (Zenodo DOIs)</a>
+    <a href="https://github.com/Echo-S-Studios/Echo-S-Research/blob/main/LICENSE">CC BY 4.0</a>
+  </footer>
+</main>
+</body>
+</html>

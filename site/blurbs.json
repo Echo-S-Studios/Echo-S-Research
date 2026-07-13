@@ -1,0 +1,72 @@
+{
+  "2026-06-charge-measure-coupling": {
+    "title": "The Charge–Measure Coupling on a Spectral Semiring: Cyclicity, Composition, and a Parity-Graded Mahler Floor",
+    "series": "Spectral Semiring",
+    "description": "A conjugate-angle charge valued in finite cyclic groups couples to the Mahler measure on the spectral semiring: the minimal measure at charge group ℤ/n is φ for even n, 2 for odd — the odd gap (φ, 2) is exactly the no-Salem closure."
+  },
+  "2026-06-emission-gap": {
+    "title": "The Emission–Gap Theorem: No Salem Number in the Spectral Image, and the Cost Floor It Forces — A Companion to The Exchange Rate λ = 2c",
+    "series": "Mahler, Salem & Lehmer",
+    "description": "No Salem number lies in the spectral emission image: angle confinement makes every emitted on-circle eigenvalue a fourth root of unity, disjoint from Salem conjugates. With Smyth's bound the cost floor is log μₛ, realised at log φ — Lehmer untouched."
+  },
+  "2026-06-generative-emptiness": {
+    "title": "The Generative Content of a Conserved Emptiness",
+    "series": "Mahler, Salem & Lehmer",
+    "description": "The Salem slot's kinematic emptiness is a conserved ℤ/4ℤ angle charge, and the charge generates five verified objects: a grading, the content polynomial x⁴−1, the Mahler floor {1} ∪ [φ, ∞), a normal form, a conserved current. φ is derived, not posited."
+  },
+  "2026-06-lambda-2c": {
+    "title": "The Exchange Rate λ = 2c: A Conformal Identity, Its Gate, and Its Flip",
+    "series": "Residual Return",
+    "description": "The growth-rule exchange rate is a derived identity, λ = 2c, read as second-order KL over the trace-form Fisher metric. Čencov leaves c declared; the golden gate is forced, so λ = √5, and one flip D = 1+4C inverts the regime."
+  },
+  "2026-06-lehmers-box": {
+    "title": "Lehmer's Box: A Golden Floor and an Angle Lattice that Confine Spectral Emission Away from Salem Numbers — Without Resolving Lehmer's Problem",
+    "series": "Mahler, Salem & Lehmer",
+    "description": "Height–angle confinement: emitted Mahler measures lie in {1} ∪ [φ, ∞) and on-circle eigenvalues at angles in (π/2)ℤ. Salem numbers violate both walls, so the spectral image omits the whole band (1, μ_S) — sidestepping Lehmer's problem without resolving it."
+  },
+  "2026-06-operator-algebra": {
+    "title": "The Operator Algebra of the Emission Semiring: A λ–Ring, the Adams Square, and Two Characters",
+    "series": "Spectral Semiring",
+    "description": "The spectral operators ⊕, ⊗, and squaring form a λ-ring: squaring is the Adams operation ψ², the diagonal of the tensor square. Two characters resolve it — the Mahler measure, additive on ⊕ but tropical on ⊗, and the ℤ/4ℤ angle charge."
+  },
+  "2026-06-residual-return-learning": {
+    "title": "Residual Return: Exact Learning Dynamics and Language over the Vector Substrate",
+    "series": "Residual Return",
+    "description": "Dynamic companion to the Vector Substrate: an exact streaming learner with residual r = x − Px as loss, field growth to composita via the Kronecker Gram, and a language whose return operator 𝓛(X) = RX + XR − X lands in a φ-slack kernel over Cl(2,0) ≅ M₂(ℝ)."
+  },
+  "2026-06-salem-slot": {
+    "title": "The Occupant of the Salem Slot",
+    "series": "Mahler, Salem & Lehmer",
+    "description": "The occupant of the empty Salem slot: the trace redirection β ↦ τ₀ = β+β⁻¹, a totally real Perron number in GROW with τ₀ > 2 > φ. The flip is a square-root branch point, and redirections converge to √5 = φ+φ⁻¹ with slope φ⁻¹."
+  },
+  "2026-06-vector-substrate": {
+    "title": "The Vector Substrate: Number Fields as Exact Learning Geometry",
+    "series": "Residual Return",
+    "description": "A number field ℚ(θ) as vector space, companion-matrix algebra, and Minkowski lattice, glued by the trace form G = MᵀM with det G = d_K. Capture is a vanishing G-orthogonal residual over ℚ; Mahler-measure height gates growth, with a Smyth-nonzero cost floor."
+  },
+  "2026-06-z5-no-salem-dichotomy": {
+    "title": "The Z₅ Case of the No–Salem Dichotomy",
+    "series": "Mahler, Salem & Lehmer",
+    "description": "The pentagon case of the no–Salem dichotomy, where the elementary Z/3 proof fails. Smyth forces M ≥ μS = 1.3247 for non-reciprocal charge-Z₅ objects, the pure pentagon obeys {1} ∪ [φ⁴, ∞), and μ(5) = 2 stays computed."
+  },
+  "2026-07-emission-algebra-primer": {
+    "title": "The Emission Algebra 𝔄",
+    "series": "Spectral Semiring",
+    "description": "One matrix R and one relation R² = R + I generate three exact layers: the ring ℤ[R] = 𝒪 of ℚ(√5), an 𝔰𝔩₂ of signature (2,1) with root length √5, and a Mahler-graded semiring with charge χ ∈ ℤ/4ℤ — tied together by the trace duality ½Tr(Xₙ²) = 5Fₙ² = Lₙ² − 4(−1)ⁿ."
+  },
+  "2026-07-helix-orthogonal-partner": {
+    "title": "The Dissolved Helix and Its Orthogonal Partner",
+    "series": "Mahler, Salem & Lehmer",
+    "description": "The golden companion R (R²=R+I) cannot couple to a copy of itself: [R,R]=0, charge stays in {0,2}⊂ℤ/4ℤ, and the Salem channel is empty. Closure requires the quartic x⁴+5x²−5, whose roots supply terrain and a π/2 rotation."
+  },
+  "2026-07-pisot-residue": {
+    "title": "The Pisot Cross-Shell Residue: A Reduction Lemma, Sharpness Witnesses, and an Exhaustive Quintic Execution of the ν-Criterion, with a three-run replication of the relational-charge signature ledger",
+    "series": "Mahler, Salem & Lehmer",
+    "description": "A real-pair ν-reduction lemma forces relational inertness for every Pisot number with at most one non-real conjugate pair; an exhaustive exact census of the 3125 monic quintics with coefficients in [−2,2] finds zero mirrored cross-shell classes among all 67 two-pair Pisot quintics."
+  },
+  "2026-07-relational-charge": {
+    "title": "Relational Charge on the Spectral Semiring: Gauge Rigidity, Coherence Types, and a Reference-Free Parity Floor",
+    "series": "Spectral Semiring",
+    "description": "Phase charge made purely relational: the pair charge t_rel(α,β) ∈ ℚ/ℤ is a groupoid cocycle whose gauge is the reference ray. Rigidity pins admissible spectra to anchors n ∈ {m, 2m}; a modulus-pinning theorem leaves every Salem number relationally inert; the parity floor evaluates reference-free."
+  }
+}
