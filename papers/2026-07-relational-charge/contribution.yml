@@ -5,7 +5,7 @@ title: Relational Charge on the Spectral Semiring
 domain: math
 artifacts:
 - papers/2026-07-relational-charge/paper.cff
-- papers/2026-07-relational-charge/relational_charge_paper.l.pdf
+- papers/2026-07-relational-charge/relational_charge_paper.pdf
 - papers/2026-07-relational-charge/relational_charge_paper.tex
 - code/2026-07-relational-charge
 - data/2026-07-relational-charge
