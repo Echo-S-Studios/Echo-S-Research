@@ -3,7 +3,7 @@
 **Paper:** `papers/2026-07-pisot-residue/pisot_residue_whitepaper.tex`
 "The Pisot Cross-Shell Residue: A Reduction Lemma, Sharpness Witnesses, and an
 Exhaustive Quintic Execution of the ν-Criterion" — AceTheDactyl / Echo S Studios,
-July 2026 (compiled PDF: `pisot_residue_whitepaper.v13.pdf`).
+July 2026 (compiled PDF: `pisot_residue_whitepaper.pdf`, originally deposited as `v13`).
 
 **Engines used for verification:** sympy 1.14.0 (exact symbolic / factorization /
 resultants / irreducibility), mpmath 1.3.0 (high-precision roots, dps 40–80),

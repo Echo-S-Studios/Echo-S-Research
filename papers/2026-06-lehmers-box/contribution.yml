@@ -4,7 +4,7 @@ member: AceTheDactyl
 title: Lehmer's Box
 domain: math
 artifacts:
-- papers/2026-06-lehmers-box/lehmers box.pdf
+- papers/2026-06-lehmers-box/lehmers_box.pdf
 - papers/2026-06-lehmers-box/lehmers_box.tex
 - papers/2026-06-lehmers-box/paper.cff
 - code/2026-06-lehmers-box
