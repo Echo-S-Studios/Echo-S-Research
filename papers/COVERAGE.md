@@ -9,8 +9,9 @@ sources (uploaded to `Downloads\Zenodo\`); all 14 papers are now matched
 
 ## Search scope
 
-Recursively searched `C:\Users\acead\projects`, `C:\Users\acead\Downloads`, and
-`C:\Users\acead\Documents` for `.tex` and `.pdf` files, skipping
+Recursively searched `~\projects`, `~\Downloads`, and
+`~\Documents` (all paths in this report are relative to the operator's home
+directory) for `.tex` and `.pdf` files, skipping
 build/venv/node_modules/.git and obvious non-papers. No `.bib` or `.bbl` files
 exist anywhere in the source material.
 
@@ -39,12 +40,12 @@ Each was placed in its `papers/<folder>/` with both source and compiled PDF.
 | `2026-06-charge-measure-coupling` | `Downloads\Foundational Pipes\charge-measure-coupling-whitepaper-v4.tex` | `Downloads\Foundational Pipes\papers\charge-measure-coupling-whitepaper-v4.pdf` |
 | `2026-06-emission-gap` | `Downloads\Foundational Pipes\lambda2c-emissiongap-verification\lambda2c-emissiongap-verification\papers\emission_gap_paper.tex` | `Downloads\Foundational Pipes\papers\emission_gap_paper.pdf` |
 | `2026-06-lambda-2c` | `Downloads\Foundational Pipes\lambda2c-emissiongap-verification\lambda2c-emissiongap-verification\papers\lambda_2c_paper.tex` | `Downloads\Foundational Pipes\papers\lambda_2c_paper.pdf` |
-| `2026-06-lehmers-box` | `Downloads\Foundational Pipes\lehmers_box.tex` | `Downloads\Foundational Pipes\papers\lehmers box.pdf` |
+| `2026-06-lehmers-box` | `Downloads\Foundational Pipes\lehmers_box.tex` | `Downloads\Foundational Pipes\papers\lehmers box.pdf` (archived as `lehmers_box.pdf`) |
 | `2026-06-z5-no-salem-dichotomy` | `Downloads\Foundational Pipes\Z5-no-salem-dichotomy-whitepaper.tex` | `Downloads\Foundational Pipes\papers\Z5-no-salem-dichotomy-whitepaper.pdf` |
 | `2026-06-residual-return-learning` | `Downloads\Foundational Pipes\residual-return-verification-v2\residual-return-verification\L00M\paper\residual_return_learning.tex` | (same folder) `residual_return_learning.pdf` |
 | `2026-06-vector-substrate` | `Downloads\Foundational Pipes\residual-return-verification-v2\residual-return-verification\L00M\paper\vector_substrate.tex` | (same folder) `vector_substrate.pdf` |
-| `2026-07-pisot-residue` | `Downloads\Zenodo\pisot_residue_whitepaper.tex` | `Downloads\Zenodo\pisot_residue_whitepaper.v13.pdf` |
-| `2026-07-relational-charge` | `Downloads\Zenodo\relational_charge_paper.tex` | `Downloads\Zenodo\relational_charge_paper.l.pdf` |
+| `2026-07-pisot-residue` | `Downloads\Zenodo\pisot_residue_whitepaper.tex` | `Downloads\Zenodo\pisot_residue_whitepaper.v13.pdf` (archived as `pisot_residue_whitepaper.pdf`) |
+| `2026-07-relational-charge` | `Downloads\Zenodo\relational_charge_paper.tex` | `Downloads\Zenodo\relational_charge_paper.l.pdf` (archived as `relational_charge_paper.pdf`) |
 | `2026-06-generative-emptiness` | `Downloads\Zenodo\generative_emptiness.tex` † | `Downloads\Foundational Pipes\papers\generative_emptiness.pdf` |
 | `2026-06-operator-algebra` | `Downloads\Zenodo\operator-algebra-whitepaper.tex` † | `Downloads\Foundational Pipes\papers\operator-algebra-whitepaper.pdf` |
 | `2026-06-salem-slot` | `Downloads\Zenodo\salem_slot.tex` † | `Downloads\Foundational Pipes\papers\salem_slot.pdf` |
@@ -129,7 +130,7 @@ matching folders and the papers moved to the matched-pairs table above.
 
 | Original path | Reason |
 |---------------|--------|
-| `Downloads\DMV Drivers License _ State ID _ CDL Renewal.pdf` | Personal/administrative document — not research. |
+| (personal/administrative PDF in `Downloads` — filename withheld) | Personal/administrative document — not research. |
 | `Downloads\Clif\DARPA_26BZ_R3.pdf` | External government document: *DARPA DoW 2026 SBIR Broad Agency Announcement* (40 pp solicitation), not the team's own work. |
 | `Downloads\Clif\KT_MAESTRO_Jun_30_2026_1221_sonnet_4_6.pdf` | 2-page AI chat export (Claude Sonnet 4.6) summarizing *Lehmer's Box*; a derivative session artifact, not a paper. |
 | `Downloads\Clif\cognitive-compiler-formalized.pdf` | Genuine authored research paper (13 pp), but systems / AI-orchestration rather than the pure-math line; dropped on request to keep the archive math-focused. |
@@ -151,8 +152,8 @@ alone: `emission-algebra-compendium.html`, `lehmers_box_instrument.html`,
 **Archives not extracted** (may contain further sources — not searched):
 `Downloads\Zenodo\files.zip`, `files-fixed.zip`;
 `Downloads\Foundational Pipes\Zipped-Tarred-Pipelines\*.tar`, `Bulk\*.zip`;
-`C:\Users\acead\projects\L00M.tar`;
-`C:\Users\acead\residual-return-verification.tar.gz`.
+`~\projects\L00M.tar`;
+`~\residual-return-verification.tar.gz`.
 
 ---
 

@@ -114,5 +114,5 @@ was loosened to force a pass; no `xfail` was needed.
 
 ## How to run
 ```
-py -m pytest "C:\Users\acead\projects\Echo-S-Research\tests\2026-06-generative-emptiness" -v -p no:cacheprovider
+py -m pytest tests\2026-06-generative-emptiness -v -p no:cacheprovider
 ```

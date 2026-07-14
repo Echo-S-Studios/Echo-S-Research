@@ -127,7 +127,7 @@ consecutive ratio →φ — are all correct and independently verified (tests 26
 ## Reproduce
 
 ```
-py -m pytest "C:\Users\acead\projects\Echo-S-Research\tests\2026-06-salem-slot" -v -p no:cacheprovider
+py -m pytest tests\2026-06-salem-slot -v -p no:cacheprovider
 ```
 Expected: 46 passed, 1 xfailed.
 

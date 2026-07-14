@@ -153,7 +153,7 @@ as errors.
 ## Reproduce
 
 ```
-py -m pytest "C:\Users\acead\projects\Echo-S-Research\tests\2026-06-charge-measure-coupling" -v -p no:cacheprovider
+py -m pytest tests\2026-06-charge-measure-coupling -v -p no:cacheprovider
 ```
 
 Files: `test_constants.py`, `test_mahler_measure.py`, `test_charge_groups.py`,

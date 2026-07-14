@@ -112,5 +112,5 @@ These are cited theorems with infinitary content, open conjectures, or implement
 ## Reproduce
 
 ```
-py -m pytest "C:\Users\acead\projects\Echo-S-Research\tests\2026-06-vector-substrate" -v -p no:cacheprovider
+py -m pytest tests\2026-06-vector-substrate -v -p no:cacheprovider
 ```

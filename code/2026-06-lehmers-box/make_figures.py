@@ -23,11 +23,12 @@ from __future__ import annotations
 import glob
 import os
 import re
+import shutil
 import subprocess
 
 import fitz
 
-XELATEX = r"C:\Users\acead\AppData\Local\Programs\MiKTeX\miktex\bin\x64\xelatex.exe"
+XELATEX = os.environ.get("XELATEX") or shutil.which("xelatex") or "xelatex"
 SHORT = "2026-06-lehmers-box"
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 TEX = glob.glob(os.path.join(ROOT, "papers", SHORT, "*.tex"))[0]

@@ -90,5 +90,5 @@ paper's stated definitions.
 ## How to run
 
 ```
-py -m pytest "C:\Users\acead\projects\Echo-S-Research\tests\2026-06-operator-algebra" -v -p no:cacheprovider
+py -m pytest tests\2026-06-operator-algebra -v -p no:cacheprovider
 ```

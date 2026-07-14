@@ -153,7 +153,7 @@ tested above.
 ### How to run
 
 ```
-py -m pytest "C:\Users\acead\projects\Echo-S-Research\tests\2026-06-residual-return-learning" -v -p no:cacheprovider
+py -m pytest tests\2026-06-residual-return-learning -v -p no:cacheprovider
 ```
 
 ## Correction applied 2026-07-04

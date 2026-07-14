@@ -17,13 +17,14 @@ Run: py code/2026-06-vector-substrate/make_figures.py
 import glob
 import os
 import re
+import shutil
 import subprocess
 
 import fitz  # pymupdf
 
-XELATEX = r"C:\Users\acead\AppData\Local\Programs\MiKTeX\miktex\bin\x64\xelatex.exe"
+XELATEX = os.environ.get("XELATEX") or shutil.which("xelatex") or "xelatex"
 SHORT = "2026-06-vector-substrate"
-ROOT = r"C:\Users\acead\projects\Echo-S-Research"
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 TEX = glob.glob(os.path.join(ROOT, "papers", SHORT, "*.tex"))[0]
 OUT = os.path.join(ROOT, "figures", SHORT)
 os.makedirs(OUT, exist_ok=True)
