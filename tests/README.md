@@ -27,7 +27,9 @@ py -m pytest -rx                 # also print the reason for each xfail (the fla
 `pytest.ini` (repo root) sets `testpaths = tests` and `--import-mode=importlib`
 so identically-named test files coexist across folders.
 
-**Current status: `1041 passed, 6 xfailed, 0 failed, 0 errors`** (~3.3 min).
+**Current status: `1047 passed, 0 failed, 0 errors`** (~3.3 min). The 6 former
+xfails below were adjudicated and the papers corrected in commit `46b2703`
+("5 surgical corrections across 6 papers"); the flags are kept as a record.
 
 ## Methodology
 
@@ -84,7 +86,7 @@ assertions). "Flagged" = a genuine discrepancy isolated as `xfail` for review.
 theorems, open problems, companion-paper results, implementation guarantees, and
 interpretive/`[posited]` framing — documented per paper.
 
-## Flagged for human review (the 6 xfails)
+## Flagged for human review (the 6 former xfails — resolved in `46b2703`)
 
 All are **wording / bucketing-convention level** — every one has its load-bearing
 mathematical content independently verified as *correct*; only a label, sign, or
@@ -119,6 +121,9 @@ intermediate tally differs. None affects a paper's conclusions.
 
 *(6 flags across 5 issues — items 1 counts twice because the same census split is
 flagged independently in both `pisot-residue` and `relational-charge`.)*
+
+External-deposit errata adjudications (targets absent from this lineage) are
+tracked in [`../ERRATA.md`](../ERRATA.md).
 
 ## What "untestable" means here
 
