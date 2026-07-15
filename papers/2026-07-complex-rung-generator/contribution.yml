@@ -4,8 +4,8 @@ member: AceTheDactyl
 title: "The Complex Rung Generator, the State-Angle Chart, and the Residual Sphere"
 domain: math
 artifacts:
-  - papers/2026-07-complex-rung-generator/complex-rung-generator-v1.8.tex
-  - papers/2026-07-complex-rung-generator/complex-rung-generator_v1.8.pdf
+  - papers/2026-07-complex-rung-generator/complex-rung-generator-v1.9.tex
+  - papers/2026-07-complex-rung-generator/complex-rung-generator_v1.9.pdf
   - papers/2026-07-complex-rung-generator/paper.cff
   - code/2026-07-complex-rung-generator
   - tests/2026-07-complex-rung-generator

@@ -64,8 +64,8 @@ and the Residual Sphere\\[4pt]
 \small independent verification (\S\ref{sec:verification}):\\
 \small \texttt{ozy\_softcheck.py} 91/91 $+$ \texttt{relational\_softcheck.py} 27/27\\
 \small \texttt{nx\_softcheck.py} 27/27 $+$ \texttt{qx\_softcheck.py} 62/62, exit 0\\
-\small 13 session harnesses (v1.7--v1.8): 349 exact checks $+$ 49 certified guards, all exit 0}
-\date{Version 1.8 --- July 15, 2026}
+\small 17 session harnesses (v1.7--v1.9): 424 exact checks $+$ 67 certified guards $+$ 13 PSLQ corroborations, all exit 0}
+\date{Version 1.9 --- July 15, 2026}
 
 \begin{document}
 \maketitle
@@ -141,6 +141,17 @@ and reduced to P3, and the odd relational floor bracketed $\mu_S\le\mu_{\mathrm
 open problem); and the period-relation map ($\tau_0=\beta+\beta^{-1}$ pinned
 algebraic, the $\kappa$-vs-$\tau_0$ period worry settled negatively, and
 $L_{\mathrm{res}}$ located as an elliptic period at a transcendental parameter).
+\emph{Version 1.9} adds, verified by four further session harnesses ($75$
+exact/computed checks $+$ $18$ certified guards $+$ $13$ PSLQ corroborations, all
+exit 0): OP-RADIUS \emph{reduces} to a minimal declared atom D4 (an orientation
+of the apex double cover together with the cap onset), given which --- and the
+inherited chart-ties --- the radius profile is uniquely forced, though whitepaper
+\tagO{}~1 is \emph{not} thereby closed; the quarter-turn axiom D2 is
+\emph{relocated} to a substrate-grounded, g1-disjoint atom (the $K$-seed rotation
+axis; an advance, not a closure); the odd relational floor is bracketed and
+reduced to a single named lemma (ODD-2); and the period frontier is mapped
+(Baker's reach pinned, the algebraic independences left Schanuel-conditional or
+external-open with named tool-gaps, corroborated by certified PSLQ non-relations).
 \end{abstract}
 
 \section{Provenance, scope, and the conditionality banner}\label{sec:scope}
@@ -294,6 +305,44 @@ promotion the corpus's principal open problem); and the period-relation map
 ($\tau_0$ algebraic, the $\kappa$-vs-$\tau_0$ tie settled negatively,
 $L_{\mathrm{res}}$ an elliptic period, and the precise external-open ledger).
 All other content unchanged.
+
+\smallskip\noindent
+\textbf{v1.9 changelog:} \S\ref{sec:sphere} extended --- the OP-RADIUS
+D4-reduction (Theorem~\ref{thm:d4reduction}: given the atom
+D4${}={}$(orientation~$\wedge$~cap-onset) and the inherited chart-ties, the
+radius profile is uniquely forced with each half necessary;
+Remark~\ref{rem:d4candidate}: D4 minimal-among-its-halves but non-unique, a
+candidate; Proposition~\ref{prop:radiff}: the differential strengthening --- the
+naive non-membership \emph{fails} (honest negative, $r$ is elementary), the
+apex-monodromy-order sharpening conditional on the unit-log hypothesis;
+Remark~\ref{rem:ratie}: the bounded no-tie re-confirmation).
+\S\ref{sec:quarterturn} extended (the D2 relocation:
+Proposition~\ref{prop:d2reloc}: the $K$-seed rotation axis forces
+$\chi=\pm\pi/2$, disjoint from g1; Remark~\ref{rem:d2verdict}: the net verdict,
+$W[\text{open}]2$ advanced not closed). \S\ref{sec:relobject} extended (the odd
+relational floor: Proposition~\ref{prop:oddfloorred}: bracketed, computed $=2$
+up to a logged box, reduced to the single lemma (ODD-2);
+Remark~\ref{rem:p4transfer}: P4 inherits P3 exactly). \S\ref{sec:generator}
+extended (the period frontier: Remark~\ref{rem:pfledger}: the forced-identity
+ledger with the new elliptic geometric identity; Remark~\ref{rem:pffrontier}:
+the frontier map --- Baker's reach, the Schanuel-conditional, and the
+external-open tool-gaps). Four session harnesses ---
+\texttt{ra}/\texttt{qt}/\texttt{of}/\texttt{pf\_softcheck.py} --- add $75$
+exact/computed checks $+$ $18$ certified guards $+$ $13$ PSLQ corroborations,
+all exit 0, bringing the seventeen session harnesses to $424$ exact $+$ $67$
+guards $+$ $13$ PSLQ (\S\ref{sec:verification}). Register motion:
+\emph{OP-RADIUS reduced} to the declared atom D4 ($r$ forced given D4 and the
+inherited chart-ties; whitepaper \tagO{}~1 \emph{not} thereby closed; ``D4 is
+\emph{the} minimal axiomatization'' is candidate/non-unique);
+$W[\text{open}]2$ / D2 \emph{relocated} to a substrate-grounded, g1-disjoint
+atom (advance, not closure --- stays PARTIAL); the odd relational floor
+\emph{bracketed} ($=2$ computed up to a logged box) and \emph{reduced} to the
+single named lemma (ODD-2), which stays external-open; and the period frontier
+\emph{mapped} --- Baker's reach pinned, the $(\pi,\ln\gp)$ and $(\kappa,\ln\gp)$
+independences Schanuel-conditional, and $L_{\mathrm{res}}$ transcendence
+together with $(\kappa,L_{\mathrm{res}})$ independence external-open with named
+tool-gaps, corroborated (never proved) by certified PSLQ non-relations. All
+other content unchanged.
 
 \smallskip\noindent
 \textbf{Method note (from the source report).} The investigation began by
@@ -845,6 +894,82 @@ entire map survives $\kappa\mapsto\kappa_k$ (branch-blind) and advances no
 selection.
 \end{remark}
 
+\begin{remark}[The forced-identity ledger of the period frontier]\label{rem:pfledger}\tagF{}/\tagFD{} \hx{PF-3A--PF-3G, PF-3Ef, PF-G4, PF-G5}
+The period frontier of Remark~\ref{rem:periodmap} sits on an exact algebraic
+skeleton, every relation of which is forced. \emph{Golden trace} \tagF{}:
+$\gp^2=\gp+1$, $\gp\tau=1$, $\tau^2+\tau=1$, and $\gp+\gp^{-1}=\sqrt5$ (the
+salem-slot golden floor). \emph{The definitional tie} \tagFD{}: given the
+declared rate $\kappa=\pi/(2\ln\gp)$ [D3],
+\[
+\frac2\kappa=\frac{4\ln\gp}{\pi},\qquad \frac{\pi}{\ln\gp}=2\kappa,\qquad
+\pi=2\kappa\ln\gp,
+\]
+and the branch family $\kappa_k=(\pi/2+2\pi k)/\ln\gp=(4k+1)\kappa$ (symbolic in
+$k\in\Z$, with $4k+1$ a nonzero odd rational for every $k$). \emph{The Salem
+anchor} \tagF{}\emph{ given corpus}: $\tau_0=(1+\sqrt{13})/2$ satisfies
+$\tau_0^2=\tau_0+3$ (minimal polynomial $t^2-t-3$, discriminant $13$), the
+degree-$2$ algebraic-integer occupant of the redirection slot
+(Proposition~\ref{prop:tau0alg}). \emph{The lens gate} \tagF{}: $K^2=1-\gapc$,
+$\gapc=\gp^{-4}$, with minimal polynomial $x^2+5x-5$ and $K^2>0$ (exact
+$\Q(\sqrt5)$ sign). \emph{The elliptic reduction} \tagF{}: symbolic in
+$K,\theta$,
+\[
+1+K^2\cos^2\theta=(1+K^2)\bigl(1-m\sin^2\theta\bigr),\qquad
+m=\frac{K^2}{1+K^2},\qquad K^2=\frac{m}{1-m},
+\]
+so $L_{\mathrm{res}}=\int_0^{\pi/2}\sqrt{1+\kappa^2\cos^2\theta}\;d\theta
+=\sqrt{1+\kappa^2}\,E(m)$ (perturbing $m\mapsto m+10^{-3}$ breaks the identity;
+falsifier \hx{PF-3Ef}). \emph{A forced geometric reading} \tagF{} (new this
+session): $L_{\mathrm{res}}$ is the quarter-perimeter of the ellipse with
+semi-axes $(\sqrt{1+\kappa^2},\,1)$; its linear eccentricity $c$ satisfies
+$c^2=a^2-b^2=\kappa^2$ \emph{exactly} (the focal parameter is $\kappa$), and its
+eccentricity-squared is $c^2/a^2=m$ \emph{exactly} (the elliptic parameter). Two
+independent computations of $L_{\mathrm{res}}$ --- the closed form and direct
+quadrature of the integrand --- agree to $<10^{-200}$ \hx{PF-G4}, so the frontier
+is numerically well-posed; every identity here survives $\kappa\mapsto\kappa_k$
+verbatim.
+\end{remark}
+
+\begin{remark}[The frontier map: Baker's reach, Schanuel's conditional, and the external-open tool-gaps]\label{rem:pffrontier}\tagE{}/\tagO{}/\tagC{} \hx{PF-2A--PF-2E, PF-1P1--PF-1P6, PF-1N1--PF-1N7, PF-G1--PF-G3}
+Against this skeleton the transcendence questions sort into exactly three tiers,
+each with its deciding tool or its named gap. \emph{Settled} \tagE{}: $\kappa$ is
+transcendental (Gelfond--Schneider at $(-1,\gp)$, since
+$\kappa=(i\pi/\ln\gp)/2i$ with $2i$ algebraic; inherited
+Theorem~\ref{thm:ratetrans}); $\tau_0$ is algebraic ($t^2-t-3$); and
+\emph{Baker's reach is pinned} --- $\{1,\ln2,\ln3,\ln\gp\}$ is
+$\overline\Q$-linearly independent \tagE{}, because $2,3,\gp$ are
+multiplicatively independent (the exact box $|a|,|b|,|c|\le6$ has
+$2^a3^b\gp^c=1$ only at the origin: for $c\neq0$ the $\sqrt5$-part $F_c/2\neq0$
+makes $\gp^c$ irrational, and $2^a3^b=1$ forces $a=b=0$) and Baker's
+linear-forms theorem then applies. \emph{Conditional on Schanuel} \tagO{}:
+$\{\ln\gp,\,i\pi\}$ is $\Q$-linearly independent ($\ln\gp$ real nonzero, $i\pi$
+purely imaginary nonzero) with algebraic exponentials $\gp,-1$, so Schanuel
+would give $\operatorname{trdeg}\ge2$ and hence $(\pi,\ln\gp)$ --- equivalently
+$(\kappa,\ln\gp)$, since $\Q(\kappa,\ln\gp)=\Q(\pi,\ln\gp)$ --- algebraically
+independent; the premise is forced but the conjecture is not, so this is
+\emph{not} a theorem here. \emph{Genuinely external-open} \tagO{}, with the
+tool-gap named in each case: the transcendence of $L_{\mathrm{res}}$ is untouched
+because its elliptic modulus $k=\sqrt m$ is \emph{transcendental}
+($m=\kappa^2/(1+\kappa^2)$, and the M\"obius inverse $K^2=m/(1-m)$ makes
+$m\in\overline\Q\iff\kappa\in\overline\Q$), so the Schneider/Chudnovsky
+elliptic-period theorems --- which require an algebraic modulus or CM lattice ---
+are \emph{inapplicable}; and the algebraic independence of
+$(\kappa,L_{\mathrm{res}})$ lies beyond even Schanuel (an elliptic-integral value
+outside the exp/log framework, Kontsevich--Zagier / period-conjecture territory).
+\emph{We resolve none of these.} As \tagC{} corroboration only, a
+validated-detector PSLQ search --- fail-first on six known relations (including a
+size-$6$ planted relation matching the flagship basis) and correctly silent on
+two transcendental controls \hx{PF-1P1--PF-1P6, PF-1N1--PF-1N2} --- finds
+\emph{no} integer relation of height $\le10^{12}$ at $230$ dps among the frontier
+bases $\{1,\kappa,\kappa^2,L_{\mathrm{res}},L_{\mathrm{res}}^2,
+\kappa L_{\mathrm{res}}\}$, $\{1,\pi,\ln\gp,\pi\ln\gp\}$,
+$\{1,\ln\gp,\ln2,\ln3\}$, and the $L_{\mathrm{res}}$ algebraicity ladders to
+degree $6$ \hx{PF-1N3--PF-1N7}. This \emph{corroborates, and never proves}, the
+open transcendence and independence statements; PSLQ silence is evidence, not a
+certificate. The entire map is branch-blind ($\kappa\mapsto\kappa_k$ verbatim)
+and selects no $k$ --- a characterization, not an OP-RATE derivation.
+\end{remark}
+
 \section{The canonical quarter-turn: $J=UA$}\label{sec:quarterturn}
 
 Everything in this section is unconditional \tagF{}: pure keystone/Clifford
@@ -1091,6 +1216,57 @@ under both readings, and the $\mu_4\subseteq S$ misreading of the emission-gap
 containment. Any $\chi$-selection remains a branch-blind
 \emph{characterization} of the quantum ($\pi/2\bmod2\pi$ for all $k$), never a
 branch derivation \hx{CH-E6}.
+\end{remark}
+
+\begin{proposition}[The K-seed rotation axis and the substrate-grounded atom D2$''$]\label{prop:d2reloc}\tagF{}/\tagE{} \hx{QT-A1--QT-A5, QT-B1--QT-B3, QT-C1--QT-C2, QT-G1, QT-G3}
+The $K$-seed $x^4+5x^2-5$ is a \emph{forced} substrate object (W-\S2), not a
+declared one; its roots are $\{\pm K,\ \pm i\beta\}$ with $K=5^{1/4}\tau$
+(terrain, real) and $\beta=5^{1/4}\gp$ (rotation). The rotation pair $\pm i\beta$
+is purely imaginary --- $\Rea(i\beta)=0$, $\Ima(i\beta)=\beta>0$ --- so
+$\Arg(\pm i\beta)=\pm\pi/2$ \emph{exactly}, while $|i\beta|^2=\beta^2=3\gp+1
+=\gp^4-1=\tfrac52+\tfrac32\sqrt5\neq1$ places it strictly off the unit circle
+($\beta\in[2.41,2.43]$, certified). Consequently the thin axiom
+\[
+\text{D2}''\colon\qquad
+\text{the winding multiplier's \emph{angle} is }\Arg(\pm i\beta),
+\]
+which takes only the argument (the modulus staying D1's $|m|=e^{-2\rho}$),
+\emph{forces} $\chi=\pm\pi/2$: the quarter-turn \emph{direction} is literally the
+argument of a forced object. This is \emph{disjoint} from the g1 obstruction of
+Proposition~\ref{prop:oncircleimage}: re-forcing cold (a $74613$-monomial box
+scan) that the on-circle image of $S$ is exactly $\mu_2=\{\pm1\}$, the argument
+$\pi/2$ is realized in $S$ only \emph{off-circle} (at the $K$-seed root
+$i\beta$), so D2$''$ is satisfiable exactly where the killed on-circle reading
+D2$'$ was not. Under the helicity obstruction (W-Thm.~11.1) a rotation
+multiplier is non-real, so among the $K$-seed roots the rotation pair is forced
+over the terrain pair; the forced winding generator $q=i\tau$ (minimal
+polynomial $x^4+3x^2+1$, roots $\pm i\tau,\pm i\gp$, all imaginary) has the same
+angle axis, pinning D2$''$ to the generator's own compass.
+\end{proposition}
+
+\begin{remark}[Net verdict: D2 relocated, {$W[\text{open}]2$} advanced not closed]\label{rem:d2verdict}\tagF{}/\tagC{} \hx{QT-C3--QT-C5, QT-D1--QT-D2, QT-A4}
+D2$''$ does \emph{not} strictly reduce D2. The residual selection ``the winding's
+angular clock is the $K$-seed \emph{rotation} axis'' is logically
+\emph{equivalent} to D2's quarter-turn selection: over the three competing corpus
+quanta $\{\pi:\Z/2\Z,\ 2\pi/5:\Z/5\Z,\ \pi/2:\Z/4\Z\}$ it excludes the pentagon
+($2\pi/5=\tfrac15$ turn $\notin(\pi/2)\Z$) and helicity-kills the real terrain
+axis $\pi$ \emph{exactly} as D2's principle does, so consuming ``use the rotation
+direction'' to conclude ``quarter-turn'' is a \tagF{} \emph{restatement}. What
+D2$''$ genuinely adds is \emph{grounding}: the value $\pi/2$ is no longer a bare
+declared number but the forced argument of the forced object $\pm i\beta$, and
+the completion $\Z/4\Z$ becomes a forced \emph{output} --- iterating the single
+$\tfrac14$ turn generates it, whereas D2 \emph{assumed} it. The characterization
+``D2$''_{\min}$ is the intended minimal, substrate-grounded form of D2's residual
+content'' is therefore \tagC{} (candidate), not forced: the clock-source
+selection remains declared, and a group-drop kills any purely-relational
+shortcut --- the rotation pair \emph{alone} has relational (pairwise-difference)
+group only $\Z/2\Z$, so the full $\Z/4\Z$ requires the absolute angle, iterated
+(a no-tie, \hx{QT-A4}). \emph{Net register motion for $W[\text{open}]2$:} it
+stays PARTIAL as a derivation but is \emph{advanced} --- substrate-grounded,
+disjoint-from-g1, with $\chi=\pm\pi/2$ and $\Z/4\Z$ downgraded from declared to
+forced outputs. Like every branch statement it selects the quantum
+($\pi/2\bmod2\pi$) only, never the winding number, so OP-RATE stays closed as a
+classification \hx{QT-D1}.
 \end{remark}
 
 
@@ -1401,6 +1577,57 @@ to the pinned/twisted-shell dichotomy. Within-shell torsion coherence was
 decided; the cross-shell mirrored-class ($\nu$-criterion) half of P1$'$ is out
 of the detector's scope, flagged not resolved. This is a bounded \tagC{}
 corroboration (candidate), not a proof; general P1$'$ remains open.
+\end{remark}
+
+\begin{proposition}[The odd relational floor, bracketed and reduced to a single lemma]\label{prop:oddfloorred}\tagF{}/\tagE{}/\tagC{}/\tagO{} \hx{OF-A1--OF-A4, OF-B1--OF-B6, OF-C1--OF-C8, OF-H1--OF-H6}
+This sharpens the bracket $\mu_S\le\mu_{\mathrm{rel}}(\text{odd})\le2$ of
+Proposition~\ref{prop:oddfloor} in two independent registers.
+\emph{(i) Computed} \tagC{}: over relationally-admissible objects carrying the
+full $\Z/m$ charge ($m=3,5,7,9$), enumerated up to a \emph{logged} box (shell
+families $x^m-a$, $a\le8$, exact; cyclotomic-padded and reciprocal/pentagon
+keystones; plus a brute-force over irreducible monic integer polynomials in
+$\{(\deg3,|c|\le6),(\deg4,|c|\le3),(\deg5,|c|\le2)\}$, $543$ admissible objects),
+the minimum Mahler measure is \emph{exactly} $2$, with unique minimizer $x^m-2$;
+the parity-split falsifier is clean --- no odd-charge object falls below $2$,
+while every sub-$2$ admissible object found is even-charge ($q_k$-type,
+$\M=\gp$). \emph{(ii) The minimizer} \tagF{}: $x^m-2$ is Eisenstein-irreducible
+at $2$, carries relational group $\Z/m$ (angle set $\{j/m\}$, a single coherence
+class) and anchor $m$, and has $\M=2$ by a pure integer decision (all roots of
+modulus $2^{1/m}>1$); cyclotomic padding is $\M$-neutral, and the real reciprocal
+sub-case is forced $\ge\gp^2>2$ (rational-trace unit). \emph{(iii) The reduction}
+\tagF{}\emph{ given corpus}: the lower bound $\mu_{\mathrm{rel}}(\text{odd }m)=2$
+for \emph{all} odd $m$ is \emph{equivalent} to the single named lemma
+\[
+\text{(ODD-2)}\colon\quad\text{every relationally-admissible object with odd
+relational group }\Z/m\text{ and }\M>1\text{ has }\M\ge2
+\]
+(irreducibles suffice), the reduction step itself being forced --- by Mahler
+multiplicativity, Kronecker's $\M\ge1$ (${=}1$ iff cyclotomic), the subgroup fact
+that factors of an odd-charge object are odd-charge, and the anchor-normalizing
+sign twist. \emph{(iv) The lemma is external-open} \tagO{}: the corpus forces
+$\Z/3$ (elementary), the $\pi$-ray exclusion of $\gp$ ($\tfrac12\notin\Z/m$ for
+odd $m$), and the real-reciprocal floor $\gp^2>2$, but the non-reciprocal
+sub-case is forced only to Smyth's $\mu_S=1.3247\ldots$ (root of $x^3-x-1$,
+certified in $(1,2)$) --- the residual gap $[\mu_S,2)$ is the
+Schur--Siegel--Smyth / Lehmer--pentagon core, which the shipped realification
+(Adams $\psi^m$) handle cannot close (asking its image to clear $2^m$ merely
+restates the claim). \emph{Honest correction:} granting the corpus reciprocal
+bound, (ODD-2) reduces to the non-reciprocal atom (ODD-2-NR), but the lift
+$\mu_S\to2$ \emph{is} that lemma's content, \emph{not} a corollary of Smyth ---
+Smyth alone stops at $\mu_S<2$ (exact: $(3/2)^3-(3/2)-1>0$). That (ODD-2-NR) is
+the intended minimal atom is \tagC{} (candidate). The $=2$ floor itself stays
+open.
+\end{proposition}
+
+\begin{remark}[P4 inherits P3 exactly]\label{rem:p4transfer}\tagC{}/\tagO{} \hx{OF-D1, OF-D2}
+The v1.8 recovery reduced P4 --- does $\mu_{\mathrm{rel}}$ depend on the charge
+group beyond the single parity bit $2\mid m$? --- to P3 via
+Remark~\ref{rem:p4recover} and the forced even-branch uniformity
+$\mu_{\mathrm{rel}}(\text{even})=\gp$. Since the odd branch is the same constant
+$2$ under both registers above --- computed for $m=3,5,7,9$, and $=2$
+conditionally on (ODD-2) --- P4 factors through the parity bit with \emph{exactly}
+P3's status: affirmative \tagC{} up to the logged bounds, forced-affirmative iff
+(ODD-2). It adds no new burden.
 \end{remark}
 
 \section{The state-angle chart}\label{sec:stateangle}
@@ -2154,6 +2381,86 @@ exact landmark facts are all individually forced, but the cap onset itself is
 the genuine remaining open formation content.
 \end{remark}
 
+\begin{theorem}[OP-RADIUS reduced to the declared atom D4]\label{thm:d4reduction}\tagF{} \hx{RA-A1--RA-A4, RA-B1--RA-B8, RA-G2}
+Define the atom
+\[
+\text{D4}=(\text{i})\ \text{an orientation of the apex-ramified double cover }
+F(r)/F\ \ \wedge\ \ (\text{ii})\ \text{the cap onset,}
+\]
+where (i) fixes the sign of the odd generator $\pm(K^2/z_c)\,z$ --- the signed
+height, the unique-up-to-sign odd generator of
+Proposition~\ref{prop:bridgeobstruction} --- and (ii) fixes the join point
+(formation completes at the lens $z_c$, Remark~\ref{rem:atomledger}). Then,
+\emph{given} D4 and the inherited chart-ties --- exponent $\tfrac12$ (area
+transfer, Proposition~\ref{prop:areatransfer}), cap value $K$ (the $(K,K)$ point,
+whitepaper Thm.~15.1), kink slope $K/\sqrt3$ (whitepaper Prop.~15.2(a)), all
+v1.8-forced --- the profile
+\[
+r(z)=K\sqrt{z/z_c}\ \text{ on }[0,z_c],\qquad r(z)=K\ \text{ on }[z_c,1],
+\]
+is \emph{uniquely} determined, and each half of D4 is \emph{necessary}: dropping
+(i) leaves both $\pm r$ chart-consistent (the tie $r^2$, $|\mathrm{cap}|=K$ is
+sign-blind, yet $2K\neq0$); dropping (ii) leaves the join free (an alternate
+onset $z_0=\tfrac45$ gives a chart-consistent capped paraboloid distinct from the
+inherited one, with separation exhibited at $z^*=\tfrac56$).
+\end{theorem}
+
+\begin{proof}[Machine discharge]
+Exact reconstruction and the two minimality witnesses are checked over
+$\Q(\sqrt5)$ extended by $\sqrt3$ \hx{RA-B2, RA-B4, RA-B5, RA-G2}; the reduction
+ledger (exponent, cap value, kink slope chart-tied; only sign and onset free) is
+\hx{RA-B7}, and de-restatement (D4 adds only a $\Z/2$ sign plus one onset value,
+$r^2$ being chart-odd hence unreachable from D1--D3) is \hx{RA-B8}.
+\end{proof}
+
+\smallskip\noindent
+\textbf{Honest scope.} This reduces OP-RADIUS to the declared atom D4
+\emph{relative to} the inherited chart-ties; it is \emph{not} an ab-initio
+derivation of $r$ and does \emph{not} close whitepaper \tagO{}~1. The exponent
+tie in particular is itself a restatement of the inherited profile
+(Proposition~\ref{prop:areatransfer}), not an independent derivation of the
+exponent.
+
+\begin{remark}[D4 is minimal-among-its-halves but not a unique decomposition]\label{rem:d4candidate}\tagC{} \hx{RA-B6, RA-B7}
+D4 is minimal among its two halves, but the decomposition is \emph{not} unique:
+the kink slope $K/(2z_0)$ is a strictly monotone (hence bijective) function of
+the onset $z_0$, so ``kink-slope value $+$ sign'' is an equivalent atom (slope
+$\leftrightarrow$ onset is a bijection, mirroring $\rho(z_c)=\ln2\iff
+z_c=\sqrt3/2$). Hence ``D4 is \emph{the} intended minimal radius axiomatization''
+is \tagC{} (candidate) --- a modeling choice, not a forced uniqueness.
+\end{remark}
+
+\begin{proposition}[Differential strengthening: an honest negative and a conditional sharpening]\label{prop:radiff}\tagI{}/\tagO{} \hx{RA-C1--RA-C8}
+\emph{(a) The naive strengthening fails} (honest negative): $r$ \emph{is}
+elementary, $r=(K/\sqrt{z_c})(z^2)^{1/4}=(K/\sqrt{z_c})\exp(\tfrac14\ln(z^2))$, so
+it lies in the full elementary-differential closure of the chart field; the
+attempt to upgrade the v1.8 valuation certificate to non-membership \emph{there}
+breaks, because $d/dz$ shifts valuation by $-1$ and turns the even-valuation
+$\rho$ into the odd-valuation $\rho'=z/(1-z^2)$ (parity is not
+differential-stable). \emph{(b) The differential-stable sharpening}
+\tagO{}\emph{ (conditional)}: under the \emph{unit-log hypothesis} --- the
+substrate's only logarithm is $\rho=-\tfrac12\ln(1-z^2)$, a log of the apex
+\emph{unit} $1-z^2$ (valuation $0$) --- the apex \emph{monodromy-order} invariant
+excludes $r$ from the \emph{unramified} elementary-differential closure
+$F_{\mathrm{ed}}$: order-$2$ data ($r$, leading power $z^{1/2}$) is unreachable
+from order-$1$ data, while $r^2$ and $\rho'$ are order-$1$ (hence \emph{in}
+$F_{\mathrm{ed}}$: indeed $r^2=(K^2/z_c)\,\rho'(1-z^2)$) yet odd-valuation (hence
+\emph{outside} the base field $F$). This excludes a \emph{strictly larger} field
+than the v1.8 valuation certificate and is differential-stable. It rests on a
+finite generator battery plus a leading-exponent argument, not a fully general
+closure theorem, and is \tagO{} conditional on the unit-log hypothesis.
+\end{proposition}
+
+\begin{remark}[Bounded no-tie re-confirmation of the constructive bridge]\label{rem:ratie}\tagF{}/\tagC{} \hx{RA-D1--RA-D3, RA-A4, RA-G1}
+Re-confirming Proposition~\ref{prop:bridgeobstruction} over a finite ledger of
+$\sim11$ canonical amplitudes: no canonical amplitude supplies the radius
+coefficient $K/\sqrt{z_c}$, since $(K^2/z_c)^2=\tfrac{70}3-10\sqrt5\neq1$ and
+differs (exact $\Q(\sqrt5)$, and certified by disjoint intervals) from the square
+of every listed amplitude $\{1,K,K^2,\gp,\tau,\gapc,z_c,1/z_c,\sqrt5,2-\gp,
+K/\sqrt3\}$. The scale enters only through the odd signed-height generator
+$(K^2/z_c)\,z$ --- the D4(i) datum --- never as a canonical scalar.
+\end{remark}
+
 
 \section{Path stretch, rail length, and the conjugate relative phase}\label{sec:pathstretch}
 
@@ -2776,6 +3083,40 @@ $50$--$140$-dps quadrature/\texttt{pslq}/decimal corroborations, or fail-first
 falsifier rejections, none load-bearing; all five exit 0; each dossier passed
 two-lane adversarial verification, with the companion papers read from the
 Echo-S-Research archive read-only and their machinery re-encoded cold.
+
+\smallskip\noindent
+\textbf{v1.9 session harnesses} (four, written cold this session, one per
+dossier; every \hx{RA-}, \hx{QT-}, \hx{OF-}, and \hx{PF-} check ID cited in the
+v1.9 sections above appears in the corresponding file):
+\begin{center}\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lp{10.7cm}c@{}}
+\toprule
+harness & content & exact $+$ guards\\
+\midrule
+\texttt{ra\_softcheck.py} & OP-RADIUS D4-reduction ($D4\Rightarrow r$ unique $+$ minimality) and the differential strengthening (honest negative $+$ conditional apex-monodromy-order sharpening) (Thm.~\ref{thm:d4reduction}--Rem.~\ref{rem:ratie}) & $23+4$\\
+\texttt{qt\_softcheck.py} & D2 relocation: the $K$-seed rotation axis forces $\chi=\pm\pi/2$ off-circle (disjoint from g1); net verdict $W[\text{open}]2$ advanced not closed (Prop.~\ref{prop:d2reloc}, Rem.~\ref{rem:d2verdict}) & $19+3$\\
+\texttt{of\_softcheck.py} & odd relational floor: computed $=2$ up to a logged box, reduction to the single lemma (ODD-2), P4 transfer (Prop.~\ref{prop:oddfloorred}, Rem.~\ref{rem:p4transfer}) & $20+6$\\
+\texttt{pf\_softcheck.py} & period frontier: the forced-identity ledger (with the new elliptic geometric identity), the Baker/Schanuel/external-open tool-gap map, and the validated-detector PSLQ bounded-negative (Rem.~\ref{rem:pfledger}, Rem.~\ref{rem:pffrontier}) & $13+13\,\mathrm{PSLQ}+5$\\
+\midrule
+ & \textbf{total (exact/computed $+$ guards $+$ PSLQ)} & $\mathbf{75+18+13}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Across the seventeen session harnesses (\texttt{tx}, \texttt{mx}, \texttt{rx},
+\texttt{ux}, \texttt{ex}, \texttt{cx}, \texttt{lx}, \texttt{dx}, \texttt{cl},
+\texttt{rd}, \texttt{ch}, \texttt{rn}, \texttt{pm}, \texttt{ra}, \texttt{qt},
+\texttt{of}, \texttt{pf}) the running total is $\mathbf{424}$ exact checks $+$
+$\mathbf{67}$ certified guards $+$ $\mathbf{13}$ PSLQ corroborations, all exit 0.
+Environment pin: Python 3.12.10, sympy 1.14.0, mpmath 1.3.0 (the \texttt{py}
+launcher); every exact decision in $\Q/\Q(\sqrt5)$ extended by radicals and $i$
+(and by $\sqrt{13}$ where the Salem trace-down enters), with $\Q(\sqrt5)$ signs
+by rational arithmetic and $K$ decided at the squared level; the $18$ guards are
+interval-certified (mpmath \texttt{iv}, 60 dps), while the $13$ PSLQ
+integer-relation searches (230 dps, coefficient-height $\le10^{12}$) are counted
+as \tagC{} corroboration --- never a transcendence or algebraic-independence
+proof; all four exit 0; each dossier passed two-lane adversarial verification,
+with the companion papers read from the Echo-S-Research archive read-only and
+their machinery re-encoded cold.
 
 \smallskip\noindent
 Every boxed identity of the source reports and every displayed identity of the

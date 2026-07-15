@@ -27,9 +27,13 @@ audit + independent mathematical refutation) during authoring.
 | `ch_softcheck.py` | v1.8: χ doctrine — on-circle image of S = μ₂, so ±i ∉ S | 26 + 2 |
 | `rn_softcheck.py` | v1.8: relational note — P4 recovered/reduced, odd floor bracketed, P1′ scan | 20 + 4 |
 | `pm_softcheck.py` | v1.8: period-relation map (τ₀ algebraic; κ-vs-τ₀ negative; L_res period) | 27 + 7 |
+| `ra_softcheck.py` | v1.9: OP-RADIUS reduced to the declared atom D4 + differential strengthening | 23 + 4 |
+| `qt_softcheck.py` | v1.9: D2 relocation to the K-seed rotation axis (advance, g1-disjoint) | 19 + 3 |
+| `of_softcheck.py` | v1.9: odd relational floor bracketed + reduced to the lemma (ODD-2) | 20 + 6 |
+| `pf_softcheck.py` | v1.9: period frontier — forced ledger, Baker/Schanuel map, PSLQ | 13 + 5 (+13 PSLQ) |
 | `decimal_audit.py` | register decimal literals under the 0.51-ulp / truncation matcher | 4 literals |
 
-Session totals across the 13 tx…pm harnesses: **349 exact checks + 49 certified guards**.
+Session totals across the 17 tx…pf harnesses: **424 exact checks + 67 certified guards + 13 PSLQ corroborations**.
 Two harnesses the paper cites but does not ship (cite-not-certify): `ozy_softcheck.py` (91),
 `relational_softcheck.py` (27). Run one pipe directly: `py code/2026-07-complex-rung-generator/tx_softcheck.py`.
 Pinned stack: Python 3.12, sympy 1.14.0, mpmath 1.3.0.

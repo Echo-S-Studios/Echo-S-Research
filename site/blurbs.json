@@ -77,6 +77,6 @@
   "2026-07-complex-rung-generator": {
     "title": "The Complex Rung Generator, the State-Angle Chart, and the Residual Sphere",
     "series": "Golden Substrate",
-    "description": "The whole discrete rung ladder is the orbit of one complex number q = iτ, with q⁴ = gap and a ℤ/4ℤ quarter-turn. v1.8: the rate κ = π/(2 ln φ) is transcendental and OP-RATE closes as a classification (a discrete-substrate no-go, seven characterizations the complete menu); the rail length is incomplete-elliptic with certified non-elementarity; an apex-ramification certificate sharpens the open radius problem. Thirteen exact-arithmetic harnesses (349 checks + 49 guards)."
+    "description": "The whole discrete rung ladder is the orbit of one complex number q = iτ, with q⁴ = gap and a ℤ/4ℤ quarter-turn. The rate κ = π/(2 ln φ) is transcendental and OP-RATE closes as a classification; the rail length is incomplete-elliptic with certified non-elementarity. v1.9: OP-RADIUS reduces to a minimal declared atom D4 (orientation + cap-onset); the quarter-turn axiom D2 is relocated to a substrate-grounded, g1-disjoint atom; the odd relational floor is reduced to a single named lemma; and the period frontier is mapped (Baker pinned, the transcendence/independence walls left external-open with named tool-gaps). Seventeen exact-arithmetic harnesses (424 checks + 67 guards + PSLQ corroborations)."
   }
 }
