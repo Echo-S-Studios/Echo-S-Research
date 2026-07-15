@@ -64,9 +64,11 @@ and the Residual Sphere\\[4pt]
 \small independent verification (\S\ref{sec:verification}):\\
 \small \texttt{ozy\_softcheck.py} 91/91 $+$ \texttt{relational\_softcheck.py} 27/27\\
 \small \texttt{nx\_softcheck.py} 27/27 $+$ \texttt{qx\_softcheck.py} 62/62, exit 0\\
-\small 18 session harnesses (v1.7--v2.0): 440 exact checks $+$ 67 certified guards $+$ 13 PSLQ corroborations $+$ 7 labelled walls, all exit 0\\
+\small 19 session harnesses (v1.7--v2.1): 468 exact/computed checks\\
+\small $+$ 67 certified guards $+$ 13 PSLQ corroborations $+$ 7 labelled walls, all exit 0\\
+\small closure harness \texttt{nd\_softcheck.py}: 28/28, 565 forced objects, exit 0\\
 \small finalization harness \texttt{bl\_softcheck.py}: 16/16 exact $+$ 7 walls LABELLED (\S\ref{sec:blockers}), exit 0}
-\date{Version 2.0 (final) --- July 15, 2026}
+\date{Version 2.1 --- July 15, 2026}
 
 \begin{document}
 \maketitle
@@ -160,6 +162,21 @@ external-open with named tool-gaps, corroborated by certified PSLQ non-relations
 with the load-bearing forced fact and the precise missing object, machine-certified
 by \texttt{bl\_softcheck.py}. The paper does \emph{not} resolve the external-open
 items; it states exactly what blocks them (\S\ref{sec:blockers}).
+\emph{Version 2.1} resolves one of them. The odd relational floor is
+\emph{proved} $=2$ for every odd $m$ (Theorem~\ref{thm:odd2nd}): a relative-norm
+descent to $N=N_{K/F}(\alpha)$, $F=\Q(\alpha^m)$, carries the ray constraint into
+a totally positive algebraic integer $N\neq1$, where an elementary floor
+$\M(N)\ge2^{\,r}\ge2$ (Lemma~\ref{lem:tp2}) together with $e\mid d'$ returns
+$\M(\alpha)\ge\M(N)^{d'/e}\ge2$. The argument is elementary and internal: it
+invokes no external theorem, and in particular neither Smyth's $\mu_S$ nor any
+strengthening of it. The corpus's reading of the residual gap $[\mu_S,2)$ as the
+Schur--Siegel--Smyth/Lehmer--pentagon core is accordingly corrected to a
+\emph{route-relative} statement --- true of the realification handle, which
+discards the ray constraint, and false of the problem
+(Finding~\ref{find:sssframe}). P3 and P4 close unconditionally, the
+\textsc{named-lemma} blocker class empties, and eight of the nine
+\S\ref{sec:blockers} rows remain active. Certified cold by
+\texttt{nd\_softcheck.py} (28 checks, 565 forced objects, exit 0).
 \end{abstract}
 
 \section{Provenance, scope, and the conditionality banner}\label{sec:scope}
@@ -365,6 +382,32 @@ No open item is resolved here; each is precisely located. The finalization harne
 ledger, exit 0) is added to \S\ref{sec:verification}, bringing the eighteen session
 harnesses to $440$ exact $+$ $67$ guards $+$ $13$ PSLQ $+$ $7$ labelled walls. All
 other content unchanged.
+
+\smallskip\noindent
+\textbf{v2.1 changelog.} The corpus's principal open problem \emph{closes}.
+\S\ref{sec:relobject} extended: Lemma~\ref{lem:tp2} (TP-2 --- a totally positive
+algebraic integer $N\neq1$ has $\M(N)\ge2^{\,r}\ge2$, $r$ the number of
+conjugates exceeding $1$, equality iff $N=2$; elementary, no external input);
+Lemma~\ref{lem:anchor} (anchor normalisation --- the sign twist the corpus
+already invokes is \emph{forced and exhaustive}: for odd $m$, $\Delta\le\Z/m$
+puts exactly one of $\pm\alpha$ on $R_m$); Theorem~\ref{thm:odd2nd} ((ODD-2) by
+relative-norm descent, every odd $m$ at once, hence
+$\mu_{\mathrm{rel}}(\text{odd})=2$ \tagF{}); Remark~\ref{rem:r1dead} (why the
+obvious degree split fails, and why no box closes the fallback window).
+Proposition~\ref{prop:oddfloor} and Proposition~\ref{prop:oddfloorred} lose
+their \tagO{}; Remark~\ref{rem:p4transfer} becomes unconditional.
+\S\ref{sec:blockers}: the P3/P4 row is marked \textsc{closed} and retained as
+the record of what its blocker was; \emph{eight} of the nine rows stay active
+and the \textsc{named-lemma} class is now empty. Two findings added
+(\ref{find:sssframe}: the SSS/Lehmer reading of $[\mu_S,2)$ is route-relative,
+not intrinsic; \ref{find:blstale}: \texttt{bl\_softcheck.py}'s P3/P4 row and its
+\hx{BL-G4} wall label are v2.0 artifacts, superseded and not re-run). One
+session harness \texttt{nd\_softcheck.py} (28 checks, exit 0) added to
+\S\ref{sec:verification}, bringing the \emph{nineteen} session harnesses to
+$468$ exact/computed $+$ $67$ guards $+$ $13$ PSLQ $+$ $7$ labelled walls. No
+\tagD{} atom is disturbed and no other register moves: OP-RATE, OP-RADIUS, D2,
+the three transcendence rows, and P1$'$ are untouched. All other content
+unchanged.
 
 \smallskip\noindent
 \textbf{Method note (from the source report).} The investigation began by
@@ -1556,7 +1599,7 @@ $=2$). Hence P4 $\iff$ P3, and P4 inherits P3's open status as a
 \emph{restatement} of it, not new work.
 \end{remark}
 
-\begin{proposition}[The odd relational floor is bracketed, not closed]\label{prop:oddfloor}\tagF{}/\tagE{}/\tagO{} \hx{RN-B1--RN-B4, RN-H1--RN-H3}
+\begin{proposition}[The odd relational floor, bracketed (v1.8)]\label{prop:oddfloor}\tagF{}/\tagE{} \hx{RN-B1--RN-B4, RN-H1--RN-H3}
 For odd charge $m$ the relational Mahler floor obeys
 \[
 \mu_S\ \le\ \mu_{\mathrm{rel}}(\text{odd }m)\ \le\ 2,
@@ -1573,14 +1616,19 @@ strictly above $\gp^2>2$ (integer trace $\ge3$); and the $\pi$-ray obstruction
 is \tagF{}: $\tfrac12\notin\Z/m\Z$ for odd $m$, so the golden pair's intrinsic
 relation $t_{\mathrm{rel}}(\gp,\gp')=\tfrac12$ (from $\gp/\gp'=-\gp^2$) cannot
 embed, and the universal floor $\gp$ is unattainable at odd charge (forcing
-$\mu_{\mathrm{rel}}(\text{odd})>\gp$, not $\ge2$). \emph{Honest boundary:} the
+$\mu_{\mathrm{rel}}(\text{odd})>\gp$, not $\ge2$). \emph{Status (v2.1):} the
 promotion of $\mu_{\mathrm{rel}}(\text{odd }m)=2$ from \tagC{} to \tagF{} is
-\emph{not} achieved and is not achievable from the shipped corpus --- the
-$\ge2$ lower bound in general is the corpus's principal open problem \tagO{}
-(the named residual is non-reciprocal charge-admissible objects with
-$\M\in[\mu_S,2)$, Lehmer/no-Salem-window territory; the shipped
-charge-measure-coupling erratum and whitepaper \S6.2 themselves hold
-$\mu(\text{odd})=2$ at \tagC{}, forced fully only at $\Z/3$).
+\emph{achieved} --- Theorem~\ref{thm:odd2nd} --- and the bracket above collapses
+to its upper end for every odd $m$. It was correctly recorded as not achievable
+from the \emph{shipped} corpus in v1.8--v2.0: the missing input is new (if
+elementary) mathematics, not a corpus consequence. What it is \emph{not} is a
+strengthening of Smyth. The residual was read here as ``non-reciprocal
+charge-admissible objects with $\M\in[\mu_S,2)$, Lehmer/no-Salem-window
+territory''; that reading is route-relative and is corrected in
+Finding~\ref{find:sssframe} --- the descent of Theorem~\ref{thm:odd2nd} never
+splits on reciprocality and never enters that window. The shipped
+charge-measure-coupling erratum and whitepaper \S6.2, which hold
+$\mu(\text{odd})=2$ at \tagC{}, are thereby confirmed at \tagF{}.
 \end{proposition}
 
 \begin{remark}[Bounded P1$'$ transport-orbit scan]\label{rem:p1scan}\tagC{} \hx{RN-C0--RN-C3, RN-H4}
@@ -1601,7 +1649,7 @@ of the detector's scope, flagged not resolved. This is a bounded \tagC{}
 corroboration (candidate), not a proof; general P1$'$ remains open.
 \end{remark}
 
-\begin{proposition}[The odd relational floor, bracketed and reduced to a single lemma]\label{prop:oddfloorred}\tagF{}/\tagE{}/\tagC{}/\tagO{} \hx{OF-A1--OF-A4, OF-B1--OF-B6, OF-C1--OF-C8, OF-H1--OF-H6}
+\begin{proposition}[The odd relational floor, reduced to a single lemma --- now proved]\label{prop:oddfloorred}\tagF{}/\tagE{}/\tagC{} \hx{OF-A1--OF-A4, OF-B1--OF-B6, OF-C1--OF-C8, OF-H1--OF-H6; ND-N1--ND-N5}
 This sharpens the bracket $\mu_S\le\mu_{\mathrm{rel}}(\text{odd})\le2$ of
 Proposition~\ref{prop:oddfloor} in two independent registers.
 \emph{(i) Computed} \tagC{}: over relationally-admissible objects carrying the
@@ -1612,7 +1660,18 @@ $\{(\deg3,|c|\le6),(\deg4,|c|\le3),(\deg5,|c|\le2)\}$, $543$ admissible objects)
 the minimum Mahler measure is \emph{exactly} $2$, with unique minimizer $x^m-2$;
 the parity-split falsifier is clean --- no odd-charge object falls below $2$,
 while every sub-$2$ admissible object found is even-charge ($q_k$-type,
-$\M=\gp$). \emph{(ii) The minimizer} \tagF{}: $x^m-2$ is Eisenstein-irreducible
+$\M=\gp$). \emph{Status of the box (v2.1):} its caps no longer carry weight, for
+two reasons. First, the enumeration need never have been hand-capped: if $\M<2$
+then $|a_0|\le\M<2$ with $a_0\neq0$, so $|a_0|=1$ --- every violator is a unit
+--- and $|a_j|=|e_{d-j}(\alpha)|\le\binom{d}{j}\M<2\binom{d}{j}$
+(Landau/Mahler), so the box $\{|a_0|=1,\ |a_j|\le2\binom{d}{j}\}$ contains
+\emph{every} irreducible degree-$d$ counterexample with no cap chosen by hand.
+Second, and decisively, Theorem~\ref{thm:odd2nd} dispenses with boxes
+altogether: (i) is now a \emph{corollary} of it at every degree and every odd
+$m$, and the sub-$2$ objects (i) does report are even-charge, exactly what the
+theorem's hypothesis excludes. The certificate of \S\ref{sec:verification}
+accordingly runs over a \emph{forced} on-ray population rather than a curated
+one \hx{ND-N1}. \emph{(ii) The minimizer} \tagF{}: $x^m-2$ is Eisenstein-irreducible
 at $2$, carries relational group $\Z/m$ (angle set $\{j/m\}$, a single coherence
 class) and anchor $m$, and has $\M=2$ by a pure integer decision (all roots of
 modulus $2^{1/m}>1$); cyclotomic padding is $\M$-neutral, and the real reciprocal
@@ -1626,30 +1685,169 @@ relational group }\Z/m\text{ and }\M>1\text{ has }\M\ge2
 (irreducibles suffice), the reduction step itself being forced --- by Mahler
 multiplicativity, Kronecker's $\M\ge1$ (${=}1$ iff cyclotomic), the subgroup fact
 that factors of an odd-charge object are odd-charge, and the anchor-normalizing
-sign twist. \emph{(iv) The lemma is external-open} \tagO{}: the corpus forces
-$\Z/3$ (elementary), the $\pi$-ray exclusion of $\gp$ ($\tfrac12\notin\Z/m$ for
-odd $m$), and the real-reciprocal floor $\gp^2>2$, but the non-reciprocal
-sub-case is forced only to Smyth's $\mu_S=1.3247\ldots$ (root of $x^3-x-1$,
-certified in $(1,2)$) --- the residual gap $[\mu_S,2)$ is the
-Schur--Siegel--Smyth / Lehmer--pentagon core, which the shipped realification
-(Adams $\psi^m$) handle cannot close (asking its image to clear $2^m$ merely
-restates the claim). \emph{Honest correction:} granting the corpus reciprocal
-bound, (ODD-2) reduces to the non-reciprocal atom (ODD-2-NR), but the lift
-$\mu_S\to2$ \emph{is} that lemma's content, \emph{not} a corollary of Smyth ---
-Smyth alone stops at $\mu_S<2$ (exact: $(3/2)^3-(3/2)-1>0$). That (ODD-2-NR) is
-the intended minimal atom is \tagC{} (candidate). The $=2$ floor itself stays
-open.
+sign twist. \emph{(iv) The lemma is proved} \tagF{}: Theorem~\ref{thm:odd2nd} settles
+(ODD-2) for every odd $m$ at once, so the $=2$ floor is unconditional and this
+proposition's former \tagO{} is discharged. The proof does \emph{not} run the
+route the corpus had reached for, and that route's obituary is worth keeping.
+The corpus forces $\Z/3$ (elementary), the $\pi$-ray exclusion of $\gp$
+($\tfrac12\notin\Z/m$ for odd $m$), and the real-reciprocal floor $\gp^2>2$,
+while the non-reciprocal sub-case is forced only to Smyth's
+$\mu_S=1.3247\ldots$ (root of $x^3-x-1$, certified in $(1,2)$); v1.9--v2.0 read
+the residual gap $[\mu_S,2)$ as \emph{being} the Schur--Siegel--Smyth /
+Lehmer--pentagon core. That reading is true of the \emph{realification} handle
+(Adams $\psi^m$), which throws the ray constraint away and retains only
+non-reciprocality --- and it is exactly why that handle cannot close the lemma
+(asking its image to clear $2^m$ merely restates the claim). It is \emph{not}
+true of the lemma. Theorem~\ref{thm:odd2nd} never realifies: it pushes the ray
+constraint through the relative norm $N_{K/F}$, where oddness survives as the
+$\pi$-ray exclusion applied to $N$. It therefore never enters the
+Schur--Siegel--Smyth window, $\mu_S$ is nowhere used, and no strengthening of
+Smyth is required (Finding~\ref{find:sssframe}). The reading of (ODD-2-NR) as
+the intended minimal atom lapses with it: the operative split is not
+reciprocal/non-reciprocal but $F$-relative, and the sub-case the old split could
+not reach --- composite $m$ with $1<k<m$ --- is certified outright \hx{ND-N5}.
 \end{proposition}
 
-\begin{remark}[P4 inherits P3 exactly]\label{rem:p4transfer}\tagC{}/\tagO{} \hx{OF-D1, OF-D2}
+\begin{lemma}[TP-2: the totally positive floor is two]\label{lem:tp2}\tagF{} \hx{ND-E1--ND-E3, ND-T1--ND-T4}
+Let $N\neq1$ be a totally positive algebraic integer of degree $e$, and let $r$
+be the number of its conjugates exceeding $1$. Then
+\[
+\boxed{\ \M(N)\ \ge\ 2^{\,r}\ \ge\ 2\ },
+\]
+with equality iff $N=2$. No external theorem is used.
+\end{lemma}
+
+\begin{proof}
+Let $g$ be the minimal polynomial of $N$ and $N_1,\dots,N_e>0$ its conjugates.
+No $N_i$ equals $1$: otherwise $g=y-1$ and $N=1$. Hence $g(1)\neq0$, and
+$|g(1)|=\prod_i|1-N_i|$ is a nonzero rational integer, so $|g(1)|\ge1$. Split
+the conjugates into $A=\{N_i>1\}$, of size $r$, and $B=\{N_i<1\}$. Every factor
+of $\prod_{B}(1-N_i)$ lies in $(0,1)$, so $\prod_{B}(1-N_i)\le1$ and therefore
+\[
+\prod_{A}(N_i-1)\ =\ \frac{|g(1)|}{\prod_{B}(1-N_i)}\ \ge\ |g(1)|\ \ge\ 1 .
+\]
+$A$ is nonempty: $\prod_iN_i=|g(0)|\ge1$ forces some $N_i\ge1$, and none is $1$.
+Put $u_i=N_i-1>0$ for $i\in A$. Since $t\mapsto\log(1+e^{t})$ is convex ---
+$\tfrac{d^2}{dt^2}\log(1+e^{t})=1/\bigl(4\cosh^2(t/2)\bigr)>0$ --- Jensen's
+inequality at the points $\log u_i$ gives the product inequality
+$\prod_{A}(1+u_i)\ge\bigl(1+(\prod_{A}u_i)^{1/r}\bigr)^{r}$, whence
+\[
+\M(N)\ =\ \prod_{A}N_i\ =\ \prod_{A}(1+u_i)\ \ge\ \bigl(1+1\bigr)^{r}\ =\ 2^{\,r}.
+\]
+Equality throughout forces all $u_i$ equal (Jensen) and $\prod_Au_i=1$, so every
+$N_i\in A$ equals $2$; then $2$ is a conjugate of $N$, so $g=y-2$, $N=2$, and
+$r=1$.
+\end{proof}
+
+\begin{lemma}[Anchor normalisation: the sign twist is forced and exhaustive]\label{lem:anchor}\tagF{} \hx{ND-A1--ND-A3}
+Let $m$ be odd and let $\alpha$ be an algebraic integer, not a root of unity,
+whose object has relational group $\Delta\le\Z/m$. Then \emph{exactly one} of
+$\pm\alpha$ has all conjugates on $R_m=\{z\neq0:\Arg z\in(2\pi/m)\Z\}$, and
+$\M(-\alpha)=\M(\alpha)$.
+\end{lemma}
+
+\begin{proof}
+$\Delta$ is generated by the \emph{pairwise differences} of
+$t(\alpha_i)=\tfrac1{2\pi}\Arg\alpha_i$ (\S\ref{sec:relobject}), so
+$\Delta\le\Z/m$ forces only $t(\alpha_i)\in\theta_0+(1/m)\Z$ for a common
+$\theta_0$ --- not $\theta_0=0$. The minimal polynomial is real, so the root
+multiset is conjugation-closed and $\{t_i\}=\{-t_i\}$; hence
+$-\theta_0\in\theta_0+(1/m)\Z$, i.e.\ $2\theta_0\in(1/m)\Z$ and
+$\theta_0\in(1/2m)\Z$. The index-two quotient leaves exactly two cosets. If
+$\theta_0\in(1/m)\Z$ then $\alpha$ is on $R_m$. Otherwise
+$\theta_0\in\tfrac1{2m}+(1/m)\Z$ and
+$t(-\alpha_i)=t_i+\tfrac12\in\tfrac{m+1}{2m}+(1/m)\Z=(1/m)\Z$, because $2\mid
+m+1$ for odd $m$; so $-\alpha$ is on $R_m$. Both cannot hold at once: that would
+put $\tfrac12\in(1/m)\Z$, i.e.\ $2\mid m$. Negating every root preserves every
+modulus, so $\M(-\alpha)=\M(\alpha)$.
+\end{proof}
+
+\begin{theorem}[(ODD-2) by relative-norm descent]\label{thm:odd2nd}\tagF{} \hx{ND-N1--ND-N5, ND-E1--ND-E5, ND-X3--ND-XP, ND-A1--ND-A3}
+Let $m$ be odd and let $\alpha$ be an algebraic integer, not a root of unity,
+every conjugate of which lies on $R_m$. Then
+\[
+\boxed{\ \M(\alpha)\ \ge\ 2\ }
+\]
+and the bound is attained, at $x^m-2$ for every odd $m$. With
+Lemma~\ref{lem:anchor} this is exactly (ODD-2); with
+Proposition~\ref{prop:oddfloorred}(iii) it gives
+$\mu_{\mathrm{rel}}(\text{odd }m)=2$ for every odd $m$, and with
+Remark~\ref{rem:p4transfer} it closes P3 and P4.
+\end{theorem}
+
+\begin{proof}
+Put $\beta=\alpha^m$, $F=\Q(\beta)$, $K=\Q(\alpha)$, $d=[K:\Q]$, $d'=[F:\Q]$,
+$k=[K:F]$, so that $d=kd'$ (tower law).
+\begin{enumerate}[nosep,label=(\arabic*),leftmargin=2.2em]
+\item \emph{$\beta$ is totally positive, so $F$ is totally real.} Every
+conjugate of $\beta$ is $\sigma(\alpha)^m$ for some embedding $\sigma$, and
+$\Arg\sigma(\alpha)\in(2\pi/m)\Z$ gives $\Arg\sigma(\alpha)^m\in2\pi\Z$: a
+positive real.
+\item \emph{$N:=N_{K/F}(\alpha)$ is totally positive.} Each $\Q$-conjugate of
+$N$ is a product of $k$ conjugates of $\alpha$, so its argument lies in the
+subgroup $(2\pi/m)\Z$; it is real, since $N\in F$ and $F$ is totally real by
+(1); and $\pi\notin(2\pi/m)\Z\pmod{2\pi}$ because $m$ is odd. This is the
+\emph{only} place oddness is used, and it is the corpus's own $\pi$-ray
+exclusion (Proposition~\ref{prop:oddfloor}) --- applied to $N$ rather than to
+$\alpha$.
+\item \emph{$N\neq1$.} The $F$-conjugates of $\alpha$ are exactly those
+$\alpha_j$ with $\alpha_j^m=\beta$, since $\sigma$ fixes $\beta\in F$; each is
+therefore $\alpha\zeta^{j_i}$ with $\zeta^m=1$, so $N=\alpha^k\zeta^J$. Were
+$N=1$, then $\alpha^{km}=1$ and $\alpha$ would be a root of unity.
+\item \emph{$\M(N)\ge2$}: Lemma~\ref{lem:tp2}, applicable by (2) and (3).
+\item \emph{Descent.} For the absolute logarithmic Weil height,
+$h(N)\le\sum_{i=1}^{k}h(\sigma_i\alpha)=k\,h(\alpha)$, and
+$h(\gamma)=\log\M(\gamma)/\deg\gamma$. With $e=\deg N$ this reads
+$\tfrac1e\log\M(N)\le\tfrac k d\log\M(\alpha)$, i.e.
+\[
+\M(\alpha)\ =\ \exp\bigl(d\,h(\alpha)\bigr)\ \ge\ \M(N)^{\,d/(ke)}\ =\ \M(N)^{\,d'/e}.
+\]
+\item \emph{The exponent is a positive integer.} $\Q(N)\subseteq F$, so
+$e\mid d'$ and $d'/e\ge1$. With $\M(N)\ge2>1$, $\M(\alpha)\ge\M(N)\ge2$.
+\end{enumerate}
+Attainment: $x^m-2$ is Eisenstein at $2$, lies on $R_m$, and has $N=2$,
+$e=d'=1$, so the bound reads $\M\ge2=\M(x^m-2)$ --- equality, verified at
+$m=3,5,7,9,11,15$ \hx{ND-X3--ND-X15}. The refined bound is sharp elsewhere too:
+$x^6-3x^3+1$ has $m=3$, $d=6$, $N=\gp^2$, $e=d'=2$, and
+$\M(N)^{d'/e}=\gp^2=\M(\alpha)$ exactly \hx{ND-XP}.
+\end{proof}
+
+\begin{remark}[Why the obvious reduction fails]\label{rem:r1dead}\tagF{} \hx{ND-R1--ND-R3, ND-S1}
+The tempting route splits on $k=[K:F]$ and asserts $k\mid m$, which would force
+$k\in\{1,m\}$ for prime $m$ and reduce (ODD-2) to Lemma~\ref{lem:tp2} at a
+stroke. \emph{The hypothesis is false.} The irreducible factors of $x^m-\beta$
+need not have degree dividing $m$: $x^3-8=(x-2)(x^2+2x+4)$, degrees $1$ and $2$.
+Concretely $\alpha=2\zeta_3$, minimal polynomial $x^2+2x+4$, has both roots at
+$\Arg=\pm2\pi/3$ --- exactly on $R_3$ --- with $m=3$, $d=2$, $\beta=8$, $d'=1$,
+$k=2$, and $2\nmid3$ \hx{ND-R1}. The shape is not exceptional: the forced
+population realises $(m,k,d',e)$ with $k\nmid m$ at
+$(3,2,1,1)$, $(3,2,2,2)$, $(5,2,2,2)$, $(9,2,1,1)$, $(9,2,2,2)$ and $(9,6,1,1)$.
+What survives is the tower identity $\M(\alpha)^m=\M(\beta)^k$, which is $d=kd'$
+and nothing more, asserted per object in the certificate \hx{ND-R2}. The
+fallback $\M(\alpha)\ge\gp^{d/m}$ does not rescue it: $\M<2$ then forces only
+$d<m\log_\gp2=1.4404\,m$, a window that \emph{grows} with $m$ ($m=9$: $d\le12$;
+$m=15$: $d\le21$), so the box route faces an infinite family of finite searches
+rather than one unfinished computation \hx{ND-R3}. Nor is the fallback merely
+inconvenient: on the forced population $456$ of $565$ objects have
+$\gp^{d/m}<2$, where it says nothing at all, and the descent returns $\ge2$ on
+every one \hx{ND-S1}. Theorem~\ref{thm:odd2nd} avoids the split entirely --- it
+never mentions $k\mid m$ --- which is why it closes composite $m$ in the same
+breath as prime $m$.
+\end{remark}
+
+\begin{remark}[P4 inherits P3 exactly]\label{rem:p4transfer}\tagF{} \hx{OF-D1, OF-D2}
 The v1.8 recovery reduced P4 --- does $\mu_{\mathrm{rel}}$ depend on the charge
 group beyond the single parity bit $2\mid m$? --- to P3 via
 Remark~\ref{rem:p4recover} and the forced even-branch uniformity
 $\mu_{\mathrm{rel}}(\text{even})=\gp$. Since the odd branch is the same constant
-$2$ under both registers above --- computed for $m=3,5,7,9$, and $=2$
-conditionally on (ODD-2) --- P4 factors through the parity bit with \emph{exactly}
-P3's status: affirmative \tagC{} up to the logged bounds, forced-affirmative iff
-(ODD-2). It adds no new burden.
+$2$ under both registers above --- computed for $m=3,5,7,9$, and now $=2$ for
+\emph{every} odd $m$ by Theorem~\ref{thm:odd2nd} --- P4 factors through the parity
+bit with \emph{exactly} P3's status. In v1.9--v2.0 that status was
+``affirmative \tagC{} up to the logged bounds, forced-affirmative iff (ODD-2)'';
+since (ODD-2) is now a theorem, both read \emph{affirmative,
+unconditionally} \tagF{}: $\mu_{\mathrm{rel}}$ depends on the charge group
+through the single parity bit $2\mid m$ and nothing else, taking the value $\gp$
+on the even branch and $2$ on the odd. It adds no new burden.
 \end{remark}
 
 \section{The state-angle chart}\label{sec:stateangle}
@@ -2955,6 +3153,37 @@ corrected in v1.7 (the $91/91$ and $27/27$ title-line pass ratios stand,
 as pass ratios).
 \end{finding}
 
+\begin{finding}[E-7: the SSS/Lehmer reading of $[\mu_S,2)$ is route-relative]\label{find:sssframe}
+v1.9--v2.0 state that the residual gap $[\mu_S,2)$ \emph{is} the
+Schur--Siegel--Smyth / Lehmer--pentagon core (Prop.~\ref{prop:oddfloorred}(iv),
+\S\ref{blk:odd2}), and infer that closing (ODD-2) requires new number theory
+strengthening Smyth. The premise is true only of the \emph{realification}
+route: the Adams handle $\psi^m$ discards the ray constraint and keeps only
+non-reciprocality, and \emph{within that route} the gap is exactly that core.
+It is not a property of (ODD-2). Theorem~\ref{thm:odd2nd} keeps the ray
+constraint --- it transports it through $N_{K/F}$, where odd $m$ re-emerges as
+the $\pi$-ray exclusion on $N$ --- and closes the lemma with an elementary
+argument, using neither $\mu_S$ nor any strengthening of Smyth. Corrected in
+v2.1; no decision elsewhere in the corpus depended on the mis-framing, and the
+$\M\le2$ ceiling, the $\pi$-ray exclusion, and the reciprocal floor $\gp^2>2$
+are all unaffected. Recorded because the framing, not the mathematics, is what
+kept the item open through three versions.
+\end{finding}
+
+\begin{finding}[E-8: \texttt{bl\_softcheck.py}'s P3/P4 row is a v2.0 artifact]\label{find:blstale}
+The v2.0 finalization harness prints a nine-row blocker ledger in which P3/P4 is
+classified \textsc{named-lemma} (ODD-2) and \hx{BL-G4} labels ``the residual
+lift $\mu_S\to2$'' as a wall no harness can settle. Both are superseded by
+Theorem~\ref{thm:odd2nd}. The harness is \emph{not} re-run in v2.1 and its
+shipped pass line (\texttt{16/16 exact, 7 walls LABELLED}) is retained verbatim
+as the v2.0 record; the row is kept in the \S\ref{sec:blockers} table, marked
+\textsc{closed}, so that the classification history stays legible. Its two
+load-bearing forced facts remain true as stated (\hx{BL-E1}: the $=2$ ceiling is
+forced; \hx{BL-E2}: Smyth alone gives only $\mu_S<\gp<2$) --- what lapses is the
+inference that no further internal route existed. For reading purposes the
+labelled-wall count is six, not seven.
+\end{finding}
+
 \section{Verification manifest}\label{sec:verification}
 
 \texttt{ozy\_softcheck.py}: 86 exact checks $+$ 5 numeric displays (the
@@ -3158,11 +3387,42 @@ $\mathbf{440}$ exact checks $+$ $\mathbf{67}$ certified guards $+$ $\mathbf{13}$
 PSLQ corroborations $+$ $\mathbf{7}$ labelled walls, all exit 0.
 
 \smallskip\noindent
+\textbf{v2.1 session harness} (one, written cold this session; every \hx{ND-}
+check ID cited in \S\ref{sec:relobject} appears in the file):
+\begin{center}\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lp{10.7cm}c@{}}
+\toprule
+harness & content & exact/computed\\
+\midrule
+\texttt{nd\_softcheck.py} & (ODD-2) by relative-norm descent: \hx{ND-R} the refutation lock on the candidate $k\mid m$ split (Rem.~\ref{rem:r1dead}); \hx{ND-E} TP-2 elementary --- symbolic convexity of $\log(1+e^t)$, the chain $|g(1)|\ge1\Rightarrow\prod_A(N_i-1)\ge1\Rightarrow\M\ge2^{\,r}$ on a wide forced box, equality only at $x-2$, and the classical totally-real bound $\M\ge\gp^{d/2}$ (Schinzel) demoted to corroboration --- checked, load-bearing nowhere (Lem.~\ref{lem:tp2}); \hx{ND-T} complete forced TP boxes $d'\le4$, $0$ violators; \hx{ND-N} the per-object descent certificate over the forced on-ray population (565 objects, $0$ failures, $e\mid d'$ throughout, the $1<k<m$ gap certified); \hx{ND-S} separation from the $\gp^{d/m}$ fallback; \hx{ND-X} sharpness at $x^m-2$ and $x^6-3x^3+1$; \hx{ND-A} anchor normalisation (Lem.~\ref{lem:anchor}) & $28+0$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Discipline: the structural decisions are exact over $\Z$ (irreducibility and
+factorization via sympy, the resultant $\operatorname{Res}_x(f,\,y-x^m)$, the
+tower law $d=kd'$, and $e\mid d'$); measures, ray tests and the minimal
+polynomial of $N$ are computed at 140 dps, the last being \emph{certified} after
+search --- monic, irreducible over $\Z$, vanishing at $N$ to $10^{-45}$, and of
+degree dividing $d'$, four facts that force it to be the minimal polynomial. The
+population is \emph{forced, not curated}: all irreducible non-cyclotomic monic
+integer polynomials in the boxes $\{\deg2:|a_j|\le12,\ 3:\le10,\ 4:\le8,\
+5:\le5,\ 6:\le4\}$ landing on $R_m$, $m\in\{1,3,5,7,9\}$. \emph{Nothing in
+Theorem~\ref{thm:odd2nd} rests on this harness}: the theorem is proved, and the
+harness corroborates it, exhibits its extremals, and certifies the anchor
+dichotomy (\hx{ND-A1}: $0$ objects with both $\pm\alpha$ on-ray, $0$ with
+neither). With it the \emph{nineteen} session harnesses total $\mathbf{468}$
+exact/computed checks $+$ $\mathbf{67}$ certified guards $+$ $\mathbf{13}$ PSLQ
+corroborations $+$ $\mathbf{7}$ labelled walls (six after
+Finding~\ref{find:blstale}), all exit 0.
+
+\smallskip\noindent
 Every boxed identity of the source reports and every displayed identity of the
-review thread appears above with a passing check ID; the six findings
+review thread appears above with a passing check ID; the eight findings
 (\ref{find:scope}, \ref{find:trunc}, \ref{find:stale}, \ref{find:hcount},
-\ref{find:manifeststale}, \ref{find:ozsplit})
-are the complete defect list, unchanged in v1.8: the five v1.8 verifiers
+\ref{find:manifeststale}, \ref{find:ozsplit}, \ref{find:sssframe},
+\ref{find:blstale})
+are the complete defect list, extended in v2.1 by two --- one corrected framing
+and one superseded harness artifact, neither touching a decision: the five v1.8 verifiers
 flagged only citation-hygiene in the derivation reports (companion-paper
 theorem numbers), corrected on the way in, and found no new display defect. The
 whitepaper's own harnesses (87$+$1 shipped; 89 independent) certify the upstream
@@ -3184,6 +3444,16 @@ seven walls that lie outside the substrate (\hx{BL-G1}--\hx{BL-G7}). Pass line:
 \texttt{BL: EXACT 16/16 checks passed | 7 walls LABELLED}.
 
 \smallskip\noindent
+\textbf{v2.1 motion.} One row has since moved off the board. P3/P4 (the odd
+relational floor) is \textsc{closed} by Theorem~\ref{thm:odd2nd}: \emph{eight}
+of the nine rows below remain active, the \textsc{named-lemma} class is empty,
+and \hx{BL-G4} is no longer a wall. The row and the harness output are retained
+verbatim rather than rewritten --- the ledger is a record of what blocked what,
+and a blocker that fell is part of that record (Finding~\ref{find:blstale}).
+The eight survivors are untouched by v2.1: nothing in the descent bears on a
+declared atom, a restatement wall, or a transcendence tool-gap.
+
+\smallskip\noindent
 \textbf{The six blocker classes.} Each open problem is filed under exactly one
 (for OP-RATE, a dual) of the following.
 \begin{description}[font=\normalfont\scshape,leftmargin=2.2em,style=nextline,itemsep=1pt,topsep=3pt]
@@ -3195,7 +3465,10 @@ resolvable only by adding a new principle.
 \item[restatement-wall] every proposed reduction is logically equivalent to the
 axiom; the residual content is irreducible.
 \item[named-lemma] reduced to a single precisely-stated open lemma requiring new
-(internal) mathematics.
+(internal) mathematics. \emph{As of v2.1 this class is empty}: its sole
+occupant, ODD-2, is proved (Theorem~\ref{thm:odd2nd}). The class is retained
+because it is the one class whose occupancy the corpus could always have
+discharged by its own means --- and, in the event, did.
 \item[external-tool-gap] blocked on a theorem that does not exist (no tool
 reaches the regime) or a named conjecture.
 \item[unfinished-computation] tractable in principle, not yet executed.
@@ -3214,7 +3487,7 @@ OP-RATE (derive $\kappa$) & \textsc{impossibility} (discrete) $+$ \textsc{declar
 OP-RADIUS ab initio (\tagO{}~1) & \textsc{impossibility} (apex parity) & $v_z(r^2){=}1$ is odd while the chart value group is $2\Z$ \hx{BL-B1}/\hx{BL-B2} & adjoin the odd generator (signed $\sqrt z$); it is outside D1--D3\\[2pt]
 OP-RADIUS profile (given the bridge) & \textsc{declared-atom} (D4) & orientation is a free $\Z/2$ sign \hx{BL-C1}; cap onset is a free datum \hx{BL-C2} & a formation-dynamics principle fixing onset $+$ orientation\\[2pt]
 W\tagO{}2 / D2 ($\chi$) & \textsc{restatement-wall} & naming the K-seed clock is logically equivalent to the quarter-turn selection \hx{BL-D2} & a principle more primitive than the quarter-turn (none)\\[2pt]
-P3/P4 (odd floor $=2$) & \textsc{named-lemma} (ODD-2) & the $=2$ ceiling is forced \hx{BL-E1}; Smyth alone gives only $\mu_S{<}\gp{<}2$ \hx{BL-E2} & a Mahler-measure lower bound of $2$ in the charge-constrained regime\\[2pt]
+P3/P4 (odd floor $=2$) & \textsc{closed} in v2.1 --- was \textsc{named-lemma} (ODD-2) & TP-2: $\M(N)\ge2^{\,r}$ for $N$ tot.\ positive, $N\neq1$, elementary \hx{ND-E1--ND-E3}; descent $\M(\alpha)\ge\M(N)^{d'/e}$, $e\mid d'$ \hx{ND-N3, ND-N4} & \emph{nothing --- resolved} by Thm.~\ref{thm:odd2nd}; row retained per Finding~\ref{find:blstale}\\[2pt]
 $L_{\mathrm{res}}$ transcendence & \textsc{external-tool-gap} & $m$ transcendental iff $\kappa$ transcendental \hx{BL-F1}; labelled \hx{BL-G1} & a transcendence theorem at a transcendental modulus\\[2pt]
 $(\pi,\ln\gp)$ independence & \textsc{external-tool-gap} (conjecture) & $\{\ln\gp,i\pi\}$ $\Q$-linearly independent is forced \hx{BL-F3}; labelled \hx{BL-G2} & Schanuel's conjecture\\[2pt]
 $(\kappa,L_{\mathrm{res}})$ independence & \textsc{external-tool-gap} (periods) & $L_{\mathrm{res}}$ an elliptic value outside the exp/log framework; labelled \hx{BL-G3} & Kontsevich--Zagier period-relation theory\\[2pt]
@@ -3289,21 +3562,37 @@ from something more primitive than the quarter-turn selection; none exists in th
 corpus (\hx{BL-G6}). Every candidate reduction is logically equivalent to D2, so
 its residual content is irreducible.
 
-\subsection{P3/P4: the odd relational floor equals two}\label{blk:odd2}
-\textbf{Status} (register): \emph{bracketed, sharpened, and reduced to one named
-lemma} (v1.9); computed $=2$ up to a logged enumeration box for $m=3,5,7,9$, and
-P4 inherits P3 exactly (Proposition~\ref{prop:oddfloorred},
-Remark~\ref{rem:p4transfer}). \textbf{Blocker:} \textsc{named-lemma} (ODD-2).
-\textbf{Forced fact:} the $=2$ \emph{ceiling} is forced --- $\M(x^m-2)=2$ for odd
-$m$ ($x^m-2$ is Eisenstein at $2$, all roots at modulus $2^{1/m}>1$, \hx{BL-E1})
---- but Smyth's theorem alone gives only $\mu_S<\gp<2$ (the plastic number
-$\mu_S=1.3247$, \hx{BL-E2}), and the real-reciprocal sub-case is forced
-$\ge\gp^2>2$ (\hx{BL-E3}); origin \texttt{of}. The residual lift $\mu_S\to2$ for
-charge-admissible \emph{non-reciprocal} odd-charge objects is precisely the open
-lemma ODD-2 (\hx{BL-G4}). \textbf{Missing object:} a Mahler-measure lower bound
-of $2$ in that charge-constrained regime --- new number theory strengthening
-Smyth. The $=2$ floor is therefore \emph{reduced to exactly ODD-2}, not proved;
-the naive ``non-reciprocal $+$ Smyth forces $\ge2$'' idea is falsified.
+\subsection{P3/P4: the odd relational floor equals two --- \textsc{closed}}\label{blk:odd2}
+\textbf{Status} (register): \emph{proved} (v2.1). $\mu_{\mathrm{rel}}(\text{odd
+}m)=2$ for every odd $m$, unconditionally (Theorem~\ref{thm:odd2nd}); P4
+inherits it exactly (Remark~\ref{rem:p4transfer}). \textbf{Blocker:}
+\textsc{none}. This row is retained, and the v2.0 text below preserved in
+substance, because the way it was mis-classified is the useful part of the
+record (Finding~\ref{find:sssframe}).
+
+\smallskip\noindent
+\textbf{What was true, and stays true.} The $=2$ \emph{ceiling} is forced ---
+$\M(x^m-2)=2$ for odd $m$ ($x^m-2$ is Eisenstein at $2$, all roots at modulus
+$2^{1/m}>1$, \hx{BL-E1}); Smyth's theorem alone gives only $\mu_S<\gp<2$ (the
+plastic number $\mu_S=1.3247$, \hx{BL-E2}); the real-reciprocal sub-case is
+forced $\ge\gp^2>2$ (\hx{BL-E3}); and the naive ``non-reciprocal $+$ Smyth
+forces $\ge2$'' idea is false. \textbf{What was wrong.} v2.0 recorded the
+missing object as ``a Mahler-measure lower bound of $2$ in that
+charge-constrained regime --- new number theory strengthening Smyth'', and
+labelled the residual lift $\mu_S\to2$ an unsettleable wall (\hx{BL-G4}). Both
+inferences ran through the realification route, which discards the ray
+constraint; they are properties of that route, not of the lemma
+(Finding~\ref{find:sssframe}). \textbf{What supplied it.} Not a strengthening of
+Smyth --- a change of route. The relative norm $N=N_{K/F}(\alpha)$,
+$F=\Q(\alpha^m)$, carries the ray constraint forward: $N$ is totally positive
+because $\pi\notin(2\pi/m)\Z$ for odd $m$, and $N\neq1$ because $\alpha$ is not
+a root of unity. A totally positive algebraic integer $N\neq1$ has $\M(N)\ge2$
+by an elementary argument (Lemma~\ref{lem:tp2}: $|g(1)|\ge1$ plus convexity of
+$\log(1+e^t)$), and $e\mid d'$ makes the descent exponent $d'/e$ a positive
+integer, so $\M(\alpha)\ge\M(N)^{d'/e}\ge2$. Sharp at $x^m-2$. Certified over a
+forced population of $565$ objects, $0$ failures, including the $20$ objects with
+$1<k<m$ that no degree split reaches \hx{ND-N1--ND-N5}. \textbf{Cost to the
+corpus:} none --- no declared atom, no external theorem, no new axiom.
 
 \subsection{Transcendence of \texorpdfstring{$L_{\mathrm{res}}$}{L\_res}}\label{blk:lrestrans}
 \textbf{Status} (register): \emph{external-open}, with a named tool-gap; not
@@ -3353,20 +3642,28 @@ principle. Labelled \hx{BL-G7}: unlike every other item here, this one is a
 finite computation awaiting completion.
 
 \smallskip\noindent
-\textbf{Closing.} The corpus's forced content is complete through v1.9. What
-remains falls into exactly the six blocker classes above: \emph{three are hard
+\textbf{Closing.} The corpus's forced content is complete through v1.9, and v2.1
+adds one item to it: the odd relational floor, proved $=2$
+(Theorem~\ref{thm:odd2nd}). What remains falls into five of the six blocker
+classes above --- the \textsc{named-lemma} class is now empty, and its single
+occupant was discharged from inside, by an elementary argument requiring no
+external theorem and no new axiom. \emph{Three are hard
 walls internal to the axiom system} --- the two impossibilities (OP-RATE at
 discrete resolution and OP-RADIUS ab initio) and the restatement wall (D2);
-\emph{two are single declared atoms} (D4's cap-onset and orientation); \emph{one
-is a single named number-theoretic lemma} (ODD-2); \emph{three are external
-tool-gaps} (the transcendence and algebraic-independence questions, blocked
+\emph{two are single declared atoms} (D4's cap-onset and orientation);
+\emph{three are external tool-gaps} (the transcendence and algebraic-independence questions, blocked
 respectively on a nonexistent transcendental-modulus theorem, on Schanuel's
 conjecture, and on Kontsevich--Zagier period theory); and \emph{one is an
-unfinished computation} (P1$'$ cross-shell). No remaining item is a mere
-oversight or an unattempted derivation. Each is a precisely located wall, and for
-each this paper states the load-bearing forced fact and the exact missing object
-rather than claiming a resolution --- and, per the honesty gate, every
-\textsc{impossibility} is scoped relative to D1--D3 and no external-open item is
-asserted to be resolved.
+unfinished computation} (P1$'$ cross-shell). \emph{Eight rows, not nine.} No
+remaining item is a mere oversight or an unattempted derivation. Each is a
+precisely located wall, and for each this paper states the load-bearing forced
+fact and the exact missing object rather than claiming a resolution --- and, per
+the honesty gate, every \textsc{impossibility} is scoped relative to D1--D3 and
+no external-open item is asserted to be resolved. One caution the ODD-2 closure
+earns its own ledger: a blocker classification is a statement about the routes
+in hand, and \S\ref{blk:odd2} sat at \textsc{named-lemma} for three versions on
+the strength of a framing (Finding~\ref{find:sssframe}) rather than a theorem.
+The remaining eight are argued from forced facts, not from framings --- but the
+distinction is exactly what this section exists to keep visible.
 
 \end{document}

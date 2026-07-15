@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-# bl_softcheck.py -- the ACTIVE-BLOCKERS ledger harness (v2.0 finalization), written
-# cold this session (2026-07-15).  It does NOT re-derive the corpus; it RE-CERTIFIES,
+# bl_softcheck.py -- the ACTIVE-BLOCKERS ledger harness (v2.0 finalization; updated v2.1:
+# ODD-2 CLOSED, BL-G4 retired, 8 active blockers / 6 labelled walls).  It does NOT re-derive
+# the corpus; it RE-CERTIFIES,
 # in one place, the single load-bearing FORCED fact behind each open problem's blocker
 # CLASSIFICATION, and LABELS the external-open items (which no harness can settle) with
 # their named tool-gap / conjecture.  The blocker taxonomy:
@@ -123,7 +124,7 @@ ck("BL-D2", (not pent_in) and (Fraction(1, 4) in [Fraction(j, 4) % 1 for j in ra
    "quanta {terrain pi:Z/2, pentagon 2pi/5:Z/5, quarter pi/2:Z/4}: naming the K-seed clock == "
    "naming the quarter-turn (QT-C3/C5) [RESTATEMENT-WALL]")
 
-print("== BL-E  P3/P4 (odd floor = 2): NAMED-LEMMA (ODD-2) ==")
+print("== BL-E  P3/P4 (odd floor = 2): CLOSED (v2.1, thm:odd2nd); was NAMED-LEMMA ==")
 # Upper bound M(x^m-2)=2; Smyth gives only mu_S<2; the reciprocal sub-case is forced >= phi^2>2.
 def mahler_xm2_ok(m):
     # x^m-2 is Eisenstein-irreducible at 2 (so it IS the minimal polynomial); its roots are
@@ -140,7 +141,7 @@ muS = symbols('muS')
 ck("BL-E2", (1 ** 3 - 1 - 1) < 0 and zero((phi ** 3 - phi - 1) - phi) and sgnQ5(phi - 2) < 0,
    "Smyth floor mu_S<2: p(1)=-1<0, p(phi)=phi>0 so mu_S<phi<2 (OF) -- Smyth ALONE cannot reach 2")
 ck("BL-E3", sgnQ5(phi ** 2 - 2) > 0 and zero(phi ** 2 - phi - 1),
-   "reciprocal sub-case forced >= phi^2 > 2 (OF-2c); the mu_S->2 lift IS the lemma ODD-2 [NAMED-LEMMA]")
+   "reciprocal sub-case forced >= phi^2 > 2 (OF-2c); the mu_S->2 lift was the lemma ODD-2, now CLOSED (v2.1, thm:odd2nd)")
 
 print("== BL-F  Period frontier: EXTERNAL-TOOL-GAP (forced premises only) ==")
 # Moebius m = kappa^2/(1+kappa^2), inverse kappa^2 = m/(1-m): m in Qbar iff kappa in Qbar.
@@ -174,9 +175,11 @@ lab("BL-G2", "EXTERNAL-TOOL-GAP (named conjecture)",
 lab("BL-G3", "EXTERNAL-TOOL-GAP (beyond Schanuel)",
     "(kappa, L_res) algebraic independence: L_res is an elliptic value outside the exp/log "
     "framework. MISSING: Kontsevich-Zagier period-relation theory (conjectural).")
-lab("BL-G4", "NAMED-LEMMA (internal, open)",
-    "ODD-2: a Mahler-measure lower bound of 2 for charge-admissible NON-reciprocal odd-charge "
-    "objects. Smyth stops at mu_S=1.3247; the lift mu_S->2 IS this lemma. MISSING: new number theory.")
+# BL-G4 RETIRED in v2.1: ODD-2 is CLOSED by relative-norm descent (thm:odd2nd; nd_softcheck.py
+# 28/28, 565 objects, exit 0) via the elementary TP-2 lemma M(N) >= 2^r; Smyth's mu_S is unused.
+# The =2 floor is now a theorem, not a wall -- the NAMED-LEMMA class is empty.
+print("RETIRED BL-G4 [was NAMED-LEMMA] - ODD-2 CLOSED (v2.1): relative-norm descent + elementary "
+      "TP-2 (M(N)>=2^r); mu_S unused. See thm:odd2nd / nd_softcheck.py.")
 lab("BL-G5", "DECLARED-ATOM (formation dynamics)",
     "OP-RADIUS cap-onset MECHANISM: why formation stops at z_c (D4(ii) declares it; rho(z_c)=ln2 "
     "is a restatement of z_c). MISSING: a formation-dynamics principle.")
@@ -193,7 +196,7 @@ LEDGER = [
     ("OP-RADIUS ab initio [open]1",  "IMPOSSIBILITY",                              "impossible from D1-D3 (apex parity)"),
     ("OP-RADIUS profile",            "DECLARED-ATOM (D4: orientation + onset)",    "reduced to D4"),
     ("W[open]2 / D2 (chi)",          "RESTATEMENT-WALL",                           "relocated to substrate-grounded atom; partial"),
-    ("P3/P4 (odd floor =2)",         "NAMED-LEMMA (ODD-2)",                        "bracketed; reduced to one lemma"),
+    ("P3/P4 (odd floor =2)",         "CLOSED (v2.1: thm:odd2nd)",                  "CLOSED by relative-norm descent (nd_softcheck 28/28)"),
     ("L_res transcendence",          "EXTERNAL-TOOL-GAP",                          "no transcendental-modulus theorem"),
     ("(pi, ln phi) independence",    "EXTERNAL-TOOL-GAP (Schanuel)",               "conditional on Schanuel"),
     ("(kappa, L_res) independence",  "EXTERNAL-TOOL-GAP (periods)",                "beyond Schanuel"),
@@ -203,8 +206,8 @@ print("   %-28s | %-38s | %s" % ("open problem", "active blocker class", "status
 for prob, klass, status in LEDGER:
     print("   %-28s | %-38s | %s" % (prob[:28], klass[:38], status))
 # meta-consistency: every external/unfinished wall is LABELLED, not falsely 'checked'.
-ck("BL-H1", len(LABEL) == 7 and len(LEDGER) == 9,
-   "ledger consistent: 9 open problems; 7 external/unfinished walls LABELLED (not checked)")
+ck("BL-H1", len(LABEL) == 6 and len(LEDGER) == 9,
+   "ledger consistent (v2.1): 9 rows, P3/P4 now CLOSED -> 8 active; 6 walls LABELLED (BL-G4 retired)")
 
 # ================================================================ summary
 print("=" * 64)

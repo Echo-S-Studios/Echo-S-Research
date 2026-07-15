@@ -31,10 +31,12 @@ audit + independent mathematical refutation) during authoring.
 | `qt_softcheck.py` | v1.9: D2 relocation to the K-seed rotation axis (advance, g1-disjoint) | 19 + 3 |
 | `of_softcheck.py` | v1.9: odd relational floor bracketed + reduced to the lemma (ODD-2) | 20 + 6 |
 | `pf_softcheck.py` | v1.9: period frontier — forced ledger, Baker/Schanuel map, PSLQ | 13 + 5 (+13 PSLQ) |
-| `bl_softcheck.py` | v2.0: the active-blockers ledger — one forced fact per open-problem blocker class | 16 + 7 labelled walls |
+| `bl_softcheck.py` | v2.0→v2.1: the active-blockers ledger — one forced fact per blocker class (ODD-2 retired) | 16 + 6 labelled walls |
+| `nd_softcheck.py` | v2.1: the ODD-2 closure certificate — relative-norm descent, elementary TP-2 M(N)≥2^r (reads `pop.json`) | 28 · 565 objects |
+| `pop.json` | fixture: the 565 forced on-ray objects `nd_softcheck.py` certifies (deterministic) | — |
 | `decimal_audit.py` | register decimal literals under the 0.51-ulp / truncation matcher | 4 literals |
 
-Session totals across the 18 tx…bl harnesses: **440 exact checks + 67 certified guards + 13 PSLQ corroborations + 7 labelled walls**.
+Session totals across the 18 tx…bl harnesses: **440 exact checks + 67 certified guards + 13 PSLQ corroborations + 6 labelled walls**, plus the v2.1 closure `nd_softcheck.py` (28 checks, 565 objects) that proves ODD-2. The ODD-2 closure sources (generator + notes) live in the source workspace's `odd2-closure/`.
 Two harnesses the paper cites but does not ship (cite-not-certify): `ozy_softcheck.py` (91),
 `relational_softcheck.py` (27). Run one pipe directly: `py code/2026-07-complex-rung-generator/tx_softcheck.py`.
-Pinned stack: Python 3.12, sympy 1.14.0, mpmath 1.3.0.
+Pinned stack: Python 3.12, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6 (`nd_softcheck.py` only).
