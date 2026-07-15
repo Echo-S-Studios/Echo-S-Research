@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you cite this paper, please use the metadata below."
+title: "The Golden Substrate, the Gate Field, and the Explicit Helix"
+authors:
+  # Pre-filled by scripts/new_contribution.py from .github/members.yml.
+  # For a co-authored paper, add one more `- name: / alias:` block per author;
+  # every alias must be a handle registered in .github/members.yml.
+  - name: "AceTheDactyl"
+    alias: "AceTheDactyl"
+date-released: "2026-07-14"
+references:
+  - type: generic
+    title: "Consolidated bibliography for the Echo S Research archive"
+    notes: "Add any new citations to ../references.bib (the shared BibTeX file); do not keep a separate per-paper bibliography."
+    authors:
+      - name: "Echo S Studios Research Developments"

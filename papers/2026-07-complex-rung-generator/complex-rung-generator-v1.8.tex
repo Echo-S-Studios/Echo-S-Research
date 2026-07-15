@@ -1,0 +1,2791 @@
+% complex-rung-generator.tex
+% Companion to golden-substrate-whitepaper: unifies and verifies the
+% 2026-07-14 explorations (Ozymandias' report + the K-family/trig thread).
+% v1.7 (2026-07-15): rate arithmetic + multiplier torus, chi-selection front,
+% universal seed ladder + Theorem U, parity no-go, rail closed form;
+% eight session harnesses (tx/mx/rx/ux/ex/cx/lx/dx_softcheck.py).
+% v1.8 (2026-07-15): OP-RATE closes as a classification (discrete-substrate
+% no-go), apex-ramification sharpening of OP-RADIUS, chi doctrine g1/g3 negative,
+% relational-note cluster, period-relation map; five further session harnesses
+% (cl/rd/ch/rn/pm_softcheck.py); running total 13 harnesses, 349+49.
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array}
+\usepackage[expansion=false]{microtype}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+
+\definecolor{cF}{RGB}{20,110,95}
+\definecolor{cD}{RGB}{175,95,10}
+\definecolor{cC}{RGB}{100,100,110}
+\definecolor{cI}{RGB}{110,60,150}
+\definecolor{cE}{RGB}{40,80,160}
+\definecolor{cO}{RGB}{170,40,40}
+\newcommand{\tagF}{\textcolor{cF}{\textsc{[forced]}}}
+\newcommand{\tagFD}{\textcolor{cF}{\textsc{[forced}}\,\textcolor{cD}{\textsc{given D1--D3]}}}
+\newcommand{\tagD}{\textcolor{cD}{\textsc{[declared]}}}
+\newcommand{\tagC}{\textcolor{cC}{\textsc{[computed]}}}
+\newcommand{\tagI}{\textcolor{cI}{\textsc{[inherited]}}}
+\newcommand{\tagE}{\textcolor{cE}{\textsc{[established]}}}
+\newcommand{\tagO}{\textcolor{cO}{\textsc{[open]}}}
+\newcommand{\hx}[1]{\textcolor{cC}{\footnotesize\texttt{#1}}}
+
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\gp}{\varphi}
+\newcommand{\gapc}{\mathrm{gap}}
+\newcommand{\M}{\mathrm{M}}
+\DeclareMathOperator{\Arg}{Arg}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\Ima}{Im}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{guard}[theorem]{Guard}
+\newtheorem{finding}[theorem]{Finding}
+
+\title{\bfseries The Complex Rung Generator, the State-Angle Chart,\\
+and the Residual Sphere\\[4pt]
+\large A verified unification of the July 14 explorations\\
+(companion to \emph{The Golden Substrate, the Gate Field, and the Explicit Helix})}
+\author{Ozymandias, Rhyan Strouse \& Echo-S-Studios\\[2pt]
+\small independent verification (\S\ref{sec:verification}):\\
+\small \texttt{ozy\_softcheck.py} 91/91 $+$ \texttt{relational\_softcheck.py} 27/27\\
+\small \texttt{nx\_softcheck.py} 27/27 $+$ \texttt{qx\_softcheck.py} 62/62, exit 0\\
+\small 13 session harnesses (v1.7--v1.8): 349 exact checks $+$ 49 certified guards, all exit 0}
+\date{Version 1.8 --- July 15, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+Conditional on the whitepaper's three declared atoms D1--D3, the entire discrete
+rung ladder is the orbit of a single complex number: the generator
+$q=i/\gp=i\tau$, with $W_n=q^n$, $z_n=\sqrt{1-|W_n|^2}$, and the central identity
+$q^4=\gp^{-4}=\gapc$. Golden contraction and the $\Z/4\Z$ quarter-turn become the
+modulus and phase of one multiplier; the gap first appears as co-intensity after
+two rungs ($|W_2|^2=\gapc$) and as complex amplitude after one full charge cycle
+($W_4=\gapc$). We verify every claim of Ozymandias' report and of the follow-on
+thread by four independent harnesses ($91+27+27+62$ checks: $86{+}27{+}24{+}62$
+exact decisions plus $5{+}3$ numeric displays, with $3$ certified guards
+alongside the fourth --- Findings~\ref{find:hcount}, \ref{find:manifeststale},
+\ref{find:ozsplit}), and unify them with three
+organizing results: the \emph{state-angle chart} $z=\sin\alpha$, under which the
+whole gate dictionary becomes elementary trigonometry ($u=\cot^2\alpha$,
+$C=\cot^2\alpha\csc^2\alpha$, $\sqrt D=1+2\cot^2\alpha$, $m=-\cos^2\alpha$,
+$\lambda=\tan^2\alpha\,(1+\cos^2\alpha)$), with rung ledgers
+$(\sin,\cos,\tan)\alpha_1=(\sqrt\tau,\tau,\sqrt\gp)$ and
+$(\sin,\cos,\tan)\alpha_2=(K,\tau^2,\beta)$ and the general tangent family
+$\tan\alpha_n=\sqrt{\gp^{2n}-1}$; the \emph{K-family theorem}
+$z_{2j}=\sqrt{1-\gapc^{\,j}}$ with the universal two-step law
+$1-z_{n+2}^2=\gapc\,(1-z_n^2)$ and the uniqueness statement $z_n=K\iff n=2$; and
+the \emph{residual-sphere lift} $S(\rho)=(\Rea W,\Ima W,z)\in S^2$, on which the
+rungs walk the compass toward the north pole and the whitepaper's near-miss angle
+$\theta_K=\arcsin\tau^2$ acquires an exact geometric home as the K-point's
+colatitude, $\theta_K=\arccos K$. The residual radius $a(z)=\sqrt{1-z^2}$ is kept
+strictly distinct from the inherited formation radius $r(z)$; deriving the latter
+from the former remains the priority open problem (whitepaper \tagO{}~1). \emph{Version 1.1}
+adds the Strouse--Ozymandias \emph{canonical quarter-turn factorization}: the
+imaginary unit of the generator is
+$J=UA=(H/\sqrt5)(N/\sqrt5)$ --- the product of the normalized keystone grading
+and the normalized return-kernel mode exchanger, two real involutions that
+anticommute \emph{by construction} (the vector kernel of $\tfrac12\{H,\cdot\}$
+is exactly $H^\perp$). This part is unconditional keystone algebra, not
+D1--D3-conditional; it upgrades $Q=\pm\tau J$ (with $Q^4=\gapc\,I$) from
+representation-given-declared-$i$ to canonical-up-to-orientation, and reduces
+D2's declared content to rung \emph{selection} (one $Q$ per floor) rather than
+the existence of the quarter-turn itself. \emph{Version 1.3} adds the
+relational bridge: the generator is itself algebraic, with minimal polynomial
+$x^4+3x^2+1$, $\M=\gp^2$, and it is exactly the one-charge-quantum gauge
+rotation of the split golden pair $Z^{*}=(x^2{-}x{-}1)(x^2{+}x{-}1)$; the K-seed
+sits in the relational-charge catalog with the full $\Z/4\Z$ compass as its
+angle set; and the transfer-ledger algebra $F_n=z_n^2$,
+$\Delta F_n=\tau^{2n+1}$, $\sum\tau^{2n+1}=1$ makes D1 at the rungs a
+telescoping unit budget. \emph{Version 1.7} adds, verified by eight further
+session harnesses ($234$ exact checks $+$ $29$ certified guards, all exit 0):
+the transcendence of the rate $\kappa=\pi/(2\ln\gp)$ and of $\log_\gp2$ given
+Gelfond--Schneider, closing the whitepaper's near-miss item permanently; the
+multiplier-torus/systolic \emph{seventh} characterization of the principal
+branch; the parity no-go for the inherited radius ($r^2$ is chart-odd: any
+substrate-to-radius bridge must break $z\mapsto-z$); the universal seed ladder
+$\operatorname{minpoly}(z_n)=x^4+c_nx^2-c_n$ with the Mahler-minimal
+uniqueness theorem; and the incomplete-elliptic closed form for the
+above-lens rail with certified non-elementarity. The rate and radius problems
+remain open as derivations. \emph{Version 1.8} adds, verified by five further
+session harnesses ($115$ exact checks $+$ $20$ certified guards, all exit 0;
+running total across the thirteen session harnesses $349+49$): OP-RATE
+\emph{closes as a classification} --- the discrete-substrate no-go, forcing
+$\kappa$ declared-up-to-$\Z$ at rung resolution with the seven characterizations
+the complete discrete-level menu, each continuum-referencing (the continuum
+rate D3 stays declared); an apex-ramification valuation certificate and a
+constructive-bridge obstruction sharpening OP-RADIUS (still open); the $\chi$
+doctrine's sub-branches g1/g3 resolved \emph{negatively} on the now-available
+companion papers (the on-circle image of the emission algebra $S$ is exactly
+$\mu_2=\{\pm1\}$, so $\pm i\notin S$ on-circle, and $W[\text{open}]2$ stays
+PARTIAL as a derivation); the relational-note cluster (the note's P4 recovered
+and reduced to P3, and the odd relational floor bracketed $\mu_S\le\mu_{\mathrm
+{rel}}(\text{odd})\le2$ with the $=2$ promotion left as the corpus's principal
+open problem); and the period-relation map ($\tau_0=\beta+\beta^{-1}$ pinned
+algebraic, the $\kappa$-vs-$\tau_0$ period worry settled negatively, and
+$L_{\mathrm{res}}$ located as an elliptic period at a transcendental parameter).
+\end{abstract}
+
+\section{Provenance, scope, and the conditionality banner}\label{sec:scope}
+
+\textbf{Sources.} (i) \emph{Report to Ace: Complex Rung Generator and
+Residual-Sphere Representation} (Ozymandias, 2026-07-14); (ii) the follow-on
+review thread of the same date (the K-family $z_{2j}=\sqrt{1-\gapc^{\,j}}$, the
+cosine-contraction recursion, and the rung-by-rung trigonometric ledger).
+(iii) the Strouse--Ozymandias progress report \emph{Toward a Canonical Rung
+Generator} (2026-07-14): spectral uncoupling, the return-kernel recoupler, and
+the quarter-turn factorization $J=UA$. (iv) the Strouse--Ozymandias exploratory note \emph{Rail-Pulse Quantization,
+Helical Path Stretch, and Energy-Gated Recoupling} (2026-07-14) --- only its
+forced kernel is imported here (\S\ref{sec:pathstretch}); its rail-pulse
+mechanism, energy functional, and thermodynamic reading remain hypothesis, as
+that note itself states. (v) the corpus note \emph{Relational Charge on the Spectral Semiring} (paper 12,
+2026-07-01), cited as RC-\S, whose machinery this paper's bridge section uses
+and whose relevant claims were independently re-derived this session
+(\texttt{relational\_softcheck.py}, 27/27). (vi) the second Strouse--Ozymandias
+exploratory note \emph{Rail-Pulse Propagation, Engine Coupling, and
+Scale-Dependent Site Density} (2026-07-14) --- forced kernel imported
+(\S\ref{sec:pathstretch}); engine-pass and biological layers not imported, per
+that note's own claim ceilings. (vii) The whitepaper \emph{The Golden
+Substrate, the Gate Field, and the Explicit Helix} v1.0 (2026-07-14), whose
+numbering we cite as W-\S. \textbf{v1.1 changelog:} \S\ref{sec:quarterturn}
+added (factorization, coordinate-free form, obstruction lemmas, canonical $Q$);
+epistemic ledger and manifest updated; full text of source (i), received
+post-hoc, integrated (method note above; Remark~\ref{rem:halfcycle}).
+\textbf{v1.2 changelog:} \S\ref{sec:pathstretch} added --- the forced kernel of
+source (iv): winding gradient, path-stretch laws, the quarter-turn rail floor
+$L\ge\pi K/2$ with the resulting one-line divergence proof, and the
+$\nu$-form of the rung locus with its scoping.
+\textbf{v1.3 changelog:} \S\ref{sec:relobject} added (the relational bridge:
+minimal polynomial of $q$, the gauge identity with $Z^{*}$, the K-seed as
+catalog object, D2 restated relationally); \S\ref{sec:pathstretch} extended
+with the site-density trichotomy and the transfer ledger (forced kernel of
+source (vi)); cross-references and epistemics updated.
+\textbf{v1.4 changelog:} Theorem~\ref{thm:interp} and
+Corollary~\ref{cor:d3select} added --- the continuous-interpolation open item
+is classified (determined up to $\Z$; D3 $=$ principal branch) and merged into
+the rate problem; Remark~\ref{rem:mahlerbridge} upgraded with the dilation
+mechanism. Harnesses now $91+27$ checks. All other content unchanged.
+\textbf{v1.5 changelog:} Theorem~\ref{thm:reltype} added --- the complete
+relational type of the generator object (shells, the cross-shell $\nu$-run,
+full coherence, twisted-shell realization); \S\ref{sec:sphere} extended with
+Propositions \ref{prop:compasscross}--\ref{prop:sphlength} (compass-cross
+characterization of the rung locus, the spherical step ledger with the exact
+quarter-circle first step, the finite spherical length
+$L_{\mathrm{res}}=\sqrt{1+\kappa^2}\,E(\kappa^2/(1+\kappa^2))$ with the
+length dichotomy and a fifth characterization extending
+Corollary~\ref{cor:d3select}); third harness \texttt{nx\_softcheck.py}
+(27 checks) added to \S\ref{sec:verification};
+Finding~\ref{find:stale} recorded and the \S\ref{sec:scope} verification
+paragraph corrected. All other content unchanged.
+\textbf{v1.6 changelog:} \S\ref{sec:generator} extended
+(Remark~\ref{rem:gammatransfer}: transfer of the interpolation
+classification to the formation rail --- a sixth characterization of D3);
+\S\ref{sec:relobject} extended (Proposition~\ref{prop:chirat}: the ratio
+object at the characteristic level and the Adams square;
+Theorem~\ref{thm:quartertwist}: the quarter twist and the anchor-exchange
+dichotomy); \S\ref{sec:kfamily} extended
+(Theorem~\ref{thm:kseedladder}: the K-family is a seed ladder;
+Corollary~\ref{cor:evenmirror}); \S\ref{sec:pathstretch} extended
+(Proposition~\ref{prop:railbounds}: exact rail-spacing bounds and the
+gap-rate law, quantifying the divergent side of the length dichotomy of
+Proposition~\ref{prop:sphlength}); fourth harness
+\texttt{qx\_softcheck.py} ($62$ exact checks $+$ $3$ certified guards);
+Finding~\ref{find:hcount} (front-matter check classification, corrected).
+Harnesses now $91+27+27+62$ checks. All other content unchanged.
+\textbf{v1.7 changelog:} \S\ref{sec:generator} extended --- the
+rate-arithmetic and torus block (Lemma~\ref{lem:ratirrational},
+Theorem~\ref{thm:ratetrans}, Corollary~\ref{cor:nearmiss},
+Remark~\ref{rem:logphi2}: $\kappa$ and every branch $\kappa_k$ transcendental
+given Gelfond--Schneider; the near-miss item whitepaper \tagO{}~4 closed
+permanently; W-Thm.\ 16.1 strengthened to transcendence of $\log_\gp2$; the
+scan-retirement meta-theorem; Proposition~\ref{prop:modledger},
+Theorem~\ref{thm:systole}, Remark~\ref{rem:geoledger}: the multiplier torus
+$E_q$, its modulus ledger $\mu=\tfrac14+i\ln\gp/(2\pi)$, the systolic-marking
+\emph{seventh} characterization of D3, the certified ten-entry geodesic
+ledger, and the conditional no-CM corollary; Proposition~\ref{prop:kinv},
+Remark~\ref{rem:oprate}: the forced $k$-invariance lemma, the exposed-joint
+axiom H, the transfer-ledger counter-models, and the R6 classification
+no-go); \S\ref{sec:quarterturn} extended
+(Propositions~\ref{prop:pentimage}--\ref{prop:unimon},
+Theorem~\ref{thm:chichain}: pentagon exclusion by the image, unimodular
+tensor-monomial values $\pm1$, the conditional $\chi$-selection chain with
+the axiom-replacement kill and the de-axiomatization identity);
+\S\ref{sec:kfamily} extended (Theorem~\ref{thm:seedladder}: the universal
+seed ladder; Remark~\ref{rem:mahlerfloor}: the rung-1 Mahler-floor hit,
+coincidence-candidate; Theorem~\ref{thm:mahlermin} and
+Remark~\ref{rem:f1falsifier}: Mahler-minimal uniqueness, the F1 falsifier
+$x^4+6x^2-5$, and the register resolution under the F3 reading, signed off
+2026-07-15); \S\ref{sec:lens} extended (Proposition~\ref{prop:lensscope}:
+splitness over $\Q$ is generic, the lens distinguished by its exact data;
+Remark~\ref{rem:lensscan}: the bounded-negative corpus scan);
+\S\ref{sec:sphere} extended (Theorem~\ref{thm:paritynogo}: the RAD-0 parity
+no-go; Proposition~\ref{prop:areatransfer}: the area-transfer law;
+Remark~\ref{rem:rad4}: the rotating-equipotential mechanism killed on all
+three clocks); \S\ref{sec:pathstretch} extended
+(Theorem~\ref{thm:railclosed}: the incomplete-elliptic closed form for the
+rail; Corollary~\ref{cor:nonelem}: certified non-elementarity). Eight session
+harnesses ---
+\texttt{tx}/\texttt{mx}/\texttt{rx}/\texttt{ux}/\texttt{ex}/\texttt{cx}/\texttt{lx}/\texttt{dx\_softcheck.py}
+--- add $234$ exact checks $+$ $29$ certified guards, all exit 0
+(\S\ref{sec:verification}). Findings~\ref{find:manifeststale} and
+\ref{find:ozsplit} recorded, and the two display counts corrected
+(\texttt{nx}: the $24+3$ split restored in the \S\ref{sec:verification}
+sentence; \texttt{ozy}: $86+5$). Register motion: whitepaper \tagO{}~4
+closed (contentless, forced given Gelfond--Schneider); the rail closed form
+resolved (incomplete-elliptic; elementary form impossible, certified); Vein
+6 executed; the v1.6 uniqueness question resolved by
+Theorem~\ref{thm:mahlermin} under the confirmed F3 reading; the rate problem
+(OP-RATE) remains open as a derivation, with a seventh characterization and
+a forced $k$-invariance lemma; the radius problem (OP-RADIUS, whitepaper
+\tagO{}~1) remains open, sharpened by a forced parity no-go. All other
+content unchanged.
+\textbf{v1.8 changelog:} \S\ref{sec:generator} extended twice --- the
+OP-RATE classification block (Lemma~\ref{lem:kinvext}: the $k$-invariance
+lemma re-forced and extended to the full discrete state;
+Theorem~\ref{thm:r6nogo}: the R6 selection-functional no-go;
+Corollary~\ref{cor:opratelass}: OP-RATE closes as a classification;
+Remark~\ref{rem:sevenway}: the seven-way continuum/discrete table), and the
+period-relation map (Proposition~\ref{prop:tau0alg}: $\tau_0$ algebraic and
+no $\kappa$-vs-$\tau_0$ relation over $\Q$; Remark~\ref{rem:periodmap}:
+$L_{\mathrm{res}}$ as an elliptic period and the external-open ledger);
+\S\ref{sec:quarterturn} extended (Proposition~\ref{prop:oncircleimage}: the
+on-circle image of $S$ is $\mu_2$; Remark~\ref{rem:chidoctrine}: the charge
+character, the g3 dichotomy, and the sharpened $W[\text{open}]2$ verdict);
+\S\ref{sec:relobject} extended (Remark~\ref{rem:p4recover}: P4 recovered and
+reduced to P3; Proposition~\ref{prop:oddfloor}: the bracketed odd relational
+floor; Remark~\ref{rem:p1scan}: the bounded P1$'$ transport-orbit scan);
+\S\ref{sec:sphere} extended (Theorem~\ref{thm:apexram}: the apex-ramification
+valuation certificate; Proposition~\ref{prop:bridgeobstruction}: the
+constructive-bridge obstruction; Remark~\ref{rem:atomledger}: the atom
+ledger with the honest cap-onset negative). Five session harnesses ---
+\texttt{cl}/\texttt{rd}/\texttt{ch}/\texttt{rn}/\texttt{pm\_softcheck.py}
+--- add $115$ exact checks $+$ $20$ certified guards, all exit 0, bringing
+the thirteen session harnesses to $349$ exact $+$ $49$ guards
+(\S\ref{sec:verification}). Register motion: \emph{OP-RATE closes as a
+classification} (discrete-substrate no-go; $\kappa$ declared-up-to-$\Z$; the
+seven characterizations are the complete discrete-level menu, each
+continuum-referencing; the continuum D3 stays declared, and a
+continuum-referencing derivation is not excluded --- mirroring the
+$\lambda=2c$/Cencov equivariance no-go); \emph{OP-RADIUS} remains open,
+sharpened by the apex-ramification certificate (ramification index
+$e=2$ for $r^2$, $e=4$ for $r$) and the constructive-bridge obstruction;
+$W[\text{open}]2$'s sub-branches g1/g3 resolved negatively on the
+now-available companion papers (on-circle image of $S=\mu_2$, so $\pm
+i\notin S$), the item staying PARTIAL as a derivation; P4 recovered and
+reduced to P3; the odd relational floor bracketed ($\le2$ forced, the $=2$
+promotion the corpus's principal open problem); and the period-relation map
+($\tau_0$ algebraic, the $\kappa$-vs-$\tau_0$ tie settled negatively,
+$L_{\mathrm{res}}$ an elliptic period, and the precise external-open ledger).
+All other content unchanged.
+
+\smallskip\noindent
+\textbf{Method note (from the source report).} The investigation began by
+testing whether $K$ could be read through physical double-helix geometry; the
+direct DNA-pitch identification \emph{failed quantitatively}. That negative
+result forced a role classification that shapes everything below:
+\emph{state space} vs \emph{operator} vs \emph{observable} vs
+\emph{invariant/landmark}. Under it, the scalar gate iteration
+$f_C(x)=C/(1+x)$ (W-Decl.\ 8.1) is the actual operator of the architecture,
+and $K$ is a rung-2 \emph{landmark} --- not the operator, not the space. The
+generator below is what the operator's rung orbit looks like once contraction
+and charge are packaged together.
+
+\smallskip\noindent
+\textbf{Conditionality banner.} Everything in this paper is
+\tagFD{} --- with one important exception: \S\ref{sec:quarterturn}'s
+factorization is \emph{unconditional} keystone algebra \tagF{}, using no part of
+D1--D3. Elsewhere the results are exact consequences of the whitepaper's declared chart D1
+($1-z^2=e^{-2\rho}=|m|$), charge selection D2, and rate D3
+($d\theta/d\rho=(\pi/2)/\ln\gp$), together with its forced rung data
+$\rho_n=n\ln\gp$, $z_n=\sqrt{1-\gp^{-2n}}$, $\theta_n=n\pi/2$ (W-\S11--13). Both
+source documents state this scoping correctly, and this paper preserves it: the
+representation below \emph{packages} D1--D3; it does not independently derive or
+justify them. Statements needing only seed arithmetic are \tagF{} outright.
+The inherited radius profile $r(z)$ is \emph{not} derived here (\S\ref{sec:sphere}).
+
+\smallskip\noindent
+\textbf{Verification.} Four independent harnesses (through v1.6):
+\texttt{ozy\_softcheck.py}, 86 exact checks $+$ 5 numeric displays
+(groups \hx{OZ-A..OZ-O}, of which the \hx{OZ-H} row is display-only;
+Finding~\ref{find:ozsplit});
+\texttt{relational\_softcheck.py}, 27 exact checks (\hx{RC-A..RC-F});
+\texttt{nx\_softcheck.py}, 24 exact checks $+$ 3 numeric displays
+(\hx{NX-R, NX-T, NX-S}; \hx{NX-H}, written cold for v1.5;
+Finding~\ref{find:hcount}); \texttt{qx\_softcheck.py}, 62 exact checks
+$+$ 3 certified guards (\hx{QX-A..QX-G}, written cold for v1.6). All
+exit 0; sympy 1.14.0; decisions in $\Q/\Q(\sqrt5)$ extended by $i$; $K$
+and the K-family decided at the squared level; mpmath display-only except
+the two interval-certified guard comparisons. Check IDs are cited inline;
+manifest in
+\S\ref{sec:verification}; the stale count that previously stood in this
+paragraph is Finding~\ref{find:stale}. v1.7 adds eight session harnesses
+(\texttt{tx}, \texttt{mx}, \texttt{rx}, \texttt{ux}, \texttt{ex},
+\texttt{cx}, \texttt{lx}, \texttt{dx}\texttt{\_softcheck.py}): $234$ exact
+checks $+$ $29$ certified guards, all exit 0; manifest and environment pin
+in \S\ref{sec:verification}. v1.8 adds five more session harnesses
+(\texttt{cl}, \texttt{rd}, \texttt{ch}, \texttt{rn},
+\texttt{pm}\texttt{\_softcheck.py}): $115$ exact checks $+$ $20$ certified
+guards, all exit 0, read from the Echo-S-Research companion archive
+read-only and re-encoded cold; running total across the thirteen session
+harnesses $349+49$ (\S\ref{sec:verification}). Notation as in the whitepaper:
+$\gp=(1+\sqrt5)/2$, $\tau=\gp^{-1}$, $\gapc=\gp^{-4}$, $K^2=1-\gapc$,
+$\beta^2=\gp^4-1=\gp^2\sqrt5$, $z_c=\sqrt3/2$.
+
+\section{The generator}\label{sec:generator}
+
+\begin{definition}[Complex residual state]\label{def:W}
+For $\rho\ge0$ set
+\[
+W(\rho)=e^{-\rho}\,e^{i\theta(\rho)},\qquad
+\theta(\rho)=\frac{\pi\rho}{2\ln\gp}\ \text{[D2$+$D3]},
+\]
+so that
+\[
+W(\rho)=\exp\!\Bigl[\Bigl(-1+\frac{i\pi}{2\ln\gp}\Bigr)\rho\Bigr],
+\qquad |W(\rho)|=e^{-\rho},\qquad \arg W(\rho)=\theta(\rho).
+\]
+\end{definition}
+
+\begin{proposition}[Representation of the chart]\label{prop:rep}\tagFD{} \hx{OZ-G1--G2}
+$D1$ is exactly the statement
+\[
+z(\rho)=\sqrt{1-|W(\rho)|^2}\,:
+\]
+residual amplitude decays in the complex plane while height rises as its unit
+complement. This is a representation theorem for D1--D3, not an independent
+derivation of them.
+\end{proposition}
+
+\begin{theorem}[The discrete rung generator]\label{thm:generator}\tagFD{} \hx{OZ-A1--A8, OZ-B1--B3}
+Let
+\[
+\boxed{\,q=\frac{i}{\gp}=i\tau\,}.
+\]
+Then at the rungs $\rho_n=n\ln\gp$,
+\[
+W_n \coloneqq W(\rho_n)=e^{-n\ln\gp}e^{in\pi/2}=\gp^{-n}i^{\,n}=(i\tau)^n=q^n,
+\qquad
+W_{n+1}=q\,W_n,
+\qquad
+z_n=\sqrt{1-|W_n|^2},
+\]
+i.e.\ every rung simultaneously contracts residual amplitude by $\tau$ and
+rotates the charge by $90^\circ$; the entire discrete ladder is the orbit of the
+single multiplier $q$. The exact ledger is $|W_n|=\tau^n$,
+$\arg W_n=n\pi/2$, $z_n=\sqrt{1-\tau^{2n}}$. The central identity is
+\[
+\boxed{\,q^4=\Bigl(\frac{i}{\gp}\Bigr)^{\!4}=\gp^{-4}=\gapc\,},
+\]
+an exact positive real: $i^4=1$ restores orientation while $\tau^4$ contracts by
+the gap. The recurrences
+\[
+W_{n+2}=q^2W_n=-\tau^2W_n=-\sqrt{\gapc}\,W_n,
+\qquad
+W_{n+4}=q^4W_n=\gapc\,W_n
+\]
+hold exactly (the square root is the positive one: $\tau^2=\gp^{-2}$), giving the
+\emph{gap schedule}: the gap first appears as co-intensity after two rungs,
+$|W_2|^2=\gapc$, and as complex amplitude after one complete four-rung charge
+cycle, $W_4=\gapc$. The architecture does not reset after four rungs: it returns
+to the same charge direction at residual amplitude reduced by $\gapc$ and
+strictly greater height.
+\end{theorem}
+
+\begin{proof}
+All statements are one-line consequences of $q=i\tau$, $\tau=\gp^{-1}$,
+$\tau^2+\tau=1$, and $\tau^4=\gp^{-4}=\gapc$; each is machine-verified exactly
+for $n=0..8$ (recurrences), including the sign and branch conventions.
+The two-rung law is the exact origin of the odd/even rung decomposition
+(Fibonacci/Lucas branches, W-Thm.\ 8.1), and the four-rung law is the discrete
+face of the whitepaper's full-turn cost $\Delta\rho=4\ln\gp=\ln\M$ where
+$\M(A_{\gapc})=\gp^4$ (W-\S13): per revolution, co-intensity contracts by
+$\gp^{-8}=|W_4|^2$. The imaginary unit written here as $i$ is factored
+\emph{internally} from the operator layer in \S\ref{sec:quarterturn}; the
+generator is moreover itself an algebraic integer, with minimal polynomial
+$x^4+3x^2+1$ and a distinguished place in the relational-charge catalog
+(\S\ref{sec:relobject}).
+\end{proof}
+
+
+
+\begin{theorem}[Interpolation classification]\label{thm:interp}\tagF{} \hx{OZ-O1--O4}
+The continuous one-parameter matrix groups through the generator --- the curves
+$G(t)=e^{tL}$ with $G(1)=Q$ --- form exactly a $\Z$-family. Solving
+$e^{aI+bJ}=Q$ entrywise gives $e^a\cos b=0$ and $e^a\sin b=\tau$, forcing
+$\cos b=0$ and $\sin b=+1$ (the branch $\sin b=-1$ is impossible: $e^a=-\tau$
+has no real solution), hence $a=\ln\tau$ uniquely and
+\[
+\log Q=\bigl\{(\ln\tau)I+\bigl(\tfrac\pi2+2\pi k\bigr)J\ :\ k\in\Z\bigr\},
+\qquad
+W_k(\rho)=e^{-\rho}\,e^{\,i(\pi/2+2\pi k)\rho/\ln\gp}
+\quad(t=\rho/\ln\gp).
+\]
+All branches agree at \emph{every} rung, $W_k(n\ln\gp)=(i\tau)^n$ --- the
+discrete orbit cannot distinguish them --- and they are pairwise distinct as
+curves (initial velocities $-1+i\kappa_k$ with
+$\kappa_k=(\pi/2+2\pi k)/\ln\gp$ all distinct; adjacent branches already
+differ at the half-floor, while branches with $k-k'$ even coincide there but
+never as functions).
+\end{theorem}
+
+\begin{corollary}[What D3 selects]\label{cor:d3select}\tagF{}/\tagD{} \hx{OZ-O5}
+The continuous residual state of Definition~\ref{def:W} is the $k=0$ branch,
+and within the family the following are equivalent: (i) D3's rate; (ii) the
+\emph{principal} logarithm of $Q$; (iii) minimal winding,
+$|\pi/2+2\pi k|$ minimized; (iv) the shortest residual spiral per floor,
+$L_k=(1-\tau)\sqrt{1+\kappa_k^2}$ minimized (speed
+$|W_k'|=e^{-\rho}\sqrt{1+\kappa_k^2}$ integrated over one floor). The
+interpolation problem is therefore not undetermined but \emph{determined up to
+$\Z$}, with D3 exactly the principal-branch selection; deriving that selection
+from the substrate is the same open problem as deriving the rate.
+\end{corollary}
+
+\begin{remark}[Transfer to the formation rail]\label{rem:gammatransfer}\tagFD{}/\tagI{} \hx{QX-F1--F6}
+The classification of Theorem~\ref{thm:interp} transfers verbatim to the
+formation rail: among curves
+$\Gamma_{\kappa'}(\rho)=\bigl(r(z(\rho))\cos\kappa'\rho,\
+r(z(\rho))\sin\kappa'\rho,\ z(\rho)\bigr)$ whose winding is a one-parameter
+rotation group and which pass through every rung site, the admissible rates
+are exactly $\kappa'_k=(\pi/2+2\pi k)/\ln\gp$, $k\in\Z$ --- the same
+$\Z$-family, because radius and height carry no interpolation freedom ($r$
+is inherited, $z$ is D1): the rung-passage condition at $n=1$ already
+forces $\kappa'\ln\gp\equiv\pi/2\ (\mathrm{mod}\ 2\pi)$, and all further
+rungs follow. All branches agree at every rung site and are pairwise
+distinct as curves \hx{QX-F1--F2}; and the $k=0$ branch is the unique one
+of shortest \emph{formation-rail} length per floor on both branches of the
+profile: the speed $\smash{\sqrt{r'^2+r^2\kappa'^2+z'^2}}$ is strictly
+increasing in $\kappa'^2$ wherever $r>0$ \hx{QX-F3--F5}.
+Corollary~\ref{cor:d3select}'s list thus gains a sixth member --- \emph{D3
+$=$ the shortest formation rail per floor} --- the rail-side companion of
+the fifth (shortest total spherical length,
+Proposition~\ref{prop:sphlength}). The residual-sphere curves
+$S_k=(\Rea W_k,\Ima W_k,z)$ inherit the same classification, all on the
+unit sphere \hx{QX-F6}.
+\end{remark}
+
+\smallskip\noindent
+\textbf{Rate arithmetic and the multiplier torus (v1.7).} The remainder of
+this section settles the \emph{arithmetic} of the rate $\kappa=\pi/(2\ln\gp)$
+and packages the branch family of Theorem~\ref{thm:interp} into one geometric
+object. Scoping first: everything below is \emph{branch-blind} --- every
+statement survives the substitution $\kappa\to\kappa_k$ --- so none of it
+derives D3. The rate-derivation problem (the session register's OP-RATE)
+remains open throughout; what changes is its arithmetic perimeter and its
+classification.
+
+\begin{lemma}[Irrationality of the log-ratio]\label{lem:ratirrational}\tagF{} \hx{TX-A1--A7, TX-G1}
+$i\pi/\ln\gp\notin\Q$. If $i\pi/\ln\gp=p/q$ with $q\ge1$, exponentiating
+gives $(-1)^q=\gp^{\,p}$; but $2\gp^{\,p}=L_p+F_p\sqrt5$ exactly (exact on
+the grid $p\in[-12,12]$, general by Binet) with $\sqrt5$-part $F_p/2\neq0$
+for $p\neq0$, so $\gp^{\,p}\neq\pm1$ for $p\neq0$ (exact $\Q(\sqrt5)$
+decisions), while $p=0$ forces $q\,i\pi=0$, impossible ($q\ge1$; $\pi>3$
+interval-certified). Second, premise-independent route: $i\pi/\ln\gp$ is
+purely imaginary and nonzero ($\gp>1$ exact), hence not rational.
+\end{lemma}
+
+\begin{theorem}[Transcendence of the rate]\label{thm:ratetrans}\tagF{}/\tagE{} \hx{TX-B1--B5}
+Forced given the established Gelfond--Schneider theorem (Gelfond 1934;
+Schneider 1934, independently; quotient form: for nonzero algebraic
+$\alpha,\beta$ with fixed logarithm branches and
+$\log\alpha,\log\beta\neq0$, the ratio $\log\alpha/\log\beta$ is rational or
+transcendental) \tagE{}:
+\[
+\boxed{\ \kappa=\frac{\pi}{2\ln\gp}\ \text{is transcendental, and so is
+every branch}\ \ \kappa_k=(4k+1)\,\kappa,\ k\in\Z\ }.
+\]
+Chain: Lemma~\ref{lem:ratirrational} kills the rational horn of G--S at
+$(\alpha,\beta)=(-1,\gp)$, so $i\pi/\ln\gp$ is transcendental; the bridge
+$i\pi/\ln\gp=2i\,\kappa$ with $2i$ algebraic (root of $x^2+4$) transfers
+transcendence to $\kappa$ ($\overline\Q$ is a field); and
+$\pi/2+2\pi k=(4k+1)\,\pi/2$ with $4k+1$ a nonzero rational for every
+$k\in\Z$. \emph{Restatement-test outcome, stated explicitly:} this is
+branch-blind arithmetic --- transcendence holds for every branch at once,
+so nothing here selects $k=0$; OP-RATE stays open.
+\end{theorem}
+
+\begin{corollary}[Near-miss closure]\label{cor:nearmiss}\tagF{}/\tagE{} \hx{TX-C1--C7, TX-G2--G4}
+$4\ln\gp/\pi=2/\kappa$ exactly, and $2/\kappa$ is transcendental
+(Theorem~\ref{thm:ratetrans}), while $\tau$ is algebraic (root of the
+irreducible $x^2+x-1$): the whitepaper's open item 4 --- the near miss
+$4\ln\gp/\pi$ vs $\tau$, margin $5.34\times10^{-3}$ \tagC{}, there
+``expected contentless'' --- closes \emph{permanently and negatively}. Both
+clauses of the whitepaper's Guard 15.3 --- the whitepaper carries a
+\emph{single} Guard 15.3 with both near-miss clauses; there is no Guard
+15.4, which also corrects the citation in Remark~\ref{rem:thetaK} ---
+promote from [computed-nonequal at 60 dps] to forced-never-equal given
+G--S: equality would force $\kappa=2/\tau=2\gp$ (root of $x^2-2x-4$) in the
+first clause, and $\kappa=1/\tau^2=\gp^2$ (root of $x^2-3x+1$) in the pitch
+clause (via $\tan\theta_K=\tau^2/K$ and injectivity of $\tan$ on
+$(0,\pi/2)$) --- both impossible. General statement: \emph{every} near miss
+of the form (algebraic) vs (nonzero rational multiple of $\pi/\ln\gp$ or
+$\ln\gp/\pi$) is permanently empty. Margins interval-certified at 60 dps:
+$0.00533<\tau-4\ln\gp/\pi<0.00534$, $\tau^2-2\ln\gp/\pi>0.07$,
+$1/40<\kappa-2\gp<3/100$; all printed decimals of Guard 15.3 reproduced
+\hx{TX-G6}.
+\end{corollary}
+
+\begin{remark}[$\log_\gp2$ strengthened; scan retirement]\label{rem:logphi2}\tagF{}/\tagE{} \hx{TX-D1--D5, TX-E1--E6, TX-G5}
+(a) W-Thm.\ 16.1 strengthens: $\log_\gp2=\ln2/\ln\gp$ is
+\emph{transcendental} given G--S at $(\alpha,\beta)=(2,\gp)$. Its
+irrationality is now carried by two premise-disjoint mechanisms, meeting
+the corpus convergence standard: the whitepaper's Binet $\sqrt5$-part
+argument (replicated, grid $p\in[-10,10]$, $q\in[1,8]$, both orientations)
+and the new norm obstruction $|N(\gp^{\,p})|=|(\gp\psi)^p|=1$ vs
+$N(2^q)=4^q\ge4$, independent of Binet positivity. (b) Scan-retirement
+meta-theorem: $\kappa\notin\overline\Q$ (Theorem~\ref{thm:ratetrans}), so
+\emph{no algebraic-valued ledger tie for $\kappa$ exists}: for any
+nonconstant rational function $R$ over $\overline\Q$ and any algebraic
+target $c$, $R(\kappa)=c$ would make $\kappa$ algebraic. The register's
+empirical no-tie upgrades to a theorem-level exclusion ($17$ ledger
+constants certified algebraic with irreducible integer minimal polynomials;
+$\kappa$ and $2/\kappa$ retire together, product $2$; finite corroboration
+$|\kappa-c|>1/40$ over the interval ledger, nearest $2\gp$ at
+$\approx0.0282$). Honest scope: period relations among the corpus
+transcendentals ($\kappa$, $L_{\mathrm{res}}$, and the register's $\tau_0$)
+and the algebraic independence of $\pi$ and $\ln\gp$ are beyond
+Gelfond--Schneider and remain external-open.
+\end{remark}
+
+\begin{proposition}[Modulus ledger of the multiplier torus]\label{prop:modledger}\tagF{} \hx{MX-A1--A4, MX-M1a--M1i, MX-M2a--M2d}
+Let $E_q=\C^{\times}/q^{\Z}$ be the multiplier torus of the generator
+($0<|q|=\tau<1$ exact, so $E_q$ is nondegenerate). The principal logarithm
+and modulus are
+\[
+\log q=\ln\tau+\frac{i\pi}2=-\ln\gp+\frac{i\pi}2,
+\qquad
+\mu=\frac{\log q}{2\pi i}=\frac14+\frac{i\ln\gp}{2\pi}\ (\mathrm{mod}\ \Z),
+\]
+forced by exp-match and principal-strip membership ($\Ima\in(-\pi,\pi]$;
+branches differ by $2\pi ik$, at least the strip diameter). Ledger:
+$\Rea\mu=\tfrac14$ is the charge quantum --- the $c=\tfrac14$ gauge
+rotation of Theorem~\ref{thm:gauge}, one charge quantum per rung;
+$\Ima\mu=\ln\gp/(2\pi)>0$;
+\[
+\frac{\Rea\mu}{\Ima\mu}=\kappa
+\qquad\text{and}\qquad
+|\log q|^2=\ln^2\gp+\frac{\pi^2}4=\ln^2\gp\,\bigl(1+\kappa^2\bigr),
+\]
+the per-floor arc constant of Corollary~\ref{cor:d3select}(iv) read in the
+log chart: $(-1+i\kappa)\ln\gp=\log q$ exactly.
+\end{proposition}
+
+\begin{theorem}[Systolic marking: the seventh characterization]\label{thm:systole}\tagF{} \hx{MX-M3a--M3f, MX-M4a--M4c}
+For the period lattice $\Lambda=\Z\log q+\Z\,2\pi i$ of $E_q$,
+\[
+|n\log q+2\pi i\,m|^2=\ln^2\gp\,\bigl(n^2+\kappa^2(n+4m)^2\bigr)
+\]
+exactly, so every length comparison is linear in $\kappa^2$ with integer
+coefficients, decided by exact rational arithmetic against the single
+certified sandwich $10<\kappa^2<11$ (one interval guard, \hx{MX-G1}).
+$\Lambda$ is \emph{branch-independent}: $\{\log_kq,\ 2\pi i\}$ is a
+unimodular change of basis of $\Lambda$ for every $k$, and the length
+spectrum is $k$-invariant; the \emph{marking} (choice of generator) is not
+($\log_kq-\log q=2\pi ik$). The systole of $E_q$ is $|\log q|$, attained
+exactly at $\pm\log q$ --- the principal-branch generators --- hence
+\begin{center}
+\emph{D3 $\iff$ the marking whose non-meridian generator is the systole
+representative.}
+\end{center}
+The second-shortest class is the four-rung cycle: $4\log q-2\pi i=\ln\gapc$,
+length $4\ln\gp$ --- the charge cycle $W_4=\gapc$ of
+Theorem~\ref{thm:generator} \emph{is} the second-shortest closed geodesic.
+\emph{Stated prominently: this is characterization number seven for
+Corollary~\ref{cor:d3select}'s menu, not a derivation.} Per the restatement
+test the selection content is exactly a minimality principle (the systole);
+every $k$-invariant part of the construction cannot separate branches, and
+OP-RATE's derivation problem is untouched.
+\end{theorem}
+
+\begin{remark}[Geodesic ledger; no-CM]\label{rem:geoledger}\tagF{}/\tagE{}
+(a) \hx{MX-M5a--M5c, MX-G2--G3}\ The closed-geodesic length ledger of
+$E_q$ is certified: lengths
+$\ln\gp\,\sqrt{a+b\,\kappa^2}$ with $(a,b)=\bigl(n^2,(n+4m)^2\bigr)$; the
+first ten distinct classes (up to sign, iterates included), ordered by
+exact sandwich arithmetic and interval-corroborated at 60 dps, are
+\[
+(1,1),\ (16,0),\ (9,1),\ (25,1),\ (4,4)^{\times2},\ (49,1),\ (64,0),\
+(36,4)^{\times2},\ (81,1),\ (1,9),
+\]
+with $(1,1)$ the systole, $(16,0)=4\ln\gp$ the $W_4=\gapc$ cycle, and
+$(4,4)$ twice the systole (an iterate/primitive degeneracy); window
+sufficiency ($|n|\le12$, $|m|\le4$) closed by exact tail identities. This
+is the certified ledger on which $\pi/2$ and $\ln\gp$ combine
+\emph{additively} --- the natural habitat for any future extremality
+selection, which must re-pass the restatement test. (b)
+\hx{MX-M6a--M6c}\ Given
+Theorem~\ref{thm:ratetrans}, $\mu$ is not algebraic --- the exact bridge is
+$(\mu-\tfrac14)\,\kappa=i/4$ with $\mu-\tfrac14=i\ln\gp/(2\pi)\neq0$ --- in
+particular not imaginary quadratic: \emph{$E_q$ has no complex
+multiplication} (standard CM criterion; conditional exactly on the
+transcendence input).
+\end{remark}
+
+\begin{proposition}[$k$-invariance of the discrete state]\label{prop:kinv}\tagF{} \hx{DX-E1--E3}
+The full discrete state of the ladder --- the rung values
+$e^{i\kappa_kn\ln\gp}=i^{\,n}$ (exact on the grid $k\in[-3,3]$,
+$n\in[0,8]$, symbolically via $e^{2\pi ikn}=1$), the heights
+$z_n^2=1-\tau^{2n}$, the transfer ledger, the gate data
+$(C_n,u_n,m_n,\lambda_n)$, the floor lattice $\rho_n=n\ln\gp$, and the
+torus lattice $\Lambda$ --- is \emph{identical for every branch} $k\in\Z$.
+Only the marking $\log_kq$ is $k$-dependent (Theorem~\ref{thm:systole}).
+\end{proposition}
+
+\begin{remark}[OP-RATE at rung resolution: sign ladder, exposed joint, ledger kill, classification no-go]\label{rem:oprate}\tagF{}/\tagO{} \hx{DX-C1--C7, DX-D1--D5, DX-E4--E5}
+Four bookkeeping results at the rate problem's core; items (i) and (iii)
+are forced, (ii) and (iv) are candidate-level; none closes the problem.
+(i) \emph{Sign ladder, D1-free} \hx{DX-C1--C2}: symbolically
+$m(w)=-C/(1+u)^2=-1/w<0$ with $w=\gp^{2n}$, so the gate multiplier is
+negative at \emph{every} gate and does not alternate between gates; the
+two-rung carrier is $q^2=-\tau^2$, argument $\pi$. (ii) \emph{Exposed-joint
+axiom H} --- a formalized open joint, presented as such, \emph{not} a
+result \hx{DX-C3--C6}: given
+\begin{center}
+H $\coloneqq$ ``argument of the two-rung ladder action $=$ transverse
+holonomy accumulated over two floors ($=\pi$)'',
+\end{center}
+exact mod-$2\pi$ bookkeeping forces the per-floor step
+$\delta=\pi/2\ (\mathrm{mod}\ \pi)$ --- the quantum $\pm\pi/2$ at rung
+resolution --- but the residual $\pi\Z$ is not pinned: every branch
+satisfies H, and the branch remains untouched. (iii) \emph{Ledger
+counter-models} \hx{DX-D1--D5}: the transfer ledger
+$\Delta F_n=\tau^{2n+1}$ (Proposition~\ref{prop:ledger}) does \emph{not}
+force a constant angular step. Two explicit counter-models pass every
+ledger identity: $\theta_n=n\pi$ (all moduli correct; fails rung passage
+at $n=1$, $e^{i\pi}\tau=-\tau\neq i\tau$) and $\theta_n=n\pi/2+2\pi s_n$
+with a non-constant integer lift $s_n$ (reproduces \emph{all} rung values
+$i^{\,n}$ and all ledger identities). Constancy of the angular step is
+therefore a lift/equivariance assumption, and the ledger route to the rate
+dies by contamination. (iv) \emph{R6 no-go --- a candidate classification
+statement, not asserted as a theorem} \hx{DX-E4--E5}: any rate-selection
+functional that factors through the $k$-invariant discrete data of
+Proposition~\ref{prop:kinv} is constant in $k$ and cannot select $k=0$;
+the six existing characterizations (Corollary~\ref{cor:d3select}(i)--(iv),
+Proposition~\ref{prop:sphlength}, Remark~\ref{rem:gammatransfer}) all
+reference \emph{continuum} objects --- winding number, spiral speed, rail
+length --- which is exactly the escape, and the separation is exhibited
+($L_k$ separates branches that the discrete functionals cannot). This
+supports closing OP-RATE \emph{as a classification} --- determined up to
+$\Z$ at rung resolution, with selection necessarily continuum-referencing
+--- at candidate level; OP-RATE \emph{as a derivation} remains open
+\tagO{}.
+\end{remark}
+
+\smallskip\noindent
+\textbf{OP-RATE closes as a classification (v1.8).} The candidate R6 no-go of
+Remark~\ref{rem:oprate}(iv) is now promoted to a forced theorem, and its
+consequence stated precisely: at rung resolution the branch $k$ --- hence the
+rate $\kappa$ up to the $\Z$-family --- cannot be selected by any functional of
+the discrete substrate data. This settles OP-RATE \emph{as a classification};
+it is a no-go on discrete-substrate \emph{derivation}, not a derivation of
+$\kappa$, and the continuum rate D3 stays declared throughout.
+
+\begin{lemma}[Extended $k$-invariance of the discrete state]\label{lem:kinvext}\tagF{} \hx{CL-1a--CL-1h, CL-1F}
+The $k$-invariance of Proposition~\ref{prop:kinv} extends, re-forced cold, to
+the \emph{full} discrete state of the ladder. For every branch $k\in\Z$ the
+following are identical to their $k=0$ values: the rung values
+$e^{i\kappa_kn\ln\gp}=i^{\,n}$ (exact grid $k\in[-4,4]$, $n\in[0,10]$, and
+symbolically via $e^{2\pi ikn}=1$); the heights $z_n^2=1-\tau^{2n}$; the gate
+ladder $(C_n,u_n,m_n,\lambda_n)$ with $m_n\lambda_n=1$; the floor lattice
+$\rho_n=n\ln\gp$; the transfer ledger $\Delta F_n=\tau^{2n+1}$ (sum $1$); the
+torus lattice $\Lambda=\Z\log q+\Z\,2\pi i$, re-verified branch-independent by
+the unimodular change of basis $\bigl(\begin{smallmatrix}1&k\\0&1\end{smallmatrix}\bigr)$
+($\det=1$); the ten-class geodesic length ledger
+$\ln\gp\sqrt{a+b\kappa^2}$ with $(a,b)=\bigl(n^2,(n+4m)^2\bigr)$, invariant
+under the marking relabel $(n,m)\mapsto(n,m+nk)$; and the \emph{systole value}
+$|\log q_0|^2=\ln^2\gp\,(1+\kappa^2)=\ln^2\gp+\pi^2/4$, the lattice minimum.
+Only the \emph{marking} $\log_kq$ is $k$-dependent
+($|\log_1q|^2-|\log_0q|^2=6\pi^2\ne0$, detected \hx{CL-1F}). The lemma consumes
+neither D2 nor D3 (D1 enters only through the $k$-free rung modulus $\tau$).
+\end{lemma}
+
+\begin{theorem}[R6 classification no-go]\label{thm:r6nogo}\tagF{} \hx{CL-2a, CL-2F1--CL-2F2}
+Define a \emph{rung-resolution selection functional} as any map
+$\Phi=g\circ D$ from the $k$-invariant discrete data $D$ of
+Lemma~\ref{lem:kinvext} into a totally ordered set, whose argmin/argmax
+purports to select the branch $k$. Then every such functional is
+\emph{constant on the $\Z$-family}, and so selects no branch: if $D(k)=D(0)$
+for all $k$ (Lemma~\ref{lem:kinvext}), then $\Phi(k)=g(D(k))=g(D(0))=\Phi(0)$,
+whose argmin is the whole $\Z$-family. (Witness: $F=\sum_{n<6}e^{-\rho_n}i^{\,n}$
+is $k$-constant symbolically \hx{CL-2a}; the non-vacuity guard \hx{CL-2F1}
+fires on any core secretly made $k$-constant.) This promotes
+Remark~\ref{rem:oprate}(iv) from candidate to forced. Per the restatement
+test the no-go is branch-blind \emph{by design}: it is a
+characterization-of-impossibility, not a derivation of $k$.
+\end{theorem}
+
+\begin{corollary}[OP-RATE closes as a classification]\label{cor:opratelass}\tagF{} \hx{CL-3a--CL-3c}
+OP-RATE closes \emph{as a classification}. What closes: the reading
+``derive $\kappa$ from the discrete substrate at rung resolution'' is a no-go
+(Theorem~\ref{thm:r6nogo}) --- $\kappa$ is declared-up-to-$\Z$ at the discrete
+level, and selecting the principal branch \emph{provably requires} a
+continuum-referencing minimality principle. The seven characterizations
+(Corollary~\ref{cor:d3select}(i)--(iv), Proposition~\ref{prop:sphlength},
+Remark~\ref{rem:gammatransfer}, Theorem~\ref{thm:systole}) are the
+\emph{complete} discrete-level menu: the discrete level contains no selector
+at all. What does \emph{not} close: the continuum rate D3 itself remains
+declared --- all branch curves $W_k$ are admissible one-parameter groups
+through $Q$, pairwise distinct as curves (Theorem~\ref{thm:interp}, initial
+velocities $-1+i\kappa_k$) --- and a continuum-referencing derivation is not
+excluded. This mirrors the $\lambda=2c$/Cencov equivariance no-go of the
+companion $\lambda=2c$ paper (\texttt{2026-06-lambda-2c}, thm:cencov) exactly:
+as there ``$c$ cannot be fixed by any invariance requirement \ldots\ $c$ is a
+declared positive scale \ldots\ shipped decisions are $c$-invariant across the
+band \ldots\ [but he] does not forbid an external structural constraint from
+doing so'', here $k$ cannot be fixed by any functional of the $k$-invariant
+discrete data, $\kappa$ is declared-up-to-$\Z$ with discrete decisions
+$k$-invariant across the $\Z$-family, and a continuum-referencing principle may
+still select. OP-RATE \emph{as a derivation} remains open \tagO{}.
+\end{corollary}
+
+\begin{remark}[The seven-way continuum/discrete table]\label{rem:sevenway}\tagF{} \hx{CL-2b(i)--(vii), CL-2c}
+The content of the no-go is that each of the seven characterizations is
+\emph{continuum-referencing}: its selection functional is $k$-dependent
+(unique argmin at $k=0$), so it provably does not factor through the
+$k$-invariant discrete data. (i) D3's declared continuum rate $\kappa$ itself
+--- a \emph{restatement} (the selector $|\kappa_k-\kappa|=4|k|\kappa$ consumes
+the target); (ii) the principal branch of $\log Q$, i.e.\ the continuous
+argument/lift $\theta(\rho)$ (the rung data is lift-blind, $e^{i\theta}=i^n$
+only); (iii) the minimal winding $|\pi/2+2\pi k|$ of the continuous curve;
+(iv) the arc length $L_k=(1-\tau)\sqrt{1+\kappa_k^2}$ of the continuous
+residual spiral; (v) the total spherical length $L_{\mathrm{res}}$; (vi) the
+formation-rail length per floor; (vii) the systolic selection --- the flat
+norm $|\log_kq|^2=\ln^2\gp(1+(4k+1)^2\kappa^2)$ of the $k$-dependent
+\emph{marking} on the continuous torus $E_q$, even though the lattice and the
+systole value are $k$-invariant (Lemma~\ref{lem:kinvext}). Tag discipline: the
+structural conclusion ``continuum-referencing, does not factor through the
+discrete data'' is \tagF{} for all seven, and rows (i)--(iv),(vii) are forced
+at the exact level (integer/rational cores $(4k+1)^2$, $|4k+1|$, $4|k|$, plus
+$\kappa^2>0$); the strict per-characterization ``unique argmin at $k=0$''
+\emph{selection} for rows (v) and (vi) is \tagF{}\emph{ given corpus} ---
+inherited, cited not re-encoded, from Proposition~\ref{prop:sphlength}
+($L_{\mathrm{res}}$ strictly increasing in $|\kappa|$) and
+Remark~\ref{rem:gammatransfer} (rail speed strictly increasing in
+$\kappa'^2$). The no-go's core needs only that $L_{\mathrm{res}}$ and the rail
+are continuous integrals, manifestly not functions of the rung samples, which
+is exact. The whole block is branch-blind by design: that is the content.
+\end{remark}
+
+\smallskip\noindent
+\textbf{The period-relation map (v1.8).} The scan-retirement remark
+(Remark~\ref{rem:logphi2}(b)) left the period relations among the corpus
+transcendentals ($\kappa$, $L_{\mathrm{res}}$, and the register's Salem-slot
+constant $\tau_0$) external-open and undifferentiated. This block pins what is
+algebraic, settles the $\kappa$-vs-$\tau_0$ worry, and maps the precisely
+external-open residue.
+
+\begin{proposition}[$\tau_0$ algebraic; no $\kappa$-vs-$\tau_0$ relation]\label{prop:tau0alg}\tagF{}/\tagE{} \hx{PM-1B1--PM-1B9, PM-1X1--PM-1X6, PM-A2}
+The Salem-slot occupant $\tau_0=\beta+\beta^{-1}$ (the trace redirection of the
+companion salem-slot note, Def.~3.2; the dominant root of the degree-$2$
+trace-down) is \emph{algebraic}. For the least-degree Salem number $\beta_4$
+(minimal polynomial $x^4-x^3-x^2-x+1$) it has the exact minimal polynomial
+\[
+\boxed{\ \operatorname{minpoly}(\tau_0)=t^2-t-3,\qquad \tau_0=\tfrac12(1+\sqrt{13})\ },
+\]
+a degree-$2$, irreducible, monic-integer (algebraic-integer), \emph{totally
+real} (discriminant $13>0$, Sturm real-root count $2$), \emph{Perron}
+($\tau_0-|\text{conjugate}|=1>0$) constant with $\tau_0>2>\gp$ (salem-slot
+Thm.~3.3); the type-fact is general over all Salem redirections, and the
+golden limit $\sqrt5=\gp+\gp^{-1}$ (minpoly $t^2-5$) and the Pisot
+accumulation $\mu_P+\mu_P^{-1}$ (minpoly $t^3+t^2-4t-5$) are algebraic too.
+Combined with $\kappa$ transcendental (inherited, Theorem~\ref{thm:ratetrans},
+given Gelfond--Schneider), there is \emph{no} algebraic relation over $\Q$
+between $\kappa$ and $\tau_0$: for $m(Y)=\operatorname{minpoly}(\tau_0)$ the
+resultant $R(X)=\operatorname{Res}_Y(P,m)=\prod_r P(X,r)\in\Q[X]$, and a
+genuine (non-vacuous) $P(\kappa,\tau_0)=0$ would give $R(\kappa)=0$ with $R\ne0$,
+forcing $\kappa\in\overline\Q$ --- impossible. The register's ``$\kappa$ vs
+$\tau_0$'' period worry is thus settled \emph{negatively} at the algebraic
+level (a specialization of the scan-retirement meta-theorem to two variables;
+$\kappa$ is consumed only as an excluded value, not derived, so this is
+branch-blind exclusion, not restatement).
+\end{proposition}
+
+\begin{remark}[$L_{\mathrm{res}}$ as an elliptic period; the external-open ledger]\label{rem:periodmap}\tagF{}/\tagE{}/\tagO{} \hx{PM-1C1--PM-1C2, PM-2A, PM-2B, PM-2Bf}
+The finite spherical length $L_{\mathrm{res}}=\sqrt{1+\kappa^2}\,
+E\!\bigl(\kappa^2/(1+\kappa^2)\bigr)=3.7312193125\ldots$
+(Proposition~\ref{prop:sphlength}) is the value of the complete elliptic
+integral of the second kind at the elliptic \emph{parameter}
+$m=\kappa^2/(1+\kappa^2)$ (modulus $k=\sqrt m$), via the exact reduction
+$1+\kappa^2\cos^2\theta=(1+\kappa^2)(1-m\sin^2\theta)$. At an \emph{algebraic}
+parameter $E$ is a Kontsevich--Zagier period (an algebraic ellipse's
+quarter-perimeter); here the M\"obius inverse $\kappa^2=m/(1-m)$ makes $m$
+\emph{transcendental} (since $\kappa$ is), so $L_{\mathrm{res}}$ is a period
+\emph{function} evaluated at a transcendental argument --- one step beyond
+Gelfond--Schneider and beyond the Schneider/Chudnovsky elliptic-period
+theorems (which need an algebraic modulus or CM lattice), hence its
+transcendence is \emph{not} settled here. Since $\tau_0$ is algebraic
+(Proposition~\ref{prop:tau0alg}), any relation $P(\tau_0,L_{\mathrm{res}})=0$
+over $\Q$ would force $L_{\mathrm{res}}\in\overline\Q$ by the same
+resultant/tower argument \hx{PM-2B}, so the $(\tau_0,L_{\mathrm{res}})$ pair
+\emph{reduces} to the single constant. The precise ledger: \emph{settled}
+--- $\kappa$ transcendental, $\tau_0$ algebraic, no $(\kappa,\tau_0)$
+relation, and $(\tau_0,L_{\mathrm{res}})$ reduced to ``is $L_{\mathrm{res}}$
+transcendental''; \emph{genuinely external-open} \tagO{} --- the transcendence
+of $L_{\mathrm{res}}$, and the algebraic independences of $(\kappa,
+L_{\mathrm{res}})$ and of $(\pi,\ln\gp)$ (Schanuel / Kontsevich--Zagier
+territory, beyond Gelfond--Schneider and Baker; the ratio $\pi/\ln\gp=2\kappa$
+is settled transcendental but pair-independence is strictly stronger). The
+entire map survives $\kappa\mapsto\kappa_k$ (branch-blind) and advances no
+selection.
+\end{remark}
+
+\section{The canonical quarter-turn: $J=UA$}\label{sec:quarterturn}
+
+Everything in this section is unconditional \tagF{}: pure keystone/Clifford
+algebra in the whitepaper's fixed convention
+($R=\bigl(\begin{smallmatrix}0&1\\1&1\end{smallmatrix}\bigr)$, $H=2R-I=2e_1-e_2$,
+$e_1=\sigma_x$, $e_2=\sigma_z$, $J=e_1e_2$; W-\S3--4), using no part of D1--D3.
+It resolves the canonicality problem the July 14 report posed for itself: the
+representation $W_n=(i\tau)^n$ imported $i$ from the declared winding; here the
+quarter-turn is \emph{factored from two real, normalized structures already
+forced in the operator layer}.
+
+\begin{proposition}[Spectral uncoupling]\label{prop:uncouple}\tagF{} \hx{OZ-J1--J5}
+The spectral projectors of the keystone,
+\[
+P_+=\frac{R+\tau I}{\sqrt5},\qquad P_-=\frac{\gp I-R}{\sqrt5},
+\]
+are complete orthogonal idempotents ($P_++P_-=I$, $P_\pm^2=P_\pm$, $P_+P_-=0$)
+with $RP_+=\gp P_+$ and $RP_-=\psi P_-$, $\psi=-\tau$. The normalized
+\emph{keystone grading}
+\[
+U \coloneqq P_+-P_-=\frac{H}{\sqrt5}=\frac{2R-I}{\sqrt5}
+\]
+satisfies $U^2=I$ and acts as $+I$ on the expanding golden mode and $-I$ on the
+contracting one; equivalently $P_\pm=(I\pm U)/2$.
+\end{proposition}
+
+\begin{proposition}[The return-kernel recoupler]\label{prop:recoupler}\tagF{} \hx{OZ-K1--K4, OZ-L4}
+Let $N=e_1+2e_2$ be the generator of the vector part of $\ker\mathcal L$,
+$\mathcal L(X)=\tfrac12\{H,X\}$ (W-Thm.\ 4.2). Then $N^2=5I$ and, normalizing by
+the Clifford norm, $A \coloneqq N/\sqrt{N^2}=N/\sqrt5$ satisfies
+\[
+A^2=I,\qquad UA=-AU,\qquad AP_+=P_-A,\qquad AP_-=P_+A :
+\]
+$A$ is a real involution that \emph{exchanges} the two golden modes. The
+anticommutation is automatic, not a coincidence: on vectors,
+$\mathcal L(v)=\langle H,v\rangle\,I$ (W-Thm.\ 4.2), so the vector kernel is
+\emph{by definition} $H^\perp$ --- membership in the return kernel already
+certifies orthogonality to $H$, hence $HN=-NH$.
+\end{proposition}
+
+\begin{theorem}[Canonical quarter-turn factorization; Strouse--Ozymandias]\label{thm:factorization}\tagF{} \hx{OZ-K5--K6}
+With $U$ and $A$ as above,
+\[
+\boxed{\ J=UA=\frac{H}{\sqrt5}\cdot\frac{N}{\sqrt5}=\frac{HN}{5}\ },
+\qquad J^2=UAUA=-U^2A^2=-I .
+\]
+Matrix witness: $H=\bigl(\begin{smallmatrix}-1&2\\2&1\end{smallmatrix}\bigr)$,
+$N=\bigl(\begin{smallmatrix}2&1\\1&-2\end{smallmatrix}\bigr)$,
+$HN=5\bigl(\begin{smallmatrix}0&-1\\1&0\end{smallmatrix}\bigr)=5\,e_1e_2$.
+Uniqueness: $U$ is fixed by the keystone; the vector kernel is one-dimensional,
+so its unit generator is $\pm A$; hence
+\[
+J=\pm\,UA
+\]
+is canonical up to the orientation sign --- exactly the freedom the whitepaper's
+D2 already names as a convention. The quarter-turn no longer needs to be
+imported: \emph{distinguish the modes ($U$) $+$ exchange the modes ($A$) $=$
+quarter-turn ($J$)}.
+\end{theorem}
+
+\begin{corollary}[Coordinate-free form]\label{cor:coordfree}\tagF{} \hx{OZ-L3--L4}
+In $\mathrm{Cl}(2,0)$ the product of any positively-oriented orthonormal pair of
+vectors equals the pseudoscalar: for every rotation angle $\theta$,
+$e_1'e_2'=e_1e_2=J$ exactly (a reflection flips the sign). Since
+$(U,A)=(\widehat H,\widehat N)$ is an orthonormal pair \emph{by construction}
+(Prop.~\ref{prop:recoupler}), the factorization $J=\pm UA$ is basis-independent
+up to orientation; no choice beyond the whitepaper's fixed convention enters.
+For an arbitrarily scaled kernel generator the normalization is
+$A=N/\sqrt{N^2}$; with $N=e_1+2e_2$ this is $N/\sqrt5$. This closes the report's
+open item (1).
+\end{corollary}
+
+\begin{remark}[Why the return layer is necessary]\label{rem:obstruction}\tagF{} \hx{OZ-L1--L2}
+The commutative algebra $\R[R]=\operatorname{span}\{I,R\}$ contains no square
+root of $-I$: $(aI+bR)^2=-I$ has no real solutions (exact elimination). Nor does
+it contain the recoupler: everything in $\R[R]$ commutes with $H$, while
+$[H,N]=2HN=10J\neq0$. The quarter-turn therefore cannot come from the keystone
+\emph{alone}; it requires the keystone \emph{acting on} the matrix algebra ---
+the return operator's module structure --- which is precisely where $N$ lives.
+The report's initial self-criticism (``clean representation $\neq$ canonical
+derivation'') identified the right gap, and the factorization fills it from
+inside the existing layer.
+\end{remark}
+
+\begin{definition}[Canonical rung generator]\label{def:Q}\tagF{} \hx{OZ-K7--K9}
+\[
+Q \coloneqq \pm\,\tau J=\pm\,\tau UA=\pm\,\frac{\tau}{5}\,HN,
+\qquad
+Q^2=-\tau^2I,\qquad Q^4=\gapc\,I,\qquad Q^n=\tau^nJ^n .
+\]
+Under the algebra isomorphism $\R[J]\cong\C$ ($J\mapsto i$), $Q^n\cong(i\tau)^n
+=W_n$; concretely, with basepoint $v_0=(1,0)^{\!\top}$,
+\[
+Q^nv_0=\bigl(\Rea W_n,\ \Ima W_n\bigr)^{\!\top},
+\qquad\text{so}\qquad
+S_n=\bigl(Q^nv_0\,;\ z_n\bigr):
+\]
+the residual sphere's horizontal part (\S\ref{sec:sphere}) \emph{is} the
+$Q$-orbit of the east basepoint.
+\end{definition}
+
+\smallskip\noindent
+\textbf{Scoping upgrade (what this does and does not close).} Before v1.1 the
+generator was forced \emph{given} D1--D3, with $i$ supplied by D2. Now: the
+quarter-turn operator $J$ and the rung generator $Q=\pm\tau J$ exist
+canonically (up to orientation) in the substrate itself \tagF{}, and D2's
+remaining declared content is \emph{selection}, not existence --- that the
+winding applies exactly one $Q$ per entropy floor (D3's rate), rather than the
+terrain $\pi$ or pentagon $2\pi/5$ clocks. Per the report's own ledger, still
+open: rung quantization (why exactly one $Q$ per rung event --- by
+Corollary~\ref{cor:d3select} this now \emph{contains} the interpolation
+question, since branch selection $=$ rate selection), derivation of the
+inherited radius law $r(z)$, and any physical identification (the
+helicase/uncouple--recouple language was a mechanism-finding analogy only).
+Coordinate-free uniqueness is closed by Corollary~\ref{cor:coordfree};
+continuous interpolation is classified by Theorem~\ref{thm:interp}.
+
+\smallskip\noindent
+\textbf{The $\chi$-selection front (v1.7).} Three results sharpen the
+selection scoping just stated: what the emission image $S$ (the closure of
+the whitepaper's emission catalog, W-\S5) can and cannot supply for the
+angular quantum $\chi$, and exactly where a $\chi$-selection argument must
+stand.
+
+\begin{proposition}[Pentagon exclusion by the image]\label{prop:pentimage}\tagF{} \hx{CX-A3, CX-B1--B5, CX-D6}
+$\zeta_5$ is not in the emission image $S$: $\arg\zeta_5=2\pi/5$ lies
+outside the image angle lattice $(\pi/2)\Z$ (W-Lemmas 5.4--5.5). Exactly:
+$\tfrac15\notin\tfrac14\Z$ mod $1$; the pentagon classes $k/5$ ($k=1..4$)
+meet $\{0,\tfrac14,\tfrac12,\tfrac34\}$ only at $0$; $\Phi_5$ (verified
+$=\operatorname{minpoly}(\zeta_5)$) has no root in $\mu_4$; and the
+pentagon gate multipliers are primitive fifth roots (pair product
+$=\Phi_5$). This \emph{strengthens} the whitepaper's pentagon exclusion
+from the principle to the image: W-Decl.\ 12.2/W-Prop.\ 14.2 exclude the
+$2\pi/5$ clock \emph{by the principle} D2; here the pentagon multiplier is
+not an on-circle element of $S$ at all, independently of D2.
+\end{proposition}
+
+\begin{proposition}[Unimodular tensor-monomials reach only $\pm1$]\label{prop:unimon}\tagF{} \hx{CX-A4, CX-C1--C7}
+Every unimodular tensor-monomial of catalog eigenvalues has value exactly
+$+1$ or $-1$: $\pm i$ is multiplicatively unreachable. Forcing: every
+catalog eigenvalue has $5$-valuation $w_2\ge0$ (moduli of the form
+$2^{w_0/4}3^{w_1/4}5^{w_2/4}\gp^{w_3/4}$); the only odd-quarter-argument
+carriers are the K-seed's rotation pair $\pm i\beta$, each with $w_2=1>0$;
+unimodularity forces the total $w_2=0$ (norming to $\Q$ with $N(\gp)=-1$
+and $\gp$ not a root of unity), hence no $\pm i\beta$ factor, hence even
+argument. Corroborated exhaustively on all $74613$ monomials of degree
+$\le6$ ($60$ unimodular, all $\pm1$). Whether the \emph{full} image ---
+closed also under addition, minimal polynomials, and $\Phi$-extraction ---
+can reach $\pm i$ is \emph{not} decided by this multiplicative argument and
+remains open \tagO{} \hx{CX-C6--C7}: the corpus-exhibited host is
+$x^4-1=\Phi_1\Phi_2\Phi_4$ with $\Phi_4$ rooted at $\pm i$.
+\end{proposition}
+
+\begin{theorem}[The conditional $\chi$-selection chain, with its kill]\label{thm:chichain}\tagF{}/\tagD{} \hx{CX-D2--D3, CX-E1--E5, CX-G1}
+Call D2$'$ the thin axiom \emph{``the per-rung winding multiplier is an
+on-circle element of $S$''}. Then, \emph{under D2$'$ together with the
+hypothesis that $S$ contains a non-real on-circle element}:
+$\chi=\pm\pi/2$. The chain composes three links, each re-verified verbatim
+this session: on-circle elements of $S$ lie in $\mu_4=\{\pm1,\pm i\}$
+(W-Lem.\ 5.6); real multipliers carry no helicity
+(W-Thm.\ 11.1/W-Cor.\ 11.2), excluding $\pm1$; leaving $\chi=\pm\pi/2$. The
+implication is machine-forced as a truth table over the hypothesis.
+\emph{The honest kill, stated prominently:} D2$'$ does \emph{not} reduce
+D2. Selecting $\pm i$ requires $S$ to contain $\pm i$, and the substrate's
+only odd-quarter-argument source is the K-seed's rotation pair $\pm i\beta$
+--- so motivating ``D2$'$ puts $\pm i$ in $S$'' imports exactly D2's
+declared content (the winding realizes the seed's charge completion,
+Remark~\ref{rem:d2rel}): axiom replacement is a \emph{restatement}, and the
+kill is logged. No shipped document ties the forced \emph{gate} multiplier
+$\pm i$ (a $C=-\tfrac12$ gate datum, W-Prop.\ 10.2) to the emission image,
+so D2$'$ remains a proposed thin axiom, not forced-given-corpus
+\hx{CX-D3, CX-D6}. What survives unconditionally is the
+\emph{de-axiomatization identity} \hx{CX-E3}: within $\mu_4$, non-real
+$\iff$ order $4$ $\iff$ generator of $\Z/4\Z$ --- so D2's clause ``the
+angular quantum is a generator of $\Z/4\Z$'' may be rewritten as ``the
+multiplier is non-real'' without weakening it. D2 itself remains declared
+\tagD{}.
+\end{theorem}
+
+\smallskip\noindent
+\textbf{The $\chi$ doctrine resolved (v1.8).} Theorem~\ref{thm:chichain} left
+two sub-branches open pending companion papers: g1 (can the \emph{full}
+emission image $S$ --- closed also under addition, minimal polynomials, and
+$\Phi$-extraction --- reach $\pm i$?), and g3 (does the operator-algebra /
+charge-measure doctrine \emph{require} dynamical gate multipliers to be
+elements of $S$?). Those papers are now available and re-encoded cold; both
+sub-branches resolve \emph{negatively}, and $W[\text{open}]2$ stays PARTIAL as
+a derivation.
+
+\begin{proposition}[The on-circle image of $S$ is $\mu_2$]\label{prop:oncircleimage}\tagF{}/\tagE{} \hx{CH-A3, CH-B2--CH-B3, CH-C1--CH-C5, CH-D2, CH-G2}
+Let $S$ be the emission algebra --- the closure of the whitepaper's $7$-seed
+emission catalog under $\{\oplus,\otimes,\psi^2,\operatorname{minpoly},\Phi\}$
+(commutator excluded). Its on-circle eigenvalue image is \emph{exactly}
+$\mu_2=\{+1,-1\}$, a proper subset of $\mu_4$; hence $\pm i$ is \emph{not} an
+on-circle element of $S$. Mechanism (forced given the operator-algebra
+corpus): every emitted eigenvalue is a monomial in the $16$ catalog
+eigenvalues --- $\otimes$ multiplies, $\psi^2$ squares, $\oplus$ adds no value,
+and $\operatorname{minpoly},\Phi$ are spectrum-\emph{preserving} idempotents
+(operator-algebra paper, \texttt{2026-06-operator-algebra}: they re-present an
+object's eigenvalue multiset, they are not a cyclotomic-extraction primitive)
+--- and a unimodular monomial forces total $5$-valuation $0$ ($N(\gp)=-1$,
+$\gp$ not a root of unity), which excludes the only odd-argument carriers
+$\pm i\beta$ (with $5$-valuation $1$), forcing even argument, hence value in
+$\{\pm1\}$. This resolves g1 (v1.7 external-open) negatively: the
+$\Phi$-extraction host $x^4-1=\Phi_1\Phi_2\Phi_4$ is not in $S$ because
+spectrum-preservation cannot manufacture the $\pm i$ roots of $\Phi_4$, and the
+emission-gap paper's on-circle lemma (\texttt{2026-06-emission-gap}: an emitted
+on-circle eigenvalue lies in $\{1,i,-1,-i\}$) is a \emph{containment} (an upper
+bound, image $\subseteq\mu_4$), \emph{not} the equality $\mu_4\subseteq S$.
+This also reconciles with the tensor-monomial sub-closure of
+Proposition~\ref{prop:unimon} (which reached only $\pm1$): there is no gap
+on-circle between the sub-closure and the full image, since $\psi^2$ preserves
+the on/off-circle dichotomy and no catalog seed has $\pm i$ as a root. The only
+argument-$\pi/2$ eigenvalues anywhere in $S$ are the \emph{off-circle}
+$\pm i\beta$ at modulus $\beta=5^{1/4}\gp=2.4195\ldots>1$ \hx{CH-G2}.
+\end{proposition}
+
+\begin{remark}[The charge character, g3, and the sharpened {$W[\text{open}]2$} verdict]\label{rem:chidoctrine}\tagF{}/\tagE{} \hx{CH-D1--CH-D3, CH-E1--CH-E6, CH-G1}
+The \emph{charge} character does contain the non-real charges, but this does
+not force $\chi=\pm\pi/2$. $\chi(S)=\Z/4\Z$ carries the odd charge classes
+$1,3$ (operator-algebra paper: the $K$-seed carries $\{0,1,2,3\}$, its
+imaginary pair $\pm i\beta$ at $\pm\pi/2$); but charge reads the
+\emph{argument} class only (modulus-free), and those charge-$1,3$ elements are
+the off-circle $\pm i\beta$ --- so the hypothesis of Theorem~\ref{thm:chichain}
+that ``$S$ contains a non-real on-circle element'' is \emph{false given corpus}
+(Proposition~\ref{prop:oncircleimage}): the non-real content of $S$ lives
+entirely off the circle. Hence g3 resolves negatively --- the doctrine does not
+require dynamical gate multipliers to be on-circle elements of $S$ --- as a
+truth-table over the thin axiom D2$'$: Reading A (``the multiplier is an
+on-circle element of $S$'') is \emph{unsatisfiable} for the rotation gate,
+whose forced multiplier is $\pm i$ (a $C=-\tfrac12$ gate datum, W-Prop.\ 10.2)
+while on-circle $S=\{\pm1\}$ and helicity removes the reals; Reading B (``the
+multiplier's charge lies in $\chi(S)$'') exists only via the $K$-seed rotation
+pair, so it \emph{imports exactly D2} (the charge completion) --- a
+restatement. The charge-measure-coupling paper independently notes that the
+matrix commutator is the one non-semiring door across which emission
+constraints do not extend. \emph{Net:} $W[\text{open}]2$ does \emph{not}
+upgrade to a $\chi=\pm\pi/2$ derivation --- it stays PARTIAL as a derivation,
+now sharpened and grounded, its openness precisely located at the unreduced
+axiom D2. The two v1.7 opens are closed as \emph{forced-given-corpus negatives}
+(g1: external-open $\to$ $\pm i\notin S$ on-circle; g3: papers-absent no-tie
+$\to$ the D2$'$ dichotomy above). Kills logged: D2$'$-as-a-doctrine-theorem
+under both readings, and the $\mu_4\subseteq S$ misreading of the emission-gap
+containment. Any $\chi$-selection remains a branch-blind
+\emph{characterization} of the quantum ($\pi/2\bmod2\pi$ for all $k$), never a
+branch derivation \hx{CH-E6}.
+\end{remark}
+
+
+\section{The generator as a relational object}\label{sec:relobject}
+
+The relational-charge note (source (v)) attaches phase data to \emph{objects}
+--- conjugation-closed root multisets of monic integer polynomials --- through
+the angle $t(\alpha)=\tfrac1{2\pi}\Arg\alpha$, the relational group
+$\Delta$ generated by pairwise differences, the absolute anchor
+$n\in\{m,2m\}$ (its Rigidity Theorem RC-4.1), and the complete cyclotomic
+contact signature of the ratio object $\mathrm{Rat}_p$. Its own guardrail
+applies throughout: the vocabulary is structural, not physical. This section
+proves that the objects of the present paper live in that catalog, and that
+the generator itself is one of its distinguished witnesses. Everything here is
+unconditional \tagF{}, machine-verified in the second harness
+(\hx{RC-D3, RC-E1--E7}).
+
+\begin{theorem}[Minimal polynomial of the generator]\label{thm:qmin}\tagF{} \hx{RC-E3, RC-E5}
+The rung generator $q=i\tau$ is an algebraic integer with minimal polynomial
+\[
+\boxed{\ \operatorname{minpoly}(q)=x^4+3x^2+1\ },
+\qquad\text{roots }\{\pm i\tau,\ \pm i\gp\},\qquad \M=\gp^2 ,
+\]
+a reciprocal unit quartic ($p(0)=1$), irreducible over $\Q$. Its angle set is
+$\{\tfrac14,\tfrac34\}$: absolute charge group $\Z/4\Z$ with charges $\{1,3\}$
+(odd charges only), while the pairwise differences generate only
+$\Delta=\Z/2\Z$ --- a \emph{group-drop} object, the same coherence type as the
+note's canonical drop witness (its ledger entry E, $x^4+5x^2+5$), with contact
+signature $\{\Phi_1^{4},\Phi_2^{4}\}$.
+\end{theorem}
+
+\begin{proof}
+$q^2=-\tau^2$, so $2q^2+3=\sqrt5$ and squaring gives $q^4+3q^2+1=0$; the
+roots are $\pm i\tau,\pm i\gp$ since $x^2\in\{-\tau^2,-\gp^2\}$, verified by
+substitution. Irreducibility, the Mahler value $\gp\cdot\gp=\gp^2$ (the two
+roots of modulus $\gp$), and the complete contact scan are machine checks.
+\end{proof}
+
+\begin{theorem}[Quarter-turn gauge identity]\label{thm:gauge}\tagF{} \hx{RC-D3, RC-E4, RC-E5}
+Let $Z^{*}=(x^2-x-1)(x^2+x-1)=x^4-3x^2+1$, the split golden pair (roots
+$\{\pm\gp,\pm\tau\}$) --- the relational note's hypothesis-necessity witness
+for its modulus-pinning theorem. Then, in both directions,
+\[
+\boxed{\ \operatorname{minpoly}(q)(ix)=Z^{*}(x)
+\qquad\text{and}\qquad
+Z^{*}(ix)=\operatorname{minpoly}(q)(x)\ }:
+\]
+the generator's object is \emph{exactly} the $c=\tfrac14$ gauge rotation ---
+one charge quantum --- of the split golden pair. Consequences:
+\begin{enumerate}[nosep,label=(\alph*)]
+\item \textbf{Gauge-blindness realized:} $\mathrm{Rat}$ is invariant under the
+rotation (a global root scaling cancels in every ratio), so both objects carry
+the identical signature $\{\Phi_1^{4},\Phi_2^{4}\}$ --- a live instance of the
+note's Proposition RC-3.5(iv) (rotation fixes every relative charge) and of
+its gauge-blind probe (RC-Rem.\ 7.6).
+\item \textbf{Both rigidity anchors from one pair:} $Z^{*}$ has
+$(m,n)=(2,2)$ (all roots real, angles $\{0,\tfrac12\}$) while $i\,Z^{*}$ has
+$(m,n)=(2,4)$ (angles $\{\tfrac14,\tfrac34\}$). The anchor dichotomy
+$n\in\{m,2m\}$ of Rigidity is realized by a single gauge pair, exchanged by
+exactly the seed's charge quantum.
+\item The torsion ratio $-1$ at the shared modulus $\gp$ inside $Z^{*}$ ---
+the very relation that makes $Z^{*}$ the pinning witness --- is the golden
+internal relation $t_{\mathrm{rel}}(\gp,\gp')=\tfrac12$ (RC-Lem.\ 6.1) seen
+across the two factors.
+\end{enumerate}
+\end{theorem}
+
+\begin{proposition}[The K-seed is a catalog object]\label{prop:kseedcat}\tagF{} \hx{RC-E1}
+The K-seed $x^4+5x^2-5$ (W-\S2) has roots $\{\pm K,\ \pm i\beta\}$ at angles
+$\{0,\tfrac12,\tfrac14,\tfrac34\}$ --- \textbf{the full charge compass} ---
+with $\Delta=\Z/4\Z$, anchor $n=m=4$, $\M=\beta^2$ (the whitepaper constant),
+and contact signature $\{\Phi_1^{4},\Phi_2^{4}\}$: it is the relational note's
+ledger entry F, whose sign-mirror is the drop witness of
+Theorem~\ref{thm:qmin}. The two research lines share this object at the root
+level.
+\end{proposition}
+
+\begin{remark}[D2, restated relationally]\label{rem:d2rel}\tagF{}/\tagD{} \hx{RC-E2}
+The winding's rung angles $\{n/4\}$ have relational group
+$\Z/4\Z=\Delta(\text{K-seed})$: Declaration D2 --- \emph{the winding realizes
+the seed's charge completion} --- has the reference-free form \emph{the
+helix's angle lattice realizes the K-seed's relational charge group}. This is
+an identification at the angle-lattice level, gauge-invariant by construction;
+D2 itself remains declared. Likewise the $\nu$-locus of
+Proposition~\ref{prop:nulocus} now stands directly on the note's real-pair
+lemma: $\nu(\rho_n)=(-1)^n$ is torsion of order $\le2$, so the rungs are
+precisely the real-coherence events of the relational $\nu$-criterion
+\hx{RC-E7}.
+\end{remark}
+
+\begin{remark}[Mahler bookkeeping across the bridge --- with mechanism]\label{rem:mahlerbridge}\tagF{} \hx{RC-E6, OZ-O6}
+$K=5^{1/4}\tau$ and $\beta=5^{1/4}\gp$ exactly (from $(K\gp)^4=5$ and
+$\beta=K\gp^2$), so the K-seed's root moduli $\{K,K,\beta,\beta\}$ are the
+$5^{1/4}$-dilation of the generator object's root moduli
+$\{\tau,\tau,\gp,\gp\}$. The dilation carries exactly the two $\beta$-roots
+outside the unit circle, multiplying the measure by $(5^{1/4})^2$:
+\[
+\M(\text{K-seed})=\beta^2=\sqrt5\,\gp^2=\sqrt5\cdot\M(\operatorname{minpoly}(q)).
+\]
+The bridge factor $\sqrt5$ is the dilation's Mahler cost.
+\end{remark}
+
+\begin{theorem}[Complete relational type of the generator object]\label{thm:reltype}\tagF{} \hx{NX-T1--T9}
+The root multiset of $\operatorname{minpoly}(q)=x^4+3x^2+1$ splits into
+exactly two shells (equal-modulus classes, RC-Def.\ 7.1): $\{\pm i\tau\}$ at
+modulus $\tau$ and $\{\pm i\gp\}$ at modulus $\gp$ --- conjugate pairs on
+the imaginary axis, exchanged by root inversion (the quartic is reciprocal).
+The complete ordered-pair ledger over all $16$ root pairs is
+\[
+\underbrace{1^{\times4}}_{\Phi_1^{4}\ \text{(diagonal)}},\qquad
+\underbrace{(-1)^{\times4}}_{\Phi_2^{4}\ \text{(antipodal)}},\qquad
+\underbrace{\pm\tau^2,\ \pm\gp^2\ (\text{each}\times2)}_{\text{cross-shell: all real, none unimodular}},
+\]
+so the contact signature $\{\Phi_1^{4},\Phi_2^{4}\}$ of
+Theorem~\ref{thm:qmin} is \emph{complete}: the only unimodular ratios are
+$\pm1$, and no further cyclotomic contact exists (complete scan bound
+$M\le2\cdot16^2=512$, RC-Lem.\ 7.4). Cross-shell coherence, decided by the
+$\nu$-criterion (RC-Rem.\ 7.6: $\nu=\mu/\overline\mu$ for
+$\mu=\alpha/\beta$), holds \emph{identically}: every cross ratio is real,
+so $\nu\equiv1$ on all eight cross-shell pairs, with relative charge
+$t_{\mathrm{rel}}=0$ on equal-angle pairs and $t_{\mathrm{rel}}=\tfrac12$
+on opposite-angle pairs. The generator object is therefore \emph{fully
+coherent} --- a single coherence class spanning both shells, fixed by the
+negation involution --- with complete type
+\[
+\text{angles }\{\tfrac14,\tfrac14,\tfrac34,\tfrac34\},\qquad
+\Delta=\Z/2\Z,\qquad (m,n)=(2,4),\qquad \M=\gp^2,\qquad
+\{\Phi_1^{4},\Phi_2^{4}\}.
+\]
+Structurally it is a \emph{twisted shell} in the relational note's sense
+(its open problem (P1$'$); twisted shells are its Example 7.19 mechanism):
+$x^4+3x^2+1=s(x^2)$ with $s(y)=y^2+3y+1=\operatorname{minpoly}(q^2)$ ---
+the $k=2$ twist of the real quadratic of $q^2=-\tau^2$ --- realized here on
+the \emph{admissible} side, where full coherence is automatic
+(RC-Cor.\ 4.2) but the shell, contact, and $\nu$ data remain contentful.
+The cross-shell coherence witnesses have moduli exactly
+$\{\tau^2,\gp^2\}=\{|q^2|,\,|q^2|^{-1}\}$: coherence across the shells is
+carried by the two-floor contraction that prices the $K$-formation
+half-cycle (Remark~\ref{rem:halfcycle}).
+\end{theorem}
+
+\begin{proof}
+All sixteen ratios are computed exactly in $\Q(\sqrt5)[i]$; the shell
+moduli, the realness and non-unimodularity of the cross ratios, the $\nu$
+values, the
+$t_{\mathrm{rel}}$ pattern, the anchor data, and the twist factorization
+are the cited machine checks. The angle identity is immediate from
+$\alpha/\beta=(|\alpha|/|\beta|)\,e^{2\pi i(t(\alpha)-t(\beta))}$ with
+angle set $\{\tfrac14,\tfrac34\}$, and $t(\nu)=2\,t_{\mathrm{rel}}$
+(RC-Rem.\ 7.6) reads the $\nu\equiv1$ outcome as
+$t_{\mathrm{rel}}\in\{0,\tfrac12\}$ exactly.
+\end{proof}
+
+\begin{proposition}[The ratio object at the characteristic level]\label{prop:chirat}\tagF{} \hx{QX-B1--B8}
+Assemble the sixteen ratios of Theorem~\ref{thm:reltype} into their
+characteristic polynomial:
+\[
+\chi_{\mathrm{Rat}}(x)=(x-1)^4(x+1)^4\bigl(x^4-7x^2+1\bigr)^2,
+\qquad
+x^4-7x^2+1=(x^2-3x+1)(x^2+3x+1).
+\]
+The nontorsion factor is the sign-split pair of $\gp^2$ --- the analogue of
+$Z^{*}$ one floor up, at the squared level --- and its roots
+$\pm\gp^{\pm2}$ are units of $\Z[\gp]$ ($\gp^2\tau^2=1$). Under the Adams
+square $\psi^2:\mu\mapsto\mu^2$ the nontorsion multiset becomes four copies
+of $\{\gp^4,\gp^{-4}\}=\operatorname{spec}(A_{\gapc})$ (minimal polynomial
+$x^2-7x+1$): squaring the generator object's ratio geometry produces the
+gap object --- the relational face of $q^4=\gapc$.
+\end{proposition}
+
+\begin{proof}
+Exact multiset computations over $\Q(\sqrt5)[i]$: the product
+$\prod_\mu(x-\mu)$ over all sixteen ratios, its factorization, the unit
+identity, and the squared multiset are the cited machine checks
+\hx{QX-B1--B8}.
+\end{proof}
+
+\begin{theorem}[The quarter twist: transport domain and anchor-exchange dichotomy]\label{thm:quartertwist}\tagF{} \hx{QX-D0--D9}
+Call an object $P$ (monic, integral, $P(0)\ne0$) \emph{parity-homogeneous}
+if $P(-x)=P(x)$ --- equivalently, its root multiset is negation-closed;
+with $P(0)\ne0$ this forces even degree and $P=g(x^2)$. Write
+$\rho_{1/4}(P)(x)\coloneqq i^{-\deg P}\,P(-ix)$, the object whose roots are
+$i\cdot(\text{roots of }P)$ (on this domain $iA=-iA$, so the two
+quarter-turn orientations give the same object). Then:
+\begin{enumerate}[nosep,label=(\alph*)]
+\item \textbf{Domain.} $\rho_{1/4}(P)$ has integer coefficients iff $P$ is
+parity-homogeneous, and there $\rho_{1/4}$ is an involution. The golden
+seed $x^2-x-1$ is \emph{not} in the domain ($-\gp$ is not a root): the
+gauge identity of Theorem~\ref{thm:gauge} necessarily lives at the
+sign-split pair $Z^{*}$, not at the seed.
+\item \textbf{Invariance.} On the domain the transport realizes the gauge
+rotation $\rho_c$ at $c=\tfrac14$ (RC-Prop.\ 3.5(iv)): it fixes $\Delta$,
+every relative charge, and every root modulus (hence $\M$), and shifts
+every absolute angle by $\tfrac14$. Negation closure puts
+$\tfrac12\in\Delta$ outright, so $m=|\Delta|$ is always even.
+\item \textbf{Dichotomy.} Suppose further $P$ is relationally admissible,
+so all angles are rational and $\Delta=\Z/m\Z$ is cyclic (RC-Thm.\ 4.1,
+RC-Prop.\ 3.4). Let $A$ be the angle set and $a_0\in A$. Conjugation plus
+negation closure give $2a_0\in\Delta$ and
+$\langle A\rangle=\Delta+\langle a_0\rangle$, re-proving Rigidity
+$n\in\{m,2m\}$ here, with $n=m\iff A\subseteq\Delta$. If $4\mid m$, then
+$\tfrac14\in\Delta$ and the transport \emph{fixes} the anchor ($n'=n$); if
+$m\equiv2\ (\mathrm{mod}\ 4)$, then
+$\{x:2x\in\Delta\}=\Delta\sqcup(\Delta+\tfrac14)$ and the transport
+\emph{exchanges} the two rigidity branches: $n=m\iff n'=2m$.
+\end{enumerate}
+Theorem~\ref{thm:gauge}(b)'s pair is the minimal exchange instance: by
+Theorem~\ref{thm:reltype} the generator object has $(m,n)=(2,4)$, its
+quarter twist is $Z^{*}$ with $(m,n)=(2,2)$, and the gauge identity is
+exactly this exchange witnessed at the generator. The K-seed ($m=4$, angle
+set literally invariant) and $\Phi_8=x^4+1$ ($m=4$) are anchor-fixed,
+while $x^2-2\leftrightarrow x^2+2$ and
+$x^4-2x^2+4\leftrightarrow x^4+2x^2+4$ realize the exchange at $m=2$ and
+$m=6$. The quarter twist is the exact companion of the relational note's
+sign twist (RC-Lem.\ 6.3, $c=\tfrac12$): the sign twist exchanges the
+anchor sectors at \emph{odd} $m$ and is the identity on the quarter
+twist's domain; the quarter twist exchanges them at
+$m\equiv2\ (\mathrm{mod}\ 4)$ and fixes them at $4\mid m$. Together the
+two twists absorb the anchor dichotomy at every
+$m\not\equiv0\ (\mathrm{mod}\ 4)$.
+\end{theorem}
+
+\begin{proof}
+(a) $\prod_\alpha(x-i\alpha)=i^{\deg P}P(-ix)$; the coefficient of $x^k$
+picks up $i^{\,\deg P-k}$, real for all occurring $k$ iff every exponent
+shares the parity of $\deg P$; with $P(0)\ne0$ the exponent $0$ occurs,
+forcing even degree and evenness. Involutivity: $i\cdot iA=-A=A$. (b) A
+common shift cancels in every angle difference; moduli are preserved by
+$\alpha\mapsto i\alpha$; negation closure pairs $t(\alpha)$ with
+$t(\alpha)+\tfrac12$. (c) $a-a_0\in\Delta$ for all $a\in A$ gives
+$\langle A\rangle=\Delta+\langle a_0\rangle$; $-a_0\in A$ gives
+$2a_0\in\Delta$, so the coset $a_0+\Delta$ has order at most $2$ in the
+quotient. For $4\mid m$: $\tfrac14\in\langle\tfrac1m\rangle=\Delta$, so
+the shift does not change $\langle\Delta,a_0\rangle$. For
+$m\equiv2\ (\mathrm{mod}\ 4)$: the doubling preimage
+$\{x:2x\in\Delta\}=\langle\tfrac1{2m}\rangle$ has index $2$ over $\Delta$
+with nontrivial coset $\Delta+\tfrac14$ (as $\tfrac14\notin\Delta$ but
+$\tfrac12\in\Delta$); so $a_0\in\Delta$ ($n=m$) puts $a_0+\tfrac14$ in the
+nontrivial coset ($n'=2m$), and $a_0\in\Delta+\tfrac14$ ($n=2m$) puts
+$a_0+\tfrac14\in\Delta+\tfrac12=\Delta$ ($n'=m$). Domain, involution,
+invariance, the golden-seed exclusion, all eight witnesses, and an
+exhaustive coset simulation over every even $m\le24$ are machine checks
+\hx{QX-D0--D9}.
+\end{proof}
+
+\smallskip\noindent
+\textbf{The relational note's open cluster (v1.8).} With the
+relational-charge note (source (v)) now available in full, three of its open
+items are addressed cold: its P4 is recovered and reduced, its odd relational
+floor P3 is bracketed but not promoted, and its P1$'$ taxonomy is scanned over
+a bounded window. The vocabulary stays structural, per the note's own
+guardrail.
+
+\begin{remark}[P4 recovered and reduced to P3]\label{rem:p4recover}\tagF{}/\tagE{} \hx{RN-A1, RN-A1F, RN-A2}
+The relational note's open item P4 (RC-\S\,sec:open) is recovered verbatim:
+\emph{``Is parity the whole coupling? Does $\mu_{\mathrm{rel}}$ depend on
+$\Delta$ through anything besides the single bit $2\mid m$?''}\ It is
+\emph{not} an independent problem: it reduces exactly to P3 (the odd relational
+floor). Given RC-Thm.~6.5, $\mu_{\mathrm{rel}}(m)=\gp$ ($m$ even) $/\ \mu(m)$
+($m$ odd), so ``$\mu_{\mathrm{rel}}$ factors through the parity bit'' $\iff$
+the even branch is $m$-independent (constructively uniform: $q_k=x^{2k}+x^k-1$
+gives $\Delta=\Z/2k\Z$, $\M=\gp$ for every even $m$) \emph{and} the odd branch
+is $m$-independent (anchored by the forced $\mu(3)=2$, forcing the odd constant
+$=2$). Hence P4 $\iff$ P3, and P4 inherits P3's open status as a
+\emph{restatement} of it, not new work.
+\end{remark}
+
+\begin{proposition}[The odd relational floor is bracketed, not closed]\label{prop:oddfloor}\tagF{}/\tagE{}/\tagO{} \hx{RN-B1--RN-B4, RN-H1--RN-H3}
+For odd charge $m$ the relational Mahler floor obeys
+\[
+\mu_S\ \le\ \mu_{\mathrm{rel}}(\text{odd }m)\ \le\ 2,
+\]
+with the two bounds forced but the value \emph{not} pinned. \emph{Upper bound}
+$\le2$ is \tagF{}: the witness $x^m-2$ ($m$ odd) is Eisenstein-irreducible at
+$2$, has rational angle set $\{j/m\}$ hence a single coherence class
+(relationally admissible per RC-Def.~3.2), relational group $\Delta=\Z/m\Z$,
+anchor $n=m$, and all roots of modulus $2^{1/m}>1$, so monic $\M=2$ exactly.
+\emph{Lower bound} is forced only to $\mu_S$ \tagF{}/\tagE{}: Smyth's plastic
+number (real root of $x^3-x-1$, $1<\mu_S<\gp<2$) bounds every non-reciprocal
+charge-admissible object below, while the reciprocal-real sector is forced
+strictly above $\gp^2>2$ (integer trace $\ge3$); and the $\pi$-ray obstruction
+is \tagF{}: $\tfrac12\notin\Z/m\Z$ for odd $m$, so the golden pair's intrinsic
+relation $t_{\mathrm{rel}}(\gp,\gp')=\tfrac12$ (from $\gp/\gp'=-\gp^2$) cannot
+embed, and the universal floor $\gp$ is unattainable at odd charge (forcing
+$\mu_{\mathrm{rel}}(\text{odd})>\gp$, not $\ge2$). \emph{Honest boundary:} the
+promotion of $\mu_{\mathrm{rel}}(\text{odd }m)=2$ from \tagC{} to \tagF{} is
+\emph{not} achieved and is not achievable from the shipped corpus --- the
+$\ge2$ lower bound in general is the corpus's principal open problem \tagO{}
+(the named residual is non-reciprocal charge-admissible objects with
+$\M\in[\mu_S,2)$, Lehmer/no-Salem-window territory; the shipped
+charge-measure-coupling erratum and whitepaper \S6.2 themselves hold
+$\mu(\text{odd})=2$ at \tagC{}, forced fully only at $\Z/3$).
+\end{proposition}
+
+\begin{remark}[Bounded P1$'$ transport-orbit scan]\label{rem:p1scan}\tagC{} \hx{RN-C0--RN-C3, RN-H4}
+The note's coherence-detection machinery (the ratio object
+$\mathrm{Rat}_p=$ primitive part of $\operatorname{Res}_y(p(y),p(xy))$ and its
+cyclotomic-contact signature) is re-encoded cold and reproduces the RC ledger
+exactly; an exact $\psi^D$ admissibility oracle (a root power $D$ that is
+totally real $\iff$ rational angle) replaces the hanging \texttt{CRootOf}
+route. A bounded transport-orbit scan over the irreducible monic integer
+objects of degree $2$--$6$, with per-degree coefficient caps \emph{logged}
+($\{(2,3),(3,2),(4,2),(5,1),(6,1)\}$; $855$ objects), classifies the taxonomy
+$\{$pinned/inert, $s(x^k)$-shell tower, cyclotomic, dilation-of-known$\}$ as
+exhaustive over the window: buckets inert $804$, shell $32$, cyclotomic $11$,
+dilation $8$, and \emph{OTHER $0$} --- no new mechanism and no counterexample
+to the pinned/twisted-shell dichotomy. Within-shell torsion coherence was
+decided; the cross-shell mirrored-class ($\nu$-criterion) half of P1$'$ is out
+of the detector's scope, flagged not resolved. This is a bounded \tagC{}
+corroboration (candidate), not a proof; general P1$'$ remains open.
+\end{remark}
+
+\section{The state-angle chart}\label{sec:stateangle}
+
+The follow-on thread observed that each rung forms a unit-circle pair; that
+observation extends to the entire chart and organizes everything downstream.
+
+\begin{theorem}[State-angle dictionary]\label{thm:stateangle}\tagFD{} \hx{OZ-C1--C6}
+For $z\in(0,1)$ define the \emph{state angle} $\alpha\in(0,\tfrac\pi2)$ by
+\[
+\sin\alpha=z,\qquad \cos\alpha=\sqrt{1-z^2}=e^{-\rho}=\sqrt{|m|},
+\]
+so $\rho=-\ln\cos\alpha$ and, at the rungs, $\cos\alpha_n=|W_n|=\tau^n$.
+Under this chart the whitepaper's gate dictionary (W-Thm.\ 13.1) becomes
+elementary trigonometry:
+\[
+u=\cot^2\alpha,\qquad
+C=\cot^2\alpha\,\csc^2\alpha,\qquad
+\sqrt D=1+2\cot^2\alpha,
+\]
+\[
+m=-\cos^2\alpha,\qquad
+\lambda=\tan^2\alpha\,\bigl(1+\cos^2\alpha\bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+Substitute $z=\sin\alpha$, $1-z^2=\cos^2\alpha$ into $u=(1-z^2)/z^2$,
+$C=(1-z^2)/z^4$, $\sqrt D=(2-z^2)/z^2=2\csc^2\alpha-1$,
+$m=-(1-z^2)$, and $\lambda=z^2(2-z^2)/(1-z^2)$; each identity is
+machine-verified symbolically in $z$.
+\end{proof}
+
+\begin{remark}
+The pair $(x,y)=(\sqrt{|m|},\,z)=(\cos\alpha,\sin\alpha)$ is exactly the
+unit-circle coordinate pair: $x^2+y^2=|m|+z^2=1$ chart-wide is D1 itself.
+The state angle is the latitude (elevation) of the residual sphere of
+\S\ref{sec:sphere}.
+\end{remark}
+
+\section{Rung ledgers}\label{sec:ledgers}
+
+\begin{proposition}[Rung 1: the golden ledger]\label{prop:rung1}\tagFD{} \hx{OZ-B2, OZ-C7, C12--C13}
+$W_1=i\tau$, $|W_1|=\tau$, and $z_1=\sqrt{1-\tau^2}=\sqrt\tau$ (via
+$\tau^2+\tau=1$). The rung-1 state is
+\[
+\boxed{\ (\sin\alpha_1,\ \cos\alpha_1,\ \tan\alpha_1)=(\sqrt\tau,\ \tau,\ \sqrt\gp)\ },
+\]
+with the self-duality $\sin^2\alpha_1=\tau=\cos\alpha_1$: the rung-1 state is the
+positive intersection of the unit circle $x^2+y^2=1$ with the parabola $x=y^2$ in
+the state plane $(x,y)=(\sqrt{|m|},z)$. Eliminating $x$ reproduces
+$z_1^4+z_1^2-1=0$, the minimal polynomial $x^4+x^2-1$ of $\sqrt\tau$
+(W-Thm.\ 17.1). This parabola lives in the residual-state plane and must not be
+conflated with the inherited horn profile.
+\end{proposition}
+
+\begin{proposition}[Rung 2: the K ledger]\label{prop:rung2}\tagFD{} \hx{OZ-B3, OZ-C8, C14}
+$W_2=q^2=-\tau^2$, $|W_2|^2=\tau^4=\gapc$, and
+\[
+z_2=\sqrt{1-|W_2|^2}=\sqrt{1-\gapc}=K,
+\qquad\text{i.e.}\qquad
+\boxed{\ K=\sqrt{\,1-\bigl|\,(i/\gp)^2\bigr|^2\,}\ }:
+\]
+$K$ is the vertical coordinate after two applications of the golden quarter-turn
+generator. The rung-2 state packages the K-seed's two faces into one right
+triangle:
+\[
+\boxed{\ \sin\alpha_2=K,\qquad \cos\alpha_2=\tau^2=\sqrt{\gapc},\qquad
+\tan\alpha_2=\beta\ },
+\]
+since $\tan^2\alpha_2=K^2/\tau^4=(1-\gapc)/\gapc=\gp^4-1=\beta^2$. The terrain
+magnitude is the sine, the residual amplitude the cosine, and the rotation
+magnitude their ratio: $\tan\alpha_2=\text{terrain}/\text{residual}=\beta$ gives
+$\beta$ a direct geometric role beyond imaginary-root magnitude. The K-gate
+certificate follows in one line:
+$u_2=\cot^2\alpha_2=1/\beta^2$ and
+$C_2=\cot^2\alpha_2\csc^2\alpha_2=1/(\beta^2K^2)=\tfrac15$ by $K^2\beta^2=5$
+(W-(2.2)). The K-seed carrying these roots is itself a relational catalog
+object whose angle set is the full charge compass
+(Prop.~\ref{prop:kseedcat}).
+\end{proposition}
+
+\begin{remark}[Half-cycle placement of $K$; the source report's synthesis]\label{rem:halfcycle}\tagFD{} \hx{OZ-A6, A8, B3}
+$K$ appears at the half-cycle of the four-charge return:
+\[
+q^2=-\tau^2,\qquad |q^2|^2=\gapc,\qquad z_2=\sqrt{1-|q^2|^2}=K ,
+\]
+placing $K$ structurally between the quarter-turn generator and the full gap
+return. The report's strongest reading, exact given D1--D3 and adopted here:
+\begin{center}
+\emph{the ladder is a contraction--rotation orbit whose complete four-charge
+return is priced by the gap,\\ while $K$ is the vertical complement produced
+at the two-charge midpoint.}
+\end{center}
+\end{remark}
+
+\begin{proposition}[The general tangent family]\label{prop:tangents}\tagFD{} \hx{OZ-C9--C11}
+For every $n\ge1$,
+\[
+\tan\alpha_n=\frac{z_n}{\tau^n}=\sqrt{\gp^{2n}-1},
+\qquad\text{with Trace--Form-Duality dress}\qquad
+\tan^2\alpha_n=\begin{cases}\gp^{\,n}L_n,& n\ \text{odd},\\[2pt]
+\gp^{\,n}\sqrt5\,F_n,& n\ \text{even}.\end{cases}
+\]
+In particular $\tan\alpha_1=\sqrt{\gp L_1}=\sqrt\gp$,
+$\tan\alpha_2=\sqrt{\gp^2\sqrt5\,F_2}=\beta$, and
+$\tan\alpha_3=\sqrt{\gp^3L_3}=2\gp^{3/2}$ (since $\gp^6-1=4\gp^3$).
+\end{proposition}
+
+\begin{center}\small
+\begin{tabular}{@{}cccccc@{}}
+\toprule
+rung $n$ & $\sin\alpha_n=z_n$ & $\cos\alpha_n=\tau^n$ & $\tan\alpha_n=\sqrt{\gp^{2n}-1}$ & TFD dress & $\alpha_n$ \tagC{}\\
+\midrule
+$1$ & $\sqrt\tau$ & $\tau$ & $\sqrt\gp$ & $\sqrt{\gp L_1}$ & $51.8272923730^\circ$\\
+$2$ & $K$ & $\tau^2=\sqrt{\gapc}$ & $\beta$ & $\sqrt{\gp^2\sqrt5F_2}$ & $67.5444848014^\circ$\\
+$3$ & $\sqrt{1-\gp^{-6}}$ & $\tau^3$ & $2\gp^{3/2}$ & $\sqrt{\gp^3L_3}$ & $76.3454152540^\circ$\\
+$4$ & $K_2=\sqrt{1-\gapc^2}$ & $\tau^4=\gapc$ & $\sqrt3\,\gp\beta$ & $\sqrt{\gp^4\sqrt5F_4}$ & $81.6107142142^\circ$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{remark}[The near-miss angle finds a home]\label{rem:thetaK}\tagFD{}
+The whitepaper's Guard 15.4 uses $\theta_K=\arcsin(\tau^2)=22.4555151986^\circ$
+purely as a near-miss reference (pitch angle $\neq\theta_K$; still no identity is
+claimed there). On the state chart it is exactly the complement of the rung-2
+state angle, and on the residual sphere of \S\ref{sec:sphere} it is the K-point's
+\emph{colatitude}:
+\[
+\theta_K=\tfrac\pi2-\alpha_2=\arccos K
+\qquad(\text{since }\cos\theta_K=\sqrt{1-\tau^4}=\sqrt{1-\gapc}=K).
+\]
+\end{remark}
+
+\section{Bridges between rung 1 and rung 2}\label{sec:bridges}
+
+\begin{proposition}[Cosine contraction, not angle doubling]\label{prop:contraction}\tagFD{} \hx{OZ-D1--D3b}
+For all $n$,
+\[
+\cos\alpha_{n+1}=\tau\,\cos\alpha_n,
+\qquad
+\cos^2\alpha_{n+2}=\gapc\,\cos^2\alpha_n ;
+\]
+in particular $\cos\alpha_2=\tau^2=\cos^2\alpha_1$: the rung-1$\to$2
+transition squares the residual coordinate and renormalizes the vertical
+complement. The ladder is driven by geometric contraction of the cosine
+(residual) coordinate, which forces the angle monotonically toward $\pi/2$; it is \emph{not} ordinary angle doubling:
+$\cos2\alpha_1-\cos\alpha_2=(2\tau^2-1)-\tau^2=\tau^2-1=-\tau\neq0$, so
+$\alpha_2\neq2\alpha_1$ (numerically $2\alpha_1=103.65^\circ$ vs
+$\alpha_2=67.54^\circ$ \tagC{}).
+\end{proposition}
+
+\begin{proposition}[Half-angle/full-angle bridge]\label{prop:halfangle}\tagFD{} \hx{OZ-D4--D6}
+Since $\cos\alpha_2=\tau^2$,
+\[
+\sin^2\frac{\alpha_2}{2}=\frac{1-\tau^2}{2}=\frac{\tau}{2},
+\qquad\text{hence}\qquad
+\boxed{\ z_1=\sqrt\tau=\sqrt2\,\sin\frac{\alpha_2}{2},\qquad K=\sin\alpha_2\ }.
+\]
+The two low rungs are linked by an exact scaled half-angle/full-angle relation
+while remaining algebraically distinct quartic landmarks
+($\Q(\sqrt\gp)\neq\Q(5^{1/4})$, W-Thm.\ 17.1). The auxiliary angle $\Theta$ of the
+review thread ($\cos\Theta=1-z_1^2=\tau^2$) \emph{is} $\alpha_2$; and Route~5
+becomes trigonometric: $K^2=z_1^2(2-z_1^2)=\sin^2\alpha_1(2-\sin^2\alpha_1)$.
+\end{proposition}
+
+\section{The K-family and the even-rung recurrence}\label{sec:kfamily}
+
+\begin{theorem}[K-family]\label{thm:kfamily}\tagFD{} \hx{OZ-F1--F5}
+Exact $K$ occurs exactly once: $z_n$ is strictly increasing
+($z_{n+1}^2-z_n^2=\tau\,\gp^{-2n}>0$), so
+\[
+\boxed{\ z_n=K\iff n=2\ }.
+\]
+But every even rung repeats $K$'s \emph{formula}: with $n=2j$,
+\[
+\boxed{\ z_{2j}=\sqrt{1-\gapc^{\,j}}\ \eqqcolon K_j,\qquad K_1=K\ },
+\qquad
+m_{2j}=-\gapc^{\,j},\qquad z_{2j}^2=1-|m_{2j}|,
+\]
+with odd companion $z_{2j+1}=\sqrt{1-\tau^2\gapc^{\,j}}$, and the recurrence
+holds universally, for \emph{all} $n$, not only even ones:
+\[
+\boxed{\ 1-z_{n+2}^2=\gapc\,\bigl(1-z_n^2\bigr)\ }.
+\]
+Angularly, $\theta_{2j}=j\pi$ (all even rungs on the terrain axis, alternating
+direction), while $K$'s exact compass direction $\theta\equiv\pi\ (\mathrm{mod}\
+2\pi)$ recurs at $n\equiv2\ (\mathrm{mod}\ 4)$. Three levels of recurrence:
+\begin{center}\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+exact value $K$ & rung $2$ only\\
+K-family / complement structure $K_j=\sqrt{1-\gapc^{\,j}}$ & every even rung\\
+same compass direction as $K$ ($\theta=\pi$ mod $2\pi$) & $n=2,6,10,\ldots$\\
+\bottomrule
+\end{tabular}
+\end{center}
+First members \tagC{} \hx{OZ-H1}: $K_1=0.9241763718$, $K_2=0.9892996329$,
+$K_3=0.9984459825$, $K_4=0.9997734224$ (these are the whitepaper's rungs
+$2,4,6,8$; the review thread's 6-dp table values are floor-truncations, see
+Finding~\ref{find:trunc}).
+\end{theorem}
+
+\begin{proof}
+$\gp^{-4j}=\gapc^{\,j}$ and $\gp^{-2(n+2)}=\gapc\,\gp^{-2n}$; monotonicity from
+$1-\gp^{-2}=\tau$; all machine-verified for $j\le6$ and symbolically in $n$.
+\end{proof}
+
+The right reading, adopted from the review thread: \emph{$K$ is not repeated
+every second rung; its generative operation is}. The operation
+$\text{residual}\mapsto\gapc\times\text{residual}$ generates the even-rung
+subsequence with $K$ as its first nontrivial realization --- every second rung is
+a higher-order K-formation in the complement structure, while the exact value and
+the exact quartic field of $K$ belong to rung 2 alone.
+
+\begin{proposition}[Tie to the K-point linearization]\label{prop:linearization}\tagFD{} \hx{OZ-F6}
+The gap paper's derivative $f'(K)=-\gapc$ (W-Prop.\ 9.1) satisfies
+\[
+f'(K)=-\gapc=q^2\,|q|^2 ,
+\]
+and the linearized K-orbit $x_{k+1}=-\gapc\,x_k$ performs per step exactly what
+the ladder performs per two rungs: co-intensity scales by $\gapc$
+($|W_{n+2}|^2=\gapc\,|W_n|^2$) and the axis flips ($W_{n+2}=-\sqrt{\gapc}\,W_n$).
+The review thread's ``strongly resembles'' is thus an exact correspondence at the
+level of (contraction of squared amplitude, axis action); the two objects remain
+different curves (transverse linearization at one landmark vs the global rung
+orbit), as the whitepaper's \S15 already insists.
+\end{proposition}
+
+\begin{theorem}[The K-family is a seed ladder]\label{thm:kseedladder}\tagF{} \hx{QX-C1--C13}
+For $j\ge1$ let $K_j=\sqrt{1-\gapc^{\,j}}$ (the K-family value of
+Theorem~\ref{thm:kfamily}, taken here purely as seed arithmetic) and
+$\beta_j\coloneqq K_j\gp^{2j}$, so $\beta_j^2=\gp^{4j}-1$. Then:
+\begin{enumerate}[nosep,label=(\alph*)]
+\item \textbf{Minimal polynomial.} The four numbers
+$\{\pm K_j,\ \pm i\beta_j\}$ are the roots of
+\[
+\boxed{\ p_j(x)=x^4+5F_{2j}^2\,x^2-5F_{2j}^2\ },
+\qquad 5F_{2j}^2=L_{4j}-2 ,
+\]
+which is the minimal polynomial of $K_j$ for \emph{every} $j$: Eisenstein
+at $5$ applies iff $5\nmid j$ (since $5\mid F_{2j}\iff5\mid j$), and
+uniformly the norm obstruction
+$N(1-\gapc^{\,j})=2-L_{4j}=-5F_{2j}^2<0$ shows $1-\gapc^{\,j}$ is not a
+square in $\Q(\sqrt5)$, so $[\Q(K_j):\Q]=4$ always. $p_1$ is the K-seed.
+\item \textbf{Ledger} (all decided in $\Q(\sqrt5)$):
+\[
+\beta_j^2-K_j^2 = K_j^2\beta_j^2 = L_{4j}-2 = 5F_{2j}^2,
+\qquad
+K_j^2+\beta_j^2=\sqrt5\,F_{4j},
+\qquad
+(K_j\gp^{\,j})^2=\sqrt5\,F_{2j},
+\]
+\[
+K_j^4=5F_{2j}^2\,\gapc^{\,j},
+\qquad
+\beta_j^2=\sqrt5\,F_{2j}\,\gp^{2j},
+\qquad
+\frac1{K_j^2}-\frac1{\beta_j^2}=1 ,
+\]
+generalizing $(K\gp)^4=5$, $K^2\beta^2=5$, $K^4=5\gapc$ ($j=1$, $F_2=1$).
+The increments telescope like the transfer ledger:
+$K_{j+1}^2-K_j^2=K^2\gapc^{\,j}$ with $\sum_{j\ge0}K^2\gapc^{\,j}=1$ ---
+the even-rung unit budget is priced in gap powers at unit rate $K^2$.
+\item \textbf{Catalog data.} Angle set the full compass
+$\{0,\tfrac14,\tfrac12,\tfrac34\}$, $\Delta=\Z/4\Z$, anchor $n=m=4$
+(transport-fixed by Theorem~\ref{thm:quartertwist}); contact signature
+$\{\Phi_1^4,\Phi_2^4\}$ (the eight cross-shell ratios have modulus
+$(K_j/\beta_j)^{\pm1}\ne1$); and $\M(p_j)=\beta_j^2$: every $p_j$ is a
+straddler, real pair strictly inside the unit circle, imaginary pair
+strictly outside. (The K-seed's own catalog status is
+Proposition~\ref{prop:kseedcat}; the $p_j$, $j\ge2$, are new catalog
+objects, and no uniqueness is claimed for them here.)
+\item \textbf{Gate ties} (W-Thm.\ 9.1): at every even rung,
+\[
+C_{2j}=\frac1{5F_{2j}^2}=\frac1{|p_j(0)|},
+\qquad
+u_{2j}=\frac1{\beta_j^2}=\frac1{\M(p_j)},
+\qquad
+m_{2j}=-\gapc^{\,j}=-\frac{K_j^4}{5F_{2j}^2}:
+\]
+the even gate levels are the reciprocal constant terms, and the even
+occupations the reciprocal Mahler measures, of the seed family --- the
+K-gate certificate (W-Prop.\ 10.1) is the $j=1$ instance of a family-wide
+law.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+$\beta_j^2=K_j^2\gp^{4j}=(1-\gp^{-4j})\gp^{4j}=\gp^{4j}-1$. With
+$G=\gp^{4j}$: $5F_{2j}^2=(\gp^{2j}-\gp^{-2j})^2=G-2+G^{-1}=L_{4j}-2$;
+then $K_j^2=1-G^{-1}$ and $-\beta_j^2=1-G$ are exactly the two roots of
+$y^2+5F_{2j}^2\,y-5F_{2j}^2$, giving $p_j(\pm K_j)=p_j(\pm i\beta_j)=0$.
+The norm: $N(1-\gapc^{\,j})=(1-G^{-1})(1-G)=2-(G+G^{-1})=2-L_{4j}$, and a
+square in $\Q(\sqrt5)$ has nonnegative norm. All ledger identities are
+one-line computations in $G$; the Fibonacci divisibility, irreducibility
+for $j\le8$, the compass/contact scan for $j\le3$, and the gate ties are
+machine checks \hx{QX-C1--C13}.
+\end{proof}
+
+\begin{corollary}[Every even rung mirrors its own seed]\label{cor:evenmirror}\tagFD{} \hx{QX-C12--C14}
+On the chart, the rung-$2j$ state triangle is the (terrain, residual,
+rotation) triangle of its \emph{own} seed $p_j$:
+\[
+\sin\alpha_{2j}=K_j,\qquad \cos\alpha_{2j}=\tau^{2j},\qquad
+\boxed{\ \tan\alpha_{2j}=\beta_j\ },
+\]
+generalizing the rung-2 ledger $(K,\tau^2,\beta)$ of
+Proposition~\ref{prop:rung2} to every even rung; the family identity
+$1/K_j^2-1/\beta_j^2=1$ is exactly
+$\csc^2\alpha_{2j}-\cot^2\alpha_{2j}=1$, and
+$\beta_j^2=\sqrt5F_{2j}\,\gp^{2j}$ recovers the even tangent dress of
+Proposition~\ref{prop:tangents} at $n=2j$.
+\end{corollary}
+
+\begin{theorem}[The universal seed ladder (Vein 6)]\label{thm:seedladder}\tagF{} \hx{UX-A2--A4, UX-B1--B6, UX-C1--C2, UX-D1--D4, UX-F1--F3, UX-K1--K2}
+Checked exactly for $n=1..10$ and symbolically in $w=\gp^{2n}$ --- that
+range is the certified scope; the two uniform mechanisms noted below extend
+it. For every rung $n$:
+\[
+\boxed{\ \operatorname{minpoly}(z_n)=p_n(x)=x^4+c_nx^2-c_n\ },
+\qquad
+c_n=L_{2n}-2=(\gp^{\,n}-\gp^{-n})^2
+=\begin{cases}L_n^2,&n\ \text{odd},\\[2pt]5F_n^2,&n\ \text{even},\end{cases}
+\]
+with roots $\{\pm z_n,\ \pm i\,b_n\}$, $b_n=\sqrt{\gp^{2n}-1}=\tan\alpha_n$
+(Proposition~\ref{prop:tangents}). Irreducibility is uniform (all $n\ge1$)
+by the norm obstruction $N(1-\tau^{2n})=2-L_{2n}=-c_n<0$, so $1-\tau^{2n}$
+is not a $\Q(\sqrt5)$-square and $[\Q(z_n):\Q]=4$ always. Ledger:
+\[
+z_n^2\,b_n^2=c_n=|p_n(0)|
+\quad\text{(symbolic in $w$: $(1-1/w)(w-1)=w-2+1/w$)},
+\]
+generalizing $K^2\beta^2=5$; $\M(p_n)=b_n^2=\tan^2\alpha_n$, with exactly
+the imaginary pair outside the unit circle ($z_n^2<1<b_n^2$, exact signs);
+and
+\[
+u_n=\frac1{\M(p_n)},\qquad C_n=\frac1{|p_n(0)|}\qquad\text{at every rung}:
+\]
+\emph{the tangent dress of Proposition~\ref{prop:tangents} is the Mahler
+ladder}, and Theorem~\ref{thm:kseedladder}(d)'s gate ties extend from the
+even rungs (where $p_{2j}$ is that theorem's $p_j$ and $b_{2j}=\beta_j$) to
+all rungs. Coefficient recursion: $c_{n+1}=3c_n-c_{n-1}+2$ (symbolically
+via $\gp^2+\gp^{-2}=3$; integer list $1,5,16,45,121,320,841,2205,\ldots$).
+Catalog data: every rung is a full-compass $\Z/4\Z$-completing straddler
+--- angle set $\{0,\tfrac14,\tfrac12,\tfrac34\}$, $\Delta=\Z/4\Z$, anchor
+$n=m=4$ in the relational sense --- with $z_n<1<b_n$ exact for $n=1..10$
+and the all-$n$ extension carried by the exact atoms $1-z_n^2=\tau^{2n}>0$
+and $w\ge\gp^2>2$ (the second uniform mechanism). Anchors: $p_1=x^4+x^2-1$
+is W-Thm.\ 17.1's $\operatorname{minpoly}(\sqrt\tau)$
+(Proposition~\ref{prop:rung1}); $p_2$ is the K-seed $x^4+5x^2-5$;
+$p_3=x^4+16x^2-16$.
+\end{theorem}
+
+\begin{remark}[Rung 1 sits on the emission Mahler floor]\label{rem:mahlerfloor}\tagF{} \hx{UX-E1--E2}
+$\M(p_1)=\gp$ exactly ($\gp^2-1=\gp$): the rung-1 seed sits precisely on
+the emission Mahler floor. The identity is harness-forced, and the hit is
+unique on the ladder ($\M(p_n)\neq\gp$ for $n=2..10$, exact signs). Per the
+shared-constant rule it is flagged as a \emph{coincidence-candidate}: no
+mechanism is asserted --- a shared constant is not evidence of a shared
+mechanism.
+\end{remark}
+
+\begin{theorem}[Mahler-minimal uniqueness (Theorem U)]\label{thm:mahlermin}\tagF{} \hx{UX-U1--U7}
+In the class $\{x^4+ax^2-c:\ a\in\Z,\ c\in\Z,\ c>0\}$ --- where the full
+compass is automatic (the $y$-quadratic $y^2+ay-c$ has $y_-<0<y_+$ since
+$y_+y_-=-c<0$):
+\begin{enumerate}[nosep,label=(\roman*)]
+\item full-compass straddler $\iff p(1)>0\iff a\ge c$ (via
+$(1-y_+)(1-y_-)=p(1)$ and $(1+y_+)(1+y_-)=1-a-c$; the \emph{integer}
+hypothesis is load-bearing --- over $\Q$ the equivalence fails, guarded
+witness $(a,c)=(\tfrac12,\tfrac1{10})$);
+\item $\M=|y_-|=\dfrac{a+\sqrt{a^2+4c}}2$ is strictly increasing in $a$ at
+fixed $c$;
+\item hence the \emph{unique} Mahler-minimal compass straddler at level $c$
+is $x^4+cx^2-c$ --- which at $c=5F_{2j}^2$ is $p_j$
+(Theorem~\ref{thm:kseedladder}) and at every rung level $c_n$ is $p_n$
+(Theorem~\ref{thm:seedladder}), by the exact endpoint identity
+$c_n^2+4c_n=5F_{2n}^2$, giving $\M(x^4+c_nx^2-c_n)=b_n^2$.
+\end{enumerate}
+\end{theorem}
+
+\begin{remark}[The F1 falsifier; register resolution]\label{rem:f1falsifier}\tagF{} \hx{UX-H1--H4}
+Constant-term-only uniqueness is \emph{false}: $x^4+6x^2-5$ is a second
+irreducible full-compass straddler at level $|p(0)|=5$, distinct from the
+K-seed (difference exactly $x^2$), with
+$\M(x^4+6x^2-5)=3+\sqrt{14}>\gp^4-1=\M(\text{K-seed})$ (integer comparison
+$56>45$) --- consistent with Theorem~\ref{thm:mahlermin}(ii), which places
+the K-seed at the window edge $a=c$. The v1.6 uniqueness question left open
+at Theorem~\ref{thm:kseedladder}(c) (``no uniqueness is claimed''), read as
+F3 --- Mahler-minimal at fixed constant term within the compass type,
+confirmed as the intended reading by the project owner on 2026-07-15 --- is
+thereby \emph{resolved}: the $p_j$, and $n$-uniformly the $p_n$, are the
+unique Mahler-minimal full-compass straddlers at their levels.
+\end{remark}
+
+\section{The lens as the exact $60^\circ$ state}\label{sec:lens}
+
+\begin{proposition}\label{prop:lens}\tagFD{} \hx{OZ-E1--E6}
+Under $z=\sin\alpha$, the lens height $z_c=\sqrt3/2$ is the state
+$\alpha_c=\pi/3=60^\circ$ with residual amplitude $\cos\alpha_c=\tfrac12$; the
+complete split-gate ledger of W-Thm.\ 13.3 drops out of
+Theorem~\ref{thm:stateangle}:
+\[
+m_c=-\cos^2 60^\circ=-\tfrac14,\quad
+u_c=\cot^2 60^\circ=\tfrac13,\quad
+C_c=\cot^2\!\csc^2 60^\circ=\tfrac49,\quad
+\sqrt{D_c}=1+2\cot^2 60^\circ=\tfrac53 .
+\]
+A rung at the lens would require $\cos\alpha_c=\tau^n$, i.e.\ $\tau^n=\tfrac12$,
+i.e.\ $n=\log_\gp2$; by W-Thm.\ 16.1 this is irrational, so the $60^\circ$ lens is
+permanently off the discrete rung lattice (finite guard $n\le10$ replicated).
+\end{proposition}
+
+\begin{proposition}[Lens scoping lemma: splitness over $\Q$ is generic]\label{prop:lensscope}\tagF{} \hx{LX-A1--A8, LX-B1--B6, LX-F1--F4}
+The chart pentad lies in $\Q(Z)$, $Z=z^2$: $u=(1-Z)/Z$, $C=(1-Z)/Z^2$,
+$\sqrt D=(2-Z)/Z$, $m=-(1-Z)$, $\lambda=Z(2-Z)/(1-Z)$, with denominator
+zeros only at $Z\in\{0,1\}$. Hence \emph{every} rational height
+$Z\in\Q\cap(0,1)$ gives $C,\sqrt D\in\Q$ and a gate $x^2+x-C$ that splits
+over $\Q$, with a rational reciprocal multiplier pair. Example
+$z^2=\tfrac12$: $C=2$, $D=9$, gate $x^2+x-2=(x-1)(x+2)$, multiplier pair
+$\{-\tfrac12,-2\}$, at rapidity $\rho=\tfrac12\ln2\in(\ln2)\Q$, strictly
+below rung 1 --- a rational split gate that is not the lens. Splitness over
+$\Q$ is therefore \emph{generic} on rational heights, and the lens's
+distinction is not splitness but its exact data: $z_c=\sqrt3/2$
+($Z=\tfrac34$), $C=\tfrac49$, $\sqrt D=\tfrac53$, fixed points
+$\{\tfrac13,-\tfrac43\}$, multiplier pair $\{-\tfrac14,-4\}$,
+$\lambda=\tfrac{15}4$, co-intensity $\tfrac14$, and $\rho=\ln2$ exactly.
+(The converse fails: rung 2 has $C_2=\tfrac15\in\Q$ with
+$z_2^2=K^2\notin\Q$, and at rung heights $\sqrt D$ is irrational --- the
+membership detector rejects the odd object $\sqrt Z$.)
+\end{proposition}
+
+\begin{remark}[Bounded-negative scan for the lens constants]\label{rem:lensscan}\tagO{} \hx{LX-C1--C8, LX-S1--S7}
+Candidate-level, citable as a \emph{bounded} negative. A predicate-first
+scan of the seven shipped corpus documents --- the six harness-scanned
+domains (ECHO-S-RESEARCH\_UNIFIED, K-VARIABLE-DERIVATIONS,
+HELIX-EXPLICIT-DERIVATION, this paper's v1.6 source, the gap-multiplier
+paper, the whitepaper PDF) plus \texttt{K\_seven\_ways.tex}, swept
+independently in verification with the same outcome --- over eight constant
+classes ($\tfrac49$, $\tfrac{25}9$, $\tfrac53$, $\tfrac{15}4$, $-\tfrac14$,
+the pair $\{-\tfrac14,-4\}$ \emph{as a pair}, dyadic $2^{-k}$
+co-intensities, $(\ln2)\Q$ rapidities) finds \emph{no} foreign-context
+occurrence of a lens-distinctive constant that survives the
+shared-constant rule. The single foreign occurrence of a lens \emph{value}
+--- $\tfrac53$ in the ECHO trace form
+$\operatorname{Tr}(1-\tfrac13\gp)=\tfrac53$ --- has its own mechanism
+(trace-form projection) sharing no step with the lens discriminant: a
+no-tie. The remaining candidate hits each carry their own mechanism: the
+$\ln2$-lattice $\ln\M(\mathrm{cons})=\ln2+5\ln\gp$ (W-Thm.\ 18.1(a),
+significance \tagO{} upstream, not a $(\ln2)\Q$ rapidity);
+$N(\M(\mathrm{cons}))=-4$, forced by the lattice exponent, hence the same
+hit; the flip level $-\tfrac14$ ($D=0\iff C=-\tfrac14$, unique), which
+restates the inherited $z_c^2=\tfrac34$ datum; the dyadic
+$\tfrac1{16}=1/L_3^2$, Lucas-driven; and $-\tfrac12$, the rotation gate
+forced by multipliers $\pm i$. The whitepaper's open item 3 (does the lens
+gate $C=\tfrac49$ appear elsewhere?) closes as a bounded negative at
+candidate level; the scanned domains and constant classes are enumerated
+above precisely so that the negative is citable.
+\end{remark}
+
+\section{The residual sphere}\label{sec:sphere}
+
+\begin{theorem}[Residual sphere]\label{thm:sphere}\tagFD{}
+\hx{OZ-G1--G4}\ Define
+\[
+S(\rho)=\bigl(\Rea W(\rho),\ \Ima W(\rho),\ z(\rho)\bigr).
+\]
+Then
+\[
+|S(\rho)|^2=|W(\rho)|^2+z(\rho)^2=e^{-2\rho}+\bigl(1-e^{-2\rho}\bigr)=1
+\]
+for every $\rho\ge0$:
+the entire trajectory lives on the unit sphere $S^2$ (northern hemisphere), with
+the state angle $\alpha$ as latitude. At the rungs,
+\[
+S_n=\bigl(\Rea(i\tau)^n,\ \Ima(i\tau)^n,\ \sqrt{1-\tau^{2n}}\bigr),
+\]
+explicitly $S_0=(1,0,0)$, $S_1=(0,\tau,\sqrt\tau)$,
+$S_2=(-\tau^2,0,K)$, $S_3=(0,-\tau^3,z_3)$, $S_4=(\gapc,0,z_4)$: a discrete
+compass walk --- longitude $+90^\circ$ per rung, horizontal radius $\times\tau$
+per rung, height $\uparrow1$ --- approaching the north pole without reaching it
+at any finite rung; by Definition~\ref{def:Q} the horizontal part is exactly
+the $Q$-orbit, $S_n=(Q^nv_0\,;\ z_n)$ --- a compass walk on the same four
+directions that carry the K-seed's own conjugates
+(Prop.~\ref{prop:kseedcat}). The K-point sits at colatitude
+$\arccos K=\theta_K$ (Remark~\ref{rem:thetaK}) on the negative real meridian.
+\end{theorem}
+
+This object should be called the \emph{residual sphere} (equivalently
+co-intensity sphere), never the formation helix:
+
+\begin{proposition}[Two radii, two layers]\label{prop:tworadii}\tagF{}/\tagI{} \hx{OZ-G5}
+The residual radius $a(z)=\sqrt{1-z^2}=\cos\alpha$ decreases monotonically to
+$0$; the inherited formation radius
+\[
+r(z)=\begin{cases}K\sqrt{z/z_c},&0\le z\le z_c,\\ K,&z_c\le z\le1,\end{cases}
+\]
+grows to $K$ and locks (W-(11.1), \tagI{}).
+These are \emph{not} the same radius; they describe two layers ---
+remaining residual amplitude vs formation envelope. The dual reading
+(``residual capacity contracts while the formation envelope expands and
+stabilizes'') is a provisional interpretation, not a theorem. No result here or
+in the sources derives the paraboloid--cylinder profile from the residual-sphere
+construction; that derivation is exactly the whitepaper's \tagO{}~1 and, as both
+sources conclude, the priority next problem. Until that bridge exists, the
+residual spiral and the explicit formation helix are two coordinated
+representations, not one proven geometry.
+\end{proposition}
+
+\begin{proposition}[Compass-cross characterization of the rung locus]\label{prop:compasscross}\tagFD{} \hx{NX-S1--S2}
+Let $C_{\mathrm{EW}}=S^2\cap\{y=0\}$ and $C_{\mathrm{NS}}=S^2\cap\{x=0\}$
+be the two polar great circles through the compass axes. For $\rho\ge0$,
+\[
+S(\rho)\in C_{\mathrm{EW}}\cup C_{\mathrm{NS}}
+\iff \rho\in(\ln\gp)\,\Z_{\ge0},
+\]
+with $S(\rho_n)\in C_{\mathrm{EW}}$ for even $n$ and
+$S(\rho_n)\in C_{\mathrm{NS}}$ for odd $n$; the poles (the circles'
+intersection) are never attained. Moreover, writing $S=(x,y,z)$,
+\[
+\operatorname{Im}\nu \;=\; \frac{2xy}{x^2+y^2}
+\]
+identically: on the residual sphere the $\nu$-criterion of
+Proposition~\ref{prop:nulocus} is literally the vanishing of the product of
+the horizontal coordinates, and the rungs are the crossings of the residual
+spiral with the compass cross. At the half-floors $\rho=(n+\tfrac12)\ln\gp$
+the miss is exact: $|xy|=e^{-2\rho}/2>0$.
+\end{proposition}
+
+\begin{proof}
+$y=0\iff\sin\kappa\rho=0\iff\rho\in(2\ln\gp)\Z$ and
+$x=0\iff\cos\kappa\rho=0\iff\rho\in\ln\gp+(2\ln\gp)\Z$ [D3]; the union
+is the rung lattice, split by parity. With $x=e^{-\rho}\cos\theta$,
+$y=e^{-\rho}\sin\theta$: $2xy/(x^2+y^2)=\sin2\theta=\operatorname{Im}\nu$.
+Both identities and the half-floor value are machine-verified symbolically.
+\end{proof}
+
+\begin{proposition}[Spherical step ledger]\label{prop:sphsteps}\tagFD{} \hx{NX-S3--S5}
+Consecutive rung positions have orthogonal horizontal parts:
+$\Rea\bigl(W_n\overline{W_{n+1}}\bigr)=0$ for every $n$, so
+\[
+S_n\cdot S_{n+1}=z_nz_{n+1},
+\qquad
+d_n\coloneqq d_{S^2}(S_n,S_{n+1})=\arccos\bigl(z_nz_{n+1}\bigr).
+\]
+In particular $d_0=\pi/2$ \emph{exactly} --- the first step, apex to
+rung~1, is a full quarter great circle --- and
+$d_1=\arccos\bigl(5^{1/4}\tau^{3/2}\bigr)=43.4026803146\ldots^\circ$
+\tagC{} (from $z_1z_2=\sqrt\tau\,K=5^{1/4}\tau^{3/2}$); thereafter $d_n$
+decreases strictly to $0$ ($z_nz_{n+1}\uparrow1$). On the residual sphere
+the walk takes ever-shorter geodesic steps, in exact contrast to the
+formation rail, whose per-rung length is floored at $\pi K/2$
+(Proposition~\ref{prop:railfloor}).
+\end{proposition}
+
+\begin{proof}
+$W_n\overline{W_{n+1}}=\overline q\,|W_n|^2=-i\,\tau^{2n+1}$ is purely
+imaginary, so the dot product reduces to the vertical product; strict
+monotonicity of $z_nz_{n+1}$ is decided exactly at the squared level in
+$\Q(\sqrt5)$; the $d_1$ evaluation is display-only.
+\end{proof}
+
+\begin{proposition}[Finite spherical length and the length dichotomy]\label{prop:sphlength}\tagFD{} \hx{NX-S6--S7, NX-H1--H3}
+The residual spiral's speed on its sphere is
+\[
+\bigl|S'(\rho)\bigr|^2
+= e^{-2\rho}\Bigl(\kappa^2+\frac{1}{1-e^{-2\rho}}\Bigr)
+\qquad\Bigl(=\tan^2\vartheta+\kappa^2\sin^2\vartheta\ \text{at colatitude}\
+\sin\vartheta=e^{-\rho}\Bigr),
+\]
+so its total spherical length from apex to pole is finite:
+\[
+\boxed{\;L_{\mathrm{res}}
+=\int_0^1\!\sqrt{\kappa^2+\frac{1}{1-a^2}}\;da
+=\sqrt{1+\kappa^2}\;E\!\Bigl(\frac{\kappa^2}{1+\kappa^2}\Bigr)\;}
+=3.7312193125\ldots\ \tagC{}
+\]
+($E$ the complete elliptic integral of the second kind \tagE{}; the value
+is the quarter-perimeter of an ellipse with semi-axes $\sqrt{1+\kappa^2}$
+and $1$ --- the same speed factor as the per-floor planar length of
+Corollary~\ref{cor:d3select}(iv)), with exact bounds
+$\sqrt{1+\kappa^2}\le L_{\mathrm{res}}\le\kappa+\pi/2$. The two-layer
+separation of Proposition~\ref{prop:tworadii} is therefore a \emph{length
+dichotomy}: the residual layer has finite total spherical length, while the
+formation rail's length diverges (Proposition~\ref{prop:railfloor}).
+Finally, $L_{\mathrm{res}}$ is strictly increasing in $|\kappa|$ (the
+integrand is pointwise strictly increasing in $\kappa^2$), so within the
+interpolation family of Theorem~\ref{thm:interp} the principal branch
+$k=0$ is also the \emph{unique minimizer of total spherical length}: a
+fifth equivalent characterization to add to
+Corollary~\ref{cor:d3select}'s four.
+\end{proposition}
+
+\begin{proof}
+Differentiating $S=(e^{-\rho}\cos\kappa\rho,\ e^{-\rho}\sin\kappa\rho,\
+\sqrt{1-e^{-2\rho}})$ gives the speed identity symbolically. Substituting
+$a=e^{-\rho}$ turns the length integral into $\int_0^1$; then $a=\sin u$
+gives $\sqrt{\kappa^2+1/\cos^2u}\;\cos u=\sqrt{1+\kappa^2\cos^2u}$
+(exact at the squared level, $\cos u>0$), and
+$(1+\kappa^2)(1-m\sin^2u)=1+\kappa^2\cos^2u$ with
+$m=\kappa^2/(1+\kappa^2)$ identifies
+$\int_0^{\pi/2}\sqrt{1+\kappa^2\cos^2u}\,du=\sqrt{1+\kappa^2}\,E(m)$
+\tagE{}. Bounds: pointwise $\sqrt{\kappa^2+g}\ge\sqrt{\kappa^2+1}$
+($g=1/(1-a^2)\ge1$) and $\sqrt{\kappa^2+g}\le\kappa+\sqrt g$, integrated
+($\int_0^1 da/\sqrt{1-a^2}=\pi/2$). The family statement follows from
+pointwise strict monotonicity in $\kappa^2$ together with
+Corollary~\ref{cor:d3select}(iii): $|\kappa_k|$ is uniquely minimized at
+$k=0$. The numeric value is display-only, corroborated at 50 dps by
+quadrature against the closed form.
+\end{proof}
+
+\begin{theorem}[RAD-0: the parity no-go for the inherited radius]\label{thm:paritynogo}\tagF{} \hx{RX-A1--A4, RX-P1--P9}
+Work over the chart layer $\{u,C,\sqrt D,m,\lambda,\rho,\theta_k\}$ with
+height coordinate $z$. Every chart-pentad member lies in
+$\Q(\sqrt5)(z^2)$, and the chart-rational closure is \emph{exactly}
+$\Q(\sqrt5)(z^2)$ (sharpness: $z^2=1/(1+u)$, so both inclusions hold);
+moreover $\rho=-\tfrac12\ln(1-z^2)$ and $\theta_k=\kappa_k\rho$ are even in
+$z$ for \emph{every} branch $k\in\Z$ (symbolic $k$), and adjoining them
+keeps the generated field inside the even functions, over arbitrary
+constant coefficients. The inherited radius is odd: $r^2=K^2z/z_c$
+satisfies $r^2(-z)=-r^2(z)$ identically and is nonzero (exact witness at
+$z=\tfrac12$). Hence $r^2$ --- and a fortiori $r$ --- lies \emph{outside}
+the rational closure of the entire D1--D3 chart layer, and
+\[
+\boxed{\ \text{any derivation bridge from the substrate to } r \text{ must
+break the } z\mapsto-z \text{ symmetry}\ }.
+\]
+$\Z/2$ sharpening: $r^4=K^4z^2/z_c^2$ \emph{is} chart-even, so $r^2$
+satisfies $X^2-r^4$ over the even field $F$ and the extension $F(r^2)/F$
+is exactly quadratic --- the entire missing content of the radius problem
+is one parity-breaking generator, a degree-2/double-cover object (indeed
+$F(r^2)=\Q(\sqrt5)(z)$, since $z=r^2z_c/K^2$; and even${}\times r^2$ stays
+odd, a $\Z/2$ grading). The whitepaper's \tagO{}~1 (OP-RADIUS) remains
+open: this is a forced \emph{necessary condition} on any solution, not a
+solution.
+\end{theorem}
+
+\begin{proposition}[RAD-2: the area-transfer law]\label{prop:areatransfer}\tagF{}/\tagI{} \hx{RX-T1--T4}
+Let $A_{\mathrm{zone}}(z)=2\pi z$ be the Archimedes zone area of the unit
+sphere between heights $0$ and $z$ --- re-derived exactly here, not cited:
+the surface-of-revolution identity
+$(2\pi\sqrt{1-h^2})^2\,(1+x'(h)^2)=(2\pi)^2$ holds identically at the
+squared (sign-free) level. Then on $[0,z_c]$ the inherited profile is
+equivalent, in both directions, to
+\[
+\boxed{\ \pi\,r(z)^2=\frac{K^2}{2z_c}\,A_{\mathrm{zone}}(z)\ }:
+\]
+the radius law says exactly that formation deposits disc area at the
+constant rate $d(\pi r^2)/dz=\pi K^2/z_c$ per unit height, stopping at the
+lens (continuity at the lens: $\pi r(z_c)^2=\pi K^2$, the cap disc; the
+$C^0$ kink survives). This is a \emph{forced reformulation} of the
+inherited profile --- a restated target for the radius problem, not
+progress on it; any future deposition mechanism must be premise-audited
+for a smuggled profile.
+\end{proposition}
+
+\begin{remark}[RAD-4: all three equipotential clocks fail]\label{rem:rad4}\tagF{}/\tagE{} \hx{RX-E1--E7, RX-G0--G3}
+The horn $z=(z_c/K^2)r^2$ coincides with a rigid-rotation free surface
+$z=(\omega^2/2g)\,r^2$ iff $g_{\mathrm{eff}}=\omega^2K^2/(2z_c)$
+(perturbed coefficients rejected). All three natural clocks fail. (i)
+$\rho$-clock ($\omega=\kappa$, the D3 clock):
+$g_1=\kappa^2K^2/(2z_c)=\pi^2K^2/(8z_c\ln^2\gp)=5.2543169478\ldots$
+\tagC{} is transcendental given Gelfond--Schneider
+(Theorem~\ref{thm:ratetrans}), so it ties to \emph{no} algebraic ledger
+constant --- all branches $k$ at once, since $\kappa_k=(4k+1)\kappa$;
+against the transcendental ledger entries the no-tie is certified by
+disjoint 60-dps intervals (a rigorous proof of $\neq$), closest misses
+$\tfrac{21}4$ (margin $4.3\times10^{-3}$) and $2\gp^2$
+($1.8\times10^{-2}$). (ii) $s$-clock ($\omega=1/K$, the forced asymptotic
+rail clock, $ds/d\theta\to K$): $K^2$ cancels identically and
+$g_2=1/(2z_c)$ is the horn coefficient itself read back --- a
+\emph{restatement}, not a tie (the clock smuggles the profile's $K$);
+shared-constant rule applied. (iii) $z$-clock: no constant per-height
+clock exists --- $d\theta/dz=\kappa z/(1-z^2)$ is non-constant (forced,
+exactly nonzero derivative) --- and distinguished-height evaluations
+(e.g.\ $\omega(z_c)=2\sqrt3\,\kappa$, $g=12g_1$) remain
+$\kappa^2\times{}$algebraic and fall to the same transcendence exclusion
+as (i). The mechanism is killed; the radius problem stays open.
+\end{remark}
+
+\smallskip\noindent
+\textbf{OP-RADIUS sharpened at the apex (v1.8).} The parity no-go of
+Theorem~\ref{thm:paritynogo} (which covered only $r^2$, through the global
+$z\mapsto-z$ involution) is now localized to the apex $z=0$ and quantified as a
+ramification index, and extended to the radical $r$; a make-or-break
+constructive bridge is obstructed; and the remaining formation content is
+isolated as an honest declared negative. OP-RADIUS \emph{stays open}, sharpened.
+
+\begin{theorem}[Apex-ramification valuation certificate]\label{thm:apexram}\tagF{} \hx{RD-A1--RD-A4, RD-V1--RD-V7}
+On the $z$-adic valuation $v_z$ at the apex $z=0$, every chart quantity has
+\emph{even} valuation: the pentad $v_z(u,C,\sqrt D,m,\lambda)=(-2,-4,-2,0,2)$
+and $v_z(\rho)=v_z(\theta_k)=2$ for \emph{every} branch $k$ (symbolic $k$), so
+the chart field $F=\Q(\sqrt5)(z^2)$ has $z$-value group in $2\Z$. The inherited
+radius has $v_z(r^2)=1$ (odd, not in $2\Z$) and $v_z(r)=\tfrac12$; hence
+adjoining $r^2$ ramifies $F$ at the apex with index $e=2$ (value group
+$2\Z\to\Z$), and adjoining $r$ with index $e=4$ ($2\Z\to\tfrac12\Z$), while
+even quantities give $e=1$; the double cover $w=z^2$ is unramified at every
+finite place except $z=0$ (branch locus $\{2z=0\}=\{0\}$). Adjoining the
+inherited radius therefore changes the apex ramification index from $1$ to
+$2$ (for $r^2$) or $4$ (for $r$) --- a local non-membership certificate no
+even-valuation manipulation can produce. This is strictly sharper than the
+parity no-go: parity certifies only $r^2$ (an involution on the rational
+field, and $r(-z)$ is neither $+r$ nor $-r$), while the valuation certificate
+covers the radical $r$ and pins the obstruction to the apex. The
+identification value-group-index $=$ ramification index (Serre, \emph{Local
+Fields}) is external framing only; every decision is exact leading-term
+arithmetic. This is a forced \emph{necessary condition} on any substrate-to-$r$
+bridge, not a derivation of $r$ (whitepaper \tagO{}~1 remains open).
+\end{theorem}
+
+\begin{proposition}[The constructive-bridge obstruction]\label{prop:bridgeobstruction}\tagF{} \hx{RD-R1--RD-R6}
+A constructive bridge would have to furnish a square root of the chart-even
+$r^4=K^4z^2/z_c^2$; it cannot from canonical substrate data. Although $r^4\in F$
+(with $v_z=2$), it is \emph{not a square in $F$}: its $w=z^2$ valuation is
+$v_w(r^4)=1$ (odd), so the square root $r^2$ lives one level up in
+$\Q(\sqrt5)(z)$, and any $g$ with $g^2=r^4$ has $v_z(g)=1$ (odd). No
+even-valuation amplitude can be $g$: the residual amplitude $a=\sqrt{1-z^2}$
+($v_z=0$), the $\mathrm{Cl}(2,0)$ rotor modulus $|e^{J\theta/2}|^2=1$
+($v_z=0$), and $z\,a$, $z^2$ all fail exactly. The $\Z/8$ half-angle rotor
+supplies only a \emph{unimodular} (angular) double cover of the phase, carrying
+no radial scale: the required radial coefficient $K^2/z_c$ is not unimodular
+($(K^2/z_c)^2=70/3-10\sqrt5\ne1$), so it never appears as a rotor amplitude
+(a bounded no-tie). The unique-up-to-sign square root is
+$\pm(K^2/z_c)\,z$ --- the \emph{signed height}, exactly the odd orientation
+generator that Theorem~\ref{thm:paritynogo}/Theorem~\ref{thm:apexram} says
+must be adjoined; it is not a canonical substrate amplitude. The extension
+exists, but the substrate canonically supplies only the even $z^2$; the missing
+object is the orientation of the apex-ramified radial cover, which the rotor's
+(angular, unimodular) spin cover cannot furnish.
+\end{proposition}
+
+\begin{remark}[The atom ledger, with the honest cap-onset negative]\label{rem:atomledger}\tagF{}/\tagI{} \hx{RD-A2, RD-S1--RD-S5}
+The inherited profile decomposes into atoms of mixed status. \emph{Cap value}
+\tagF{}\emph{ given corpus}: $r(z_c)=K$ --- the unique nontrivial
+height-equals-radius point $(K,K)$, since $r^2=z^2$ factors
+$z(z-K^2/z_c)=0$ with the horn root $K^2/z_c>z_c$ excluded ($K^2>z_c^2$, i.e.\
+$180>169$) (whitepaper Thm.~15.1). \emph{Kink slope} \tagF{}\emph{ given
+corpus}: $r'(z_c^-)=K/\sqrt3$ (square $K^2/3=(3\sqrt5-5)/6>0$), against the
+flat cap $r'(z_c^+)=0$ --- $C^0$ but not $C^1$ (whitepaper Prop.~15.2(a)).
+\emph{Exponent $\tfrac12$} \tagF{} (a restatement): $r^2\propto z$ is exactly
+equivalent to constant areal deposition per unit height (RAD-2,
+Proposition~\ref{prop:areatransfer}), not a derivation of the exponent.
+\emph{But the kink existence --- the cap onset --- is \tagD{}, not forced}: the
+$\ln2$-rapidity landmark $\rho(z_c)=\ln2$ (and $a(z_c)=\tfrac12$) is a
+monotone-bijection restatement of the declared lens $z_c=\sqrt3/2$ (since
+$d\rho/dz=z/(1-z^2)>0$, so $\rho=\ln2\iff z^2=\tfrac34$), so ``formation stops
+at the first $\ln2$ landmark'' carries \emph{no independent content}. As a
+derivation of the cap onset this \emph{fails} (reason class: restatement); the
+exact landmark facts are all individually forced, but the cap onset itself is
+the genuine remaining open formation content.
+\end{remark}
+
+
+\section{Path stretch, rail length, and the conjugate relative phase}\label{sec:pathstretch}
+
+The exploratory note of source (iv) proposes a rail-pulse mechanism for rung
+selection. Its mechanism layer is not imported here; this section states and
+verifies its \emph{forced kernel} --- three results that use only D1--D3 and
+the inherited radius profile --- and records the exact scoping of the rest.
+
+\begin{proposition}[Winding gradient and path stretch]\label{prop:pathstretch}\tagFD{}/\tagI{} \hx{OZ-M1--M3}
+From D1, $\rho(z)=-\tfrac12\ln(1-z^2)$, so with $\kappa=\pi/(2\ln\gp)$ [D3],
+\[
+\frac{d\rho}{dz}=\frac{z}{1-z^2},
+\qquad
+\frac{d\theta}{dz}=\kappa\,\frac{z}{1-z^2},
+\]
+and the formation rail $\Gamma(z)=(r\cos\theta,\,r\sin\theta,\,z)$ has local
+path-stretch
+\[
+\frac{ds}{dz}
+=\sqrt{1+\Bigl(\frac{dr}{dz}\Bigr)^{2}+r(z)^2\Bigl(\frac{d\theta}{dz}\Bigr)^{2}}
+=\begin{cases}
+\sqrt{\,1+\dfrac{K^2}{4zz_c}+\dfrac{K^2\kappa^2z^3}{z_c(1-z^2)^2}\,},
+& 0<z\le z_c,\\[10pt]
+\sqrt{\,1+\dfrac{K^2\kappa^2z^2}{(1-z^2)^2}\,},
+& z_c\le z<1,
+\end{cases}
+\]
+with $ds/dz>1$ strictly on $(0,1)$: the helical route is strictly longer than
+the vertical displacement, through radial formation and winding below the lens
+and through winding alone above it.
+\end{proposition}
+
+\begin{proof}
+Differentiate D1 and $r(z)$ on each branch and substitute; both closed forms
+and the strict excess (all added terms are ratios of positives) are
+machine-verified symbolically in $z$.
+\end{proof}
+
+\begin{proposition}[Quarter-turn rail floor and divergence]\label{prop:railfloor}\tagFD{}/\tagI{} \hx{OZ-M4--M5}
+Above the lens, $ds/d\theta=\sqrt{K^2+(dz/d\theta)^2}\ge K$ pointwise, so with
+$\Delta\theta=\pi/2$ per rung the rail length between adjacent rungs satisfies
+\[
+\boxed{\;L_{n\to n+1}\ \ge\ \frac{\pi K}{2}\;}=1.4516928502\ldots\ \tagC{}
+\qquad(n\ge2):
+\]
+every rung interval retains at least a quarter-circle of rail, even as the
+vertical increments $z_{n+1}-z_n\to0$. Consequently the cumulative rail length
+to the top is infinite while the height stays finite --- a one-line sharpening
+of the whitepaper's logarithmic length divergence (W-Prop.\ 15.2c) into a
+uniform per-rung floor. Exactly above the lens one also has the identity
+$(ds/dz)^2-\bigl(K\kappa z/(1-z^2)\bigr)^2=1$, and the minorant integrates to
+$-\tfrac12K\kappa\ln(1-z^2)\to\infty$.
+\end{proposition}
+
+\begin{proposition}[$\nu$-form of the rung locus]\label{prop:nulocus}\tagFD{} \hx{OZ-M6--M7}
+The conjugate pair $\{W,\overline W\}$ exists automatically --- the angle
+multiset of a conjugation-closed object is closed under negation (the standing
+fact of the relational-charge note, its \S2.2) --- and winds oppositely:
+$\theta_\pm(\rho)=\pm\kappa\rho$. Its normalized relative state
+\[
+\nu(\rho)\ \coloneqq\ \frac{W(\rho)}{\overline{W}(\rho)}\Big/\Bigl|\tfrac{W}{\overline W}\Bigr|
+\;=\;e^{2i\theta(\rho)}
+\qquad\text{(matrix form: } \mathcal R(\rho)=e^{2J\kappa\rho}\text{)}
+\]
+is real (scalar) exactly on the rung lattice:
+\[
+\operatorname{Im}\nu(\rho)=\sin\!\Bigl(\frac{\pi\rho}{\ln\gp}\Bigr)=0
+\iff \rho=n\ln\gp,
+\qquad
+\nu(\rho_n)=(-1)^n ,
+\]
+and the sign $(-1)^n$ is the Trace--Form-Duality parity bit: $W_n$ is real for
+even $n$ (Fibonacci/E--W rungs), imaginary for odd $n$ (Lucas/N--S rungs).
+Equivalently, the rungs are exactly the heights at which $W$ is coherent with
+the real axis in the sense of the relational note's $\nu$-criterion
+($\alpha/\overline\alpha$ a root of unity --- here $\nu(\rho_n)=\pm1$, torsion
+of order $\le2$).
+\end{proposition}
+
+
+\begin{proposition}[Site-density trichotomy]\label{prop:trichotomy}\tagFD{}/\tagI{}
+\hx{OZ-N1--N2}\ Inverting the rung law gives the continuous floor coordinate ---
+and three site densities that must be kept apart. The floor coordinate is
+\[
+n(z)=\frac{\rho(z)}{\ln\gp}=-\frac{\ln(1-z^2)}{2\ln\gp},
+\qquad
+\frac{dn}{dz}=\frac{z}{(1-z^2)\ln\gp}\ \xrightarrow[z\to1^-]{}\ \infty
+\]
+(at the lens, $dn/dz=2\sqrt3/\ln\gp=7.1987042602\ldots$ \tagC{} \hx{OZ-H5}).
+All three densities are exact:
+\begin{center}\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+measure & behaviour & source\\
+\midrule
+angular & fixed: $\Delta\theta=\pi/2$, four phase classes per turn & D2$+$D3\\
+vertical projection & divergent: $dn/dz\to\infty$ as $z\to1$ & D1\\
+rail distance (above lens) & bounded below and convergent: $\Delta s_n\downarrow \pi K/2$ & Prop.~\ref{prop:railfloor}\\
+\bottomrule
+\end{tabular}
+\end{center}
+The third entry sharpens Proposition~\ref{prop:railfloor}:
+$dz/d\theta=(1-z^2)/(\kappa z)$ is strictly decreasing to $0$, so the rail
+spacing $\Delta s_n=\int\sqrt{K^2+(dz/d\theta)^2}\,d\theta$ is strictly
+decreasing with limit \emph{exactly} $\pi K/2$ --- the quarter-turn floor is
+attained in the limit. Apparent crowding of rung sites is a projection
+artifact of the D1 chart, not an increase in phase classes per revolution.
+\end{proposition}
+
+\begin{proposition}[Reversion norm and the transfer ledger]\label{prop:ledger}\tagFD{} \hx{OZ-N3--N5}
+With reversion $\widetilde{aI+bJ}=aI-bJ$ (an anti-automorphism),
+\[
+Q\widetilde Q=\tau^2 I,
+\qquad
+I_n \coloneqq Q^n\widetilde{Q^n}=\tau^{2n}I=|W_n|^2 I ,
+\]
+and the complementary ledger
+\[
+\boxed{\ F_n \coloneqq 1-I_n = z_n^2\ }
+\qquad\text{(D1 at the rungs, in ledger form)},
+\]
+with per-rung increment, via $1-\tau^2=\tau$,
+\[
+\Delta F_n=F_{n+1}-F_n=\tau^{2n}(1-\tau^2)=\tau^{2n+1}
+=z_{n+1}^2-z_n^2 ,
+\qquad
+\sum_{n\ge0}\tau^{2n+1}=\frac{\tau}{1-\tau^2}=1 \ \ \text{exactly}.
+\]
+The odd golden powers $\tau,\tau^3,\tau^5,\ldots$ are precisely the rung
+increments of $z^2$, they telescope to the unit ($1-\tau^{2N}=z_N^2$), and the
+whole normalized budget is distributed over infinitely many rungs with none
+consuming it at finite $n$. The per-step split is $(\tau^2,\tau)$:
+transmitted co-intensity $\tau^2$, complementary increment $\tau$. All of this
+is exact chart algebra; the source note's reading of $\Delta F_n$ as a
+physically \emph{deposited} pulse fraction (its engine-pass model) is an
+interpretation and is not imported.
+\end{proposition}
+
+\begin{remark}[Scoping: what the rails do and do not close]\label{rem:railscope}
+Proposition~\ref{prop:nulocus} removes two of the exploratory note's three
+assumptions: the second rail and its counter-rotation are not hypotheses but
+the conjugate, forced by conjugation closure. What remains outside the forced
+scope is exactly what that note's own \S10(8) concedes: (a) reading the real
+crossings of $\nu$ as \emph{recoupling events that cause} rungs is an
+interpretation --- with the existing rate $\kappa$ the locus merely coincides
+with the ladder already forced by the gate multipliers $|m_n|=\gp^{-2n}$; and
+(b) the rate itself is D3 imported, not derived --- for a general rate the
+locus is $\rho_n=n\pi/(2\kappa)$, so the construction reproduces the golden
+floors only because $\kappa=\pi/(2\ln\gp)$ was put in. Rung quantization (one
+$Q$ per floor) therefore remains the open item named in
+\S\ref{sec:quarterturn}; the energy condition, the thermodynamic reading, and
+the mechanism chain of source (iv) are not imported. The second note (source
+(vi)) is handled identically: its forced kernel is
+Propositions~\ref{prop:trichotomy}--\ref{prop:ledger}; its engine-pass model,
+pulse-budget reading, and biological program remain hypothesis --- correctly
+fenced by that note's own claim ceilings and four-layer hierarchy
+(geometry $\to$ kinematics $\to$ dynamics $\to$ biology), which this paper
+endorses as discipline without importing as content.
+\end{remark}
+
+\begin{proposition}[Rail bounds and the gap-rate law]\label{prop:railbounds}\tagFD{}/\tagI{} \hx{QX-E1--E9}
+For $n\ge2$ write $t_n=\tau^{2n}$, and on $[\theta_n,\theta_{n+1}]$ set
+$x=(dz/d\theta)^2/K^2=t^2/\bigl(K^2\kappa^2(1-t)\bigr)$ with
+$t=e^{-2\theta/\kappa}=1-z^2$, so that
+$\Delta s_n=K\int_{\theta_n}^{\theta_{n+1}}\sqrt{1+x}\;d\theta$. With
+\[
+I_1(t)=\frac1{4K\kappa}\Bigl[\ln\frac{1-\tau^2t}{1-t}-\tau t\Bigr]
+=\frac1{4K\kappa}\sum_{m\ge2}\frac{1-\tau^{2m}}{m}\,t^m\;>\;0,
+\]
+\[
+I_2(t)=\frac{F(t)-F(\tau^2t)}{16K^3\kappa^3},
+\quad
+F(t)=\frac1{1-t}+3\ln(1-t)-3(1-t)+\frac{(1-t)^2}2,
+\quad
+0<I_2(t)\le\frac{1-\tau^8}{64K^7\kappa^3}\,t^4,
+\]
+the rail spacing of Proposition~\ref{prop:trichotomy} obeys the exact
+elementary two-sided bound
+\[
+\boxed{\ \frac{\pi K}2+I_1(t_n)-I_2(t_n)\ \le\ \Delta s_n\ \le\
+\frac{\pi K}2+I_1(t_n)\ }
+\]
+(lower bound via $\sqrt{1+x}\ge1+\tfrac x2-\tfrac{x^2}8$, valid since
+$x\le\gapc^2/(\kappa^2K^4)<8$ on the range, interval-certified
+\hx{QX-G1}). Consequences:
+\[
+\lim_{n\to\infty}\frac{\Delta s_n-\pi K/2}{\gapc^{\,n}}
+=\frac{K}{8\kappa}=\frac{K\ln\gp}{4\pi}=0.0353900591\ldots\ \tagC{},
+\qquad
+\frac{\Delta s_{n+1}-\pi K/2}{\Delta s_n-\pi K/2}\longrightarrow\gapc,
+\]
+and since $\gapc^{\,n}=\tau^{4n}=|W_n|^4$,
+\[
+\Delta s_n-\frac{\pi K}2\ \sim\ \frac{K\ln\gp}{4\pi}\,|W_n|^4:
+\]
+the excess rail over the quarter-turn floor is priced by the square of the
+co-intensity, and the divergent side of the length dichotomy
+(Proposition~\ref{prop:sphlength}) is thereby quantified: the rail
+diverges at exactly $\pi K/2$ per rung, approached at the gap rate.
+Structural note on the exact integral: under the radical,
+$(1-z^2)^2+K^2\kappa^2z^2=z^4+(K^2\kappa^2-2)z^2+1$ factors reciprocally
+as $(z^2+a)(z^2+1/a)$ with $a+1/a=K^2\kappa^2-2$ (real $a>0$ since
+$K\kappa>2$, interval-certified \hx{QX-G2}), placing $\Delta s_n$ in
+incomplete-elliptic form --- in contrast with the residual sphere, whose
+total length closes in a \emph{complete} elliptic value
+(Proposition~\ref{prop:sphlength}); no elementary closed form is claimed
+here, and the bounds above carry the elementary content. \hx{QX-E9}
+\end{proposition}
+
+\begin{proof}
+From D1$+$D3, $dz/d\theta=(1-z^2)/(\kappa z)$ \hx{QX-E1}. The square-root
+bounds are the polynomial identities $(1+x/2)^2-(1+x)=x^2/4$ and
+$(1+x)-(1+x/2-x^2/8)^2=x^3(8-x)/64$ \hx{QX-E2}. Substituting
+$t=e^{-2\theta/\kappa}$ ($d\theta=-\kappa\,dt/2t$) turns
+$\tfrac K2\!\int x\,d\theta$ into
+$\tfrac1{4K\kappa}\!\int_{\tau^2t_n}^{t_n}\!\tfrac s{1-s}\,ds$ and
+$\tfrac K8\!\int x^2\,d\theta$ into
+$\tfrac1{16K^3\kappa^3}\!\int_{\tau^2t_n}^{t_n}\!\tfrac{s^3}{(1-s)^2}\,ds$,
+with the stated antiderivatives \hx{QX-E3--E4}; the $m=1$ series term
+cancels ($1-\tau^2=\tau$), the $m=2$ term gives the constant via
+$1-\tau^4=K^2$ and $1/(8\kappa)=\ln\gp/(4\pi)$ \hx{QX-E5}, and the
+majorant uses $(1-s)^2\ge K^4$ on $s\le\gapc$ with
+$\int s^3=t^4(1-\tau^8)/4$ \hx{QX-E6}. The ratio law is the series
+quotient \hx{QX-E7--E8}. A 50-dps quadrature corroborates the bracket for
+$n=2..5$ \hx{QX-G3}; display-only.
+\end{proof}
+
+\begin{theorem}[Incomplete-elliptic closed form for the rail]\label{thm:railclosed}\tagFD{}/\tagI{} \hx{EX-A1--A4, EX-B1--B8, EX-G3--G5}
+Let $a>1$ be the larger root of $a+1/a=K^2\kappa^2-2$ (so
+$a\cdot(1/a)=1$; $a$ real with $a>1$ strictly, interval-certified via
+$K\kappa>2$, replicating \hx{QX-G2}), and set
+\[
+\theta(z)=\arctan\!\bigl(z\sqrt a\bigr),\qquad
+m=1-\frac1{a^2},\qquad
+n_c=1+\frac1a .
+\]
+Above the lens the rail integrand is
+\[
+\frac{ds}{dz}=\frac{\sqrt{(z^2+a)(z^2+1/a)}}{1-z^2}
+\]
+(from $\Delta s_n=\int\sqrt{K^2+(dz/d\theta)^2}\,d\theta$ and
+$dz/d\theta=(1-z^2)/(\kappa z)$, with the reciprocal factorization of
+Proposition~\ref{prop:railbounds}), and its antiderivative is
+\[
+\boxed{\ G(z)=-z\sqrt{\frac{z^2+a}{z^2+1/a}}
+\;+\;\sqrt a\,E(\theta\,|\,m)
+\;-\;a^{-3/2}\,F(\theta\,|\,m)
+\;+\;(a+1)\,a^{-3/2}\,\Pi\!\bigl(n_c;\,\theta\,|\,m\bigr)\ },
+\]
+with $\Delta s_n=G(z_{n+1})-G(z_n)$ at $z_n=\sqrt{1-\tau^{2n}}$
+($F,E,\Pi$ the incomplete elliptic integrals of the first, second, and
+third kind \tagE{}). Certificate: $dG/dz-{}$integrand${}\equiv0$
+exact-symbolically in $(a,z)$ on $a>0$, $0<z<1$ (the forced certificate),
+assembled from three kind-pure lemmas through the exact partial-fraction
+split of the numerator (the $(1-z^2)^{-1}$ pole, of exact weight $w+2$
+with $w=K^2\kappa^2-2$, is what produces the third-kind $\Pi$ term); FTC
+applicability on $[z_n,z_{n+1}]\subset(0,1)$ via
+$1-n_c\sin^2\theta=(1-z^2)/(1+az^2)>0$. Numeric corroboration: the 50-dps
+closed form matches quadrature of $\Delta s_n$ to $<10^{-40}$ on the
+\hx{QX-G3} grid $n=2..5$ and sits inside the bracket of
+Proposition~\ref{prop:railbounds}. The ``no elementary closed form is
+claimed here'' scoping of that proposition is hereby completed on the
+positive side: the rail side of the length dichotomy
+(Proposition~\ref{prop:sphlength}) is \emph{closed in incomplete-elliptic
+terms}.
+\end{theorem}
+
+\begin{corollary}[Certified non-elementarity of the rail antiderivative]\label{cor:nonelem}\tagF{}/\tagE{} \hx{EX-C1--C5, EX-G1--G2}
+Forced given Liouville's theorem on integration in finite terms
+(Rosenlicht 1972; algorithmic form Trager 1984) \tagE{}: the
+antiderivative of the above-lens rail integrand is \emph{not} an
+elementary function --- the per-rung rail length has no elementary closed
+form as a function of its endpoints. All premises of the anchor are
+machine-certified: the kernel curve $y^2=(z^2+a)(z^2+1/a)$ is genuinely
+elliptic --- $\operatorname{disc}(z^4+wz^2+1)=16(w-2)^2(w+2)^2\neq0$ with
+$w=K^2\kappa^2-2>2$, four distinct roots, genus 1 (at $a=1$ it would
+collapse to $(z^2+1)^2$ and integrate elementarily); the first-kind
+coefficient $c_F=-a^{-3/2}$ is nonzero \emph{unconditionally}
+($c_F\,a^{3/2}=-1$ for every $a>0$); $c_E=\sqrt a$ and
+$c_\Pi=(a+1)a^{-3/2}$ are nonzero; and the $\Pi$ parameters are
+non-degenerate ($m\in(0,1)$ and $n_c\in(1,2)$ interval-certified;
+$n_c-1$, $n_c-m$, $1-m$ all exactly nonzero, with the exact interchange
+tie $n_c(2-n_c)=m$, so no special-case reduction applies), the $z=\pm1$
+pole pair genuine with residues $\mp K\kappa/2\neq0$ and the exact ledger
+tie $y(\pm1)^2=(1+a)(1+1/a)=K^2\kappa^2$ (the kernel over the lens poles
+is the squared rail-speed constant). The closed-form dichotomy is thus
+fully resolved: complete-elliptic on the residual side
+(Proposition~\ref{prop:sphlength}); incomplete-elliptic, and provably
+non-elementary --- certified rather than conjectured --- on the rail
+side, whose elementary content is carried by the bracket and gap-rate law
+of Proposition~\ref{prop:railbounds}.
+\end{corollary}
+
+\section{Epistemic ledger and findings}\label{sec:epistemics}
+
+\textbf{Forced unconditionally, new in v1.6} \hx{QX-B, QX-C, QX-D}: the
+characteristic level of the ratio object ($\chi_{\mathrm{Rat}}$, the
+sign-split pair of $\gp^2$, the Adams square onto
+$\operatorname{spec}(A_{\gapc})$, Proposition~\ref{prop:chirat}); the
+quarter twist --- transport domain $=$ parity-homogeneous objects,
+gauge-rotation invariance, anchor-exchange dichotomy (exchange iff
+$m\equiv2$ mod $4$; the generator/$Z^{*}$ pair is the minimal instance and
+the K-seed is anchor-fixed) (Theorem~\ref{thm:quartertwist}); the K-family
+seed ladder $p_j=x^4+5F_{2j}^2x^2-5F_{2j}^2$ with uniform irreducibility
+by norm obstruction, the full ledger, and the gate ties
+$C_{2j}=1/|p_j(0)|$, $u_{2j}=1/\M(p_j)$
+(Theorem~\ref{thm:kseedladder}).
+
+\smallskip\noindent
+\textbf{Forced given D1--D3, new in v1.6} \hx{QX-E, QX-F, QX-C12--C14}:
+the exact rail-spacing bounds
+$\pi K/2+I_1-I_2\le\Delta s_n\le\pi K/2+I_1$ with the gap-rate law
+$\Delta s_n-\pi K/2\sim(K\ln\gp/4\pi)\,|W_n|^4$
+(Proposition~\ref{prop:railbounds}); the even-rung seed mirror
+$(\sin,\cos,\tan)\alpha_{2j}=(K_j,\tau^{2j},\beta_j)$
+(Corollary~\ref{cor:evenmirror}); the transfer of the interpolation
+classification to the formation rail, adding the sixth D3 characterization
+(Remark~\ref{rem:gammatransfer}).
+
+\smallskip\noindent
+\textbf{Forced unconditionally, new in v1.5} \hx{NX-T1--T9}: the complete
+relational type of the generator object (Theorem~\ref{thm:reltype}) --- two
+shells $\{\pm i\tau\}$, $\{\pm i\gp\}$; contact signature
+$\{\Phi_1^{4},\Phi_2^{4}\}$ complete under the full scan bound; all eight
+cross-shell ratios real ($\pm\tau^2$, $\pm\gp^2$) with $\nu\equiv1$,
+hence full coherence in one class; anchor $(m,n)=(2,4)$ with
+$\Delta=\Z/2\Z$; the twisted-shell realization $x^4+3x^2+1=s(x^2)$,
+$s=\operatorname{minpoly}(q^2)$.
+
+\smallskip\noindent
+\textbf{Forced given D1--D3, new in v1.5} \hx{NX-S1--S7, NX-H1--H3}: the
+compass-cross characterization of the rung locus with
+$\operatorname{Im}\nu=2xy/(x^2+y^2)$
+(Proposition~\ref{prop:compasscross}); the spherical step ledger
+$S_n\cdot S_{n+1}=z_nz_{n+1}$ with $d_0=\pi/2$ exactly and
+$d_n\downarrow0$ (Proposition~\ref{prop:sphsteps}); the finite total
+spherical length
+$L_{\mathrm{res}}=\sqrt{1+\kappa^2}\,E\bigl(\kappa^2/(1+\kappa^2)\bigr)$
+with the residual/formation length dichotomy and the fifth
+(spherical-length) characterization of the principal branch
+(Proposition~\ref{prop:sphlength}).
+
+\smallskip\noindent
+\textbf{Forced unconditionally, new in v1.4} \hx{OZ-O1--O6}: the
+interpolation classification $\log Q=\{(\ln\tau)I+(\pi/2+2\pi k)J\}$ with
+rung-agreement and curve-distinctness; the four equivalent characterizations
+of the $k=0$ branch (D3 $=$ principal log $=$ minimal winding $=$ shortest
+residual spiral per floor); the dilation mechanism $K=5^{1/4}\tau$,
+$\beta=5^{1/4}\gp$ behind the bridge factor $\sqrt5$.
+
+\smallskip\noindent
+\textbf{Forced unconditionally, new in v1.3} (bridge to the relational-charge
+layer, machine-verified \hx{RC-D3, RC-E1--E7}): the minimal polynomial
+$x^4+3x^2+1$ of $q$ with $\M=\gp^2$ and its group-drop coherence type; the
+gauge identity $\operatorname{minpoly}(q)(ix)=Z^{*}$ with both rigidity
+anchors realized by the pair $(Z^{*},\,iZ^{*})$; the K-seed as catalog object
+(compass angle set, $\Delta=\Z/4\Z$, $\M=\beta^2$); the relational
+restatement of D2.
+
+\smallskip\noindent
+\textbf{Forced unconditionally, new in v1.1} (pure keystone algebra,
+machine-verified \hx{OZ-J, OZ-K, OZ-L}): the spectral projectors and grading
+$U=P_+-P_-=H/\sqrt5$; the return-kernel recoupler $A=N/\sqrt5$ with
+$UA=-AU$ and mode exchange $AP_\pm=P_\mp A$; the factorization
+$J=\pm UA=HN/5$ with $J^2=-I$, coordinate-free up to orientation; the
+obstructions $i\notin\R[R]$ and $N\notin\R[R]$; the canonical rung generator
+$Q=\pm\tau J$ with $Q^4=\gapc\,I$ and the orbit identity $Q^nv_0=(\Rea W_n,
+\Ima W_n)$.
+
+\smallskip\noindent
+\textbf{Forced given D1--D3, new in the July 14 explorations} (all
+machine-verified here): the packaged representation
+$W(\rho)=e^{-\rho}e^{i\theta(\rho)}$ and $z=\sqrt{1-|W|^2}$; the generator
+$W_n=q^n=(i\tau)^n$ with $q^4=\gapc$ and the two-/four-rung recurrences; the gap
+schedule (co-intensity at two rungs, amplitude at four); the state-angle
+dictionary (Thm.~\ref{thm:stateangle}); the rung ledgers
+$(\sqrt\tau,\tau,\sqrt\gp)$ and $(K,\tau^2,\beta)$ with the general family
+$\tan\alpha_n=\sqrt{\gp^{2n}-1}$; the bridges $\cos\alpha_2=\cos^2\alpha_1$,
+$z_1=\sqrt2\sin(\alpha_2/2)$, $K=\sin\alpha_2$; the K-family
+$K_j=\sqrt{1-\gapc^{\,j}}$ with uniqueness of exact $K$, the universal two-step
+law, and the three-level recurrence; the lens as the $60^\circ$ state; the
+path-stretch laws, the quarter-turn rail floor $L\ge\pi K/2$ with its
+divergence corollary, the $\nu$-form of the rung locus with parity
+$\nu(\rho_n)=(-1)^n$, the site-density trichotomy with
+$\Delta s_n\downarrow\pi K/2$, and the transfer ledger $F_n=z_n^2$,
+$\Delta F_n=\tau^{2n+1}$, $\sum\tau^{2n+1}=1$ (\S\ref{sec:pathstretch}); the
+residual-sphere lift and the colatitude identity $\theta_K=\arccos K$; the
+linearization tie $f'(K)=q^2|q|^2$. None of these is a new substrate axiom; all
+are compressed representations and corollaries, exactly as the source report
+states.
+
+\smallskip\noindent
+\textbf{Declared upstream} \tagD{}/\tagI{}: D1, D2, D3, the orientation
+convention, and the inherited radius profile (whitepaper \S11).
+
+\smallskip\noindent
+\textbf{Not established} (carried verbatim from the source report, endorsed):
+biological or DNA correspondence (the direct DNA-pitch test \emph{failed}
+quantitatively and is recorded as a negative result; the helicase and
+uncouple--recouple language of the v1.1 report functioned as a mechanism-finding
+analogy only); physical universality; the residual sphere as fundamental
+ontology; derivation of the formation radius from the complex generator;
+independent validation of D1--D3 by the representation; \emph{rung
+quantization} (why exactly one $Q$ per rung event --- $Q$ explains propagation,
+not yet selection); \emph{continuous interpolation as selection} (Theorem~\ref{thm:interp}
+classifies the interpolations: a $\Z$-family agreeing at every rung; what the
+discrete powers leave undetermined is exactly the principal-branch choice,
+which is D3 --- so this item merges into the rate problem); the
+rail-pulse mechanism of sources (iv) and (vi) --- recoupling as \emph{cause},
+the energy functional $\mathcal E$, the engine-pass/deposition reading of the
+transfer ledger, and the biological comparison program --- which their own
+epistemic sections correctly leave as hypothesis.
+Coordinate-free uniqueness of the factorization, listed open in the source
+report, is closed by Corollary~\ref{cor:coordfree}.
+
+\begin{finding}[E-1: scoping slip in the source report's \S11]\label{find:scope}
+The report's ``Forced in the whitepaper'' list includes ``quarter-turn charge
+increments'' without the ``given D2'' qualifier, inconsistently with its own
+``Declared'' list (which correctly names D2) and with its overall conditional
+framing. Cosmetic; the report's mathematics nowhere relies on the unqualified
+reading. This paper's banner (\S\ref{sec:scope}) restores the qualifier
+everywhere.
+\end{finding}
+
+\begin{finding}[E-2: truncated table values in the review thread]\label{find:trunc}
+The K-family table prints $K_2\approx0.989299$ and $K_3\approx0.998445$; the
+exact values $0.9892996329\ldots$ and $0.9984459825\ldots$ round to
+$0.989300$ and $0.998446$ at 6 dp --- the printed values are floor-truncations
+\hx{OZ-H1}. Display-only; no decision weight. ($K_1$, $K_4$, and $\gapc$ are
+correctly rounded.)
+\end{finding}
+
+\begin{finding}[E-3: stale verification paragraph in \S\ref{sec:scope}]\label{find:stale}
+Through v1.3 and v1.4 the \S\ref{sec:scope} \textbf{Verification}
+paragraph still carried the v1.0 harness description (``53 exact checks'',
+ID range \hx{OZ-A1..OZ-H3}) while the title line, abstract, and manifest
+(\S\ref{sec:verification}) had advanced to 91 checks across groups
+\hx{OZ-A..OZ-O}. Display-only; no decision weight. Corrected in v1.5.
+\end{finding}
+
+\begin{finding}[E-4: front-matter check classification in v1.5]\label{find:hcount}
+The v1.5 title line and \S\ref{sec:scope} verification paragraph counted
+all $27$ checks of \texttt{nx\_softcheck.py} as exact, although its group
+\hx{NX-H} comprises three 50-dps numeric display/corroboration checks
+(so: $24$ exact $+$ $3$ numeric). The three numeric checks carry no
+decision weight --- the harness's own header declares them
+display/corroboration only, and instrumentation confirms every passing
+decision was reached on the exact symbolic path. Display-only; corrected
+in v1.6, which states the split and drops ``all exact'' from the title
+line.
+\end{finding}
+
+\begin{finding}[E-5: stale third-harness count in the v1.6 manifest]\label{find:manifeststale}
+The v1.6 \S\ref{sec:verification} third-harness sentence retained ``27
+exact checks'' for \texttt{nx\_softcheck.py}, although
+Finding~\ref{find:hcount} had already introduced the $24+3$ split and the
+front matter (title line and the \S\ref{sec:scope} verification paragraph)
+had been corrected accordingly. Display-only; no decision weight.
+Corrected in v1.7.
+\end{finding}
+
+\begin{finding}[E-6: exact-count wording for the first harness]\label{find:ozsplit}
+The description ``91 exact checks'' for \texttt{ozy\_softcheck.py}
+(\S\ref{sec:scope} and \S\ref{sec:verification}) contradicts that
+harness's own manifest table, whose \hx{OZ-H} row lists $5$ numeric
+displays inside the $91$ total; under the classification standard of
+Finding~\ref{find:hcount} it should read $86$ exact $+$ $5$ numeric
+displays. The five numeric checks carry no decision weight. Display-only;
+corrected in v1.7 (the $91/91$ and $27/27$ title-line pass ratios stand,
+as pass ratios).
+\end{finding}
+
+\section{Verification manifest}\label{sec:verification}
+
+\texttt{ozy\_softcheck.py}: 86 exact checks $+$ 5 numeric displays (the
+\hx{OZ-H} row below; Finding~\ref{find:ozsplit}), exit 0; sympy 1.14.0 over
+$\Q(\sqrt5)[i]$, $K$ decided at $K^2$, mpmath 50 dps display-only.
+
+\begin{center}\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lp{11.6cm}c@{}}
+\toprule
+group & content & checks\\
+\midrule
+OZ-A & generator $q=i\tau$: powers, $q^4=\gapc$, one/two/four-rung recurrences, gap schedule & 8\\
+OZ-B & chart consistency $z_n=\sqrt{1-|W_n|^2}$; $z_1=\sqrt\tau$; $z_2=K=\sqrt{1-|q^2|^2}$ & 3\\
+OZ-C & state-angle dictionary (5 fields, symbolic); rung tangents, TFD dress, $2\gp^{3/2}$; self-duality; quartic; K-certificate & 14\\
+OZ-D & bridges: cosine contraction, not-doubling guard, half-angle, Route-5 trig, $\Theta=\alpha_2$ & 7\\
+OZ-E & lens $60^\circ$ ledger; off-lattice guard & 6\\
+OZ-F & K-family, odd companion, universal two-step law, monotone uniqueness, compass, linearization tie & 7\\
+OZ-G & residual sphere: $|S|\equiv1$ (continuous and at rungs), exact $S_0..S_4$, two-radii separation & 5\\
+OZ-J & spectral uncoupling: projectors, grading $U=H/\sqrt5$, mode action & 5\\
+OZ-K & recoupler $A$, factorization $HN=5J$, $J=\pm UA$, generator $Q$, orbit identity & 9\\
+OZ-L & obstructions $i,N\notin\R[R]$; coordinate-free pseudoscalar; kernel $=H^\perp$ & 4\\
+OZ-M & path stretch (both branches), quarter-turn floor, divergence, rails algebra $\mathcal R=e^{2J\kappa\rho}$, $\nu$-locus \& parity & 7\\
+OZ-N & floor coordinate \& density trichotomy ($\Delta s_n\downarrow\pi K/2$), reversion norm, transfer ledger, unit budget & 5\\
+OZ-O & interpolation classification ($\log Q$ family, rung agreement, curve distinctness, minimality), dilation mechanism & 6\\
+OZ-H & numeric displays: K-family table (truncation-aware), state angles, tangents, $\pi K/2$, lens density & 5\\
+\midrule
+ & \textbf{total} & \textbf{91}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\smallskip\noindent
+\smallskip\noindent
+\textbf{Second harness} \texttt{relational\_softcheck.py}: 27 exact checks,
+exit 0 --- cold re-derivation of the relational-charge layer this paper's
+bridge uses: rigidity anchors (RC-A), the golden layer and sign twist (RC-B),
+contact machinery with the sieved completeness bound (RC-C), pinning
+corroborations including Lehmer's degree-100 ratio object and the
+$\beta_4\times$Lehmer mixed scan (RC-D), the bridge derivations of
+\S\ref{sec:relobject} (RC-E), and the (EG) quadratic case (RC-F). No defects
+found in the checked claims of the relational note.
+
+\smallskip\noindent
+\textbf{Third harness} \texttt{nx\_softcheck.py} (this compilation,
+written cold from the v1.4 statements): 24 exact checks $+$ 3 numeric
+displays (Finding~\ref{find:hcount}; the stale ``27 exact'' that stood in
+this sentence through v1.6 is Finding~\ref{find:manifeststale}), exit 0;
+sympy
+1.14.0 over $\Q(\sqrt5)[i]$ with rational-arithmetic sign decisions for
+$\Q(\sqrt5)$ comparisons; mpmath 50 dps display-only. Groups: \hx{NX-R}
+(replication of the load-bearing claims: minimal polynomial and roots,
+Mahler $\gp^2$, contact signature, gauge identity, rung sphere identity,
+$\nu$-locus parity, monotone heights --- 8); \hx{NX-T} (complete
+relational type: shells, cross-shell ratios, realness and
+non-unimodularity, $\nu\equiv1$, the $t_{\mathrm{rel}}$ pattern,
+coherence completeness, anchor data, twisted-shell factorization --- 9);
+\hx{NX-S} (compass cross, the $xy$-form of $\nu$, step orthogonality,
+quarter-circle first step, monotone steps, spherical speed, elliptic length
+form and bounds --- 7); \hx{NX-H} (numeric displays: $L_{\mathrm{res}}$,
+$d_1$, bracket corroboration --- 3).
+
+\smallskip\noindent
+\textbf{Fourth harness} \texttt{qx\_softcheck.py} (this compilation,
+written cold for v1.6): 62 exact checks $+$ 3 guards, exit 0; sympy
+1.14.0 over $\Q(\sqrt5)[i]$, the K-family decided at the squared level;
+the guards are two interval-certified transcendental comparisons (mpmath
+\texttt{iv}) and one 50-dps quadrature corroboration, none load-bearing.
+\begin{center}\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lp{11.6cm}c@{}}
+\toprule
+group & content & checks\\
+\midrule
+QX-A & cold replication of the layer v1.6 builds on: generator and minimal polynomial, gauge identity, chart dictionary, even gate ladder, two-step law, transfer ledger & 15\\
+QX-B & ratio object at the characteristic level: 16-ratio multiset, $\chi_{\mathrm{Rat}}$ and its factorization, torsion/nontorsion split, golden units, Adams square (Prop.~\ref{prop:chirat}) & 8\\
+QX-C & K-family seed ladder: $p_j$, uniform irreducibility by norm, Eisenstein availability, full ledger, compass and contact scan, gate ties, even mirror (Thm.~\ref{thm:kseedladder}, Cor.~\ref{cor:evenmirror}) & 14\\
+QX-D & quarter twist: domain, involution, golden-seed exclusion, eight witnesses, exhaustive coset simulation $m\le24$ (Thm.~\ref{thm:quartertwist}) & 10\\
+QX-E & rail bounds: derivative law, root bounds, antiderivatives, series constants, majorant, ratio law, reciprocal factorization (Prop.~\ref{prop:railbounds}) & 9\\
+QX-F & rail transfer: rung agreement, branch distinctness, $k=0$ minimality, monotone speed, sphere transfer (Rem.~\ref{rem:gammatransfer}) & 6\\
+QX-G & guards: $x_{\max}<8$ and $K\kappa>2$ (interval-certified); 50-dps bracket of $\Delta s_n$, $n=2..5$ & 3\\
+\midrule
+ & \textbf{total (exact $+$ guards)} & \textbf{62$+$3}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\smallskip\noindent
+\textbf{v1.7 session harnesses} (eight, written cold this session, one per
+dossier; every \hx{TX-}, \hx{MX-}, \hx{RX-}, \hx{UX-}, \hx{EX-},
+\hx{CX-}, \hx{LX-}, and \hx{DX-} check ID cited in the v1.7 sections
+above appears verbatim in the corresponding file):
+\begin{center}\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lp{10.7cm}c@{}}
+\toprule
+harness & content & exact $+$ guards\\
+\midrule
+\texttt{tx\_softcheck.py} & rate arithmetic: irrationality lemma, transcendence chain, near-miss closure of Guard 15.3, $\log_\gp2$, scan retirement (Lem.~\ref{lem:ratirrational}--Rem.~\ref{rem:logphi2}) & $30+6$\\
+\texttt{mx\_softcheck.py} & multiplier torus: modulus ledger, systole and marking, restatement test, geodesic ledger, no-CM (Prop.~\ref{prop:modledger}--Rem.~\ref{rem:geoledger}) & $39+3$\\
+\texttt{rx\_softcheck.py} & radius: parity no-go with $\Z/2$ sharpening, area-transfer law, the three equipotential clocks (Thm.~\ref{thm:paritynogo}--Rem.~\ref{rem:rad4}) & $25+4$\\
+\texttt{ux\_softcheck.py} & universal seed ladder $n=1..10$ $+$ symbolic-in-$w$, tangent-dress Mahler ladder, Theorem U window and monotonicity, F1 falsifier (Thm.~\ref{thm:seedladder}--Rem.~\ref{rem:f1falsifier}) & $35+1$\\
+\texttt{ex\_softcheck.py} & rail closed form: partial-fraction assembly, exact-derivative certificate, ellipticity, coefficient nonvanishing (Thm.~\ref{thm:railclosed}, Cor.~\ref{cor:nonelem}) & $17+5$\\
+\texttt{cx\_softcheck.py} & $\chi$-selection: pentagon-by-image, unimodular monomials, conditional chain, de-axiomatization (Props.~\ref{prop:pentimage}--\ref{prop:unimon}, Thm.~\ref{thm:chichain}) & $34+2$\\
+\texttt{lx\_softcheck.py} & lens: scoping lemma, rational-height splits, bounded-negative scan ($7$ scan lines, bookkeeping, counted separately) (Prop.~\ref{prop:lensscope}, Rem.~\ref{rem:lensscan}) & $26+2$\\
+\texttt{dx\_softcheck.py} & OP-RATE core: gate-ladder replication, $\pm Q$ uniqueness, sign ladder and axiom H, ledger counter-models, $k$-invariance and R6 no-go (Prop.~\ref{prop:kinv}, Rem.~\ref{rem:oprate}) & $28+6$\\
+\midrule
+ & \textbf{total} & $\mathbf{234+29}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Environment pin: Python 3.12.10, sympy 1.14.0, mpmath 1.3.0 (the
+\texttt{py} launcher); every exact decision in $\Q/\Q(\sqrt5)$ extended by
+$i$, with $\Q(\sqrt5)$ signs by rational arithmetic and $K$ decided at the
+squared level; the guards are interval-certified transcendental
+comparisons (mpmath \texttt{iv}, 60 dps), 50-dps quadrature
+corroborations, or falsifier rejections (\texttt{dx}), none load-bearing;
+all eight exit 0; each dossier passed two-lane adversarial verification
+(independent harness audit plus mathematical audit) before inclusion here.
+
+\smallskip\noindent
+\textbf{v1.8 session harnesses} (five, written cold this session, one per
+dossier; every \hx{CL-}, \hx{RD-}, \hx{CH-}, \hx{RN-}, and \hx{PM-} check ID
+cited in the v1.8 sections above appears in the corresponding file --- the
+\hx{CL-2b(i)--(vii)} row suffixes are assembled as the seven-row loop runs):
+\begin{center}\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lp{10.7cm}c@{}}
+\toprule
+harness & content & exact $+$ guards\\
+\midrule
+\texttt{rd\_softcheck.py} & OP-RADIUS: apex-ramification valuation certificate ($e=2$ for $r^2$, $e=4$ for $r$) and the constructive-bridge obstruction; atom ledger with the cap-onset negative (Thm.~\ref{thm:apexram}--Rem.~\ref{rem:atomledger}) & $22+2$\\
+\texttt{cl\_softcheck.py} & OP-RATE R6 classification no-go: extended $k$-invariance, the selection-functional no-go, the seven-way table, the Cencov-mirror closure (Lem.~\ref{lem:kinvext}--Rem.~\ref{rem:sevenway}) & $20+5$\\
+\texttt{ch\_softcheck.py} & $\chi$ doctrine g1/g3 resolved negatively: on-circle image of $S=\mu_2$, the charge character, the D2$'$ dichotomy (Prop.~\ref{prop:oncircleimage}, Rem.~\ref{rem:chidoctrine}) & $26+2$\\
+\texttt{rn\_softcheck.py} & relational note: P4 recovered/reduced to P3, the bracketed odd floor, the bounded P1$'$ transport-orbit scan (Rem.~\ref{rem:p4recover}--Rem.~\ref{rem:p1scan}) & $20+4$\\
+\texttt{pm\_softcheck.py} & period-relation map: $\tau_0$ algebraic and no $\kappa$-vs-$\tau_0$ relation, $L_{\mathrm{res}}$ as an elliptic period, the external-open ledger (Prop.~\ref{prop:tau0alg}, Rem.~\ref{rem:periodmap}) & $27+7$\\
+\midrule
+ & \textbf{total} & $\mathbf{115+20}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Across the thirteen session harnesses (\texttt{tx}, \texttt{mx}, \texttt{rx},
+\texttt{ux}, \texttt{ex}, \texttt{cx}, \texttt{lx}, \texttt{dx}, \texttt{cl},
+\texttt{rd}, \texttt{ch}, \texttt{rn}, \texttt{pm}) the running total is
+$\mathbf{349}$ exact checks $+$ $\mathbf{49}$ certified guards, all exit 0.
+Environment pin: Python 3.12.10, sympy 1.14.0, mpmath 1.3.0 (the \texttt{py}
+launcher); every exact decision in $\Q/\Q(\sqrt5)$ extended by $i$ (and by
+$\sqrt{13}$ / $5^{1/4}$ where a Salem trace-down or an off-circle modulus
+enters), with $\Q(\sqrt5)$ signs by rational arithmetic; the guards are
+interval-certified transcendental comparisons (mpmath \texttt{iv}, 60 dps),
+$50$--$140$-dps quadrature/\texttt{pslq}/decimal corroborations, or fail-first
+falsifier rejections, none load-bearing; all five exit 0; each dossier passed
+two-lane adversarial verification, with the companion papers read from the
+Echo-S-Research archive read-only and their machinery re-encoded cold.
+
+\smallskip\noindent
+Every boxed identity of the source reports and every displayed identity of the
+review thread appears above with a passing check ID; the six findings
+(\ref{find:scope}, \ref{find:trunc}, \ref{find:stale}, \ref{find:hcount},
+\ref{find:manifeststale}, \ref{find:ozsplit})
+are the complete defect list, unchanged in v1.8: the five v1.8 verifiers
+flagged only citation-hygiene in the derivation reports (companion-paper
+theorem numbers), corrected on the way in, and found no new display defect. The
+whitepaper's own harnesses (87$+$1 shipped; 89 independent) certify the upstream
+structure this paper conditions on.
+
+\end{document}

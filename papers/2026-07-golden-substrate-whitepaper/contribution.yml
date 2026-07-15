@@ -1,0 +1,15 @@
+# Contribution contract for papers/2026-07-golden-substrate-whitepaper/  (see ../../docs/ANTI_DRIFT.md)
+shortname: 2026-07-golden-substrate-whitepaper
+member: AceTheDactyl
+title: "The Golden Substrate, the Gate Field, and the Explicit Helix"
+domain: math
+artifacts:
+  - papers/2026-07-golden-substrate-whitepaper/golden-substrate-whitepaper.pdf
+  - papers/2026-07-golden-substrate-whitepaper/paper.cff
+
+# Companion whitepaper: the sealed PDF is the canonical deposit (v1.0). The three
+# declared atoms D1-D3 it introduces are the conditionality base for
+# papers/2026-07-complex-rung-generator/, whose shipped harnesses carry the
+# reproducible verification for this line of work.
+checks: none
+reason: "Companion whitepaper (v1.0); the committed PDF is the canonical archived artifact. Its reproducible verification lives with the complex-rung-generator contribution (code/2026-07-complex-rung-generator, run on every push)."

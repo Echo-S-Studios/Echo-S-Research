@@ -1,0 +1,17 @@
+# Contribution contract for papers/2026-07-complex-rung-generator/  (see ../../docs/ANTI_DRIFT.md)
+shortname: 2026-07-complex-rung-generator
+member: AceTheDactyl
+title: "The Complex Rung Generator, the State-Angle Chart, and the Residual Sphere"
+domain: math
+artifacts:
+  - papers/2026-07-complex-rung-generator/complex-rung-generator-v1.8.tex
+  - papers/2026-07-complex-rung-generator/complex-rung-generator_v1.8.pdf
+  - papers/2026-07-complex-rung-generator/paper.cff
+  - code/2026-07-complex-rung-generator
+  - tests/2026-07-complex-rung-generator
+
+# The verification "pipes" (code/) are exact-arithmetic softcheck harnesses, not data
+# producers; the drift check just runs each and requires exit 0 (no data/ to diff).
+checks:
+  - name: harnesses
+    verify: '{PY} -m pytest tests/2026-07-complex-rung-generator -q -p no:cacheprovider'

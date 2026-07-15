@@ -68,5 +68,15 @@
     "title": "Relational Charge on the Spectral Semiring: Gauge Rigidity, Coherence Types, and a Reference-Free Parity Floor",
     "series": "Spectral Semiring",
     "description": "Phase charge made purely relational: the pair charge t_rel(α,β) ∈ ℚ/ℤ is a groupoid cocycle whose gauge is the reference ray. Rigidity pins admissible spectra to anchors n ∈ {m, 2m}; a modulus-pinning theorem leaves every Salem number relationally inert; the parity floor evaluates reference-free."
+  },
+  "2026-07-golden-substrate-whitepaper": {
+    "title": "The Golden Substrate, the Gate Field, and the Explicit Helix",
+    "series": "Golden Substrate",
+    "description": "The whitepaper of the golden-substrate line: the gate iteration f_C(x)=C/(1+x), the Lucas–Fibonacci rung ladder ρ_n = n·ln φ, the state-angle chart, and the explicit helix Γ(ρ) built on three declared atoms D1–D3 (chart, charge selection, winding rate). The conditionality base the Complex Rung Generator packages."
+  },
+  "2026-07-complex-rung-generator": {
+    "title": "The Complex Rung Generator, the State-Angle Chart, and the Residual Sphere",
+    "series": "Golden Substrate",
+    "description": "The whole discrete rung ladder is the orbit of one complex number q = iτ, with q⁴ = gap and a ℤ/4ℤ quarter-turn. v1.8: the rate κ = π/(2 ln φ) is transcendental and OP-RATE closes as a classification (a discrete-substrate no-go, seven characterizations the complete menu); the rail length is incomplete-elliptic with certified non-elementarity; an apex-ramification certificate sharpens the open radius problem. Thirteen exact-arithmetic harnesses (349 checks + 49 guards)."
   }
 }
