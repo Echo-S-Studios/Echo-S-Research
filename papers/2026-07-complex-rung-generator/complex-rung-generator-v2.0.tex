@@ -64,8 +64,9 @@ and the Residual Sphere\\[4pt]
 \small independent verification (\S\ref{sec:verification}):\\
 \small \texttt{ozy\_softcheck.py} 91/91 $+$ \texttt{relational\_softcheck.py} 27/27\\
 \small \texttt{nx\_softcheck.py} 27/27 $+$ \texttt{qx\_softcheck.py} 62/62, exit 0\\
-\small 17 session harnesses (v1.7--v1.9): 424 exact checks $+$ 67 certified guards $+$ 13 PSLQ corroborations, all exit 0}
-\date{Version 1.9 --- July 15, 2026}
+\small 18 session harnesses (v1.7--v2.0): 440 exact checks $+$ 67 certified guards $+$ 13 PSLQ corroborations $+$ 7 labelled walls, all exit 0\\
+\small finalization harness \texttt{bl\_softcheck.py}: 16/16 exact $+$ 7 walls LABELLED (\S\ref{sec:blockers}), exit 0}
+\date{Version 2.0 (final) --- July 15, 2026}
 
 \begin{document}
 \maketitle
@@ -152,6 +153,13 @@ axis; an advance, not a closure); the odd relational floor is bracketed and
 reduced to a single named lemma (ODD-2); and the period frontier is mapped
 (Baker's reach pinned, the algebraic independences left Schanuel-conditional or
 external-open with named tool-gaps, corroborated by certified PSLQ non-relations).
+\emph{Version 2.0} finalizes the corpus with a definitive account of the
+\emph{active blocker} on each remaining open question: each is classified
+(proven impossibility relative to D1--D3 / a declared atom / a restatement wall
+/ a single named open lemma / an external tool-gap / an unfinished computation),
+with the load-bearing forced fact and the precise missing object, machine-certified
+by \texttt{bl\_softcheck.py}. The paper does \emph{not} resolve the external-open
+items; it states exactly what blocks them (\S\ref{sec:blockers}).
 \end{abstract}
 
 \section{Provenance, scope, and the conditionality banner}\label{sec:scope}
@@ -342,6 +350,20 @@ single named lemma (ODD-2), which stays external-open; and the period frontier
 independences Schanuel-conditional, and $L_{\mathrm{res}}$ transcendence
 together with $(\kappa,L_{\mathrm{res}})$ independence external-open with named
 tool-gaps, corroborated (never proved) by certified PSLQ non-relations. All
+other content unchanged.
+
+\smallskip\noindent
+\textbf{v2.0 changelog.} \S\ref{sec:blockers} added --- the active-blockers
+finalization: a machine-certified (\texttt{bl\_softcheck.py}) ledger classifying
+the active blocker on each of the nine remaining open questions (two impossibilities
+relative to D1--D3, two declared atoms, one restatement wall, one named lemma
+(ODD-2), three external tool-gaps, one unfinished computation), with the
+load-bearing forced fact and the precise missing object for each. The corpus's
+forced content is complete through v1.9; v2.0 states exactly what blocks the rest.
+No open item is resolved here; each is precisely located. The finalization harness
+\texttt{bl\_softcheck.py} (16 exact checks $+$ 7 labelled walls $+$ the nine-row
+ledger, exit 0) is added to \S\ref{sec:verification}, bringing the eighteen session
+harnesses to $440$ exact $+$ $67$ guards $+$ $13$ PSLQ $+$ $7$ labelled walls. All
 other content unchanged.
 
 \smallskip\noindent
@@ -3119,6 +3141,23 @@ with the companion papers read from the Echo-S-Research archive read-only and
 their machinery re-encoded cold.
 
 \smallskip\noindent
+\textbf{v2.0 finalization harness} \texttt{bl\_softcheck.py} (written cold this
+session, the active-blockers ledger of \S\ref{sec:blockers}): $16$ exact checks
+$+$ $7$ labelled walls $+$ the nine-row blocker ledger, exit 0. It does
+\emph{not} re-derive the corpus; it re-certifies, in one place, the single
+load-bearing forced fact behind each open problem's blocker classification ---
+groups \hx{BL-A}--\hx{BL-F}, each shown fail-first against a planted false wall
+(e.g.\ \hx{BL-B3} rejects ``$r^2$ is even'') --- \emph{labels} the seven walls no
+harness can settle (\hx{BL-G1}--\hx{BL-G7}), and prints the nine-row ledger
+(\hx{BL-H1}); pass line \texttt{BL: EXACT 16/16 checks passed | 7 walls
+LABELLED}. Discipline as above: every decision exact over
+$\Q/\Q(\sqrt5)/\Q(\sqrt{13})$ extended by radicals and $i$, valuations by exact
+leading-term order, sign decisions by rational arithmetic; mpmath is display-only
+(group \hx{BL-H}). With it the \emph{eighteen} session harnesses total
+$\mathbf{440}$ exact checks $+$ $\mathbf{67}$ certified guards $+$ $\mathbf{13}$
+PSLQ corroborations $+$ $\mathbf{7}$ labelled walls, all exit 0.
+
+\smallskip\noindent
 Every boxed identity of the source reports and every displayed identity of the
 review thread appears above with a passing check ID; the six findings
 (\ref{find:scope}, \ref{find:trunc}, \ref{find:stale}, \ref{find:hcount},
@@ -3128,5 +3167,206 @@ flagged only citation-hygiene in the derivation reports (companion-paper
 theorem numbers), corrected on the way in, and found no new display defect. The
 whitepaper's own harnesses (87$+$1 shipped; 89 independent) certify the upstream
 structure this paper conditions on.
+
+\section{The active blockers: status of the open problems}\label{sec:blockers}
+
+This closing section is the definitive, machine-certified statement of exactly
+what stands between the corpus and each remaining open question. The corpus's
+\emph{forced} content is complete through v1.9; what is recorded here is not new
+mathematics but a precise \emph{location of the walls}. Every classification
+below, and the single load-bearing forced fact it rests on, is re-certified in
+one place by \texttt{bl\_softcheck.py} (groups \hx{BL-A}--\hx{BL-H}), which does
+\emph{not} re-derive the corpus but isolates, for each open problem, the one
+forced fact that fixes its blocker class and shows each wall-detector
+\emph{fail-first} by rejecting a planted false wall. The harness also
+\emph{labels} --- without checking, because no harness can settle them --- the
+seven walls that lie outside the substrate (\hx{BL-G1}--\hx{BL-G7}). Pass line:
+\texttt{BL: EXACT 16/16 checks passed | 7 walls LABELLED}.
+
+\smallskip\noindent
+\textbf{The six blocker classes.} Each open problem is filed under exactly one
+(for OP-RATE, a dual) of the following.
+\begin{description}[font=\normalfont\scshape,leftmargin=2.2em,style=nextline,itemsep=1pt,topsep=3pt]
+\item[impossibility] a forced no-go: the resolution cannot come from the stated
+axioms. A hard wall, always scoped \emph{relative} to D1--D3 (equivalently,
+relative to the discrete substrate), never an absolute claim.
+\item[declared-atom] an irreducible declaration the substrate does not force;
+resolvable only by adding a new principle.
+\item[restatement-wall] every proposed reduction is logically equivalent to the
+axiom; the residual content is irreducible.
+\item[named-lemma] reduced to a single precisely-stated open lemma requiring new
+(internal) mathematics.
+\item[external-tool-gap] blocked on a theorem that does not exist (no tool
+reaches the regime) or a named conjecture.
+\item[unfinished-computation] tractable in principle, not yet executed.
+\end{description}
+Throughout, an \textsc{impossibility} verdict asserts that the resolution cannot
+be a consequence of D1--D3 (or of the discrete substrate); it is a statement
+\emph{about the axiom system}, never an absolute impossibility in mathematics at
+large.
+
+\begin{center}\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}p{2.5cm}p{2.7cm}p{4.05cm}p{4.5cm}@{}}
+\toprule
+open problem & active blocker class & load-bearing forced fact (\hx{} id) & what would resolve it\\
+\midrule
+OP-RATE (derive $\kappa$) & \textsc{impossibility} (discrete) $+$ \textsc{declared-atom} (D3) & discrete rung state is $k$-invariant, so every functional of it is branch-blind \hx{BL-A1} & a principle forcing the continuum rate D3 (none in the corpus)\\[2pt]
+OP-RADIUS ab initio (\tagO{}~1) & \textsc{impossibility} (apex parity) & $v_z(r^2){=}1$ is odd while the chart value group is $2\Z$ \hx{BL-B1}/\hx{BL-B2} & adjoin the odd generator (signed $\sqrt z$); it is outside D1--D3\\[2pt]
+OP-RADIUS profile (given the bridge) & \textsc{declared-atom} (D4) & orientation is a free $\Z/2$ sign \hx{BL-C1}; cap onset is a free datum \hx{BL-C2} & a formation-dynamics principle fixing onset $+$ orientation\\[2pt]
+W\tagO{}2 / D2 ($\chi$) & \textsc{restatement-wall} & naming the K-seed clock is logically equivalent to the quarter-turn selection \hx{BL-D2} & a principle more primitive than the quarter-turn (none)\\[2pt]
+P3/P4 (odd floor $=2$) & \textsc{named-lemma} (ODD-2) & the $=2$ ceiling is forced \hx{BL-E1}; Smyth alone gives only $\mu_S{<}\gp{<}2$ \hx{BL-E2} & a Mahler-measure lower bound of $2$ in the charge-constrained regime\\[2pt]
+$L_{\mathrm{res}}$ transcendence & \textsc{external-tool-gap} & $m$ transcendental iff $\kappa$ transcendental \hx{BL-F1}; labelled \hx{BL-G1} & a transcendence theorem at a transcendental modulus\\[2pt]
+$(\pi,\ln\gp)$ independence & \textsc{external-tool-gap} (conjecture) & $\{\ln\gp,i\pi\}$ $\Q$-linearly independent is forced \hx{BL-F3}; labelled \hx{BL-G2} & Schanuel's conjecture\\[2pt]
+$(\kappa,L_{\mathrm{res}})$ independence & \textsc{external-tool-gap} (periods) & $L_{\mathrm{res}}$ an elliptic value outside the exp/log framework; labelled \hx{BL-G3} & Kontsevich--Zagier period-relation theory\\[2pt]
+P1$'$ cross-shell $\nu$ & \textsc{unfinished-computation} & within-shell decided; cross-shell mirrored-class coherence is a no-tie; labelled \hx{BL-G7} & the cross-shell coherence detector (tractable)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{OP-RATE: deriving the winding rate}\label{blk:rate}
+\textbf{Status} (register): \emph{closed as a classification} (v1.8), open only as a
+continuum derivation. \textbf{Blocker:} dual --- \textsc{impossibility}
+(discrete) $+$ \textsc{declared-atom} (D3). \textbf{Forced fact:} the discrete
+rung state is $k$-invariant --- every branch $\kappa_k=(4k+1)\kappa$ yields the
+identical rung values $i^{\,n}$ (\hx{BL-A1}; origin \texttt{cl}/\texttt{dx},
+Lemma~\ref{lem:kinvext}, Theorem~\ref{thm:r6nogo}) --- so \emph{every} functional
+of the discrete state is branch-blind and cannot single out $k=0$. This is an
+\textsc{impossibility} \emph{relative to the discrete substrate}: no
+discrete-level principle derives the rate (Corollary~\ref{cor:opratelass}). The
+residual is then the continuum rate D3, a \textsc{declared-atom}.
+\textbf{Missing object:} a principle forcing D3 from something more primitive
+than a declaration; none exists in the corpus. A continuum-referencing
+derivation is not excluded (it would live outside the discrete substrate), so
+the classification is closed while the derivation stays open.
+
+\subsection{OP-RADIUS ab initio}\label{blk:radab}
+\textbf{Status} (register): \emph{open as an ab-initio derivation}; whitepaper
+\tagO{}~1 is \emph{not} closed. \textbf{Blocker:} \textsc{impossibility} (apex
+parity). \textbf{Forced fact:} at the apex the inherited radius-squared has odd
+valuation, $v_z(r^2)=1$, whereas every chart quantity has valuation in the value
+group $2\Z$ (\hx{BL-B1}/\hx{BL-B2}; origin \texttt{rd}/\texttt{rx},
+Theorem~\ref{thm:apexram}, Theorem~\ref{thm:paritynogo}); a planted ``$r^2$ is
+even'' is rejected fail-first (\hx{BL-B3}). \textbf{Missing object:} the odd
+generator --- the signed square root $\sqrt z$ --- is provably outside the
+chart's differential closure and must be \emph{adjoined}; deriving $r$ from
+D1--D3 alone is therefore impossible \emph{relative to those axioms}.
+\textbf{Honest scope:} this impossibility is scoped to D1--D3; $r$ \emph{itself}
+is an elementary function ($r=(K/\sqrt{z_c})\,(z^2)^{1/4}$,
+Proposition~\ref{prop:radiff}). The wall is not that $r$ is exotic, but that the
+substrate's even-parity chart cannot reach it.
+
+\subsection{OP-RADIUS profile, given the bridge}\label{blk:radprof}
+\textbf{Status} (register): \emph{reduced} to the minimal declared atom D4 (v1.9);
+given D4 and the inherited chart-ties the profile $r(z)=K\sqrt{z/z_c}$ (capped) is
+uniquely forced (Theorem~\ref{thm:d4reduction}). \textbf{Blocker:}
+\textsc{declared-atom} (D4). \textbf{Forced fact:} D4 has two irreducible halves,
+each a free datum the substrate does not fix --- the \emph{orientation} of the
+apex double cover is a free $\Z/2$ sign ($+r$ and $-r$ both square to $r^2$ yet
+differ, \hx{BL-C1}), and the \emph{cap onset} is a free choice ($z_c$ versus,
+e.g., $4/5$ give distinct capped profiles, \hx{BL-C2}); origin \texttt{ra}. Each
+half is \emph{necessary} (Theorem~\ref{thm:d4reduction}). \textbf{Missing
+object:} a formation-dynamics principle that forces the cap onset at $z_c$, plus
+an orientation of the apex double cover (\hx{BL-G5}). Until such a principle is
+added, D4 is declared, not derived; and ``D4 is \emph{the} minimal
+axiomatization'' is itself only a candidate (the kink-slope-plus-sign atom is
+equivalent, Remark~\ref{rem:d4candidate}).
+
+\subsection{W\texorpdfstring{$[\text{open}]$}{[open]}2 / D2: the chi-selection theorem}\label{blk:d2}
+\textbf{Status} (register): \emph{advanced and substrate-grounded, still
+PARTIAL as a derivation} (v1.9); D2's content is relocated to a
+substrate-grounded, g1-disjoint atom, an advance, not a closure
+(Remark~\ref{rem:d2verdict}). \textbf{Blocker:} \textsc{restatement-wall}.
+\textbf{Forced fact:} the K-seed rotation pair $\pm i\beta$ sits \emph{off} the
+unit circle ($|i\beta|^2=\gp^4-1>1$, \hx{BL-D1}), so it is genuinely disjoint
+from the on-circle-image obstruction g1; but naming that K-seed clock is
+logically \emph{equivalent} to the quarter-turn selection over the competing
+quanta $\{$terrain $\pi:\Z/2$, pentagon $2\pi/5:\Z/5$, quarter $\pi/2:\Z/4\}$
+(\hx{BL-D2}; origin \texttt{qt} / QT-C3/C5, Proposition~\ref{prop:d2reloc}).
+Under the relocated atom $\chi=\pm\pi/2$ becomes the \emph{forced} argument of a
+forced object and the $\Z/4\Z$ completion a forced output --- but the atom is not
+thinner than D2. \textbf{Missing object:} a principle forcing the clock-choice
+from something more primitive than the quarter-turn selection; none exists in the
+corpus (\hx{BL-G6}). Every candidate reduction is logically equivalent to D2, so
+its residual content is irreducible.
+
+\subsection{P3/P4: the odd relational floor equals two}\label{blk:odd2}
+\textbf{Status} (register): \emph{bracketed, sharpened, and reduced to one named
+lemma} (v1.9); computed $=2$ up to a logged enumeration box for $m=3,5,7,9$, and
+P4 inherits P3 exactly (Proposition~\ref{prop:oddfloorred},
+Remark~\ref{rem:p4transfer}). \textbf{Blocker:} \textsc{named-lemma} (ODD-2).
+\textbf{Forced fact:} the $=2$ \emph{ceiling} is forced --- $\M(x^m-2)=2$ for odd
+$m$ ($x^m-2$ is Eisenstein at $2$, all roots at modulus $2^{1/m}>1$, \hx{BL-E1})
+--- but Smyth's theorem alone gives only $\mu_S<\gp<2$ (the plastic number
+$\mu_S=1.3247$, \hx{BL-E2}), and the real-reciprocal sub-case is forced
+$\ge\gp^2>2$ (\hx{BL-E3}); origin \texttt{of}. The residual lift $\mu_S\to2$ for
+charge-admissible \emph{non-reciprocal} odd-charge objects is precisely the open
+lemma ODD-2 (\hx{BL-G4}). \textbf{Missing object:} a Mahler-measure lower bound
+of $2$ in that charge-constrained regime --- new number theory strengthening
+Smyth. The $=2$ floor is therefore \emph{reduced to exactly ODD-2}, not proved;
+the naive ``non-reciprocal $+$ Smyth forces $\ge2$'' idea is falsified.
+
+\subsection{Transcendence of \texorpdfstring{$L_{\mathrm{res}}$}{L\_res}}\label{blk:lrestrans}
+\textbf{Status} (register): \emph{external-open}, with a named tool-gap; not
+resolved here. \textbf{Blocker:} \textsc{external-tool-gap}. \textbf{Forced
+fact:} via the M\"obius correspondence $m=\kappa^2/(1+\kappa^2)$, the elliptic
+modulus $m$ is transcendental if and only if $\kappa$ is transcendental
+(\hx{BL-F1}; origin \texttt{pf}, Remark~\ref{rem:periodmap}); and $\kappa$ is
+transcendental (Theorem~\ref{thm:ratetrans}), so the modulus is transcendental.
+\textbf{Missing object:} a transcendence theorem for elliptic periods at a
+\emph{transcendental} modulus. No such theorem exists --- Schneider's and
+Chudnovsky's results require an \emph{algebraic} modulus, and ours is provably
+transcendental. This is labelled \hx{BL-G1}, not checked: the paper names the
+tool-gap and does not claim the transcendence.
+
+\subsection{Algebraic independence of \texorpdfstring{$\pi$}{pi} and \texorpdfstring{$\ln\gp$}{ln phi}}\label{blk:pilnphi}
+\textbf{Status} (register): \emph{conditional on Schanuel}; not resolved here.
+\textbf{Blocker:} \textsc{external-tool-gap} (a named conjecture).
+\textbf{Forced fact:} the premise $\{\ln\gp,\,i\pi\}$ is $\Q$-linearly
+independent is forced, and Baker's theorem delivers the $\overline\Q$-linear
+independence of $\{1,\ln2,\ln3,\ln\gp\}$ (\hx{BL-F3}; origin \texttt{pf},
+Remark~\ref{rem:pffrontier}) --- but linear independence is all Baker reaches.
+\textbf{Missing object:} Schanuel's conjecture, which would upgrade the forced
+linear independence to algebraic independence of $\pi$ and $\ln\gp$. Labelled
+\hx{BL-G2}; the conclusion is Schanuel-conditional and is \emph{not} asserted.
+
+\subsection{Algebraic independence of \texorpdfstring{$\kappa$}{kappa} and \texorpdfstring{$L_{\mathrm{res}}$}{L\_res}}\label{blk:kappalres}
+\textbf{Status} (register): \emph{external-open}, beyond Schanuel; not resolved
+here. \textbf{Blocker:} \textsc{external-tool-gap} (period-relation theory).
+\textbf{Forced fact:} $L_{\mathrm{res}}$ is an elliptic value (a period) lying
+\emph{outside} the exponential/logarithm framework in which Schanuel operates
+(origin \texttt{pf}, Remark~\ref{rem:periodmap}); the certified PSLQ search finds
+no integer relation among the corpus bases at $230$ dps, height $\le10^{12}$
+(\tagC{} corroboration only). \textbf{Missing object:} Kontsevich--Zagier
+period-relation theory (conjectural) --- the framework that would decide
+relations among periods. Labelled \hx{BL-G3}; the independence is neither proved
+nor claimed, and the PSLQ non-relation corroborates but never proves it.
+
+\subsection{P1\texorpdfstring{$'$}{'} cross-shell nu-criterion}\label{blk:p1cross}
+\textbf{Status} (register): within-shell classification delivered (v1.8); the
+cross-shell $\nu$-criterion half remains open (Remark~\ref{rem:p1scan}).
+\textbf{Blocker:} \textsc{unfinished-computation}. \textbf{Forced fact:} the
+within-shell coherence is decided by the bounded transport-orbit scan, but the
+cross-shell mirrored-class coherence is left a no-tie (origin \texttt{rn} /
+RN-3). \textbf{Missing object:} a cross-shell coherence detector --- an object
+that is \emph{tractable in principle} and simply not yet executed, not a wall of
+principle. Labelled \hx{BL-G7}: unlike every other item here, this one is a
+finite computation awaiting completion.
+
+\smallskip\noindent
+\textbf{Closing.} The corpus's forced content is complete through v1.9. What
+remains falls into exactly the six blocker classes above: \emph{three are hard
+walls internal to the axiom system} --- the two impossibilities (OP-RATE at
+discrete resolution and OP-RADIUS ab initio) and the restatement wall (D2);
+\emph{two are single declared atoms} (D4's cap-onset and orientation); \emph{one
+is a single named number-theoretic lemma} (ODD-2); \emph{three are external
+tool-gaps} (the transcendence and algebraic-independence questions, blocked
+respectively on a nonexistent transcendental-modulus theorem, on Schanuel's
+conjecture, and on Kontsevich--Zagier period theory); and \emph{one is an
+unfinished computation} (P1$'$ cross-shell). No remaining item is a mere
+oversight or an unattempted derivation. Each is a precisely located wall, and for
+each this paper states the load-bearing forced fact and the exact missing object
+rather than claiming a resolution --- and, per the honesty gate, every
+\textsc{impossibility} is scoped relative to D1--D3 and no external-open item is
+asserted to be resolved.
 
 \end{document}
