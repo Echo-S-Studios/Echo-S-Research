@@ -64,11 +64,11 @@ and the Residual Sphere\\[4pt]
 \small independent verification (\S\ref{sec:verification}):\\
 \small \texttt{ozy\_softcheck.py} 91/91 $+$ \texttt{relational\_softcheck.py} 27/27\\
 \small \texttt{nx\_softcheck.py} 27/27 $+$ \texttt{qx\_softcheck.py} 62/62, exit 0\\
-\small 19 session harnesses (v1.7--v2.1): 468 exact/computed checks\\
-\small $+$ 67 certified guards $+$ 13 PSLQ corroborations $+$ 7 labelled walls, all exit 0\\
-\small closure harness \texttt{nd\_softcheck.py}: 28/28, 565 forced objects, exit 0\\
-\small finalization harness \texttt{bl\_softcheck.py}: 16/16 exact $+$ 7 walls LABELLED (\S\ref{sec:blockers}), exit 0}
-\date{Version 2.1 --- July 15, 2026}
+\small 20 session harnesses (v1.7--v2.2): 478 exact/computed checks\\
+\small $+$ 70 certified guards $+$ 13 PSLQ corroborations $+$ 7 labelled walls, all exit 0\\
+\small closure harnesses \texttt{nd\_softcheck.py} 28/28 (ODD-2) and \texttt{xs\_softcheck.py} 10/10$+$3 (cross-shell no-tie), exit 0\\
+\small finalization harness \texttt{bl\_softcheck.py}: 16/16 exact $+$ 7 walls LABELLED (\S\ref{sec:blockers}; five active after v2.2), exit 0}
+\date{Version 2.2 --- July 15, 2026}
 
 \begin{document}
 \maketitle
@@ -177,6 +177,22 @@ discards the ray constraint, and false of the problem
 \textsc{named-lemma} blocker class empties, and eight of the nine
 \S\ref{sec:blockers} rows remain active. Certified cold by
 \texttt{nd\_softcheck.py} (28 checks, 565 forced objects, exit 0).
+\emph{Version 2.2} resolves a second: the P1$'$ cross-shell $\nu$-criterion, the
+lone \textsc{unfinished-computation} blocker (\hx{BL-G7}). The cross-shell
+mirrored-class detector is built, validated fail-first against
+Theorem~\ref{thm:reltype}, and run; and the no-tie it computes is proved
+\emph{forced} (Theorem~\ref{thm:crossnotie}): for a multi-shell object,
+cross-shell coherence holds iff the object is charge-admissible --- by
+conjugation-closure, an irrational-angle shell forces both
+$\theta_\alpha-\theta_\beta$ and $\theta_\alpha+\theta_\beta$ rational, hence
+$\theta_\alpha$ rational, a contradiction. Cross-shell coherence therefore adds
+no invariant beyond admissibility, and the within-shell $\mathrm{OTHER}=0$ verdict
+is complete cross-shell too. Corroborated over the same $855$-object window with
+$0$ exceptions (\texttt{xs\_softcheck.py}, 10 exact $+$ 3 guards, exit 0). The
+\textsc{unfinished-computation} class is now empty; \emph{seven} of the nine
+\S\ref{sec:blockers} rows remain active, all of them either declared atoms,
+restatement/impossibility walls relative to D1--D3, or external tool-gaps --- none
+a computation the corpus can run for itself.
 \end{abstract}
 
 \section{Provenance, scope, and the conditionality banner}\label{sec:scope}
@@ -408,6 +424,28 @@ $468$ exact/computed $+$ $67$ guards $+$ $13$ PSLQ $+$ $7$ labelled walls. No
 \tagD{} atom is disturbed and no other register moves: OP-RATE, OP-RADIUS, D2,
 the three transcendence rows, and P1$'$ are untouched. All other content
 unchanged.
+
+\smallskip\noindent
+\textbf{v2.2 changelog.} A second open item \emph{closes} --- the last one the
+corpus could settle by its own means. \S\ref{sec:relobject} extended:
+Theorem~\ref{thm:crossnotie} (the cross-shell no-tie --- for a multi-shell object,
+cross-shell coherence $\iff$ charge-admissibility, by conjugation-closure; the
+$\nu$-criterion introduces no invariant beyond the within-shell class) and
+Remark~\ref{rem:crossscan} (the detector, validated fail-first against
+Theorem~\ref{thm:reltype} --- generator $\nu\equiv1$, Salem/Pisot non-coherence
+discriminated --- and run over the $855$-object window, $0$ exceptions);
+Remark~\ref{rem:p1scan}'s ``cross-shell half remains open'' is retired.
+\S\ref{sec:blockers}: \S\ref{blk:p1cross} is marked \textsc{resolved}, \hx{BL-G7}
+discharged, and the \textsc{unfinished-computation} class --- like the
+\textsc{named-lemma} class in v2.1 --- is now empty; the ledger reads \emph{seven}
+active rows, not eight. One session harness \texttt{xs\_softcheck.py} ($10$ exact
+$+$ $3$ certified guards, exit 0) added to \S\ref{sec:verification}, bringing the
+\emph{twenty} session harnesses to $478$ exact/computed $+$ $70$ guards $+$ $13$
+PSLQ $+$ $7$ labelled walls (five active, \hx{BL-G7} joining \hx{BL-G4} off the
+board). No \tagD{} atom is disturbed and no other register moves: OP-RATE,
+OP-RADIUS, D2, and the three transcendence rows are untouched; only P1$'$'s
+cross-shell half moves, from \textsc{unfinished-computation} to \tagF{}. All other
+content unchanged.
 
 \smallskip\noindent
 \textbf{Method note (from the source report).} The investigation began by
@@ -1644,9 +1682,76 @@ $\{$pinned/inert, $s(x^k)$-shell tower, cyclotomic, dilation-of-known$\}$ as
 exhaustive over the window: buckets inert $804$, shell $32$, cyclotomic $11$,
 dilation $8$, and \emph{OTHER $0$} --- no new mechanism and no counterexample
 to the pinned/twisted-shell dichotomy. Within-shell torsion coherence was
-decided; the cross-shell mirrored-class ($\nu$-criterion) half of P1$'$ is out
-of the detector's scope, flagged not resolved. This is a bounded \tagC{}
-corroboration (candidate), not a proof; general P1$'$ remains open.
+decided; the cross-shell mirrored-class ($\nu$-criterion) half of P1$'$ --- out
+of \emph{this} scan's scope --- is resolved separately and unconditionally in
+Theorem~\ref{thm:crossnotie} (the no-tie). This within-shell scan is a bounded
+\tagC{} corroboration (candidate), not a proof; the general within-shell
+taxonomy remains \tagC{}-open, while the cross-shell half is now \tagF{}.
+\end{remark}
+
+\begin{theorem}[Cross-shell no-tie: the {P1$'$} $\nu$-criterion resolved (v2.2)]\label{thm:crossnotie}\tagF{} \hx{XS-A1--A3, XS-B1--B3, XS-C1--C4}
+Let $p$ be a monic irreducible integer polynomial with root multiset $R$
+(conjugation-closed, as $p$ is real), partitioned into \emph{shells} ---
+equal-modulus classes (RC-Def.\ 7.1). For a \emph{cross-shell} ordered pair
+$(\alpha,\beta)$ --- roots in distinct shells, $|\alpha|\neq|\beta|$ --- put
+\[
+\nu(\alpha,\beta)=\frac{\alpha/\beta}{\overline{\alpha/\beta}}
+=e^{\,2i(\theta_\alpha-\theta_\beta)},\qquad
+\theta_\gamma:=\Arg\gamma,
+\]
+a unimodular number (the mirrored value, RC-Rem.\ 7.6). Then:
+\begin{enumerate}[nosep,label=(\roman*),leftmargin=2.2em]
+\item \emph{(vacuity)} if $R$ is a single shell (all roots equimodular) there are
+no cross-shell pairs and the $\nu$-criterion is vacuous;
+\item \emph{(no-tie)} if $R$ is multi-shell, then $p$ is \emph{cross-shell
+coherent} --- every $\nu(\alpha,\beta)$ a root of unity --- \emph{if and only if}
+$p$ is \emph{charge-admissible} (every root argument in $\pi\Q$; equivalently the
+$\psi^D$ oracle of Remark~\ref{rem:p1scan} returns some $D$).
+\end{enumerate}
+Consequently cross-shell coherence is a \emph{forced function} of admissibility
+and shell count: it introduces no invariant beyond the within-shell class, and
+the within-shell verdict $\mathrm{OTHER}=0$ of Remark~\ref{rem:p1scan} is the
+complete cross-shell statement --- no object carries a cross-shell mechanism
+absent from its within-shell class. This is the ``cross-shell mirrored-class
+coherence is a no-tie'' of \S\ref{blk:p1cross}, now \emph{proved}: \hx{BL-G7} is
+discharged.
+\end{theorem}
+
+\begin{proof}
+$\nu(\alpha,\beta)=e^{2i(\theta_\alpha-\theta_\beta)}$ is a root of unity iff
+$\theta_\alpha-\theta_\beta\in\pi\Q$; (i) is immediate. \emph{($\Leftarrow$)} if
+every root argument lies in $\pi\Q$ so does every difference, hence every $\nu$ is
+a root of unity. \emph{($\Rightarrow$)} assume coherence and fix a root $\alpha$.
+As $R$ is multi-shell there is a root $\beta$ with $|\beta|\neq|\alpha|$; as $R$
+is conjugation-closed, $\bar\beta$ (modulus $|\beta|$, argument $-\theta_\beta$)
+is also a root, and both $\beta,\bar\beta$ are cross-shell to $\alpha$. Coherence
+at $(\alpha,\beta)$ and $(\alpha,\bar\beta)$ gives
+$\theta_\alpha-\theta_\beta\in\pi\Q$ and $\theta_\alpha+\theta_\beta\in\pi\Q$;
+adding, $2\theta_\alpha\in\pi\Q$, so $\theta_\alpha\in\pi\Q$. As $\alpha$ was
+arbitrary, $p$ is charge-admissible. The mechanism is the exact identity
+$\nu(\alpha,\beta)\,\nu(\alpha,\bar\beta)=\alpha^2/\bar\alpha^2=e^{4i\theta_\alpha}$,
+independent of $\beta$ (\hx{XS-B2}): the second shell cancels, leaving a condition
+on $\alpha$ alone.
+\end{proof}
+
+\begin{remark}[The detector, validated fail-first; and the corroboration]\label{rem:crossscan}\tagF{}/\tagC{} \hx{XS-A1--A3, XS-C1--C4, XS-H1--H3}
+The $\nu$-detector is validated fail-first before use: it reproduces
+Theorem~\ref{thm:reltype}'s generator (two shells $\{\pm i\tau\},\{\pm i\gp\}$,
+eight cross-shell pairs, cross ratios $\pm\tau^2,\pm\gp^2$, $\nu\equiv1$, fully
+coherent, \hx{XS-A1}); it sees non-trivial coherence ($x^4+x^2-6$: cross-shell
+$\nu=-1$, order $2$, \hx{XS-A2}); and it discriminates non-coherence --- the
+Pisot number $x^3-x-1$, the Salem sextic $x^6-x^4-x^3-x^2+1$, and Lehmer's
+degree-$10$ Salem each carry a non-torsion cross-shell $\nu$ (guards
+\hx{XS-H1--H3}), the very objects for which admissibility fails. Over the
+\emph{same forced window} as Remark~\ref{rem:p1scan} --- irreducible monic integer
+objects, caps $\{(2,3),(3,2),(4,2),(5,1),(6,1)\}$, $855$ objects --- the
+equivalence coherent~$\iff$~admissible holds with \emph{zero} exceptions \tagC{}
+\hx{XS-C2}: $34$ multi-shell coherent (all admissible), $788$ multi-shell
+non-coherent (all inadmissible), $33$ single-shell (vacuous); the realized
+cross-shell $\nu$-orders are $\{1,2,3,4\}$ \hx{XS-C4}.
+Theorem~\ref{thm:crossnotie} makes the equivalence \tagF{}; the scan corroborates
+it and exhibits the population, exactly as \texttt{nd\_softcheck.py} does for
+Theorem~\ref{thm:odd2nd}.
 \end{remark}
 
 \begin{proposition}[The odd relational floor, reduced to a single lemma --- now proved]\label{prop:oddfloorred}\tagF{}/\tagE{}/\tagC{} \hx{OF-A1--OF-A4, OF-B1--OF-B6, OF-C1--OF-C8, OF-H1--OF-H6; ND-N1--ND-N5}
@@ -3410,10 +3515,31 @@ integer polynomials in the boxes $\{\deg2:|a_j|\le12,\ 3:\le10,\ 4:\le8,\
 Theorem~\ref{thm:odd2nd} rests on this harness}: the theorem is proved, and the
 harness corroborates it, exhibits its extremals, and certifies the anchor
 dichotomy (\hx{ND-A1}: $0$ objects with both $\pm\alpha$ on-ray, $0$ with
-neither). With it the \emph{nineteen} session harnesses total $\mathbf{468}$
-exact/computed checks $+$ $\mathbf{67}$ certified guards $+$ $\mathbf{13}$ PSLQ
-corroborations $+$ $\mathbf{7}$ labelled walls (six after
-Finding~\ref{find:blstale}), all exit 0.
+neither).
+
+\smallskip\noindent
+\textbf{v2.2 session harness} (one, written cold this session; every \hx{XS-}
+check ID cited in \S\ref{sec:relobject} appears in the file):
+\begin{center}\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lp{10.7cm}c@{}}
+\toprule
+harness & content & exact$+$guards\\
+\midrule
+\texttt{xs\_softcheck.py} & cross-shell no-tie (Thm~\ref{thm:crossnotie}): \hx{XS-A} fail-first --- the $\nu$-detector reproduces Thm~\ref{thm:reltype}'s generator ($\nu\equiv1$, two shells, eight cross-shell pairs), sees $\nu=-1$ (order $2$) on $x^4+x^2-6$, and orders $\{1,3\}$ on $(x^2-x-1)(x^2+x+1)$; \hx{XS-B} the forced theorem --- ($\Leftarrow$) admissible $\Rightarrow$ coherent on the keystones, and the conjugation-closure identity $\nu(\alpha,\beta)\,\nu(\alpha,\bar\beta)=\alpha^2/\bar\alpha^2$ ($\beta$ cancels, forcing $2\theta_\alpha\in\pi\Q$); \hx{XS-C} corroboration over the same forced $855$-object window as \texttt{rn\_softcheck.py} --- coherent~$\iff$~admissible, $0$ exceptions, $34$ multi-coherent / $788$ multi-non-coherent / $33$ single-shell, cross-shell $\nu$-orders $\{1,2,3,4\}$; \hx{XS-H} certified guards --- Pisot $x^3-x-1$, the Salem sextic, and Lehmer's degree-$10$ Salem carry non-torsion cross-shell $\nu$ & $10+3$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Discipline: the symbolic checks (\hx{XS-A}, \hx{XS-B}) decide in $\Q(\sqrt5)[i]$;
+window admissibility (\hx{XS-C}) is the exact $\psi^D$ oracle
+($\operatorname{Res}$ $+$ Sturm); shells and $\nu$-orders on the scan are computed
+at 50 dps and the Salem non-coherence at 300 dps as certified guards (\hx{XS-H}).
+\emph{The theorem does not rest on the scan}: Theorem~\ref{thm:crossnotie} is
+proved by conjugation-closure, and the $855$-object run corroborates it and
+exhibits the population, exactly as \texttt{nd\_softcheck.py} does for
+Theorem~\ref{thm:odd2nd}. With it the \emph{twenty} session harnesses total
+$\mathbf{478}$ exact/computed checks $+$ $\mathbf{70}$ certified guards $+$
+$\mathbf{13}$ PSLQ corroborations $+$ $\mathbf{7}$ labelled walls (five after
+\hx{BL-G7} joins \hx{BL-G4} off the board), all exit 0.
 
 \smallskip\noindent
 Every boxed identity of the source reports and every displayed identity of the
@@ -3454,6 +3580,16 @@ The eight survivors are untouched by v2.1: nothing in the descent bears on a
 declared atom, a restatement wall, or a transcendence tool-gap.
 
 \smallskip\noindent
+\textbf{v2.2 motion.} A second row moves off the board. P1$'$ cross-shell $\nu$
+(\S\ref{blk:p1cross}) is \textsc{resolved} by Theorem~\ref{thm:crossnotie}: the
+\textsc{unfinished-computation} class is now empty --- its sole occupant executed
+and its no-tie proved forced --- \hx{BL-G7} is no longer a wall, and \emph{seven}
+of the nine rows remain active. The row is retained and marked, per the same
+record-keeping discipline. The seven survivors are untouched by v2.2: the
+cross-shell detector bears on no declared atom, no restatement or impossibility
+wall, and no external tool-gap.
+
+\smallskip\noindent
 \textbf{The six blocker classes.} Each open problem is filed under exactly one
 (for OP-RATE, a dual) of the following.
 \begin{description}[font=\normalfont\scshape,leftmargin=2.2em,style=nextline,itemsep=1pt,topsep=3pt]
@@ -3472,6 +3608,9 @@ discharged by its own means --- and, in the event, did.
 \item[external-tool-gap] blocked on a theorem that does not exist (no tool
 reaches the regime) or a named conjecture.
 \item[unfinished-computation] tractable in principle, not yet executed.
+\emph{As of v2.2 this class is empty}: its sole occupant, the P1$'$ cross-shell
+$\nu$-criterion, is executed and its no-tie proved forced
+(Theorem~\ref{thm:crossnotie}).
 \end{description}
 Throughout, an \textsc{impossibility} verdict asserts that the resolution cannot
 be a consequence of D1--D3 (or of the discrete substrate); it is a statement
@@ -3491,7 +3630,7 @@ P3/P4 (odd floor $=2$) & \textsc{closed} in v2.1 --- was \textsc{named-lemma} (O
 $L_{\mathrm{res}}$ transcendence & \textsc{external-tool-gap} & $m$ transcendental iff $\kappa$ transcendental \hx{BL-F1}; labelled \hx{BL-G1} & a transcendence theorem at a transcendental modulus\\[2pt]
 $(\pi,\ln\gp)$ independence & \textsc{external-tool-gap} (conjecture) & $\{\ln\gp,i\pi\}$ $\Q$-linearly independent is forced \hx{BL-F3}; labelled \hx{BL-G2} & Schanuel's conjecture\\[2pt]
 $(\kappa,L_{\mathrm{res}})$ independence & \textsc{external-tool-gap} (periods) & $L_{\mathrm{res}}$ an elliptic value outside the exp/log framework; labelled \hx{BL-G3} & Kontsevich--Zagier period-relation theory\\[2pt]
-P1$'$ cross-shell $\nu$ & \textsc{unfinished-computation} & within-shell decided; cross-shell mirrored-class coherence is a no-tie; labelled \hx{BL-G7} & the cross-shell coherence detector (tractable)\\
+P1$'$ cross-shell $\nu$ & \textsc{resolved} in v2.2 --- was \textsc{unfinished-computation} & the no-tie is \emph{proved} (Thm~\ref{thm:crossnotie}): multi-shell cross-shell coherent $\iff$ admissible; corroborated $855/855$, $0$ exceptions \hx{XS-C2}; \hx{BL-G7} discharged & \emph{nothing --- resolved}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -3630,40 +3769,51 @@ period-relation theory (conjectural) --- the framework that would decide
 relations among periods. Labelled \hx{BL-G3}; the independence is neither proved
 nor claimed, and the PSLQ non-relation corroborates but never proves it.
 
-\subsection{P1\texorpdfstring{$'$}{'} cross-shell nu-criterion}\label{blk:p1cross}
-\textbf{Status} (register): within-shell classification delivered (v1.8); the
-cross-shell $\nu$-criterion half remains open (Remark~\ref{rem:p1scan}).
-\textbf{Blocker:} \textsc{unfinished-computation}. \textbf{Forced fact:} the
-within-shell coherence is decided by the bounded transport-orbit scan, but the
-cross-shell mirrored-class coherence is left a no-tie (origin \texttt{rn} /
-RN-3). \textbf{Missing object:} a cross-shell coherence detector --- an object
-that is \emph{tractable in principle} and simply not yet executed, not a wall of
-principle. Labelled \hx{BL-G7}: unlike every other item here, this one is a
-finite computation awaiting completion.
+\subsection{P1\texorpdfstring{$'$}{'} cross-shell nu-criterion --- resolved (v2.2)}\label{blk:p1cross}
+\textbf{Status} (register): \emph{resolved} (v2.2). Within-shell classification
+delivered (v1.8); the cross-shell $\nu$-criterion half is now \emph{proved} a
+no-tie (Theorem~\ref{thm:crossnotie}). \textbf{Former blocker:}
+\textsc{unfinished-computation} --- a cross-shell coherence detector, tractable in
+principle and simply not yet executed. \textbf{Resolution:} the detector was
+built, validated fail-first against Theorem~\ref{thm:reltype} (it reproduces the
+generator's $\nu\equiv1$ and discriminates the Salem/Pisot non-coherent objects),
+and run; and the equivalence it computes was \emph{proved forced} --- for a
+multi-shell object, cross-shell coherence $\iff$ charge-admissibility, by
+conjugation-closure ($\theta_\alpha\pm\theta_\beta\in\pi\Q\Rightarrow
+\theta_\alpha\in\pi\Q$). The within-shell $\mathrm{OTHER}=0$ verdict is thereby
+the complete cross-shell statement: no object carries a cross-shell mechanism
+absent from its within-shell class. Corroborated over the same $855$-object
+forced window with $0$ exceptions (\texttt{xs\_softcheck.py}, \hx{XS-C2}).
+\hx{BL-G7} is discharged; this was the sole \textsc{unfinished-computation}, and
+that class is now \emph{empty}.
 
 \smallskip\noindent
-\textbf{Closing.} The corpus's forced content is complete through v1.9, and v2.1
-adds one item to it: the odd relational floor, proved $=2$
-(Theorem~\ref{thm:odd2nd}). What remains falls into five of the six blocker
-classes above --- the \textsc{named-lemma} class is now empty, and its single
-occupant was discharged from inside, by an elementary argument requiring no
-external theorem and no new axiom. \emph{Three are hard
-walls internal to the axiom system} --- the two impossibilities (OP-RATE at
-discrete resolution and OP-RADIUS ab initio) and the restatement wall (D2);
-\emph{two are single declared atoms} (D4's cap-onset and orientation);
-\emph{three are external tool-gaps} (the transcendence and algebraic-independence questions, blocked
-respectively on a nonexistent transcendental-modulus theorem, on Schanuel's
-conjecture, and on Kontsevich--Zagier period theory); and \emph{one is an
-unfinished computation} (P1$'$ cross-shell). \emph{Eight rows, not nine.} No
-remaining item is a mere oversight or an unattempted derivation. Each is a
-precisely located wall, and for each this paper states the load-bearing forced
-fact and the exact missing object rather than claiming a resolution --- and, per
-the honesty gate, every \textsc{impossibility} is scoped relative to D1--D3 and
-no external-open item is asserted to be resolved. One caution the ODD-2 closure
-earns its own ledger: a blocker classification is a statement about the routes
-in hand, and \S\ref{blk:odd2} sat at \textsc{named-lemma} for three versions on
-the strength of a framing (Finding~\ref{find:sssframe}) rather than a theorem.
-The remaining eight are argued from forced facts, not from framings --- but the
-distinction is exactly what this section exists to keep visible.
+\textbf{Closing.} The corpus's forced content is complete through v1.9; v2.1 adds
+the odd relational floor, proved $=2$ (Theorem~\ref{thm:odd2nd}), and v2.2 adds
+the cross-shell $\nu$-criterion no-tie (Theorem~\ref{thm:crossnotie}). What
+remains falls into \emph{four} of the six blocker classes above --- both the
+\textsc{named-lemma} class (discharged from inside in v2.1, by an elementary
+argument requiring no external theorem and no new axiom) and the
+\textsc{unfinished-computation} class (executed, and its output proved forced, in
+v2.2) are now \emph{empty}. \emph{Three are hard walls internal to the axiom
+system} --- the two impossibilities (OP-RATE at discrete resolution and OP-RADIUS
+ab initio) and the restatement wall (D2); \emph{two are single declared atoms}
+(D4's cap-onset and orientation); and \emph{three are external tool-gaps} (the
+transcendence and algebraic-independence questions, blocked respectively on a
+nonexistent transcendental-modulus theorem, on Schanuel's conjecture, and on
+Kontsevich--Zagier period theory). \emph{Seven rows, not eight.} No remaining item
+is a mere oversight or an unattempted derivation --- everything the corpus could
+settle by its own means, it now has. Each survivor is a precisely located wall,
+and for each this paper states the load-bearing forced fact and the exact missing
+object rather than claiming a resolution --- and, per the honesty gate, every
+\textsc{impossibility} is scoped relative to D1--D3 and no external-open item is
+asserted to be resolved. One caution the ODD-2 and cross-shell closures earn
+their own ledger: a blocker classification is a statement about the routes in
+hand --- \S\ref{blk:odd2} sat at \textsc{named-lemma} for three versions on the
+strength of a framing (Finding~\ref{find:sssframe}) rather than a theorem, and
+\S\ref{blk:p1cross} sat at \textsc{unfinished-computation} until the detector was
+actually built, validated, and its output proved forced. The remaining seven are
+argued from forced facts, not from framings --- but the distinction is exactly
+what this section exists to keep visible.
 
 \end{document}
