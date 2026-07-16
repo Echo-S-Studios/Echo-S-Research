@@ -1,0 +1,1360 @@
+% golden-substrate-whitepaper.tex
+% Unified whitepaper: the forced mathematics of the golden substrate,
+% the gate field, and the explicit helix.
+% Supersedes: HELIX-EXPLICIT-DERIVATION.md v1.0.1,
+%             helix_explicit_interactive.html (v1.0.0 companion),
+%             ECHO-S-RESEARCH_UNIFIED.md Rev. 2.
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage[expansion=false]{microtype}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+
+% ---------- epistemic tag macros ----------
+\definecolor{cF}{RGB}{20,110,95}   % forced
+\definecolor{cD}{RGB}{175,95,10}   % declared
+\definecolor{cC}{RGB}{100,100,110} % computed
+\definecolor{cI}{RGB}{110,60,150}  % inherited
+\definecolor{cE}{RGB}{40,80,160}   % established
+\definecolor{cO}{RGB}{170,40,40}   % open
+\newcommand{\tagF}{\textcolor{cF}{\textsc{[forced]}}}
+\newcommand{\tagD}{\textcolor{cD}{\textsc{[declared]}}}
+\newcommand{\tagC}{\textcolor{cC}{\textsc{[computed]}}}
+\newcommand{\tagI}{\textcolor{cI}{\textsc{[inherited]}}}
+\newcommand{\tagE}{\textcolor{cE}{\textsc{[established]}}}
+\newcommand{\tagO}{\textcolor{cO}{\textsc{[open]}}}
+\newcommand{\hx}[1]{\textcolor{cC}{\footnotesize\texttt{#1}}}
+
+% ---------- math shorthands ----------
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\gp}{\varphi}
+\newcommand{\gq}{\psi}
+\newcommand{\gapc}{\mathrm{gap}}
+\newcommand{\M}{\mathrm{M}}
+\newcommand{\Nm}{\mathrm{N}}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\adR}{\operatorname{ad}_R}
+\DeclareMathOperator{\lp}{\log^{+}}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{declaration}[theorem]{Declaration}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{guard}[theorem]{Guard}
+
+\title{\bfseries The Golden Substrate, the Gate Field, and the Explicit Helix\\[4pt]
+\large A Self-Contained Whitepaper of the Forced Mathematics}
+\author{Echo-S-Studios\\[2pt]
+\small compiled 2026-07-14; machine-verified (\S\ref{sec:verification})}
+\date{Version 1.0 --- July 14, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+This whitepaper consolidates, into one self-contained document, the forced mathematics of
+the Echo-S golden substrate: the seed arithmetic of $x^2-x-1$ and of the K-seed
+$x^4+5x^2-5$; the keystone matrix $R$ with $R^2=R+I$ and its operator layer
+(trace--form duality, the return operator, the $\adR$ spectrum $\{0,\pm\sqrt5\}$);
+the two characters of the emission semiring (Mahler measure and $\Z/4\Z$ angle charge)
+and the Emission-Gap mechanism excluding Salem numbers from the spectral image;
+the trace-down of Lehmer's polynomial and the occupant $\tau_0=\beta+\beta^{-1}$
+of the Salem slot; the one-parameter gate family $f_C(x)=C/(1+x)$, its golden multiplier
+ladder, and the obstruction theorem (no single real gate carries a helix); and the
+explicit helix $\Gamma(\rho)=(r\cos\theta,\ r\sin\theta,\ z)$ built from three declared
+atoms, with its gate chart, the rational split gate $C=4/9$ at rapidity exactly $\ln 2$,
+the incommensurability theorem $\log_\gp 2\notin\Q$, the field separation
+$\Q(\sqrt\gp)\neq\Q(5^{1/4})$, and the registry lattice
+($\M(\mathrm{cons})=2\gp^5$ on the $(\ln 2,\ln\gp)$ lattice; $\M(\mathrm{res})$ off it
+by a norm obstruction). Every claim carries an epistemic tag; every \tagF{} claim is
+proved in this paper or certified by the cited machine checks, and the complete numeric
+landmark tables are reproduced. This document supersedes
+\texttt{HELIX-EXPLICIT-DERIVATION.md} v1.0.1, its interactive HTML companion (v1.0.0),
+and \texttt{ECHO-S-RESEARCH\_UNIFIED.md} Rev.\,2, folding in the corrections identified
+by the 2026-07-13 independent soft check.
+\end{abstract}
+
+\tableofcontents
+
+\section{Conventions, provenance, and the epistemic ledger}\label{sec:conventions}
+
+\subsection{Epistemic tags}
+Every substantive claim in this paper carries one of six tags, used exactly as in the
+source corpus:
+
+\begin{center}
+\begin{tabular}{@{}lp{12cm}@{}}
+\toprule
+\tagF & exact consequence of the substrate; proved here and/or machine-verified (check IDs cited)\\
+\tagD & a definition or normalization introduced deliberately, stated as such\\
+\tagC & numeric display or certified-precision comparison; never load-bearing\\
+\tagE & standard external mathematics (textbook or classical literature)\\
+\tagI & taken from the source corpus without re-derivation here; provenance cited\\
+\tagO & unresolved\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+\textbf{Arithmetic discipline.} All decisions are made in exact arithmetic over
+$\Q$, $\Q(\sqrt5)$, or (once, trivially) $\Q(\sqrt3)$; statements about
+$K=5^{1/4}/\gp$ are decided at the squared level $K^2\in\Q(\sqrt5)$, so that no fourth
+root ever crosses a decision boundary. Floating-point values appear only in the
+\tagC{} display tables (\S\ref{sec:landmarks}, \S\ref{sec:constants}) and decide nothing.
+Machine verification: the shipped harness \texttt{helix\_explicit\_verify.py}
+(87 exact checks + 1 computed guard, sympy 1.14.0, exit 0; check IDs \hx{HX01--HX40c})
+and the independent soft-check harness \texttt{helix\_softcheck.py}
+(89 checks, written cold from the documents' stated claims, exit 0; check IDs
+\hx{SC-A1--SC-L2}). See \S\ref{sec:verification}.
+
+\subsection{Provenance and what ``self-contained'' means here}\label{sec:provenance}
+This paper replaces three artifacts: the derivation note
+\texttt{HELIX-EXPLICIT-DERIVATION.md} v1.0.1 (2026-07-13), its interactive companion
+\texttt{helix\_explicit\_interactive.html} (v1.0.0; the $+4$ check-count difference
+$83\to 87$ is exactly the v1.0.1 additions \hx{HX39, HX40a--c}), and the corpus
+synthesis \texttt{ECHO-S-RESEARCH\_UNIFIED.md} Rev.\,2 covering the fourteen-paper
+Echo-S-Research corpus (2026-06-28 to 07-02). Three corrections identified by the
+independent soft check are applied in the body of this paper rather than noted as
+errata: the minimal-polynomial attribution at rung 1 (\S\ref{sec:fields}), the wording
+of the content-polynomial remark (\S\ref{sec:characters}), and the explicit declaration
+of the gate iteration (\S\ref{sec:gatefamily}), which the source note used implicitly.
+
+``Self-contained'' means: every \tagF{} statement is either proved in this paper or is
+an elementary computation reproduced here and certified by the cited checks. Statements
+whose full proofs live in the fourteen corpus papers are stated precisely, tagged
+\tagI{}, and scoped exactly as the corpus's own conditionality graph scopes them
+(\S\ref{sec:conditionality}); classical results are tagged \tagE{} with canonical
+citations. Nothing in this paper depends on the three superseded artifacts.
+
+\subsection{Standing notation}\label{sec:notation}
+\[
+\gp=\frac{1+\sqrt5}{2},\qquad
+\gq=\frac{1-\sqrt5}{2}=-\gp^{-1},\qquad
+\tau=\gp^{-1}=\gp-1=\frac{\sqrt5-1}{2},
+\]
+\[
+\gapc=\gp^{-4}=\frac{7-3\sqrt5}{2},\qquad
+K^2=1-\gapc=\frac{3\sqrt5-5}{2},\qquad
+\beta^2=\frac{5+3\sqrt5}{2}=\gp^2\sqrt5,\qquad
+z_c=\frac{\sqrt3}{2}.
+\]
+$F_n,L_n$ are the Fibonacci and Lucas numbers, extended to all $n\in\Z$ by Binet:
+$F_n=(\gp^n-\gq^n)/\sqrt5$, $L_n=\gp^n+\gq^n$. $\M(p)$ denotes the Mahler measure of a
+polynomial $p$ (Definition~\ref{def:mahler}); for a matrix or algebra element, the
+Mahler-type measure of its spectrum. $\Nm$ is the field norm
+$\Q(\sqrt5)\to\Q$, $\Nm(a+b\sqrt5)=a^2-5b^2$.
+
+%=====================================================================
+\part{The seed and the keystone}
+%=====================================================================
+
+\section{Seed arithmetic}\label{sec:seed}
+
+\subsection{The golden seed}
+The seed polynomial is $x^2-x-1$, with roots $\gp,\gq$. The following identities are
+elementary and machine-replicated \tagF{} \hx{SC-A7, SC-I16}:
+\begin{equation}\label{eq:goldenids}
+\gp\gq=-1,\qquad \gp+\gq=1,\qquad \sqrt5=\gp+\gp^{-1}=\gp-\gq,\qquad
+\gp^2=\gp+1,\qquad \tau^2+\tau=1 .
+\end{equation}
+Since $\operatorname{disc}(x^2-x-1)=5$ is squarefree, $\Z[\gp]$ is the maximal order
+of $\Q(\sqrt5)$ \tagF{}/\tagE{} \hx{SC-I16}: the golden order is the ring of integers,
+not a proper suborder.
+
+\subsection{The gap and the K-seed}\label{sec:kseed}
+Define the \emph{gap} $\gapc=\gp^{-4}=(7-3\sqrt5)/2$ and the \emph{K-seed}
+\[
+p_K(x)=x^4+5x^2-5 .
+\]
+Substituting $y=x^2$ gives $y^2+5y-5$, whose roots
+$y_\pm=(-5\pm3\sqrt5)/2$ straddle zero. The positive root is $K^2=(3\sqrt5-5)/2$,
+giving the real pair $\pm K$; the negative root is $-\beta^2$ with
+$\beta^2=(5+3\sqrt5)/2=\gp^2\sqrt5$, giving the imaginary pair $\pm i\beta$
+\tagF{} \hx{SC-H8}. The seed's basic ledger, all decided at the squared level
+\tagF{} \hx{SC-A1--A6, SC-H7}:
+\begin{equation}\label{eq:kledger}
+\begin{gathered}
+K^2=1-\gapc,\qquad
+K^4+5K^2-5=0,\qquad
+K^4=5\,\gapc,\\
+(K\gp)^4=5,\qquad
+K^2\beta^2=5,\qquad
+\beta^2=K^2\gp^4 .
+\end{gathered}
+\end{equation}
+The last identity reads: the rotation magnitude sits exactly two floors ($\gp^2$ at
+the squared level) above the terrain magnitude --- and two is $K$'s own rung index
+(\S\ref{sec:rungs}). ``Route 5'' of the K-derivations is the geometric-mean reading
+$K^2=\tau(2-\tau)$ \tagF{} \hx{SC-A6}. Irreducibility: $p_K$ is Eisenstein at $5$,
+so $[\Q(K):\Q]=4$ and $\Q(K)=\Q(5^{1/4})$ (since $K\gp=5^{1/4}$) \tagF{} \hx{SC-H4}.
+
+The K-seed's charge data --- $\pm K$ on the real (terrain) face at arguments
+$\{0,\pi\}$, $\pm i\beta$ on the rotation face at arguments $\{\pm\pi/2\}$, so that
+$\chi(\text{K-seed})=\{0,1,2,3\}$ completes $\Z/4\Z$, with Mahler measure
+$\M(\text{K-seed})=\beta^2=\gp^2\sqrt5\approx 5.854$ --- is immediate from the root
+computation above \tagF{} \hx{SC-H7} (the uniqueness of the K-seed as the catalog's
+$\Z/4\Z$-completing straddler, and the even-quartic parity criterion behind it, are
+corpus results: paper 13, Props.\ 6.1/6.2 \tagI{}).
+
+The \emph{gap object} is the companion of $x^2-7x+1$, whose large root is $\gp^4$
+(the other root is $\gp^{-4}$): $\M(A_{\gapc})=\gp^4$, so
+$\ln\M(A_{\gapc})=4\ln\gp$ \tagF{} \hx{SC-E7--E8}. This constant is the full-turn
+cost of the helix (\S\ref{sec:winding}).
+
+\section{The keystone matrix and trace--form duality}\label{sec:keystone}
+
+\begin{definition}[Keystone]\label{def:keystone}
+$R=\begin{pmatrix}0&1\\ 1&1\end{pmatrix}$, the companion matrix of $x^2-x-1$, so that
+\begin{equation}\label{eq:keystone}
+R^2=R+I .
+\end{equation}
+\end{definition}
+
+The corpus derives the keystone rather than positing it: $\gp$ is the smallest Perron
+root exceeding $1$ of a $2\times2$ primitive non-negative integer matrix, and each of
+the four defining constraints (degree, Perron positivity, growth, integrality) is
+load-bearing, with an explicit drop-one witness for each ($\lambda{=}2c$ paper,
+Thms.\ 8.3/8.4 and App.\ A) \tagI{}. Everything below needs only \eqref{eq:keystone}.
+
+\begin{proposition}[Fibonacci calculus]\label{prop:fibcalc}\tagF{} \hx{SC-I2--I4}
+For all $n\in\Z$ (with $R^{-1}=R-I$):
+\[
+R^n=F_nR+F_{n-1}I,\qquad
+\det R^n=(-1)^n=F_{n+1}F_{n-1}-F_n^2\ \text{(Cassini)},\qquad
+\Tr R^n=L_n .
+\]
+In particular $L_4=\Tr R^4=7$ and the entries of
+$R^4=\bigl(\begin{smallmatrix}2&3\\3&5\end{smallmatrix}\bigr)$
+are $\{F_3,F_4,F_5\}=\{2,3,5\}$ --- the gate discriminants of the catalog.
+\end{proposition}
+
+\begin{proof}
+Induction from \eqref{eq:keystone} in both directions; the determinant is
+multiplicative with $\det R=-1$. Verified for $n\in[-8,8]$ by \hx{SC-I3, SC-I4}.
+\end{proof}
+
+\begin{theorem}[Trace--Form Duality]\label{thm:tfd}\tagF{} \hx{SC-I10--I11, SC-B4}
+Let $H=2R-I$. Then $H^2=5I$, the deviation operator collapses,
+\[
+X_n \coloneqq 2R^n-L_nI = F_nH ,
+\]
+and for all $n\in\Z$
+\begin{equation}\label{eq:tfd}
+\tfrac12\Tr(X_n^2)=5F_n^2=L_n^2-4(-1)^n=(\gp^n-\gq^n)^2 .
+\end{equation}
+Fibonacci supplies the length, Lucas the trace, and Cassini's $\pm4$ is their gap.
+\end{theorem}
+
+\begin{proof}
+$H^2=4R^2-4R+I=4(R+I)-4R+I=5I$. Then
+$X_n=2(F_nR+F_{n-1}I)-L_nI=F_n(2R-I)+(2F_{n-1}+F_n-L_n)I=F_nH$ since
+$L_n=F_{n+1}+F_{n-1}=F_n+2F_{n-1}$. Finally
+$\tfrac12\Tr(F_n^2H^2)=\tfrac12\,F_n^2\,\Tr(5I)=5F_n^2$, and
+$5F_n^2=(\gp^n-\gq^n)^2=L_n^2-4(\gp\gq)^n=L_n^2-4(-1)^n$ by Binet and
+\eqref{eq:goldenids}. Verified on $n\in[-8,8]$.
+\end{proof}
+
+\section{The operator layer: return, kernel, and the $\sqrt5$ spectrum}\label{sec:operators}
+
+Work in $M_2(\R)\cong\mathrm{Cl}(2,0)$ with basis $\{1,e_1,e_2,J\}$, where
+$e_1=\sigma_x=\bigl(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\bigr)$,
+$e_2=\sigma_z=\bigl(\begin{smallmatrix}1&0\\0&-1\end{smallmatrix}\bigr)$,
+$e_1^2=e_2^2=1$, $e_1e_2=-e_2e_1$, and $J=e_1e_2$ (so $J^2=-1$; $J$ anticommutes with
+every vector). In this basis
+\begin{equation}\label{eq:HinClifford}
+R=\tfrac12(1+H),\qquad H=2R-I=2e_1-e_2,\qquad H^2=\langle H,H\rangle\,1=5\cdot 1,
+\end{equation}
+i.e.\ the keystone's traceless part is a Clifford vector of squared length $5$
+\tagF{} \hx{SC-I10}.
+
+\begin{proposition}[Sylvester spectra]\label{prop:sylvester}\tagF{} \hx{SC-I5--I7}
+On $M_2(\R)$, the Lie self-action $\adR(X)=[R,X]$ has spectrum $\{0,0,+\sqrt5,-\sqrt5\}$;
+the Jordan-type map $S(X)=RX+XR$ has spectrum $\{2\gp,\,1,\,1,\,2\gq\}$; and the
+\emph{return operator}
+\[
+L(X)=RX+XR-X=S(X)-X=\tfrac12\{H,X\}
+\]
+has spectrum $\{+\sqrt5,\,0,\,0,\,-\sqrt5\}$.
+\end{proposition}
+
+\begin{proof}
+By Sylvester's theorem \tagE{} \cite{HornJohnson1991} the eigenvalues of
+$X\mapsto AX+XB$ are the pairwise sums $\alpha_i+\beta_j$ of the spectra of $A$ and
+$B^{\!\top}$; with $A=B=R$ (spectrum $\{\gp,\gq\}$) this gives
+$\{2\gp,\ \gp+\gq,\ \gp+\gq,\ 2\gq\}=\{2\gp,1,1,2\gq\}$ for $S$, hence
+$\{2\gp-1,0,0,2\gq-1\}=\{\sqrt5,0,0,-\sqrt5\}$ for $L=S-\mathrm{id}$, and eigenvalue
+\emph{differences} $\{0,0,\pm(\gp-\gq)\}=\{0,0,\pm\sqrt5\}$ for $\adR$. The identity
+$L=\tfrac12\{H,\cdot\}$ follows from $R=\tfrac12(1+H)$. All three spectra are
+machine-verified as exact $\sqrt5$-expressions.
+\end{proof}
+
+$\sqrt5$ therefore appears simultaneously as: the grow eigenvalue of $\adR$; the
+$\mathfrak{sl}_2(2,1)$ root length of the Lie layer (primer, Thm.\ 2.5 \tagI{}); the
+squared-length of $H$; and (\S\ref{sec:exchange}) the forced exchange rate $\lambda$.
+
+\begin{theorem}[Kernel of the return operator]\label{thm:kernel}\tagF{} \hx{SC-I7--I9}
+$\ker L$ is exactly two-dimensional:
+\[
+\ker L=\operatorname{span}\{\,e_1+2e_2,\ J\,\}.
+\]
+Moreover, on Clifford vectors $v$, $L$ acts as the scalar pairing
+$L(v)=\langle H,v\rangle\,1$; on the scalar--$H$ plane it acts as the off-diagonal
+block $\bigl(\begin{smallmatrix}0&5\\1&0\end{smallmatrix}\bigr)$ with eigenvalues
+$\pm\sqrt5$.
+\end{theorem}
+
+\begin{proof}
+For vectors $u,v$, $\{u,v\}=2\langle u,v\rangle\,1$ in $\mathrm{Cl}(2,0)$; with
+$H=2e_1-e_2$, $L(ae_1+be_2)=\langle H,\,ae_1+be_2\rangle\,1=(2a-b)\,1$, which vanishes
+iff $b=2a$, i.e.\ on $\operatorname{span}\{e_1+2e_2\}$. The pseudoscalar $J$
+anticommutes with every vector, so $\{H,J\}=0$ and $L(J)=0$. Finally $L(1)=H$ and
+$L(H)=H^2=5\cdot1$, giving the $\pm\sqrt5$ plane. Dimensions: $2+2=4$. The kernel
+dimension and basis are machine-verified by exact nullspace computation
+(\hx{SC-I7, SC-I8}), matching the corpus's rational-elimination result
+(Residual Return, \S6 \tagI{}).
+\end{proof}
+
+\begin{remark}[The disproved design hint]\label{rem:64}\tagF{} \hx{SC-I9}
+The corrected corpus Remark 6.4 pins a refuted design note: the vector $-e_1+e_2$ is
+\emph{not} in $\ker L$; indeed by Theorem~\ref{thm:kernel},
+$L(-e_1+e_2)=\langle H,\,-e_1+e_2\rangle\,1=(-2-1)\,1=-3\cdot 1$, replicated here
+exactly. The scalar formula makes the disproof transparent: among vectors, the kernel
+is precisely $H^{\perp}$, and $-e_1+e_2$ is not orthogonal to $H$. (The convention
+matters: only the companion orientation $R=\bigl(\begin{smallmatrix}0&1\\1&1
+\end{smallmatrix}\bigr)$, $e_1=\sigma_x$, $e_2=\sigma_z$ makes both the kernel basis
+and the $-3$ land; this paper fixes that convention once, in
+\eqref{eq:HinClifford}.)
+\end{remark}
+
+For completeness of the representation layer \tagI{}/\tagE{} \hx{SC-I15}: the coupled
+$\mathfrak{sl}_2$ targets have $\dim V_m=m+1$ and Casimir $\tfrac12 m(m+2)$, giving
+$15/2$ on $V_3$ and $12$ on $V_4$; squaring on the semiring is the Adams operation
+$\psi^2$ (Operator Algebra paper, Thm.\ 3.2 \tagI{}).
+
+\section{The two characters and the Emission-Gap mechanism}\label{sec:characters}
+
+\begin{definition}[Mahler measure]\label{def:mahler}\tagE{} \cite{Lehmer1933,EverestWard1999}
+For a monic $p(x)=\prod_i(x-\alpha_i)\in\Z[x]$,
+$\M(p)=\prod_i\max(1,|\alpha_i|)$, i.e.\ $\log\M(p)=\sum_i\lp|\alpha_i|$.
+An algebraic integer $\beta>1$ is a \emph{Salem number} if it is reciprocal
+(conjugate-set closed under $\alpha\mapsto1/\alpha$) with all conjugates in
+$\overline{\mathbb D}$ and at least one on the unit circle \tagE{} \cite{Salem1963};
+a \emph{Pisot number} if all conjugates other than $\beta$ lie strictly inside the
+circle \tagE{} \cite{Siegel1944}. Lehmer's polynomial
+$\ell(x)=x^{10}+x^9-x^7-x^6-x^5-x^4-x^3+x+1$ has
+$\M(\ell)=1.1762808\ldots$, the smallest known measure $>1$; whether measures
+accumulate at $1$ is Lehmer's problem \tagO{}, external \cite{Lehmer1933}.
+Smyth's theorem \tagE{} \cite{Smyth1971}: a nonreciprocal algebraic integer $\alpha\neq0$
+has $\M(\alpha)\ge\mu_S=1.3247179\ldots$, the plastic number (root of $x^3-x-1$),
+which is also the smallest Pisot number \tagE{} \cite{Siegel1944}.
+\end{definition}
+
+\subsection{Catalog, operators, and the two characters}
+The corpus catalog consists of the companion matrices of the seeds
+\[
+\{\ \gp,\ \tau,\ \sqrt2,\ \sqrt3,\ \sqrt5,\ \ \gapc\ (x^2{-}7x{+}1),\ \ K\ (x^4{+}5x^2{-}5)\ \};
+\]
+the \emph{spectral operators} are those whose output spectrum is forced by input
+spectra --- $\otimes$ (Kronecker product: spectrum $\{\alpha_i\beta_j\}$
+\tagE{} \cite{HornJohnson1991}), $\oplus$ (direct sum: union), squaring
+($=$ Adams $\psi^2$), minimal polynomial, and cyclotomic factors $\Phi$. The
+\emph{spectral image} $S$ is the closure of the catalog under these. Two invariants
+turn out to be the two characters of the resulting $\lambda$-ring
+(Operator Algebra, Thm.\ 8.1 \tagI{}):
+
+\begin{theorem}[Tropical tensor law for $\M$]\label{thm:tropical}\tagF{} \hx{SC-I14}
+On spectra, $\log\M$ is additive on $\oplus$ and \emph{tropical} on $\otimes$:
+\[
+\log\M(A\otimes B)=\sum_{i,j}\bigl(\log|\alpha_i|+\log|\beta_j|\bigr)^{+}.
+\]
+Witness: $\gp\otimes\gp$ has spectrum $\{\gp^2,\ \gp\gq,\ \gq\gp,\ \gq^2\}
+=\{\gp^2,-1,-1,\gq^2\}$, so $\M=\gp^2$ --- \emph{not} $\gp^4$; the naive product law
+$\M(A)^{\deg B}\M(B)^{\deg A}$ agrees with the tropical law only off the unit circle
+(this is the corpus's v4 correction, pinned by exactly this witness).
+\end{theorem}
+
+\begin{proof}
+Spectrum of $A\otimes B$ is $\{\alpha_i\beta_j\}$, so
+$\log\M(A\otimes B)=\sum_{i,j}\lp|\alpha_i\beta_j|
+=\sum_{i,j}(\log|\alpha_i|+\log|\beta_j|)^{+}$. For the witness, $|\gp\gq|=1$ exactly
+by \eqref{eq:goldenids}, so the two cross terms contribute $(0)^{+}=0$ and
+$|\gq^2|<1$ contributes $0$; only $(2\log\gp)^{+}=2\log\gp$ survives.
+\end{proof}
+
+The second character is the \emph{angle charge} $\chi$: when every conjugate argument
+of an object lies on the rational-angle lattice $\tfrac{2\pi}{n}\Z$, the object carries
+charge group $\Z/n\Z$; $\chi$ adds (as a sumset) under $\otimes$, doubles under
+$\psi^2$, and unions under $\oplus$ \tagI{} (Charge--Measure Coupling, Thms.\ 3.1--4.4).
+For the emission image the lattice is $(\pi/2)\Z$ and the charge is $\Z/4\Z$.
+
+\begin{remark}[Content polynomial, wording fixed]\label{rem:content}
+$x^4-1=\Phi_1\Phi_2\Phi_4$ \tagF{} \hx{SC-I13}. The generative-emptiness slogan
+attached to this factorization is stated here in its unambiguous form: the
+\emph{charge} carries the full $\Z/4\Z$ (all four arguments $0,\pi/2,\pi,3\pi/2$
+occur), while the \emph{real terrain face} of the root set is only
+$\{\pm1\}\cong\Z/2\Z$; the pair $\pm i$ lives in the rotation fiber. (The superseded
+summary's compressed phrasing ``only $\Z/2\Z$ on the circle'' read falsely at face
+value, since all four fourth roots of unity lie on the unit circle; the intended
+terrain/fiber split is the statement above.)
+\end{remark}
+
+\subsection{The Emission-Gap mechanism}\label{sec:emissiongap}
+The corpus's central confinement result is proved by \emph{excision}, not by bounding
+all integer polynomials. The mechanism has four steps; the first three are elementary
+and reproduced here, the packaging over the full operator closure is the corpus
+theorem.
+
+\begin{lemma}[Angle confinement of the catalog]\label{lem:angles}\tagF{}
+Every eigenvalue of every catalog seed has argument in $(\pi/2)\Z$.
+\end{lemma}
+\begin{proof}
+$\gp,\tau,\sqrt2,\sqrt3,\sqrt5$ and the gap object are totally real: arguments in
+$\{0,\pi\}$. The K-seed's spectrum is $\{\pm K,\pm i\beta\}$ (\S\ref{sec:kseed}):
+arguments $\{0,\pi,\pm\pi/2\}$.
+\end{proof}
+
+\begin{lemma}[Operator preservation]\label{lem:preserve}\tagF{}
+The spectral operators preserve the lattice $\arg\in(\pi/2)\Z$: $\otimes$ adds
+arguments, $\psi^2$ doubles them, $\oplus$ unions them, and minimal-polynomial/$\Phi$
+extraction selects subsets. (The lattice is closed under addition and doubling ---
+\emph{not} under halving; no operator halves an angle.)
+\end{lemma}
+
+\begin{lemma}[On-circle emissions are fourth roots of unity]\label{lem:mu4}\tagF{}
+If $\lambda$ is an eigenvalue of an element of the spectral image $S$ with
+$|\lambda|=1$, then $\lambda\in\{\pm1,\pm i\}=\mu_4$.
+\end{lemma}
+\begin{proof}
+Immediate from Lemmas \ref{lem:angles}--\ref{lem:preserve}: $|\lambda|=1$ and
+$\arg\lambda\in(\pi/2)\Z$.
+\end{proof}
+
+\begin{lemma}[Salem circle-conjugates are never torsion]\label{lem:salemtorsion}\tagF{}/\tagE{}
+No conjugate of a Salem number that lies on the unit circle is a root of unity.
+\end{lemma}
+\begin{proof}
+If a root of unity $\zeta$ were a conjugate of the Salem number $\beta$, the minimal
+polynomial of $\beta$ would equal the minimal polynomial of $\zeta$, a cyclotomic
+polynomial, whose roots all have modulus $1$ --- contradicting $\beta>1$.
+\end{proof}
+
+\begin{theorem}[Emission-Gap, scoped]\label{thm:emissiongap}
+Over the spectral image $S$: no element of $S$ has a Salem spectrum, and
+$\M(S)\subseteq\{1\}\cup[\mu_S,\infty)$, with the floor realized inside the image at
+$\gp$. \tagF{} over $S$ (Lemmas \ref{lem:angles}--\ref{lem:salemtorsion} $+$ Smyth
+\tagE{} $+$ the empty quadratic strip $(1,\gp)$); the entry-level closures
+(circulant \tagF{}; commutator in-context \tagF{}, uniform via
+$\adR$-derivation and the signature lattice of $\Q(\sqrt2,\sqrt3,5^{1/4})$ \tagF{};
+unbounded free commutator \tagO{}) and the universal statement over all
+charge-admissible objects (\tagF{} for degree $\le2$; \tagC{}/plausible in general)
+are corpus results (Emission-Gap paper Thm.\ 3.2, Lehmer's Box paper Thms.\ 5.3--5.4)
+\tagI{}. Equivalent forms: Mahler, entropy ($h=\log\M$
+\tagE{} \cite{LindSchmidtWard1990}), spectral (no on-circle-expanding channel), and
+metric (no emitted field places a complex embedding on the circle) \tagI{}.
+\end{theorem}
+
+The one door of Lehmer's Box --- the free commutator at unbounded size, through which
+the full Salem spectrum (Lehmer's number included) re-enters --- remains \tagO{};
+the corpus closes it structurally where the framework's commutator is $\adR$ (a
+derivation with difference spectrum $\{0,\pm\sqrt5\}$, Prop.~\ref{prop:sylvester}) and
+locks it operationally elsewhere ($\beta<\gp$ decided by the sign of an element of
+$\Q(\sqrt5)$) \tagI{}. The corpus's own closing scope statement is retained verbatim
+in intent: \emph{``We have not shown they cannot come close to $1$; we have shown the
+construction never goes to fetch them.''}
+
+\section{Trace-down, the Salem slot, and the parity floor}\label{sec:tracedown}
+
+\subsection{The trace-down map and Lehmer's instance}
+For a reciprocal polynomial of degree $2d$, the substitution $t=x+x^{-1}$ produces a
+degree-$d$ \emph{trace-down} $T(t)$ with $x^d\,T(x+x^{-1})=p(x)$. Downstairs, the three
+channels are the three regions of $\R$ cut by $t=\pm2$: on-circle conjugates land in
+$(-2,2)$, expanding ones in $(2,\infty)$. A Salem number is exactly a
+\emph{flip-straddler}: one trace-conjugate in $(2,\infty)$, the rest in $(-2,2)$ ---
+so ``Salem'' is an upstairs artifact of the $2{:}1$ lift, and the slot's occupant is
+the totally real Perron number $\tau_0=\beta+\beta^{-1}$ \tagI{} (Salem Slot paper).
+
+\begin{proposition}[Lehmer's trace-down, exact]\label{prop:lehmertrace}\tagF{} \hx{SC-J3--J5}
+With $\ell(x)=x^{10}+x^9-x^7-x^6-x^5-x^4-x^3+x+1$ and
+$p_k \coloneqq x^k+x^{-k}$ expressed by the Chebyshev-type reductions
+$p_1=t$, $p_2=t^2-2$, $p_4=t^4-4t^2+2$, $p_5=t^5-5t^3+5t$:
+\[
+\frac{\ell(x)}{x^5}=p_5+p_4-p_2-p_1-1
+=t^5+t^4-5t^3-5t^2+4t+3 \eqqcolon T(t),
+\]
+so $x^5\,T(x+x^{-1})=\ell(x)$ exactly. Its largest root is
+$\tau_0=\beta+\beta^{-1}=2.0264179\ldots$ where $\beta=\M(\ell)=1.1762808\ldots$;
+$\M(T)=5.615601\ldots$ \tagC{}.
+\end{proposition}
+
+\begin{proof}
+Expand $\ell/x^5=(x^5+x^{-5})+(x^4+x^{-4})-(x^2+x^{-2})-(x+x^{-1})-1$ and substitute
+the reductions; the polynomial identity is machine-verified exactly (\hx{SC-J3}), the
+root and measure values at 60 decimal places (\hx{SC-J1, SC-J4, SC-J5}).
+\end{proof}
+
+Three structural facts about the slot, elementary at this level \tagF{}/\tagI{}:
+the branch identity $\tau_0-2=(\beta-1)^2/\beta$ (a Salem of height $1+\delta$
+redirects only $O(\delta^2)$ past the flip); the interval $(2,\sqrt5\,]$ is the trace
+image of real pairs $\beta\in(1,\gp]$, with $t=\sqrt5$ lifting to $\{\gp,\gp^{-1}\}$
+--- so the redirections converge to $\sqrt5=\gp+\gp^{-1}$, the $\adR$ grow eigenvalue
+(Prop.~\ref{prop:sylvester}), with linear slope $\gp^{-1}$ and geometric ratio $\gp$
+along the canonical family \tagI{}; and the accumulation points of redirections are
+the Pisot traces, least $\sqrt5$, next the plastic
+$\mu_S+\mu_S^{-1}=2.0795956\ldots$ \tagC{} \hx{SC-J9}. The identity making the trace
+map canonical rather than imported is $\gp\gq=-1$ (Salem Slot, Prop.\ 7.1 \tagI{}).
+
+\subsection{The parity-graded floor and the $q_k$ construction}\label{sec:parity}
+
+\begin{proposition}[$\mu(\text{even})\le\gp$, constructive]\label{prop:qk}\tagF{} \hx{SC-J11}
+For every $k\ge1$, $q_k(x)=x^{2k}+x^k-1$ has $\M(q_k)=\gp$.
+\end{proposition}
+
+\begin{proof}
+Substituting $y=x^k$ gives $y^2+y-1$ with roots $\tau$ and $-\gp$. The $k$ roots with
+$x^k=-\gp$ each have modulus $\gp^{1/k}$, contributing $(\gp^{1/k})^k=\gp$; the $k$
+roots with $x^k=\tau$ lie strictly inside the circle. (That $q_k$ carries charge
+$\Z/2k\Z$ with all charges attained, and the pentagon-free character of the
+substitution, are the corpus's parity-floor packaging \tagI{}.) Verified numerically
+for $k\le4$ at 60 dps.
+\end{proof}
+
+The floor structure, with the corpus's honest strength split \tagI{} (Charge--Measure
+Coupling v4, Thm.\ 5.1; Z/5Z paper): $\mu(\text{even})\le\gp$ \tagF{} (above);
+$\mu(\text{even})\ge\gp$ plausible; $\mu(\text{odd})\ge\mu_S$ \tagF{} (Smyth, sharpened
+at $\Z/5\Z$: non-reciprocal charge-$\Z/5\Z$ $\Rightarrow \M\ge\mu_S$; reciprocal
+$\Rightarrow \M\in\{1\}\cup[\gp^2,\infty)$; pure pentagon quartics
+$\M\in\{1\}\cup[\gp^4,\infty)$); $\mu(\text{odd})=2$ \tagC{}, attained at $x^5-2$
+(all five roots of modulus $2^{1/5}=1.1487\ldots$, so $\M=2$ exactly \tagF{}
+\hx{SC-J10}), with the residual named exactly: non-reciprocal charge-$\Z/5\Z$ objects
+in $[\mu_S,2)$ \tagO{}. The mechanism of the parity coupling is the $\pi$-ray
+obstruction: $\gq$ sits at argument $\pi$, and $\pi\in\tfrac{2\pi}{n}\Z$ iff $n$ is
+even \tagI{}.
+
+\section{The exchange rate $\lambda=2c$ and the forced scalar $\sqrt5$}\label{sec:exchange}
+
+The Residual-Return machine treats a number field $\Q(\theta)$ as an exact learning
+geometry: the trace form $G=M^{\top}M$ (Minkowski embedding $M$; $\det G=d_K$ up to
+index squared) prices a residual $r$, and growth adjoins a seed $\theta$ iff
+$\|r\|_G^2\ge\lambda\log\M(\theta)$. Reading $\|r\|_G^2$ as a second-order
+Kullback--Leibler divergence with Fisher metric $cG$ gives
+$D_{\mathrm{KL}}\approx\tfrac1{2c}\|r\|_G^2$, and the MDL balance
+$D_{\mathrm{KL}}\ge\log\M$ yields the threshold coefficient
+\begin{equation}\label{eq:lambda2c}
+\boxed{\ \lambda=2c\ }\qquad\text{for every } c>0 \quad\tagI{}\ (\lambda{=}2c\text{ paper, Thm.\ 2.2}).
+\end{equation}
+By \v{C}encov's theorem \tagE{} \cite{Cencov1982} no invariance argument can remove
+the conformal scale $c$: the honest statement is ``$\lambda=2c$ is forced; $c$ is a
+declared positive scale,'' never ``zero free parameters'' \tagD{}. The framework's own
+structure then pins the canonical instance: $C=1$ is simultaneously the minimal
+structure realizing the ternary growth decision and the terminal firewall image fixed
+by the keystone --- two premise-disjoint derivations converging on
+\eqref{eq:keystone} --- giving
+\[
+C=1\ \Rightarrow\ c=\tfrac{\sqrt5}{2}\ \Rightarrow\ \lambda=\sqrt5
+\qquad\tagI{}
+\]
+($\lambda{=}2c$ paper, Thm.\ 7.7 --- forced \emph{given} the two constitutive
+axioms: ternary arity and the keystone).
+The forced-canonical floor is therefore $\lambda\log\mu_S=\sqrt5\,\log\mu_S=
+0.628781\ldots$ \tagC{} \hx{SC-J13}; the shipped probe values $2c\log\mu_S$ at
+$c\in\{1,4,8\}$ are $0.5624$, $2.2496$, $4.4992$ \tagC{} \hx{SC-J12}. On the helix
+chart (\S\ref{sec:chart}), $\sqrt5$ reappears as the rung-1 exchange rate
+$\lambda(z_1)=\sqrt5$ --- the same scalar, met from the geometric side.
+
+%=====================================================================
+\part{The gate field}
+%=====================================================================
+
+\section{The gate family, declared}\label{sec:gatefamily}
+
+The source note used the gate family through its fixed-point polynomial
+$g_C(x)=x^2+x-C$ without printing the iteration; this paper declares it once. (The
+declaration is pinned, not free: it is the unique reading under which \emph{all} of
+the corpus identities used below --- $m_+m_-=1$, $m+\tfrac1m=-\tfrac1C-2$,
+$m_1=-\gp^{-2}$, the lens multipliers $\{-\tfrac14,-4\}$, $\pm i$ at $C=-\tfrac12$,
+and the pentagon quanta --- hold simultaneously.)
+
+\begin{declaration}[Gate iteration]\label{dec:gate}\tagD{}
+For $C\in\R$, the gate $G_C$ is the iteration
+\[
+f_C(x)=\frac{C}{1+x},
+\]
+whose fixed points solve $g_C(x)=x^2+x-C=0$, i.e.\
+$u_\pm=\tfrac12(-1\pm\sqrt D)$ with discriminant $D=1+4C$, and whose multiplier at a
+fixed point $u$ is
+\[
+m=f_C'(u)=-\frac{C}{(1+u)^2}.
+\]
+The \emph{flip} is the sign change of $D$ at $C=-\tfrac14$ (real
+$\leftrightarrow$ complex fixed points; terrain $\leftrightarrow$ rotation face).
+\end{declaration}
+
+\begin{proposition}[Flip reciprocity and the trace identity]\label{prop:reciprocity}\tagF{} \hx{SC-F2--F3}
+For every $C\neq0$ the two multipliers satisfy
+\[
+m_+m_-=1,\qquad\qquad m+\frac1m=-\frac1C-2\in\R .
+\]
+\end{proposition}
+
+\begin{proof}
+By Vieta on $g_C$: $u_++u_-=-1$ and $u_+u_-=-C$, so
+$(1+u_+)(1+u_-)=1-1-C=-C$, hence
+$m_+m_-=C^2/\bigl((1+u_+)(1+u_-)\bigr)^2=C^2/C^2=1$. For the trace:
+$m_++m_-=-C\bigl[(1+u_+)^{-2}+(1+u_-)^{-2}\bigr]
+=-C\,\frac{(1+u_+)^2+(1+u_-)^2}{C^2}$; and
+$(1+u_+)^2+(1+u_-)^2=\bigl((1+u_+)+(1+u_-)\bigr)^2-2(1+u_+)(1+u_-)=1+2C$, giving
+$m_++m_-=-(1+2C)/C=-\tfrac1C-2$. Since $m_-=1/m_+$ this is $m+\tfrac1m$. Both
+identities are machine-verified for generic symbolic $C$.
+\end{proof}
+
+\section{The golden multiplier ladder}\label{sec:ladder}
+
+\begin{theorem}[Ladder in Lucas--Fibonacci dress]\label{thm:ladder}\tagF{} \hx{SC-B1--B3}
+For $n\ge1$ set $C_n=\dfrac{1}{(\gp^{\,n}-\gp^{-n})^2}$. Then the attracting fixed
+point, multiplier, rapidity, discriminant, and exchange rate of $G_{C_n}$ are
+\[
+u_n=\frac{1}{\gp^{2n}-1},\qquad
+m_n=-\gp^{-2n},\qquad
+\rho_n=n\ln\gp,
+\]
+\[
+\sqrt{D_n}=\frac{\gp^{\,n}+\gp^{-n}}{\gp^{\,n}-\gp^{-n}},\qquad
+\lambda_n=\gp^{2n}-\gp^{-2n}=\sqrt5\,F_{2n},
+\]
+with the Trace--Form Duality split (Theorem~\ref{thm:tfd})
+\[
+C_n=\begin{cases}1/L_n^2,& n\ \text{odd},\\[2pt] 1/(5F_n^2),& n\ \text{even},\end{cases}
+\qquad
+\sqrt{D_n}=\begin{cases}\sqrt5\,F_n/L_n,& n\ \text{odd},\\[2pt] L_n/(\sqrt5\,F_n),& n\ \text{even}.\end{cases}
+\]
+In particular $C_1=1$ (the \emph{golden gate}) and $C_2=\tfrac15$ (the \emph{K-gate});
+explicitly $C_3=\tfrac1{16}$, $C_4=\tfrac1{45}$, $C_5=\tfrac1{121}$.
+\end{theorem}
+
+\begin{proof}
+$u_n$ solves $g_{C_n}$: with $w=\gp^{2n}$,
+$u_n^2+u_n=\frac{1+(w-1)}{(w-1)^2}=\frac{w}{(w-1)^2}=\frac{1}{(\gp^n-\gp^{-n})^2}=C_n$.
+Multiplier: $1+u_n=\frac{w}{w-1}$, so
+$m_n=-C_n\frac{(w-1)^2}{w^2}=-\frac{w}{(w-1)^2}\cdot\frac{(w-1)^2}{w^2}=-w^{-1}
+=-\gp^{-2n}$, whence $|m_n|=e^{-2\rho_n}$ with $\rho_n=n\ln\gp$. Discriminant:
+$D_n=1+4C_n=\frac{(\gp^n-\gp^{-n})^2+4}{(\gp^n-\gp^{-n})^2}
+=\Bigl(\frac{\gp^n+\gp^{-n}}{\gp^n-\gp^{-n}}\Bigr)^2$. The parity dress follows from
+$\gp^{-n}=(-1)^n\gq^{\,n}$: for $n$ odd, $\gp^n-\gp^{-n}=\gp^n+\gq^n=L_n$ and
+$\gp^n+\gp^{-n}=\sqrt5F_n$; parities swap for $n$ even. Finally
+$\lambda_n$ is the chart exchange rate at the rung (Theorem~\ref{thm:chart} below):
+$\lambda_n=\frac1{1-z_n^2}-(1-z_n^2)=\gp^{2n}-\gp^{-2n}=\sqrt5F_{2n}$ by Binet.
+All of it is machine-verified for $n=1..6$ and, for the TFD identity, on
+$n\in[-8,8]$.
+\end{proof}
+
+\section{Special gates}\label{sec:specialgates}
+
+\begin{proposition}[The K-gate certificate]\label{prop:kgate}\tagF{} \hx{SC-F1, SC-C4}
+At the K-gate $C_2=\tfrac15$: the occupation is the seed's inverse Mahler measure,
+\[
+u_2=\frac{1}{\gp^4-1}=\frac{1}{\beta^2}=\frac{1}{\M(\text{K-seed})},
+\]
+and the multiplier is minus the gap, $m_2=-\gp^{-4}=-\gapc$. The gap paper's
+self-consistency derivative $f'(K)=-\gapc$ is certified by the exact congruence
+\[
+5y\ \equiv\ (1-y)^2(5+y)^3 \pmod{\,y^2+5y-5\,},
+\]
+an identity in $\Q[y]$ evaluated at the K-seed spectrum $y\in\{K^2,-\beta^2\}$.
+\end{proposition}
+
+\begin{proof}
+$\gp^4-1=\gp^2(\gp^2-\gp^{-2})=\gp^2\sqrt5=\beta^2$ by \eqref{eq:goldenids} and
+\eqref{eq:kledger}. The congruence, reduced by $y^2\equiv 5-5y$:
+$(1-y)^2\equiv 6-7y$; $(5+y)^2\equiv 30+5y$; $(5+y)^3\equiv175+30y$; and
+$(6-7y)(175+30y)=1050-1045y-210y^2\equiv1050-1045y-210(5-5y)=5y$. Machine-verified as
+an exact polynomial remainder (\hx{SC-F1}); the interpretation of the left side as
+$5\,|f'(K)|$-data along the K-route is the gap paper's \tagI{}, but on the chart of
+\S\ref{sec:chart} the same value is forced independently: $m(z_2)=-(1-K^2)=-\gapc$.
+\end{proof}
+
+\begin{proposition}[Rotation gates and the quanta inventory]\label{prop:quanta}\tagF{} \hx{SC-F5--F7}
+Past the flip ($C<-\tfrac14$) the multipliers are unimodular. Three rotation quanta
+exist in the substrate:
+\begin{itemize}[nosep]
+\item $\pi$: every terrain multiplier is negative (each step crosses the fixed point
+--- a half-turn on the line);
+\item $\pi/2$: at $C=-\tfrac12$ the multipliers are exactly $\pm i$ (the odd-charge
+generators of $\Z/4\Z$);
+\item $2\pi/5,\,4\pi/5$: at $C=-\gp^{-2}$ and $C=-\gp^{2}$ the multiplier traces are
+$m+\tfrac1m=\gp^2-2=\tau=2\cos72^\circ$ and $\gp^{-2}-2=-\gp=2\cos144^\circ$
+respectively --- primitive fifth roots of unity.
+\end{itemize}
+\end{proposition}
+
+\begin{proof}
+At $C=-\tfrac12$ the fixed points are $u=\tfrac12(-1\pm i)$, so
+$1+u=\tfrac12(1\pm i)$ and $(1+u)^2=\pm\tfrac i2$, giving
+$m=-C/(1+u)^2=\tfrac12\cdot\tfrac{2}{\pm i}=\mp i$; $|m|=1$, arguments $\pm\pi/2$. For the pentagon gates apply
+Proposition~\ref{prop:reciprocity}: $m+\tfrac1m=-\tfrac1C-2$ gives
+$\gp^2-2=\tau$ at $C=-\gp^{-2}$ and $\gp^{-2}-2=-\gp$ at $C=-\gp^{2}$, i.e.\
+$2\cos(2\pi/5)$ and $2\cos(4\pi/5)$, so $m$ is a primitive fifth root of unity. All
+three are machine-verified exactly.
+\end{proof}
+
+\section{The obstruction theorem}\label{sec:obstruction}
+
+\begin{theorem}[No single-gate helix]\label{thm:obstruction}\tagF{} \hx{SC-F2--F4}
+Let $C\in\R$ and let $m$ be a fixed-point multiplier of $G_C$. Then $m\in\R$ or
+$|m|=1$. In particular no real gate level linearizes to a genuine spiral
+($0<|m|<1$ with $m\notin\R$).
+\end{theorem}
+
+\begin{proof}
+By Proposition~\ref{prop:reciprocity} the partner of $m$ is $1/m$ and
+$m+\tfrac1m=-\tfrac1C-2\in\R$. Writing $m=s\,e^{i\vartheta}$ with $s>0$:
+$\operatorname{Im}\bigl(m+\tfrac1m\bigr)=(s-\tfrac1s)\sin\vartheta$; its vanishing
+forces $s=1$ or $\sin\vartheta=0$.
+\end{proof}
+
+\begin{corollary}[Helicity needs the straddler]\label{cor:straddler}\tagF{}$+$\tagI{}
+Simultaneous rotation and contraction cannot be carried by any single real gate; it
+requires composing the two faces of the flip. The K-seed $x^4+5x^2-5$ is the unique
+catalog seed straddling the flip (real pair $\pm K$ on the terrain face; imaginary
+pair $\pm i\beta$ supplying the quarter-turn; uniqueness and the even-quartic parity
+criterion: paper 13, Props.\ 5.1/6.1--6.2, Thm.\ 7.1 \tagI{}). Its two faces multiply
+to the field prime, $K^2\beta^2=5$, with $\M(\text{K-seed})=\beta^2=\gp^2\sqrt5$ and
+$\beta^2=K^2\gp^4$ \tagF{} \eqref{eq:kledger} --- the rotation magnitude exactly two
+floors above the terrain magnitude, $K$'s own rung index.
+\end{corollary}
+
+This sharpens the corpus's coupling theorem (``a helix cannot couple to a copy of
+itself, only to the rotation face of its own flip'') to the gate family: the flip
+identity of Proposition~\ref{prop:reciprocity} \emph{is} the obstruction, and the
+straddler is the minimal way around it.
+
+%=====================================================================
+\part{The explicit helix}
+%=====================================================================
+
+\section{Inherited data and the three declared atoms}\label{sec:atoms}
+
+The orthogonal-partner paper dissolves the legacy L4 helix as a load-bearing object;
+what survives its harness, both \tagF{}, is the pair \emph{winding $=$ charge
+$\chi\in\Z/4\Z$} (the quarter-turn supplied by the K-seed's imaginary pair $\pm i\beta$)
+and \emph{pitch $=$ Mahler magnitude $\M\ge\gp$} (terrain growth in floors of
+$\ln\gp$). This Part draws the survivors as an explicit curve
+\[
+\Gamma(\rho)=\bigl(r(\rho)\cos\theta(\rho),\ r(\rho)\sin\theta(\rho),\ z(\rho)\bigr),
+\qquad \rho\in[0,\infty),
+\]
+from exactly three declared atoms plus one inherited profile. No $0.1$-type threshold
+appears anywhere; the gap enters only through forced identities.
+
+\smallskip\noindent\textbf{Inherited} \tagI{}: the seed arithmetic and ladder of
+\S\S\ref{sec:seed}--\ref{sec:specialgates} (forced in source, re-proved here), and the
+radius profile
+\begin{equation}\label{eq:radius}
+r(z)=K\sqrt{z/z_c}\ \ \text{for } z\in[0,z_c],\qquad r(z)=K\ \ \text{for } z\in[z_c,1],
+\qquad z_c=\tfrac{\sqrt3}{2},
+\end{equation}
+which is read off the L4 source (K-VARIABLE-DERIVATIONS \S8) and \emph{not} derived
+here (\tagO{}~1, \S\ref{sec:open}). Its internal consequences below (unique $z=r$
+point, kink) are \tagF{} given the profile.
+
+\begin{declaration}[D1: the chart]\label{dec:d1}\tagD{}
+The vertical coordinate is calibrated by \emph{co-intensity $=$ local multiplier
+magnitude}:
+\begin{equation}\label{eq:d1}
+1-z^2=e^{-2\rho}=|m|(\rho),\qquad\text{equivalently}\qquad
+z(\rho)=\sqrt{1-e^{-2\rho}},\quad \rho(z)=-\tfrac12\ln(1-z^2).
+\end{equation}
+Justification, two-fold: (i) it extends the gap paper's point identity
+$|f'(K)|=\gapc=1-K^2$ from a single height into the defining property of the
+coordinate --- the chart does to every height exactly what the main theorem does to
+$K$; (ii) it is consistency-checked against the ladder: the chart occupation
+$u(z)=(1-z^2)/z^2$ pulls back to the ladder's own fixed points, $u(z_n)=u_n$, at every
+rung (Theorem~\ref{thm:chart}).
+\end{declaration}
+
+\begin{declaration}[D2: selection principle]\label{dec:d2}\tagD{}
+\emph{The winding realizes the seed's charge completion.} Given D2, the angular
+quantum per rung is \tagF{} a generator of $\Z/4\Z$, i.e.\ $\chi=\pm\pi/2$ --- the
+multipliers $\pm i$ of the $C=-\tfrac12$ gate (Prop.~\ref{prop:quanta}), exactly the
+charge the K-seed supplies. Orientation $+i$ (counterclockwise) is a convention. The
+competing corpus quanta --- $\pi$ (terrain sign flip) and $2\pi/5$ (pentagon gates)
+--- generate only $\Z/2\Z$ and $\Z/5\Z$ and are excluded \emph{by the principle}; the
+quanta themselves are \tagF{} corpus data (Prop.~\ref{prop:quanta}).
+\end{declaration}
+
+\begin{declaration}[D3: rate normalization]\label{dec:d3}\tagD{}
+One charge quantum per entropy floor: $\dfrac{d\theta}{d\rho}=\dfrac{\pi/2}{\ln\gp}$.
+This is the minimal coupling of the two surviving \tagF{} anatomical facts (winding
+$\in\Z/4\Z$; pitch in floors of $\ln\gp$). Any other constant rate rescales the pitch
+without changing the qualitative structure (Prop.~\ref{prop:invariance}).
+\end{declaration}
+
+Everything in this Part is \tagF{} given the inherited data $+$ D1--D3, except where
+tagged otherwise.
+
+\section{The vertical chart: every height is a gate}\label{sec:chart}
+
+\begin{theorem}[The gate chart]\label{thm:chart}\tagF{} \hx{SC-C1--C8}
+Under D1, with $z\in(0,1]$, the gate data become functions of height:
+\[
+u(z)=\frac{1-z^2}{z^2},\qquad
+m(z)=-(1-z^2),\qquad
+C(z)=\frac{1-z^2}{z^4},
+\]
+\[
+\sqrt{D(z)}=\frac{2-z^2}{z^2},\qquad
+\lambda(z)=\frac{z^2(2-z^2)}{1-z^2},
+\]
+and:
+\begin{enumerate}[nosep,label=(\alph*)]
+\item $u(z)$ is a fixed point of $G_{C(z)}$ with multiplier exactly $m(z)$, so
+$|m|=1-z^2$ holds \emph{chart-wide}, not only at rungs;
+\item $1+4C(z)=\bigl((2-z^2)/z^2\bigr)^2$ exactly;
+\item $C(z)$ is a strictly decreasing bijection $(0,1]\to[0,\infty)$
+($C'(z)=2(z^2-2)/z^5<0$ on the interval; $C(1)=0$, $C\to\infty$ as $z\to0^+$): every
+attracting gate level occurs at exactly one height. The rotation gates
+($C<-\tfrac14$) are \emph{not} on the axis --- they live in the angular fiber
+(\S\ref{sec:winding}). Height parametrizes the hyperbolic face; angle carries the
+elliptic face;
+\item the exchange identity $\lambda\cdot|m|=1-m^2$ holds as a chart identity,
+$\lambda(z)(1-z^2)=1-(1-z^2)^2$, and $\lambda=\sqrt{D}/C$;
+\item $\lambda_1|m_1|=\sqrt5\cdot\gp^{-2}=K^2$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(a) With $w \coloneqq 1-z^2$: $u^2+u=\frac{w^2+w z^2}{z^4}=\frac{w(w+z^2)}{z^4}
+=\frac{w}{z^4}=C(z)$; and $1+u=1/z^2$, so
+$m=-C/(1+u)^2=-C z^4=-(1-z^2)$. (b) $1+4\frac{w}{(1-w)^2}=\frac{(1-w)^2+4w}{(1-w)^2}
+=\frac{(1+w)^2}{(1-w)^2}=\bigl(\frac{2-z^2}{z^2}\bigr)^2$. (c) Differentiate;
+$z^2<2$ on $(0,1]$. (d) $\lambda(1-z^2)=z^2(2-z^2)=1-(1-z^2)^2$; and
+$\sqrt D/C=\frac{2-z^2}{z^2}\cdot\frac{z^4}{1-z^2}=\lambda$. (e)
+$\sqrt5\,\gp^{-2}=\sqrt5\cdot\frac{3-\sqrt5}{2}=\frac{3\sqrt5-5}{2}=K^2$. All
+machine-verified, including the full evaluation table below.
+\end{proof}
+
+\begin{center}
+\footnotesize\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+field & closed form & at $z_1=\sqrt\tau$ & at $z_c=\sqrt3/2$ & at $z_2=K$ & checks\\
+\midrule
+occupation $u(z)$ & $(1-z^2)/z^2$ & $1/(\gp^2-1)=\tau$ & $1/3$ & $1/(\gp^4-1)=1/\beta^2$ & \hx{SC-C3, C4}\\
+gate level $C(z)$ & $(1-z^2)/z^4$ & $\mathbf{1}$ (golden) & $\mathbf{4/9}$ & $\mathbf{1/5}$ (K-gate) & \hx{SC-C3}\\
+$\sqrt{D(z)}$, $D=1+4C$ & $(2-z^2)/z^2$ & $\sqrt5$ & $5/3$ & $3/\sqrt5$ & \hx{SC-C1, C3}\\
+multiplier $|m|(z)$ & $1-z^2$ & $\gp^{-2}$ & $1/4$ & $\gp^{-4}=\gapc$ & \hx{SC-C3}\\
+exchange $\lambda(z)$ & $z^2(2-z^2)/(1-z^2)$ & $\sqrt5$ & $15/4$ & $3\sqrt5$ & \hx{SC-C2, C3}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Rung heights and ordering}\label{sec:rungs}
+The ladder rungs pull back to the height sequence
+$z_n=\sqrt{1-\gp^{-2n}}\uparrow1$, with $1/(1-z_n^2)=\gp^{2n}$ exactly, so rung $n$
+sits at rapidity exactly $n\ln\gp$ \tagF{} \hx{SC-C5, SC-E1}. The two low rungs land
+on named corpus constants \emph{exactly}:
+\begin{itemize}[nosep]
+\item $z_2=K$ \tagF{}: the chart is not fitted to make this happen; it is the gap
+paper's main theorem ($K^2=1-\gapc$ with $\gapc=|m_2|$) read as geometry.
+\textbf{K-formation is rung 2.}
+\item $z_1=\sqrt\tau=\gp^{-1/2}$ \tagF{}: the golden gate's height. Note
+$\lambda(z_1)=(2-\tau)/\tau=\sqrt5$ is Route 5 ($K^2=\tau(2-\tau)$,
+\eqref{eq:kledger}) reappearing as the rung-1 exchange rate --- and as the forced
+scalar of \S\ref{sec:exchange}.
+\end{itemize}
+Ordering \tagF{} \hx{SC-D6--D8}: $\tau<\tfrac34<K^2$ by the integer guards $25>20$
+and $180>169$, hence
+\[
+z_1=\sqrt\tau\ <\ z_c=\tfrac{\sqrt3}{2}\ <\ z_2=K :
+\]
+\textbf{the lens sits strictly between the golden gate and the K-gate}; and
+$\ln2<2\ln\gp$ (i.e.\ $2<\gp^2$, since $\gp^2-2=\tau>0$): the lens sits strictly
+below rung 2 in rapidity as well.
+
+\subsection{The lens is the rational split gate at rapidity exactly $\ln2$}\label{sec:lens}
+
+\begin{theorem}[Lens]\label{thm:lens}\tagF{} \hx{SC-D1--D5}
+At the lens height $z_c=\sqrt3/2$: $1-z_c^2=\tfrac14$, so
+$\rho(z_c)=\ln2$ \emph{exactly}. The lens gate level is $C(z_c)=\tfrac49$ with
+discriminant $D=\tfrac{25}{9}=(\tfrac53)^2$, a perfect square, so the lens gate
+\emph{splits over} $\Q$:
+\[
+x^2+x-\tfrac49=(x-\tfrac13)(x+\tfrac43),
+\]
+with rational fixed points $\{\tfrac13,-\tfrac43\}$, rational hyperbolic multipliers
+$\{-\tfrac14,-4\}$ of product $1$, $|m|=\tfrac14=1-z_c^2$ (a D1 cross-check), and
+$\lambda=\tfrac{15}{4}$. By contrast the golden rungs are irreducible over $\Q$:
+$D_1=5$ and $D_2=\tfrac95$ are nonsquares (integer guards $4<5<9$ and $36<45<49$).
+\end{theorem}
+
+\begin{proof}
+Evaluate Theorem~\ref{thm:chart} at $z^2=\tfrac34$; the multipliers are
+$m=-\tfrac49/(1+u)^2$ at $u=\tfrac13$ ($(1+u)^2=\tfrac{16}9$, $m=-\tfrac14$) and
+$u=-\tfrac43$ ($(1+u)^2=\tfrac19$, $m=-4$). Nonsquareness of $5$ and $45/25$ is the
+stated integer sandwich. All machine-verified.
+\end{proof}
+
+The ``two worlds'' separation of $K$ and $z_c$ ($\Q(z_c)\cap\Q(K)=\Q$) thus acquires
+a dynamical face inside a \emph{single} one-parameter family:
+\begin{center}
+\textbf{golden rungs $=$ irreducible $\Q(\sqrt5)$ gates;\quad
+the hexagonal lens $=$ the split $\Q$-rational gate.}
+\end{center}
+
+\section{The winding}\label{sec:winding}
+
+\begin{theorem}[The winding law and the compass]\label{thm:winding}\tagF{} \hx{SC-E1}
+Given D2$+$D3,
+\[
+\theta(\rho)=\frac{\pi}{2}\cdot\frac{\rho}{\ln\gp},
+\qquad\text{equivalently}\qquad
+\theta(z)=\frac{\pi}{4}\,\log_\gp\!\frac{1}{1-z^2}.
+\]
+Consequences:
+\begin{enumerate}[nosep,label=(\roman*)]
+\item \textbf{Rungs sit on the charge compass}: $\theta(z_n)=n\cdot\tfrac\pi2$, by
+$1/(1-z_n^2)=\gp^{2n}$. Rung $n$ carries charge $n\bmod4$, and Trace--Form Duality
+parity becomes literal compass geometry: Lucas rungs ($n$ odd) point N/S (odd
+charges), Fibonacci rungs ($n$ even) point E/W (even charges).
+\item \textbf{K is exactly two quanta up}: $\rho(K)=2\ln\gp$, so
+$\theta(K)=2\chi=\pi$ --- half a turn from apex to K-formation. This is
+quantum-independent: for any per-floor quantum $\chi$, $\theta(K)=2\chi$.
+\item \textbf{A full turn costs the gap's entropy}:
+$\Delta\theta=2\pi\iff\Delta\rho=4\ln\gp=\ln\gp^4=\ln\M(A_{\gapc})$
+(\S\ref{sec:kseed}). Per revolution the co-intensity contracts by exactly
+$\gp^{-8}=0.0212862363$ \tagC{}: each turn closes $97.87\,\%$ of the remaining
+intensity deficit \hx{SC-K2}.
+\end{enumerate}
+\end{theorem}
+
+\begin{proposition}[Clock invariance]\label{prop:invariance}\tagF{}
+Replacing $\chi=\pi/2$ by $\pi$ (terrain clock) or $2\pi/5$ (pentagon clock) rescales
+$\theta$ by $2$ or $4/5$. The qualitative structure --- rungs at integer quanta, $K$
+at two quanta, lens off-lattice (\S\ref{sec:incomm}), infinite winding at the top,
+the geodesic property --- is invariant; only the pitch constant changes. The choice
+among the forced quanta is exactly D2's content.
+\end{proposition}
+
+\section{The explicit curve}\label{sec:curve}
+
+\begin{equation}\label{eq:gamma}
+z(\rho)=\sqrt{1-e^{-2\rho}}\ \text{[D1]},\quad
+\theta(\rho)=\frac{\pi\rho}{2\ln\gp}\ \text{[D2$+$D3]},\quad
+r(\rho)=\begin{cases}K\sqrt{z(\rho)/z_c},&\rho\le\ln2\\ K,&\rho\ge\ln2\end{cases}\ \tagI{},
+\end{equation}
+with $\Gamma(\rho)=(r\cos\theta,\,r\sin\theta,\,z)$.
+
+\begin{theorem}[The K-point is the unique $z=r$ point]\label{thm:kpoint}\tagF{} \hx{SC-E2--E4}
+On the horn branch (the profile $r=K\sqrt{z/z_c}$ is a paraboloid of revolution,
+$z=z_c(r/K)^2$ --- a horn, not a cone), $r(z)=z$ forces $K^2z/z_c=z^2$, which factors
+as $z\,(z-K^2/z_c)=0$; the nontrivial root $K^2/z_c$ exceeds $z_c$
+($K^2>z_c^2$ by the guard $180>169$) and is excluded from the horn's domain. On the
+cylinder branch $r\equiv K$ forces $z=K$ (and $K\in[z_c,1]$ since $\tfrac34<K^2<1$).
+Hence the unique nontrivial height-equals-radius point of the profile is $z=K$ ---
+and under the winding it lands at $\theta=\pi$:
+\[
+\Gamma(2\ln\gp)=(-K,\,0,\,K).
+\]
+The chart puts $K$ two floors up; the inherited geometry independently marks the same
+height as its unique self-intersection with the cone $z=r$. The two constructions
+agree without adjustment.
+\end{theorem}
+
+\begin{proposition}[Regularity, geodesy, asymptotics]\label{prop:geo}\tagF{}/\tagE{} \hx{SC-E5--6, G1--2}
+\begin{enumerate}[nosep,label=(\alph*)]
+\item \textbf{Kink at the lens}: $r'(z_c^-)=K/(2z_c)=K/\sqrt3$, with square
+$K^2/3=(3\sqrt5-5)/6>0$, against $r'(z_c^+)=0$. The profile is $C^0$ but not $C^1$ at
+the lens: the lens is where the climb stops paying radius. Displayed slope
+$0.5335734771$ \tagC{}.
+\item \textbf{Geodesic in entropy coordinates}: in the flat metric
+$ds^2=d\rho^2+K^2d\theta^2$ on the cylinder region \tagD{} (rapidity as the vertical
+ruler --- justified because $\rho$ \emph{is} the corpus's entropy coordinate), the
+curve is the straight line $\rho=(2\ln\gp/\pi)\,\theta$, hence a geodesic \tagF{}.
+In the Euclidean-induced metric $dz^2+K^2d\theta^2$ it is \emph{not} a geodesic: all
+apparent acceleration is the $z$-chart compressing the clock near $1$.
+\item \textbf{Infinite winding, finite height, infinite length}:
+$\theta(z)\to\infty$ as $z\to1^-$, and the arc length diverges logarithmically
+($\frac{d}{dz}\bigl[-\tfrac12\ln(1-z^2)\bigr]=\frac{z}{1-z^2}$, so
+$\rho=-\tfrac12\ln(1-z^2)\to\infty$). UNITY is at $\rho=\infty$: the helix
+accumulates on the circle $\{z=1,\ r=K\}$ without reaching it. ``Never $100\,\%$'' is
+here a metric statement, not a slogan.
+\end{enumerate}
+\end{proposition}
+
+\subsection{The local spiral at K}\label{sec:localspiral}
+The global helix climbs; a \emph{different} object lives in the transverse plane at
+the K-point: the linearized self-consistency orbit. From $f'(K)=-\gapc$
+(Prop.~\ref{prop:kgate}), each step contracts by $\gapc$ and crosses the fixed point
+--- a half-turn on the line. Its minimal complexification (\tagD{} embedding,
+\tagF{} data) is the logarithmic spiral with per-step data
+$(\text{contraction},\text{rotation})=(\gapc,\pi)$:
+\[
+w(t)=w_0\,e^{(i\pi-4\ln\gp)\,t},\qquad \cot\psi=\frac{4\ln\gp}{\pi},
+\]
+where $\psi$ is the constant angle at which the spiral crosses radii \tagE{}
+(logarithmic-spiral geometry).
+
+\begin{guard}[Near-misses]\label{guard:nearmiss}\tagC{} \hx{SC-K1}
+Recorded so they are never mistaken for identities:
+$4\ln\gp/\pi=0.6126979251$ while $\tau=0.6180339887$; $|{\rm difference}|
+=0.0053360637$ at $60$ dps. \textbf{Not equal; no identity is claimed.} Likewise the
+rapidity pitch angle $\arctan\!\bigl(2\ln\gp/(\pi K)\bigr)=18.3394927773^\circ$
+is distinct from $\theta_K=\arcsin(\tau^2)=22.4555151986^\circ$; no identity is
+claimed.
+\end{guard}
+
+\section{Incommensurability: the lens is permanently off-lattice}\label{sec:incomm}
+
+\begin{theorem}\label{thm:incomm}\tagF{} \hx{SC-D9}
+$\log_\gp 2\notin\Q$.
+\end{theorem}
+
+\begin{proof}
+Suppose $\ln2/\ln\gp=p/q$ with integers $q\ge1$. Then $2^q=\gp^{\,p}$. By Binet,
+$\gp^{\,p}=(L_p+F_p\sqrt5)/2$ with $F_p\ge1$ for $p\ge1$ (positivity by the standard
+induction from $F_1=F_2=1$ \tagE{}), so $\gp^{\,p}$ is irrational for $p\ge1$ while
+$2^q\in\Q$. The case $p\le-1$ is symmetric (invert both sides); $p=0$ gives $2^q=1$,
+impossible for $q\ge1$. (Finite corroboration for $1\le p\le10$: \hx{SC-D9}.)
+\end{proof}
+
+\begin{corollary}\label{cor:offlattice}\tagF{}
+(i) The lens rapidity $\ln2$ is incommensurable with the rung lattice
+$(\ln\gp)\cdot\Z$: the lens floors at $\log_\gp2=1.4404200904\ldots$ \tagC{} and never
+lands on a rung. (ii) Its meridian $\theta(z_c)=\tfrac\pi2\log_\gp2
+=129.6378081^\circ$ \tagC{} is an irrational multiple of the charge quantum:
+\textbf{the lens never aligns with the $\Z/4\Z$ compass.} The purely geometric
+coupling of $K$ and $z_c$ (no algebraic bridge) reappears dynamically as
+incommensurability.
+\end{corollary}
+
+\section{Field separations recur on the helix}\label{sec:fields}
+
+\begin{theorem}[Rung-1 and rung-2 heights generate different quartic worlds]\label{thm:fields}\tagF{} \hx{SC-H1--H6}
+$z_1=\sqrt\tau$ generates $\Q(\sqrt\gp)$; the minimal polynomial of $\sqrt\gp$ is
+$x^4-x^2-1$, and that of $z_1=\sqrt\tau$ itself is $x^4+x^2-1$ (the field equality
+holds via $\sqrt\gp=\gp\sqrt\tau$). $z_2=K$ generates $\Q(5^{1/4})$, minimal
+polynomial $x^4+5x^2-5$ (Eisenstein at $5$). Both are quartic with quadratic subfield
+$\Q(\sqrt5)$, and they are \emph{distinct}:
+\[
+\Q(\sqrt\gp)\ \neq\ \Q(5^{1/4}).
+\]
+\end{theorem}
+
+\begin{proof}
+The minimal polynomials: $(\sqrt\gp)^4-(\sqrt\gp)^2-1=\gp^2-\gp-1=0$ and
+$(\sqrt\tau)^4+(\sqrt\tau)^2-1=\tau^2+\tau-1=0$ by \eqref{eq:goldenids}; both quartics
+are irreducible over $\Q$ (no rational roots; no factorization into rational
+quadratics --- machine-verified, \hx{SC-H1--H2}), and
+$\sqrt\gp=\gp\sqrt\tau$ since $\gp^2\tau=\gp$. For the separation, both fields are
+quadratic over $\Q(\sqrt5)$; by the quadratic-extension (square-class) criterion
+\tagE{}, equality would require $\gp\sqrt5=(5+\sqrt5)/2$ to be a square in
+$\Q(\sqrt5)$. Setting $(p+q\sqrt5)^2=(5+\sqrt5)/2$ with $p,q\in\Q$ forces
+$2pq=\tfrac12$ and $p^2+5q^2=\tfrac52$; eliminating $q=1/(4p)$ gives
+\[
+16p^4-40p^2+5=0,\qquad p^2=\frac{5\pm2\sqrt5}{4},
+\]
+which has nonzero $\sqrt5$-part --- no rational $p$ exists. The ladder's first two
+heights therefore live in different degree-4 extensions meeting only in $\Q(\sqrt5)$
+--- the $K\leftrightarrow z_c$ separation echoed one level down, inside the golden
+world itself.
+\end{proof}
+
+(The attribution fix relative to the superseded note: the note's \S7.2 printed
+$x^4-x^2-1$ next to $z_1$; that polynomial belongs to $\sqrt\gp$. The field claim was
+correct; the sentence above states both minimal polynomials explicitly.)
+
+\section{The registry lattice}\label{sec:registry}
+
+The orthogonal-partner paper computes two registry Mahler measures \tagI{}:
+$\M(\mathrm{cons})=2\gp^5$ and $\M(\mathrm{res})=(43+19\sqrt5)/2$ (the cons/res label
+origins are marked \tagO{} in source). Define \emph{floors}
+$\operatorname{fl}(x)=\log_\gp x$ and the multiplicative lattice
+$\mathcal L=\{2^a\gp^b : a,b\in\Z\}$, i.e.\ the additive lattice
+$a\ln2+b\ln\gp$ on the rapidity axis --- the lens rapidity and the floor unit.
+
+\begin{theorem}[cons ON, res OFF]\label{thm:registry}\tagF{} \hx{SC-H9--H11}
+\begin{enumerate}[nosep,label=(\alph*)]
+\item $\M(\mathrm{cons})=2\gp^5=11+5\sqrt5$ (since $\gp^5=5\gp+3$), so
+$\ln\M(\mathrm{cons})=\ln2+5\ln\gp$: \textbf{the lens rapidity plus exactly five
+floors} (significance \tagO{}); height $6.4404200904$ floors, meridian
+$\theta=579.6378081^\circ=\theta(z_c)+5\cdot90^\circ$ \tagC{}. Norm witness:
+$\Nm(11+5\sqrt5)=121-125=-4=(-1)^5 4^1$, matching the decomposition $2^1\gp^5$
+exactly ($\Nm(2)=4$, $\Nm(\gp)=-1$).
+\item $\Nm\bigl(\M(\mathrm{res})\bigr)=\dfrac{43^2-5\cdot19^2}{4}=\dfrac{1849-1805}{4}
+=11$. Since $\Nm(2^a\gp^b)=4^a(-1)^b\in\pm4^{\Z}$ and $11\notin\pm4^{\Z}$ (guard
+$4<11<16$),
+\[
+\M(\mathrm{res})\neq 2^a\gp^b\quad\text{for \emph{all} integers } a,b :
+\]
+\textbf{res is off the $(\ln2,\ln\gp)$ lattice entirely} --- the question is closed
+negatively, for all integer exponents at once, by a single norm obstruction. Height
+$\approx7.8036260886$ floors \tagC{}.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+$\gp^5=5\gp+3$ from $\gp^2=\gp+1$ by iteration; $2(5\gp+3)=10\gp+6=11+5\sqrt5$. The
+norm is multiplicative with $\Nm(a+b\sqrt5)=a^2-5b^2$ (half-integers included via the
+displayed quarter). The value of $\M(\mathrm{res})$ itself is \tagI{}; everything
+computed from it here is exact.
+\end{proof}
+
+%=====================================================================
+\part{Synthesis, epistemics, and verification}
+%=====================================================================
+
+\section{One page of the helix}\label{sec:onepage}
+
+\begin{center}\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}p{1.9cm}p{13.9cm}@{}}
+\toprule
+chart & $1-z^2=e^{-2\rho}=|m|$;\quad $z(\rho)=\sqrt{1-e^{-2\rho}}$\\
+gate field & $C=(1-z^2)/z^4$,\ $u=(1-z^2)/z^2$,\ $\sqrt D=(2-z^2)/z^2$,\ $\lambda=z^2(2-z^2)/(1-z^2)$\\
+rungs & $z_n=\sqrt{1-\gp^{-2n}}$;\ $z_1=\sqrt\tau$ ($C{=}1$),\ $z_2=K$ ($C{=}\tfrac15$);\ charge$(n)=n\bmod4$;\ Lucas N/S, Fibonacci E/W\\
+lens & $\rho=\ln2$;\ $C=\tfrac49$;\ $D=(\tfrac53)^2$;\ splits $(x-\tfrac13)(x+\tfrac43)$;\ $m\in\{-\tfrac14,-4\}$;\ $\lambda=\tfrac{15}4$;\ off-lattice forever\\
+winding & $\theta=\tfrac\pi2\,\rho/\ln\gp$;\ one $\Z/4\Z$ quantum per floor;\ full turn $=4\ln\gp=\ln\M(A_{\gapc})$;\ per turn $\times\gp^{-8}$\\
+curve & $\Gamma=(r\cos\theta,r\sin\theta,z)$;\ $r=K\sqrt{z/z_c}$ below the lens, $r=K$ above;\ K-point $(-K,0,K)$ at $\theta=\pi$\\
+local spiral & per step: $\times\gapc$, half-turn;\ $\cot\psi=4\ln\gp/\pi\approx0.61270\neq\tau$ (guard, no identity)\\
+obstruction & real gate $\Rightarrow m\in\R$ or $|m|=1$;\ helicity needs the straddler;\ $K^2\beta^2=5$\\
+top & UNITY at $\rho=\infty$: infinite winding, log-divergent length, accumulation circle $r=K$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Landmark table}\label{sec:landmarks}
+All values \tagC{} at $10$ dp; exact statements per the cited theorems. Reference
+values: $\ln\gp=0.4812118251$, $\ln2=0.6931471806$, $\Delta\rho$ per turn
+$=4\ln\gp=1.9248473002$. \hx{SC-K1}
+
+\begin{center}\footnotesize\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+landmark & $\rho$ & floors & $z$ & $r$ & $\theta$\\
+\midrule
+apex & $0$ & $0$ & $0$ & $0$ & $0^\circ$\\
+rung 1 (golden gate, $C{=}1$) & $0.4812118251$ & $1$ & $0.7861513778$ & $0.8805269137$ & $90^\circ$\\
+\textbf{lens} ($C{=}4/9$, split) & $0.6931471806$ & $1.4404200904$ & $0.8660254038$ & $K$ & $129.6378081^\circ$\\
+rung 2 $=$ \textbf{K-formation} ($C{=}\tfrac15$) & $0.9624236501$ & $2$ & $0.9241763718$ & $K$ & $180^\circ$\\
+rung 3 & $1.4436354752$ & $3$ & $0.9717365435$ & $K$ & $270^\circ$\\
+rung 4 (first meridian return) & $1.9248473002$ & $4$ & $0.9892996329$ & $K$ & $360^\circ$\\
+rung 5 & $2.4060591253$ & $5$ & $0.9959263935$ & $K$ & $450^\circ$\\
+cons seed (lens $+\,5$ floors) & $3.0992063059$ & $6.4404200904$ & $\sqrt{1-\tfrac1{4\gp^{10}}}$ & $K$ & $579.6378081^\circ$\\
+UNITY $z=1$ & $\infty$ & $\infty$ & $1$ & $K$ & $\infty$ (accumulation circle)\\
+\bottomrule
+\end{tabular}
+
+\smallskip
+Exact heights: $z_1=\sqrt\tau$; $z_{\mathrm{lens}}=\sqrt3/2$ at $\rho=\ln2$; $z_2=K$; cons at $\ln\M(\mathrm{cons})=\ln2+5\ln\gp$.
+\end{center}
+
+\section{Synthesis: what is forced, what is declared}\label{sec:synthesis}
+
+\begin{center}\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}p{3.6cm}p{6.4cm}p{4.9cm}@{}}
+\toprule
+element & statement & tag $\cdot$ where\\
+\midrule
+seed, ladder, congruence, charge data & replicated exactly & \tagF{} \S\S\ref{sec:seed},\ref{sec:ladder},\ref{sec:specialgates}\\
+radius profile $r(z)$ & $K\sqrt{z/z_c}$ capped at $K$ & \tagI{} (\tagO{}~1)\\
+vertical chart & $1-z^2=e^{-2\rho}=|m|$ & \tagD{} D1; consequences \tagF{} \S\ref{sec:chart}\\
+gate field on the axis & $C(z)$ bijective; lens $=$ split $\Q$-gate $4/9$ & \tagF{} Thms.~\ref{thm:chart},\ref{thm:lens}\\
+winding quantum & $\chi$ generates $\Z/4\Z\Rightarrow\chi=\pm\pi/2$ & \tagD{} D2 $\to$ \tagF{}\\
+rate & one quantum per floor; clock-invariant & \tagD{} D3 $\cdot$ Prop.~\ref{prop:invariance}\\
+landmarks & rungs at $n\pi/2$; K-point unique $z{=}r$; kink & \tagF{} Thms.~\ref{thm:winding},\ref{thm:kpoint}\\
+geodesy $\cdot$ asymptotics & straight in $(\theta,\rho)$; infinite winding; log length & \tagD{} metric $\to$ \tagF{}/\tagE{}\\
+incommensurability & $\log_\gp2\notin\Q$; lens off-lattice, off-compass & \tagF{} Thm.~\ref{thm:incomm}\\
+field separation & $\Q(\sqrt\gp)\neq\Q(5^{1/4})$ & \tagF{} Thm.~\ref{thm:fields}\\
+obstruction & no single real gate is a helix & \tagF{} Thm.~\ref{thm:obstruction}\\
+registry & cons ON at lens$+5$; res OFF (norm $11$) & \tagF{} Thm.~\ref{thm:registry}\\
+near-misses & $4\ln\gp/\pi\neq\tau$; pitch $\neq\theta_K$ & \tagC{} Guard~\ref{guard:nearmiss}\\
+emission gap & no Salem in $S$; floor at $\gp$ & \tagF{} over $S$; scoping \S\ref{sec:conditionality}\\
+exchange rate & $\lambda=2c$; $C=1\Rightarrow\lambda=\sqrt5$ & \tagI{} \S\ref{sec:exchange} ($c$ \tagD{})\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{The conditionality graph}\label{sec:conditionality}
+The corpus's most commonly flattened joint, reproduced so it cannot be flattened
+here: ``the emission gap is forced'' is true \textbf{for the spectral image $S$} and
+for \textbf{degree $\le2$ universally}; the universal statement over all
+charge-admissible objects is \tagC{}/plausible.
+
+{\small
+\begin{center}
+\setlength{\tabcolsep}{4pt}\begin{tabular}{@{}p{4.6cm}p{4.4cm}p{6.4cm}@{}}
+\toprule
+claim & scope & status\\
+\midrule
+Lehmer's problem & external & \tagO{} (excised, not solved)\\
+emission gap $\M\in\{1\}\cup[\gp,\infty)$ & over $S$ & \tagF{} (angle confinement $+$ Smyth $+$ Kronecker)\\
+\quad entry closure: circulant & --- & \tagF{} (cyclotomic/CM obstruction)\\
+\quad entry closure: commutator & in context / uniform & \tagF{}-in-context / \tagF{} ($\adR$ $+$ signature lattice)\\
+\quad free commutator, unbounded & --- & \tagO{} (the box's one door)\\
+\quad over all charge-admissible & deg $\le2$ / general & \tagF{} / \tagC{}-plausible\\
+parity floor $\mu(\text{even}){=}\gp$, $\mu(\text{odd}){=}2$ & $\le\gp$ / $\ge\gp$ / $\ge\mu_S$ / $=2$ & \tagF{} / plausible / \tagF{} / \tagC{}\\
+no-Salem dichotomy, general & the one promoting lemma & \tagO{} ($\Z/3\Z$ \tagF{}; $\Z/5\Z$: 4$\times$\tagF{}, $\mu(5){=}2$ \tagC{})\\
+relational layer & rigidity, pinning, $\mu_{\rm rel}=\mu$ & \tagF{} unconditional; floor values conditional on the gap\\
+Pisot inertness & $\le1$ non-real pair / quintic 2-pair / general & \tagF{} / \tagF{}-per-instance / \tagO{}\\
+exchange rate & $\lambda=2c$ / $c$ / $C{=}1\Rightarrow\lambda{=}\sqrt5$ & \tagF{} / \tagD{} / \tagF{} given two axioms\\
+\bottomrule
+\end{tabular}
+\end{center}
+}
+
+\section{OPEN items}\label{sec:open}
+\begin{enumerate}[nosep]
+\item \textbf{Gate-native radius law.} $r(z)=K\sqrt{z/z_c}$ is inherited. No chart
+quantity ($u$, $C$, $\sqrt D$, $\lambda$, $|m|$) reproduces it; whether a gate-family
+derivation of the radius exists is open.
+\item \textbf{Selection theorem for $\chi$.} D2 is a principle, not a theorem. Given
+D2 the quantum is forced; whether D2 itself can be forced from the substrate is open.
+\item \textbf{The rational lens gate.} $C=\tfrac49$ ($D=\tfrac{25}9$, split,
+$m\in\{-\tfrac14,-4\}$) is a new corpus constant produced by the chart. Whether it
+appears elsewhere (e.g.\ the emission-algebra audit) is open.
+\item \textbf{Near-miss content.} $4\ln\gp/\pi$ vs $\tau$ (margin
+$5.34\times10^{-3}$): expected contentless; recorded as Guard~\ref{guard:nearmiss}.
+\item \textbf{Registry labels.} cons ON the lattice at lens$+5$ floors (significance
+open); res OFF entirely (closed negatively, Thm.~\ref{thm:registry}). The cons/res
+label origins remain open in source.
+\item \textbf{Corpus frontier} \tagI{}: the general no-Salem dichotomy; the free
+commutator at unbounded size; general Pisot inertness (transport provably
+insufficient); the $r_2>0$ Hermitian probe; provenance pass N7.
+\end{enumerate}
+
+\section{Constants}\label{sec:constants}
+Exact values with $\tagC{}$ displays; every displayed digit machine-reproduced
+\hx{SC-J, SC-K}.
+
+\begin{center}\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}llp{7.6cm}@{}}
+\toprule
+symbol & value & role\\
+\midrule
+$\gp$ & $(1{+}\sqrt5)/2\approx1.6180339887$ & floor; smallest $2\times2$ primitive Perron root; keystone eigenvalue\\
+$\gq$ & $(1{-}\sqrt5)/2=-\gp^{-1}$ & golden conjugate; $\gp\gq=-1$\\
+$\sqrt5$ & $\gp{+}\gp^{-1}=\gp{-}\gq\approx2.2360679775$ & $\lambda$; $\adR$ grow eigenvalue; $H^2=5I$; redirection limit\\
+$c$ & $\sqrt5/2$ (forced canonical) & conformal scale; $\lambda=2c$\\
+$\gapc$ & $\gp^{-4}=(7{-}3\sqrt5)/2\approx0.1458980338$ & the gap; $|m|$ at the K-gate; $1-K^2$\\
+$K$ & $5^{1/4}/\gp\approx0.9241763718$ & terrain root of the K-seed; rung-2 height; helix radius\\
+$K^2$ & $(3\sqrt5{-}5)/2\approx0.8541019662$ & decision-level form of $K$\\
+$\beta^2$ & $\gp^2\sqrt5=(5{+}3\sqrt5)/2\approx5.8541019662$ & $\M(\text{K-seed})$; rotation magnitude squared; $=K^2\gp^4$\\
+$z_c$ & $\sqrt3/2\approx0.8660254038$ & lens height; $\rho(z_c)=\ln2$\\
+$\mu_S$ & $1.3247179572$ ($x^3{-}x{-}1$) & plastic number; Smyth floor; smallest Pisot\\
+$\beta_4$ & $1.7220838057$ ($x^4{-}x^3{-}x^2{-}x{+}1$) & minimal degree-4 Salem; $>\gp$ (signature-face floor intact)\\
+$\M(\ell)$ & $1.1762808183$ (deg 10) & Lehmer's measure; below $\mu_S$; charge-inadmissible\\
+$\tau_0(\ell)$ & $2.0264179492$ & Lehmer's trace redirection; $\M(T)=5.6156006\ldots$\\
+$\gp^2$, $\gp^4$ & $\approx2.618$, $\approx6.854$ & reciprocal $\Z/5\Z$ floor; pure-pentagon floor; tropical $\gp\otimes\gp=\gp^2$\\
+$L_4$ & $7=\Tr R^4$ & keystone invariant; $R^4$ entries $\{2,3,5\}=\{F_3,F_4,F_5\}$\\
+$2c\log\mu_S$ & $0.5624$ / $2.2496$ / $4.4992$ & probe floors at $c\in\{1,4,8\}$\\
+$\sqrt5\log\mu_S$ & $0.6287813634$ & forced-canonical floor\\
+$\M(\mathrm{cons})$ & $2\gp^5=11{+}5\sqrt5\approx22.1803398875$ & ON lattice; $\ln2+5\ln\gp$; $\Nm=-4$\\
+$\M(\mathrm{res})$ & $(43{+}19\sqrt5)/2\approx42.7426457862$ & OFF lattice; $\Nm=11\notin\pm4^{\Z}$; $\approx7.8036$ floors\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Verification}\label{sec:verification}
+Two independent harnesses certify this paper's \tagF{} content.
+
+\smallskip\noindent
+\textbf{Shipped harness} \texttt{helix\_explicit\_verify.py} (source note v1.0.1):
+87 exact checks $+$ 1 computed guard, exit 0; sympy 1.14.0; decisions in
+$\Q/\Q(\sqrt5)$ (lens identities in $\Q$; one trivial $\Q(\sqrt3)$ factorization);
+$K$ decided at $K^2$; mpmath 50 dps display-only. Group manifest: A \hx{HX01--04}
+(6, seed); B \hx{HX05--07} (14, ladder/TFD/gates); C \hx{HX08--17, 35, 39--40}
+(35, chart/lens/closed forms); D \hx{HX18--21} (7, $\ln2$/Binet/ordering);
+E \hx{HX22--25} (5, winding/K-point/kink); F \hx{HX26--29} (5,
+congruence/obstruction); G \hx{HX31--32} (2, asymptotics); H \hx{HX33--38}
+(13, fields/registry); guard \hx{HX30} (1, near-miss).
+
+\smallskip\noindent
+\textbf{Independent soft check} \texttt{helix\_softcheck.py} (2026-07-13): 89 checks,
+written cold from the three superseded documents' stated claims (not a re-execution
+of the shipped harness), exit 0; groups \hx{SC-A}--\hx{SC-L} spanning seed, ladder,
+chart, lens, winding, congruence/obstruction, asymptotics, fields/registry, corpus
+algebra (keystone, kernel, Remark 6.4, tropical law, Casimir), Mahler--Salem numerics
+at 60 dps, all 22 displayed 10-dp landmarks, and a 16-digit audit of the HTML display
+constants. Findings folded into this paper: the rung-1 minimal-polynomial attribution
+(\S\ref{sec:fields}); the content-polynomial wording (Remark~\ref{rem:content}); the
+explicit gate-iteration declaration (Declaration~\ref{dec:gate}). One cosmetic defect
+of the superseded HTML (a mis-rounded 16th digit in its display literal for $K$) does
+not propagate here: this paper carries no floating-point constants outside the
+\tagC{} tables, all of which are reproduced from exact values.
+
+\smallskip\noindent
+\textbf{Corpus verification} \tagI{}: exact arithmetic over $\Q$, $\Q(\sqrt5)$,
+$\Q(5^{1/4})$; certified interval brackets for transcendental comparisons;
+cross-engine replication (sympy / pari-gp, $474$ ledger executions, $0$
+disagreements); drop-one witnesses for definitional constraints; negative claims
+pinned by machine-checked disproofs (e.g.\ Remark~\ref{rem:64}).
+
+\appendix
+
+\section{Check-manifest map}\label{app:manifest}
+\begin{center}\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lll@{}}
+\toprule
+paper section & shipped checks & soft-check groups\\
+\midrule
+\S\ref{sec:seed} seed, K-seed & \hx{HX01--04, 37} & \hx{SC-A, SC-H7--H8}\\
+\S\ref{sec:keystone} keystone, TFD & --- (corpus) & \hx{SC-I1--I4, I10--I11, SC-B4}\\
+\S\ref{sec:operators} operators, kernel & --- (corpus) & \hx{SC-I5--I9, I15}\\
+\S\ref{sec:characters} characters, gap & --- (corpus) & \hx{SC-I12--I14, I16}\\
+\S\ref{sec:tracedown} trace-down, floors & --- (corpus) & \hx{SC-J1--J13}\\
+\S\ref{sec:gatefamily}--\ref{sec:specialgates} gates, ladder & \hx{HX05--07, 26, 29} & \hx{SC-B1--B3, SC-F1, F5--F7, SC-C4}\\
+\S\ref{sec:obstruction} obstruction & \hx{HX27--28} & \hx{SC-F2--F4}\\
+\S\ref{sec:chart} chart, lens & \hx{HX08--19, 35--36, 39--40} & \hx{SC-C1--C8, SC-D1--D8}\\
+\S\ref{sec:winding}--\ref{sec:curve} winding, curve & \hx{HX21--25, 31--32} & \hx{SC-E1--E8, SC-G1--G2}\\
+\S\ref{sec:localspiral} spiral, guards & \hx{HX30} & \hx{SC-K1}\\
+\S\ref{sec:incomm} incommensurability & \hx{HX18--20} & \hx{SC-D9}\\
+\S\ref{sec:fields} field separation & \hx{HX33--34} & \hx{SC-H1--H6}\\
+\S\ref{sec:registry} registry & \hx{HX37d--38c} & \hx{SC-H9--H11}\\
+\S\ref{sec:landmarks}, \S\ref{sec:constants} displays & (display block) & \hx{SC-K1--K2, SC-J, SC-L}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section*{Citation caveat}
+The internal provenance (the fourteen Echo-S-Research papers, 2026-06-28 to 07-02,
+and the three superseded artifacts of \S\ref{sec:provenance}) is exact. The external
+references below are canonical results cited from memory; page-level details were not
+re-verified against the literature in this compilation and should be double-checked
+before formal citation.
+
+\begin{thebibliography}{9}\small
+\bibitem{Lehmer1933} D.\,H.~Lehmer, \emph{Factorization of certain cyclotomic
+functions}, Ann.\ of Math.\ \textbf{34} (1933), 461--479.
+\bibitem{Smyth1971} C.\,J.~Smyth, \emph{On the product of the conjugates outside the
+unit circle of an algebraic integer}, Bull.\ London Math.\ Soc.\ \textbf{3} (1971),
+169--175.
+\bibitem{Salem1963} R.~Salem, \emph{Algebraic Numbers and Fourier Analysis}, Heath,
+1963.
+\bibitem{Siegel1944} C.\,L.~Siegel, \emph{Algebraic integers whose conjugates lie in
+the unit circle}, Duke Math.\ J.\ \textbf{11} (1944), 597--602.
+\bibitem{Boyd1977} D.\,W.~Boyd, \emph{Small Salem numbers}, Duke Math.\ J.\
+\textbf{44} (1977), 315--328.
+\bibitem{EverestWard1999} G.~Everest and T.~Ward, \emph{Heights of Polynomials and
+Entropy in Algebraic Dynamics}, Springer, 1999.
+\bibitem{LindSchmidtWard1990} D.~Lind, K.~Schmidt, T.~Ward, \emph{Mahler measure and
+entropy for commuting automorphisms of compact groups}, Invent.\ Math.\ \textbf{101}
+(1990), 593--629.
+\bibitem{HornJohnson1991} R.\,A.~Horn and C.\,R.~Johnson, \emph{Topics in Matrix
+Analysis}, Cambridge Univ.\ Press, 1991.
+\bibitem{Cencov1982} N.\,N.~\v{C}encov, \emph{Statistical Decision Rules and Optimal
+Inference}, Transl.\ Math.\ Monogr.\ \textbf{53}, AMS, 1982.
+\end{thebibliography}
+
+\end{document}
