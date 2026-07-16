@@ -64,11 +64,11 @@ and the Residual Sphere\\[4pt]
 \small independent verification (\S\ref{sec:verification}):\\
 \small \texttt{ozy\_softcheck.py} 91/91 $+$ \texttt{relational\_softcheck.py} 27/27\\
 \small \texttt{nx\_softcheck.py} 27/27 $+$ \texttt{qx\_softcheck.py} 62/62, exit 0\\
-\small 20 session harnesses (v1.7--v2.2): 478 exact/computed checks\\
-\small $+$ 70 certified guards $+$ 13 PSLQ corroborations $+$ 7 labelled walls, all exit 0\\
-\small closure harnesses \texttt{nd\_softcheck.py} 28/28 (ODD-2) and \texttt{xs\_softcheck.py} 10/10$+$3 (cross-shell no-tie), exit 0\\
+\small 21 session harnesses (v1.7--v2.3): 491 exact/computed checks\\
+\small $+$ 70 certified guards $+$ 6 fail-first falsifiers $+$ 13 PSLQ $+$ 7 labelled walls, all exit 0\\
+\small closure harnesses \texttt{nd\_softcheck.py} 28/28 (ODD-2), \texttt{xs\_softcheck.py} 10/10$+$3 (cross-shell no-tie), \texttt{ev\_softcheck.py} 13/13$+$6 (even floor $+$ $p_1{=}q_2$), exit 0\\
 \small finalization harness \texttt{bl\_softcheck.py}: 16/16 exact $+$ 7 walls LABELLED (\S\ref{sec:blockers}; five active after v2.2), exit 0}
-\date{Version 2.2 --- July 15, 2026}
+\date{Version 2.3 --- July 16, 2026}
 
 \begin{document}
 \maketitle
@@ -193,6 +193,21 @@ $0$ exceptions (\texttt{xs\_softcheck.py}, 10 exact $+$ 3 guards, exit 0). The
 \S\ref{sec:blockers} rows remain active, all of them either declared atoms,
 restatement/impossibility walls relative to D1--D3, or external tool-gaps --- none
 a computation the corpus can run for itself.
+\emph{Version 2.3} adds forced content \emph{outside} that seven-row ledger, from
+an audit of the whitepaper's own \tagO{} tags: the \emph{even} relational floor
+$\M(\alpha)\ge\gp$ for even-charge admissible $\alpha$
+(Theorem~\ref{thm:evenfloor}), the exact even mirror of the odd descent with
+Schinzel's totally-real bound in place of the elementary TP-2 --- forced
+\emph{given Schinzel}, the corpus's one external floor, honestly asymmetric with
+the internally-closed odd branch; the universal emission gap
+$\M\in\{1\}\cup[\gp,\infty)$ over all charge-admissible objects
+(Corollary~\ref{cor:gapuniv}, W-\S22 upgraded from \emph{plausible}), which leaves
+Lehmer untouched (Salem numbers are charge-inadmissible); and the discharge of the
+rung-1 coincidence-candidate, $p_1=q_2$ an identity not a shared constant
+(Remark~\ref{rem:mahlerfloor}). Certified by \texttt{ev\_softcheck.py}
+(13 exact $+$ 6 fail-first falsifiers, exit 0). The seven-row ledger is unchanged;
+what changes is the honest scope of ``settled'', now read \emph{by the routes the
+corpus had reached for}.
 \end{abstract}
 
 \section{Provenance, scope, and the conditionality banner}\label{sec:scope}
@@ -446,6 +461,34 @@ board). No \tagD{} atom is disturbed and no other register moves: OP-RATE,
 OP-RADIUS, D2, and the three transcendence rows are untouched; only P1$'$'s
 cross-shell half moves, from \textsc{unfinished-computation} to \tagF{}. All other
 content unchanged.
+
+\smallskip\noindent
+\textbf{v2.3 changelog.} An audit of the whitepaper's \tagO{} tags against
+\S\ref{sec:blockers} (the completeness pass \S\ref{sec:blockers}'s own closing now
+calls for) adds three forced items \emph{outside} the seven-row ledger, and fixes
+five scoping defects. \S\ref{sec:relobject} extended: Theorem~\ref{thm:evenfloor}
+(the even relational floor $=\gp$, the exact even mirror of
+Theorem~\ref{thm:odd2nd}'s descent with Schinzel's totally-real bound replacing
+TP-2 at the one parity-sensitive step; \tagF{} \emph{given Schinzel}, honestly
+asymmetric with the internally-closed odd branch), Corollary~\ref{cor:gapuniv}
+(GAP-UNIV: charge-admissible $\Rightarrow\M\in\{1\}\cup[\gp,\infty)$, upgrading
+W-\S22/\S5.2 from \emph{plausible} and leaving Lehmer excised), and the discharge
+of Remark~\ref{rem:mahlerfloor}'s coincidence-candidate ($p_1=q_2$: the rung-1
+seed \emph{is} the $k=2$ parity-floor witness, a \emph{tie} with mechanism, not a
+shared constant). Scoping fixes: Remark~\ref{rem:p4recover} now flags the
+absolute-$\mu$ vs relational-$\mu_{\mathrm{rel}}$ register; \S\ref{blk:p1cross}
+separates the (empty) \textsc{unfinished-computation} \emph{blocker} class from
+the general within-shell taxonomy (a \tagC{} corroboration, never a row);
+\S\ref{blk:radab} adds the four-level OP-RADIUS scope (chart-rational no-go
+proved, the gate-family level conditional on the unit-log hypothesis);
+\S\ref{blk:d2} notes D2's independence audit is unrun; and \S\ref{sec:blockers}'s
+closing softens ``settled by its own means'' to ``by the routes it had reached
+for''. One session harness \texttt{ev\_softcheck.py} (13 exact $+$ 6 fail-first
+falsifiers, exit 0) added to \S\ref{sec:verification}, bringing the
+\emph{twenty-one} session harnesses to $491$ exact/computed $+$ $70$ guards $+$ $6$
+falsifiers $+$ $13$ PSLQ $+$ $7$ labelled walls. No \tagD{} atom is disturbed and
+the seven-row ledger is unchanged: the additions live in the whitepaper's open
+space, not the \S\ref{sec:blockers} rows. All other content unchanged.
 
 \smallskip\noindent
 \textbf{Method note (from the source report).} The investigation began by
@@ -1635,6 +1678,14 @@ gives $\Delta=\Z/2k\Z$, $\M=\gp$ for every even $m$) \emph{and} the odd branch
 is $m$-independent (anchored by the forced $\mu(3)=2$, forcing the odd constant
 $=2$). Hence P4 $\iff$ P3, and P4 inherits P3's open status as a
 \emph{restatement} of it, not new work.
+\emph{Register note (v2.3).} The $\mu_{\mathrm{rel}}$ of this remark is the
+\emph{relational} floor (RC-Thm.\ 6.5, \tagI{}); it is distinct from the
+\emph{absolute} Mahler floor $\mu$ over charge-admissible objects, which is what
+Theorems~\ref{thm:odd2nd} (odd $=2$) and \ref{thm:evenfloor} (even $=\gp$) pin by
+descent on $\M(\alpha)$ directly. W-\S22's ``$\mu(\text{even})\ge\gp$
+plausible'' is the \emph{absolute} even branch --- upgraded to \tagF{} given
+Schinzel by Theorem~\ref{thm:evenfloor}, not the same statement as the relational
+uniformity inherited above.
 \end{remark}
 
 \begin{proposition}[The odd relational floor, bracketed (v1.8)]\label{prop:oddfloor}\tagF{}/\tagE{} \hx{RN-B1--RN-B4, RN-H1--RN-H3}
@@ -1954,6 +2005,73 @@ unconditionally} \tagF{}: $\mu_{\mathrm{rel}}$ depends on the charge group
 through the single parity bit $2\mid m$ and nothing else, taking the value $\gp$
 on the even branch and $2$ on the odd. It adds no new burden.
 \end{remark}
+
+\begin{theorem}[The even relational floor {$=\gp$}, given Schinzel (v2.3)]\label{thm:evenfloor}\tagF{}/\tagE{} \hx{EV-S1--S2, EV-W1--W2, EV-D1--D2, EV-F1--F3}
+Let $m$ be \emph{even} and let $\alpha$ be an algebraic integer, not a root of
+unity, every conjugate of which lies on $R_m$. Then
+\[
+\boxed{\ \M(\alpha)\ \ge\ \gp\ }
+\]
+and the bound is attained, at $q_k=x^{2k}+x^k-1$ (with $m=2k$) for every $k\ge1$.
+With Remark~\ref{rem:p4transfer} this pins the even branch of $\mu_{\mathrm{rel}}$
+at $\gp$; with Theorem~\ref{thm:odd2nd} it completes the parity floor,
+$\mu_{\mathrm{rel}}(\text{even})=\gp$ and $\mu_{\mathrm{rel}}(\text{odd})=2$; and
+it upgrades the whitepaper's plausible row (W-\S22, ``$\mu(\text{even})\ge\gp$'')
+to \tagF{} given Schinzel.
+\end{theorem}
+
+\begin{proof}
+The descent of Theorem~\ref{thm:odd2nd} runs verbatim except at step (2), which
+oddness there and evenness here decide oppositely. Put $\beta=\alpha^m$,
+$F=\Q(\beta)$, $K=\Q(\alpha)$, $d'=[F:\Q]$, $k=[K:F]$, $N=N_{K/F}(\alpha)$,
+$e=\deg N$.
+\begin{enumerate}[nosep,label=(\arabic*),leftmargin=2.2em]
+\item \emph{$\beta$ totally positive, $F$ totally real}: $\Arg\sigma(\alpha)
+\in(2\pi/m)\Z$ gives $\Arg\sigma(\alpha)^m\in2\pi\Z$ --- parity-free, identical to
+Theorem~\ref{thm:odd2nd}(1).
+\item \emph{$N$ is totally real}: each $\Q$-conjugate of $N$ is a product of $k$
+conjugates of $\alpha$, real since $N\in F$ and $F$ is totally real. \textbf{Here
+the parity flips.} For odd $m$, $\pi\notin(2\pi/m)\Z\pmod{2\pi}$ forces $N$
+totally \emph{positive} (Theorem~\ref{thm:odd2nd}(2)); for even $m$,
+$\pi\in(2\pi/m)\Z$, so $N$ is totally real but need not be positive. This is the
+\emph{only} place the parity enters.
+\item \emph{$N\neq\pm1$}: $N=\alpha^k\zeta^J$, $\zeta^m=1$; were $N=\pm1$ then
+$\alpha^{km}=(\pm1)^m=1$ (even $m$), making $\alpha$ a root of unity, excluded.
+\item \emph{$\M(N)\ge\gp^{\,e/2}$}: a totally real algebraic integer $\ne0,\pm1$
+is not a root of unity, so \emph{Schinzel}'s bound \tagE{} (Schinzel,
+\emph{Acta Arith.}~\textbf{24} (1973), 385--399; a totally real algebraic integer
+$\ne0,\pm1$ of degree $e$ has $\M\ge\gp^{\,e/2}$) applies. This is the one step the elementary route cannot supply: for totally
+real (not positive) $N$, Lemma~\ref{lem:tp2} gives only $\M(N)\ge2^{r}$, and at
+$r=1$ that is $\sqrt2<\gp$. The even branch closes by \emph{external import} where
+the odd branch (Theorem~\ref{thm:odd2nd}) closed \emph{internally} --- an honest
+asymmetry. Schinzel is the same bound \texttt{nd\_softcheck.py} carries as
+corroboration; \texttt{ev\_softcheck.py} makes it load-bearing, corroborated with
+$0$ violations over the totally-real box and tight at $x^2-x-1$ \hx{EV-S1--S2}.
+\item \emph{Descent}: as in Theorem~\ref{thm:odd2nd}(5), the Weil height gives
+$\M(\alpha)\ge\M(N)^{\,d'/e}$; with $e\mid d'$ ($\Q(N)\subseteq F$),
+$\M(\alpha)\ge\gp^{\,d'/2}\ge\gp$. If $d'=1$ then $N\in\Z$, $|N|\ge2$, and
+$\M(\alpha)\ge|N|\ge2>\gp$.
+\end{enumerate}
+Attainment: $q_k$ lies on $R_{2k}$ with even ($\Z/2k$) charge and $\M=\gp$ (W-Prop.\
+6.2: the $k$ roots at $x^k=-\gp$ each of modulus $\gp^{1/k}$), and it realises the
+descent tight at $q_1$ ($N=-\gp$) and $q_2$ ($N=\gp$), $\M(N)=\gp=\gp^{e/2}$,
+$e=d'=2$ \hx{EV-D1}. A parity-split scan of the forced population finds no
+even-charge admissible object below $\gp$ and none odd below $2$ \hx{EV-F1--F3}.
+\end{proof}
+
+\begin{corollary}[GAP-UNIV: the universal emission floor]\label{cor:gapuniv}\tagF{}/\tagE{}
+Every charge-admissible algebraic integer $\alpha$ (all conjugate arguments in
+$\pi\Q$) has $\M(\alpha)=1$ ($\alpha$ zero or a root of unity, Kronecker \tagE{})
+or $\M(\alpha)\ge\gp$. Indeed the conjugates lie on $R_m$ for $m$ the lcm of their
+angle denominators; least $m$ odd gives $\M\ge2$ (Theorem~\ref{thm:odd2nd}), even
+gives $\M\ge\gp$ (Theorem~\ref{thm:evenfloor}). This is the whitepaper's universal
+gap (W-\S5.2, W-\S22, ``over all charge-admissible''), now \tagF{} given Schinzel.
+\emph{It does not touch Lehmer:} a Salem number is charge-\emph{inadmissible} ---
+an on-circle conjugate with argument in $\pi\Q$ would be a root of unity, forcing
+the minimal polynomial cyclotomic against $\beta>1$ --- so the gap does not apply
+to it and the excision (W-Def.\ 5.1) stands. Likewise the free commutator
+(W-\S5.2) may emit charge-inadmissible outputs, untouched by GAP-UNIV.
+\end{corollary}
 
 \section{The state-angle chart}\label{sec:stateangle}
 
@@ -2309,11 +2427,20 @@ $p_3=x^4+16x^2-16$.
 
 \begin{remark}[Rung 1 sits on the emission Mahler floor]\label{rem:mahlerfloor}\tagF{} \hx{UX-E1--E2}
 $\M(p_1)=\gp$ exactly ($\gp^2-1=\gp$): the rung-1 seed sits precisely on
-the emission Mahler floor. The identity is harness-forced, and the hit is
-unique on the ladder ($\M(p_n)\neq\gp$ for $n=2..10$, exact signs). Per the
-shared-constant rule it is flagged as a \emph{coincidence-candidate}: no
-mechanism is asserted --- a shared constant is not evidence of a shared
-mechanism.
+the emission Mahler floor. \emph{The coincidence-candidate discharges (v2.3): the
+rung-1 seed \textbf{is} the parity-floor witness.} By
+Theorem~\ref{thm:seedladder}, $c_1=L_2-2=1$, so $p_1=x^4+x^2-1$; and that is
+exactly $q_k=x^{2k}+x^k-1$ at $k=2$ (W-Prop.\ 6.2), the $k=2$ member of the even
+parity-floor family. So $\M(p_1)=\M(q_2)=\gp$ is an \emph{identity}, not a shared
+constant: the mechanism is W-Prop.\ 6.2's own (the $k$ roots at $x^k=-\gp$, each
+of modulus $\gp^{1/k}$), and the shared-constant rule is met by \emph{production},
+not exclusion --- a \emph{tie}, the mirror of a no-tie. The uniqueness on the
+ladder gains a mechanism too: $\deg p_n=4$ forces $k=2$, then $q_2=x^4+x^2-1$
+forces $c_n=1$, i.e.\ $L_{2n}=3$, i.e.\ $n=1$ ($L_{2n}$ strictly increasing for
+$n\ge1$). The seed ladder and the parity-floor family meet in exactly one
+polynomial, at rung $1$; and $p_1=x^4+x^2-1$ is W-Thm.\ 17.1's
+$\operatorname{minpoly}(\sqrt\tau)$, so $z_1=\sqrt\tau$ is a root of $q_2$, one of
+Theorem~\ref{thm:evenfloor}'s sharpness witnesses. \hx{EV-A1--A4}
 \end{remark}
 
 \begin{theorem}[Mahler-minimal uniqueness (Theorem U)]\label{thm:mahlermin}\tagF{} \hx{UX-U1--U7}
@@ -3536,10 +3663,33 @@ at 50 dps and the Salem non-coherence at 300 dps as certified guards (\hx{XS-H})
 \emph{The theorem does not rest on the scan}: Theorem~\ref{thm:crossnotie} is
 proved by conjugation-closure, and the $855$-object run corroborates it and
 exhibits the population, exactly as \texttt{nd\_softcheck.py} does for
-Theorem~\ref{thm:odd2nd}. With it the \emph{twenty} session harnesses total
-$\mathbf{478}$ exact/computed checks $+$ $\mathbf{70}$ certified guards $+$
-$\mathbf{13}$ PSLQ corroborations $+$ $\mathbf{7}$ labelled walls (five after
-\hx{BL-G7} joins \hx{BL-G4} off the board), all exit 0.
+Theorem~\ref{thm:odd2nd}.
+
+\smallskip\noindent
+\textbf{v2.3 session harness} (one, written cold this session; every \hx{EV-}
+check ID cited in \S\ref{sec:relobject} appears in the file):
+\begin{center}\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lp{10.4cm}c@{}}
+\toprule
+harness & content & exact$+$fal.\\
+\midrule
+\texttt{ev\_softcheck.py} & even relational floor (Thm~\ref{thm:evenfloor}) $+$ $p_1{=}q_2$ (Rem~\ref{rem:mahlerfloor}): \hx{EV-S} the Schinzel battery --- $\M\ge\gp^{\deg/2}$ over the totally-real box, $0$ violations, tight at $x^2-x-1$; \hx{EV-W} the $q_k$ minimizers on $R_{2k}$, $\M=\gp$; \hx{EV-D} the relative-norm descent certificate at $q_1,q_2$ ($N$ tot.\ real $\ne\pm1$, $\M(N)\ge\gp^{e/2}$, $e\mid d'$, $\M(\alpha)\ge\gp$); \hx{EV-F} the parity-split floor scan (even-min $=\gp$, odd-min $=2$, no even below $\gp$); \hx{EV-A} $p_1=q_2=x^4+x^2-1$ and the unique-hit mechanism ($L_{2n}=3\iff n=1$) & $13+6$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Discipline: totally-real / all-real decisions exact over $\Z$ (Sturm); Mahler
+measures at 40 dps as certified displays backed by the exact all-real gates;
+the six \emph{falsifiers} (F1--F6) must \emph{fire} --- the exponent-$d$ Schinzel
+reading (false for totally real, F2), the TP-2-only route ($\sqrt2<\gp$, F3), an
+odd object fed to the even claim (F4), and the empty sub-$\gp$ even sweep (F5).
+\emph{The theorem does not rest on the scan}: Theorem~\ref{thm:evenfloor} is proved
+by the descent, and \texttt{ev} corroborates it and certifies the one external
+import (Schinzel), as \texttt{nd\_softcheck.py} does for
+Theorem~\ref{thm:odd2nd}. With it the \emph{twenty-one} session harnesses total
+$\mathbf{491}$ exact/computed checks $+$ $\mathbf{70}$ certified guards $+$
+$\mathbf{6}$ fail-first falsifiers $+$ $\mathbf{13}$ PSLQ corroborations $+$
+$\mathbf{7}$ labelled walls (five after \hx{BL-G7} joins \hx{BL-G4} off the
+board), all exit 0.
 
 \smallskip\noindent
 Every boxed identity of the source reports and every displayed identity of the
@@ -3666,6 +3816,19 @@ D1--D3 alone is therefore impossible \emph{relative to those axioms}.
 is an elementary function ($r=(K/\sqrt{z_c})\,(z^2)^{1/4}$,
 Proposition~\ref{prop:radiff}). The wall is not that $r$ is exotic, but that the
 substrate's even-parity chart cannot reach it.
+\textbf{Scope caveat (v2.3).} The no-go is proved at the \emph{chart-rational}
+level ($r^2\notin\Q(\sqrt5)(z^2)$; odd apex valuation). W-\S23.1 asks the
+\emph{gate-family / elementary-differential} question one level up, and there $r$
+\emph{is} elementary (Proposition~\ref{prop:radiff}), so parity --- which
+$\tfrac{d}{dz}$ shifts and so does not preserve --- is not the deciding invariant
+at that level. The statement that answers the question actually asked lives at the
+\emph{unramified} elementary-differential closure, where $r$'s apex monodromy
+order $2$ (a branch point) excludes it --- but that is \emph{conditional on the
+unit-log hypothesis} (Proposition~\ref{prop:radiff}), and closing W\tagO{}~1 by
+\textsc{impossibility} at that strength needs a localized structure theorem (a
+Rosenlicht/Risch localization carrying a monodromy-order invariant), an
+\emph{internal} named missing object. Parity settles the chart level; the
+gate-family level stays conditional.
 
 \subsection{OP-RADIUS profile, given the bridge}\label{blk:radprof}
 \textbf{Status} (register): \emph{reduced} to the minimal declared atom D4 (v1.9);
@@ -3700,6 +3863,16 @@ thinner than D2. \textbf{Missing object:} a principle forcing the clock-choice
 from something more primitive than the quarter-turn selection; none exists in the
 corpus (\hx{BL-G6}). Every candidate reduction is logically equivalent to D2, so
 its residual content is irreducible.
+\textbf{Audit not run (v2.3).} The drop-one-witness test is applied to the
+keystone's four constraints (W-\S3) and to the $\lambda=2c$ atoms, but not to
+D1--D4 themselves. Theorem~\ref{thm:factorization}'s unconditional $J=\pm UA$
+already forces the quarter-turn's \emph{existence} and the angle lattice
+$(\pi/2)\Z$; whether it also forces D2's residual \emph{selection} given D3's rate
+--- i.e.\ whether a model of $\{$D1, D3, keystone algebra$\}$ can violate D2 ---
+is a distinct question the restatement-wall verdict does not answer. The wall says
+every proposed \emph{reduction} restates D2; an \emph{independence} audit (a
+drop-one model) has not been run, and if D2 proved redundant the row would
+\emph{retire} rather than close. Flagged as an open audit, not a resolution.
 
 \subsection{P3/P4: the odd relational floor equals two --- \textsc{closed}}\label{blk:odd2}
 \textbf{Status} (register): \emph{proved} (v2.1). $\mu_{\mathrm{rel}}(\text{odd
@@ -3784,8 +3957,14 @@ conjugation-closure ($\theta_\alpha\pm\theta_\beta\in\pi\Q\Rightarrow
 the complete cross-shell statement: no object carries a cross-shell mechanism
 absent from its within-shell class. Corroborated over the same $855$-object
 forced window with $0$ exceptions (\texttt{xs\_softcheck.py}, \hx{XS-C2}).
-\hx{BL-G7} is discharged; this was the sole \textsc{unfinished-computation}, and
-that class is now \emph{empty}.
+\hx{BL-G7} is discharged; this was the sole \textsc{unfinished-computation}
+\emph{blocker row}, and that class is now \emph{empty}. This is distinct from the
+\emph{general} within-shell taxonomy over unbounded degree, which is a \tagC{}
+corroboration (Remark~\ref{rem:p1scan}), \emph{never} a \S\ref{sec:blockers} row,
+and stays \tagC{}: a wider scan corroborates but does not \emph{settle} an
+infinite family. Extending Remark~\ref{rem:p1scan}'s window past its
+degree-$6$ cap (e.g.\ to Lehmer's degree $10$) is thus a runnable corroboration,
+not a blocker whose non-execution the ledger tracks.
 
 \smallskip\noindent
 \textbf{Closing.} The corpus's forced content is complete through v1.9; v2.1 adds
@@ -3801,9 +3980,17 @@ ab initio) and the restatement wall (D2); \emph{two are single declared atoms}
 (D4's cap-onset and orientation); and \emph{three are external tool-gaps} (the
 transcendence and algebraic-independence questions, blocked respectively on a
 nonexistent transcendental-modulus theorem, on Schanuel's conjecture, and on
-Kontsevich--Zagier period theory). \emph{Seven rows, not eight.} No remaining item
-is a mere oversight or an unattempted derivation --- everything the corpus could
-settle by its own means, it now has. Each survivor is a precisely located wall,
+Kontsevich--Zagier period theory). \emph{Seven rows, not eight.} No remaining \S\ref{sec:blockers}
+row is a mere oversight or an unattempted derivation. The honest scope of that
+claim is \emph{by the routes the corpus had reached for}, and v2.3 shows the audit
+is never finished: outside the seven-row ledger, the rung-1 seed's floor hit was a
+settleable identity ($p_1=q_2$, Remark~\ref{rem:mahlerfloor}) carried three
+versions as a coincidence-candidate, and the \emph{even} relational floor
+(Theorem~\ref{thm:evenfloor}) was reachable by the odd descent with Schinzel in
+place of TP-2 --- both settleable, both unsettled until named. That is
+Finding~\ref{find:sssframe}'s lesson one level up: a completeness pass over the
+whitepaper's tags against these rows is itself an open audit. Each of the seven
+survivors is a precisely located wall,
 and for each this paper states the load-bearing forced fact and the exact missing
 object rather than claiming a resolution --- and, per the honesty gate, every
 \textsc{impossibility} is scoped relative to D1--D3 and no external-open item is

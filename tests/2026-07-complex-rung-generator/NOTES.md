@@ -13,6 +13,7 @@ are verifiers, not producers — no `data/` outputs, so there is nothing to diff
 | Rate arithmetic, systole, parity no-go, seed ladder, rail closed form (v1.7) | tx mx rx ux ex cx lx dx | Verified (exit 0) | 234 exact + 29 guards |
 | OP-RATE classification, radius apex-ramification, χ doctrine, relational note, period map (v1.8) | rd cl ch rn pm | Verified (exit 0) | 115 exact + 20 guards |
 | ODD-2 closure (v2.1) + P1′ cross-shell no-tie (v2.2) | nd_softcheck (565 objects) · xs_softcheck (855-object window) | Verified (exit 0) | forced theorems; 0 exceptions |
+| EVEN relational floor (v2.3, given Schinzel) + p₁=q₂ | ev_softcheck (Schinzel battery, descent certificate, parity-split scan) | Verified (exit 0) | [forced given Schinzel]; 6 falsifiers fire |
 | Register decimal literals | decimal_audit | Verified (exit 0) | 0.51-ulp / truncation matcher |
 
 - **Verified:** every shipped harness exits 0 under the pinned stack (sympy 1.14.0, mpmath 1.3.0).
