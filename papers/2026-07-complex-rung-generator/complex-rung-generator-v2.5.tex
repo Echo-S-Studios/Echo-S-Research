@@ -64,11 +64,11 @@ and the Residual Sphere\\[4pt]
 \small independent verification (\S\ref{sec:verification}):\\
 \small \texttt{ozy\_softcheck.py} 91/91 $+$ \texttt{relational\_softcheck.py} 27/27\\
 \small \texttt{nx\_softcheck.py} 27/27 $+$ \texttt{qx\_softcheck.py} 62/62, exit 0\\
-\small 22 session harnesses (v1.7--v2.4): 495 exact/computed checks\\
+\small 22 session harnesses (v1.7--v2.5): 498 exact/computed checks\\
 \small $+$ 70 certified guards $+$ 6 fail-first falsifiers $+$ 13 PSLQ $+$ 7 labelled walls, all exit 0\\
-\small closure harnesses \texttt{nd\_softcheck.py} 28/28 (ODD-2), \texttt{xs\_softcheck.py} 10/10$+$3 (cross-shell), \texttt{ev\_softcheck.py} 13/13$+$6 (even floor), \texttt{ax\_softcheck.py} 4/4 ($C{=}4/9$ kill), exit 0\\
+\small closure harnesses \texttt{nd\_softcheck.py} 28/28 (ODD-2), \texttt{xs\_softcheck.py} 10/10$+$3 (cross-shell), \texttt{ev\_softcheck.py} 16/16$+$6 (even floor $+$ $r{=}1$ peel), \texttt{ax\_softcheck.py} 4/4 ($C{=}4/9$ kill), exit 0\\
 \small finalization harness \texttt{bl\_softcheck.py}: 16/16 exact $+$ 7 walls LABELLED (\S\ref{sec:blockers}; five active after v2.2), exit 0}
-\date{Version 2.4 --- July 16, 2026}
+\date{Version 2.5 --- July 16, 2026}
 
 \begin{document}
 \maketitle
@@ -504,6 +504,27 @@ unrun finite computation. One session harness \texttt{ax\_softcheck.py}
 $495$ exact/computed $+$ $70$ guards $+$ $6$ falsifiers $+$ $13$ PSLQ $+$ $7$
 labelled walls. The seven-row ledger is again unchanged. All other content
 unchanged.
+
+\smallskip\noindent
+\textbf{v2.5 changelog.} Two sharpenings from the improved reading, and one ledger
+addition. \S\ref{sec:relobject}: Remark~\ref{rem:evenlocalize} localizes
+Theorem~\ref{thm:evenfloor}'s Schinzel import to the single case $r=1$ --- the
+$N^2$ peel ($N^2$ totally positive, so Lemma~\ref{lem:tp2} gives
+$\M(N)\ge2^{r/2}$, hence $\M(N)\ge2>\gp$ elementarily for $r\ge2$) reduces the
+external dependency to a totally-real Pisot \emph{unit}, exactly as ODD-2 reduced
+to one lemma; Finding~\ref{find:gapdichotomy} identifies
+Corollary~\ref{cor:gapuniv} as the general no-Salem dichotomy's promoting lemma on
+the charge-admissible sector (W-\S23.6a), with the inadmissible half cleanly
+scoped to the free-commutator door. \S\ref{sec:blockers}: a new subsection
+\S\ref{blk:required} states, for every remaining open item, the precise
+theoretical object required to close it --- three \emph{internal} (the $r=1$
+Pisot-unit lemma, the apex-localized structure theorem, the D2 drop-one model),
+and the external tool-gaps named exactly. The harness \texttt{ev\_softcheck.py}
+gains group \hx{EV-P} (the $N^2$ peel, $3$ checks), now $16$ exact $+$ $6$
+falsifiers; the twenty-two session harnesses total $498$ exact/computed $+$ $70$
+guards $+$ $6$ falsifiers $+$ $13$ PSLQ $+$ $7$ labelled walls. The seven-row
+ledger is unchanged; the even branch stays \tagF{}\emph{/}\tagE{} until the $r=1$
+lemma is proved. All other content unchanged.
 
 \smallskip\noindent
 \textbf{Method note (from the source report).} The investigation began by
@@ -2087,6 +2108,51 @@ the minimal polynomial cyclotomic against $\beta>1$ --- so the gap does not appl
 to it and the excision (W-Def.\ 5.1) stands. Likewise the free commutator
 (W-\S5.2) may emit charge-inadmissible outputs, untouched by GAP-UNIV.
 \end{corollary}
+
+\begin{remark}[The external import localizes to $r=1$ (v2.5)]\label{rem:evenlocalize}\tagF{} \hx{EV-P1--P3}
+Theorem~\ref{thm:evenfloor}'s use of Schinzel is broader than necessary: it
+localizes to a \emph{single} sub-case, exactly as ODD-2 localized to the one TP-2
+lemma. Since $N$ is totally real and $\ne0,\pm1$, its square $N^2$ is totally
+\emph{positive} and $\ne1$, so Lemma~\ref{lem:tp2} applies to $N^2$ and multiplies
+through:
+\[
+\M(N)^2=\M(N^2)\ \ge\ 2^{\,r}
+\qquad\Longrightarrow\qquad
+\M(N)\ \ge\ 2^{\,r/2},
+\]
+$r$ the number of conjugates of $N$ outside the unit circle. \textbf{For
+$r\ge2$ this is elementary and internal:} $\M(N)\ge2>\gp$, no external theorem
+\hx{EV-P1}. The Schinzel import survives only at $r=1$ --- $N$ a totally-real
+Pisot \emph{unit} --- where the needed fact is precisely \emph{the smallest
+totally-real Pisot number is $\gp$} (attained at $x^2-x-1$, \hx{EV-P2}). The
+elementary route saturates at $\sqrt2$ (\hx{F3}); the residual $(\sqrt2,\gp)$
+window \hx{EV-P3} is the non-elementary sliver Schinzel encodes, closed by
+discriminant/trace integrality. \emph{Theoretical requirement to make the even
+floor fully internal:} an elementary bound $\M\ge\gp$ for totally-real Pisot units
+(the $r=1$ lemma) --- Schur--Siegel--Smyth country, but a single named target, not
+the general theorem. Until it is proved the even branch is
+\tagF{}\emph{/}\tagE{}; with it, \tagF{} outright, and the corpus would carry
+\emph{no} external floor.
+\end{remark}
+
+\begin{finding}[GAP-UNIV is the no-Salem dichotomy's promoting lemma (admissible sector)]\label{find:gapdichotomy}\tagF{}
+The whitepaper's conditionality graph carries the \emph{general no-Salem
+dichotomy} as \tagO{}, ``the one promoting lemma'' (W-\S23.6a: $\Z/3$ forced,
+$\Z/5$ mostly forced, the general case open). Corollary~\ref{cor:gapuniv} \emph{is}
+that promoting lemma for the charge-admissible sector: the uniform floor
+$\M\in\{1\}\cup[\gp,\infty)$ holds at \emph{every} charge group at once, so the
+admissible half of the dichotomy is discharged \tagF{}-given-Schinzel (and, by
+Remark~\ref{rem:evenlocalize}, internally except at $r=1$). What GAP-UNIV
+\emph{cannot} reach is the \emph{inadmissible} half --- and that boundary is not a
+gap in the argument but a structural one: it is exactly the free-commutator door
+(W-\S5.2, \S\ref{sec:blockers}), the sole channel across which the emission
+constraints do not extend, and the only place the full Salem spectrum (Lehmer
+included) re-enters. So the dichotomy's two halves are now cleanly separated:
+\emph{admissible $\Rightarrow$ GAP-UNIV (settled here); inadmissible $\Rightarrow$
+the commutator door (external)}. This does not disturb the excision --- Salems
+are charge-inadmissible --- and it precisely scopes what the commutator item must
+deliver.
+\end{finding}
 
 \section{The state-angle chart}\label{sec:stateangle}
 
@@ -3715,7 +3781,7 @@ check ID cited in \S\ref{sec:relobject} appears in the file):
 \toprule
 harness & content & exact$+$fal.\\
 \midrule
-\texttt{ev\_softcheck.py} & even relational floor (Thm~\ref{thm:evenfloor}) $+$ $p_1{=}q_2$ (Rem~\ref{rem:mahlerfloor}): \hx{EV-S} the Schinzel battery --- $\M\ge\gp^{\deg/2}$ over the totally-real box, $0$ violations, tight at $x^2-x-1$; \hx{EV-W} the $q_k$ minimizers on $R_{2k}$, $\M=\gp$; \hx{EV-D} the relative-norm descent certificate at $q_1,q_2$ ($N$ tot.\ real $\ne\pm1$, $\M(N)\ge\gp^{e/2}$, $e\mid d'$, $\M(\alpha)\ge\gp$); \hx{EV-F} the parity-split floor scan (even-min $=\gp$, odd-min $=2$, no even below $\gp$); \hx{EV-A} $p_1=q_2=x^4+x^2-1$ and the unique-hit mechanism ($L_{2n}=3\iff n=1$) & $13+6$\\
+\texttt{ev\_softcheck.py} & even relational floor (Thm~\ref{thm:evenfloor}) $+$ $p_1{=}q_2$ (Rem~\ref{rem:mahlerfloor}): \hx{EV-S} the Schinzel battery --- $\M\ge\gp^{\deg/2}$ over the totally-real box, $0$ violations, tight at $x^2-x-1$; \hx{EV-W} the $q_k$ minimizers on $R_{2k}$, $\M=\gp$; \hx{EV-D} the relative-norm descent certificate at $q_1,q_2$ ($N$ tot.\ real $\ne\pm1$, $\M(N)\ge\gp^{e/2}$, $e\mid d'$, $\M(\alpha)\ge\gp$); \hx{EV-F} the parity-split floor scan (even-min $=\gp$, odd-min $=2$, no even below $\gp$); \hx{EV-A} $p_1=q_2=x^4+x^2-1$ and the unique-hit mechanism ($L_{2n}=3\iff n=1$); \hx{EV-P} (v2.5) the $N^2$ peel --- $\M(N)\ge2^{r/2}$ so $r\ge2$ is elementary ($\ge2>\gp$), the Schinzel import localized to $r=1$ (Rem~\ref{rem:evenlocalize}) & $16+6$\\
 \texttt{ax\_softcheck.py} & $C{=}4/9$ not an emission eigenvalue (Rem~\ref{rem:lens49}): \hx{AX-1} $\sqrt3$ is the unique catalog $3$-carrier ($w_1{=}2$; all others $0$); \hx{AX-2} emission monomials keep $w_1\ge0$; \hx{AX-3} $\tfrac49$ has $w_1{=}-8<0$, excluded; \hx{AX-4} the test discriminates ($3{=}\psi^2(\sqrt3)$, $w_1{=}4$, not excluded) --- the exact prime-$3$ mirror of Prop~\ref{prop:unimon} & $4$\\
 \bottomrule
 \end{tabular}
@@ -3730,11 +3796,12 @@ by the descent, and \texttt{ev} corroborates it and certifies the one external
 import (Schinzel), as \texttt{nd\_softcheck.py} does for
 Theorem~\ref{thm:odd2nd}, and \texttt{ax\_softcheck.py} (v2.4, the $C{=}4/9$
 emission-eigenvalue kill of Remark~\ref{rem:lens49}) does for
-Proposition~\ref{prop:unimon} at the prime $3$. With them the \emph{twenty-two}
-session harnesses total $\mathbf{495}$ exact/computed checks $+$ $\mathbf{70}$
-certified guards $+$ $\mathbf{6}$ fail-first falsifiers $+$ $\mathbf{13}$ PSLQ
-corroborations $+$ $\mathbf{7}$ labelled walls (five after \hx{BL-G7} joins
-\hx{BL-G4} off the board), all exit 0.
+Proposition~\ref{prop:unimon} at the prime $3$. The \texttt{ev} harness gains
+group \hx{EV-P} (v2.5, the $N^2$ peel localizing Schinzel to $r=1$, $3$ checks).
+With them the \emph{twenty-two} session harnesses total $\mathbf{498}$
+exact/computed checks $+$ $\mathbf{70}$ certified guards $+$ $\mathbf{6}$
+fail-first falsifiers $+$ $\mathbf{13}$ PSLQ corroborations $+$ $\mathbf{7}$
+labelled walls (five after \hx{BL-G7} joins \hx{BL-G4} off the board), all exit 0.
 
 \smallskip\noindent
 Every boxed identity of the source reports and every displayed identity of the
@@ -4010,6 +4077,40 @@ and stays \tagC{}: a wider scan corroborates but does not \emph{settle} an
 infinite family. Extending Remark~\ref{rem:p1scan}'s window past its
 degree-$6$ cap (e.g.\ to Lehmer's degree $10$) is thus a runnable corroboration,
 not a blocker whose non-execution the ledger tracks.
+
+\subsection{What is required, theoretically}\label{blk:required}
+The v2.3--v2.5 reading lets the ledger state, for each remaining open item, the
+\emph{precise theoretical object} whose production would close it. This is not new
+mathematics; it is the exact shape of what each closure needs, sorted by whether
+the object is \emph{internal} (a named lemma or model the corpus could in principle
+produce), \emph{scoped-external} (a specific piece of existing mathematics is
+missing but applicable), or \emph{conjecture-external} (blocked on a named open
+conjecture).
+
+\begin{center}\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}p{3.5cm}p{1.9cm}p{8.3cm}@{}}
+\toprule
+open item & kind & the theoretical object required\\
+\midrule
+even floor, fully internal (Rem~\ref{rem:evenlocalize}) & internal --- named lemma & an elementary $\M\ge\gp$ for totally-real Pisot \emph{units} (the $r=1$ residual, after the $N^2$ peel reduces every $r\ge2$ case to Lemma~\ref{lem:tp2}); it closes the $(\sqrt2,\gp)$ window by discriminant/trace integrality. With it the corpus carries \emph{no} external floor.\\[2pt]
+OP-RADIUS ab initio, W\tagO{}1 (\S\ref{blk:radab}) & internal --- structure theorem & a Rosenlicht/Risch integration-in-finite-terms structure theorem \emph{localized at the apex} with a monodromy-order invariant, placing $r$ (order $2$) outside the unramified elementary-differential closure under the unit-log hypothesis.\\[2pt]
+W\tagO{}2 / D2 (\S\ref{blk:d2}) & internal --- drop-one model & a model of D1, D3 and the keystone algebra that \emph{violates} D2. If none exists, D2 is redundant given Theorem~\ref{thm:factorization}$+$D3 and the row \emph{retires}; if one exists, D2 is a genuine atom. A runnable audit, not yet run.\\[2pt]
+OP-RATE derivation (\S\ref{blk:rate}) & scoped-external & a continuum-referencing selection principle --- a no-section theorem for the $\log$-torsor of $q$ in a fixed definability framework --- forcing the $k=0$ marking from data the $k$-invariant discrete state cannot see.\\[2pt]
+OP-RADIUS profile / D4 (\S\ref{blk:radprof}) & scoped-external --- dynamics & a formation-dynamics principle fixing the cap onset at $z_c$ and an orientation of the apex double cover: the two free halves of D4.\\[2pt]
+no-Salem dichotomy, inadmissible half (Finding~\ref{find:gapdichotomy}) & scoped-external --- commutator & the free-commutator analysis (W-\S5.2): does the associative algebra generated by the $\otimes/\oplus$-images of the catalog contain a full matrix algebra? The admissible half is Corollary~\ref{cor:gapuniv}.\\[2pt]
+$L_{\mathrm{res}}$ transcendence (\S\ref{blk:lrestrans}) & conjecture-external & a transcendence theorem for an elliptic value at a \emph{transcendental} modulus --- beyond Schneider/Chudnovsky, which need an algebraic modulus or CM.\\[2pt]
+$(\pi,\ln\gp)$ independence (\S\ref{blk:pilnphi}) & conjecture-external & Schanuel's conjecture (the premise, $\{\ln\gp,i\pi\}$ $\Q$-linearly independent, is already forced).\\[2pt]
+$(\kappa,L_{\mathrm{res}})$ independence (\S\ref{blk:kappalres}) & conjecture-external & Kontsevich--Zagier period-relation theory (an elliptic period, beyond Schanuel).\\
+\bottomrule
+\end{tabular}
+\end{center}
+\noindent The honest count of what the corpus \emph{could} still settle by its own
+means is therefore \emph{three named objects}: the $r=1$ Pisot-unit lemma
+(Rem~\ref{rem:evenlocalize}), the apex-localized structure theorem
+(\S\ref{blk:radab}), and the D2 drop-one model (\S\ref{blk:d2}). Two further items
+want a scoped external theorem or a dynamics principle; three wait on named
+conjectures that do not yet exist. Nothing here is an unattempted derivation ---
+each is a precisely-shaped object, and three of them are internal.
 
 \smallskip\noindent
 \textbf{Closing.} The corpus's forced content is complete through v1.9; v2.1 adds

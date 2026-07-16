@@ -13,7 +13,7 @@ are verifiers, not producers — no `data/` outputs, so there is nothing to diff
 | Rate arithmetic, systole, parity no-go, seed ladder, rail closed form (v1.7) | tx mx rx ux ex cx lx dx | Verified (exit 0) | 234 exact + 29 guards |
 | OP-RATE classification, radius apex-ramification, χ doctrine, relational note, period map (v1.8) | rd cl ch rn pm | Verified (exit 0) | 115 exact + 20 guards |
 | ODD-2 closure (v2.1) + P1′ cross-shell no-tie (v2.2) | nd_softcheck (565 objects) · xs_softcheck (855-object window) | Verified (exit 0) | forced theorems; 0 exceptions |
-| EVEN relational floor (v2.3, given Schinzel) + p₁=q₂ | ev_softcheck (Schinzel battery, descent certificate, parity-split scan) | Verified (exit 0) | [forced given Schinzel]; 6 falsifiers fire |
+| EVEN relational floor (v2.3, given Schinzel) + p₁=q₂ + r=1 peel (v2.5) | ev_softcheck (Schinzel battery, descent certificate, parity-split scan, N² peel) | Verified (exit 0) | [forced given Schinzel], localized to r=1; 6 falsifiers fire |
 | C=4/9 emission-eigenvalue kill (v2.4) | ax_softcheck (3-valuation: √3 unique carrier, monomials w₁≥0, 4/9 w₁<0) | Verified (exit 0) | [forced]; prime-3 mirror of prop:unimon |
 | Register decimal literals | decimal_audit | Verified (exit 0) | 0.51-ulp / truncation matcher |
 

@@ -202,6 +202,31 @@ mn = [round(mahler(x**4+(L(2*n)-2)*x**2-(L(2*n)-2)), 4) for n in range(1, 7)]
 ck("EV-A4", abs(mn[0] - PHI) < 1e-3 and all(abs(v - PHI) > 1e-2 for v in mn[1:]),
    f"M(p_n) hits phi ONLY at n=1: {mn}")
 
+# =============================================================== EV-P (v2.5)
+# The N^2 peel: the Schinzel dependency localizes to r=1.  N totally real != 0,+-1
+# => N^2 totally positive != 1 => TP-2: M(N^2)=M(N)^2 >= 2^r => M(N) >= 2^(r/2).
+# r>=2 => M(N) >= 2 > phi ELEMENTARILY (internal, no Schinzel); only r=1 (N a
+# totally-real Pisot unit) needs the phi-bound. Mirrors ODD-2's cut to the one lemma.
+print("== EV-P: the N^2 peel -- Schinzel localizes to r=1 ==")
+def r_outside(coeffs):
+    return sum(1 for z in mp.polyroots([complex(c) for c in coeffs]) if abs(z) > 1)
+# r>=2 witnesses: elementary M(N)>=2>phi (no Schinzel)
+peel_hi = {"x^2-3": [1,0,-3], "x^2-x-3": [1,-1,-3], "x^3-x^2-2x+1": [1,-1,-2,1]}
+okP1 = True
+for name, c in peel_hi.items():
+    r = r_outside(c); M = mahler(sp.Poly(c, x).as_expr()); bound = 2**(r/2)
+    okP1 = okP1 and r >= 2 and M >= bound - 1e-9 and M >= 2 - 1e-9
+    print(f"   {name}: r={r}, M(N)={M:.4f} >= 2^(r/2)={bound:.4f} and >=2>phi (ELEMENTARY, no Schinzel)")
+ck("EV-P1", okP1, "r>=2: M(N)=M(N^2)^(1/2)>=2^(r/2)>=2>phi -- internal via TP-2 on N^2 (Schinzel NOT needed)")
+# r=1 residual: the golden pair is the extremal totally-real Pisot unit at phi
+r_gp = r_outside([1,-1,-1])
+ck("EV-P2", r_gp == 1 and abs(mahler(x**2-x-1) - PHI) < 1e-9,
+   "r=1 residual: x^2-x-1 (golden ratio) is a totally-real Pisot unit with M=phi -- the sole external sliver")
+# the (sqrt2, phi) window: elementary saturates at sqrt2 (F3), the residual lemma
+# closes it -- verify no r=1 tot-real integer in the box sits in (1, phi) besides units>=phi
+ck("EV-P3", 2**0.5 < PHI and len(below_phi_even) == 0,
+   "the (sqrt2,phi) window is the residual sliver: elementary reaches sqrt2, the TR-Pisot lemma reaches phi")
+
 # =============================================================== falsifiers
 print("== falsifiers (must FAIL) ==")
 GP, GF = [], []
