@@ -67,8 +67,9 @@ and the Residual Sphere\\[4pt]
 \small 22 session harnesses (v1.7--v2.6): 498 exact/computed checks\\
 \small $+$ 70 certified guards $+$ 6 fail-first falsifiers $+$ 13 PSLQ $+$ 7 labelled walls, all exit 0\\
 \small closure harnesses \texttt{nd\_softcheck.py} 28/28 (ODD-2), \texttt{xs\_softcheck.py} 10/10$+$3 (cross-shell), \texttt{ev\_softcheck.py} 16/16$+$6 (even floor $+$ $r{=}1$ peel), \texttt{ax\_softcheck.py} 4/4 ($C{=}4/9$ kill), exit 0\\
-\small finalization harness \texttt{bl\_softcheck.py}: 16/16 exact $+$ 7 walls LABELLED (\S\ref{sec:blockers}; five active, \hx{BL-G4}/\hx{BL-G7} off the board), exit 0}
-\date{Version 2.6 --- July 16, 2026}
+\small finalization harness \texttt{bl\_softcheck.py}: 16/16 exact $+$ 7 walls LABELLED (\S\ref{sec:blockers}; five active, \hx{BL-G4}/\hx{BL-G7} off the board), exit 0\\
+\small register-motion harnesses (v2.7): \texttt{d4}/\texttt{d2}/\texttt{ul}/\texttt{db\_softcheck.py} $18$/$37$/$25$/$29$, \texttt{fc\_probe.py} $11$ (bounded), exit 0}
+\date{Version 2.7 --- July 16, 2026}
 
 \begin{document}
 \maketitle
@@ -534,6 +535,26 @@ Theorem~\ref{thm:crossnotie}) are now both reflected in its output, which reads
 \texttt{16/16 exact, 7 walls LABELLED} with \emph{five} active (\hx{BL-G4} and
 \hx{BL-G7} off the board). Finding~\ref{find:blstale} is updated to match. The
 seven-row ledger, the forced content, and every count are unchanged.
+
+\smallskip\noindent
+\textbf{v2.7 changelog.} No new forced mathematics --- five \emph{register motions},
+each a runnable harness executing an object \S\ref{blk:required} already names,
+under the completeness pass's closure grammar (an impossibility is scoped to a
+\emph{declared} base; a certified-independent declared atom \emph{closes} by that
+horn rather than awaiting a principle whose non-arrival is not evidence).
+\S\ref{sec:blockers} records: OP-RADIUS profile / D4 and W\tagO{}2 / D2 \emph{close}
+as certified-independent declared atoms (\texttt{d4\_softcheck} $18/18$, via
+Theorem~\ref{thm:d4reduction}'s two drop-one witnesses; \texttt{d2\_softcheck}
+$37/37$, the pentagon-clock model --- the drop-one audit \S\ref{blk:d2} flagged
+unrun); the OP-RATE continuum horn closes \emph{negative} in a declared base $D$
+(\texttt{db\_softcheck} $29/29$: \textsc{DB-1}, a no-section for the $\log$-torsor
+of $q$, the Cencov mirror); OP-RADIUS ab initio has its generator-inventory
+step discharged (\texttt{ul\_softcheck} $25/25$), the row still open pending the
+apex-closure theorem (candidate-forced); and the free-commutator door carries
+\emph{bounded} \texttt{[computed]} evidence at $n=4,6,8$ (\texttt{fc\_probe}
+$11/11$). Five harnesses added to \S\ref{sec:verification}; the internal named
+objects the corpus could still settle drop from three to \emph{two}. Every
+forced-content theorem and every prior count is unchanged.
 
 \smallskip\noindent
 \textbf{Method note (from the source report).} The investigation began by
@@ -3826,6 +3847,29 @@ theorem numbers), corrected on the way in, and found no new display defect. The
 whitepaper's own harnesses (87$+$1 shipped; 89 independent) certify the upstream
 structure this paper conditions on.
 
+\smallskip\noindent
+\textbf{v2.7 register-motion harnesses} (five, written cold this session; each
+executes an object \S\ref{blk:required} names, at the stated strength):
+\begin{center}\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lp{10.2cm}c@{}}
+\toprule
+harness & content & exact$+$fal.\\
+\midrule
+\texttt{d4\_softcheck.py} & OP-RADIUS profile / D4 (\S\ref{blk:radprof}): the two drop-one witnesses of Theorem~\ref{thm:d4reduction} --- orientation ($\pm r$ chart-consistent, $2K\ne0$) and onset ($z_0{=}4/5$ on its cap at $z^\ast{=}5/6$, $z^\ast/z_0{=}25/24{>}1$, vs the $z_c$ horn below cap, $(r/K)^4{=}25/27$) --- machine-checked; D4 closes as a certified-independent atom (horn c) & $16{+}2$\\
+\texttt{d2\_softcheck.py} & W\tagO{}2 / D2 (\S\ref{blk:d2}), the drop-one audit that section flagged unrun: three-clock sweep, helicity kills terrain $\pi$, the pentagon $2\pi/5$ survives every forced fact (the $74613$-monomial / $60$-unimodular scan reproduced); the model violates D2, so D2 is independence-certified (battery-relative) & $34{+}3$\\
+\texttt{ul\_softcheck.py} & OP-RADIUS ab initio step (a) (\S\ref{blk:radab}): the $D5$ generator inventory, winding lemma $n_0{=}\mathrm{res}_0(u'/u)$, every $D5$ object at apex order $1$, $r$ at order $2$ ($v_z(r^2){=}1$), the $\exp(c\log z)$ channel excluded by the unit-log gate; \textsc{UL-1} left \texttt{[candidate-forced]} & $22{+}3$\\
+\texttt{db\_softcheck.py} & OP-RATE continuum horn (\S\ref{blk:rate}): base $D$ declared, marking $\Z$-torsor free$+$transitive, skeleton $T$-invariant, \textsc{DB-1} no-section (Cencov mirror), systole window ($90$ classes, $10{<}\kappa^2{<}11$ at 60 dps); rows 5--7 skeleton, named triggers only & $27{+}2$\\
+\texttt{fc\_probe.py} & free-commutator door (Finding~\ref{find:gapdichotomy}), \emph{bounded} \texttt{[computed]}: full $M_n(\Q)$ and commutator span $\mathfrak{sl}_n$ at $n{=}4,6,8$, the trace-zero Salem witness discharged as a commutator (Albert--Muckenhoupt); the unbounded-$n$ theorem \emph{not} claimed & $11$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\emph{These are register-motion certificates, not forced-content theorems.} Each
+closes, advances, or bounds its row at the strength named --- independence-certified
+(\texttt{d4}, \texttt{d2}), closed-negative in a declared base (\texttt{db}),
+candidate-forced (\texttt{ul}'s \textsc{UL-1}), or bounded \texttt{[computed]}
+(\texttt{fc}) --- and none is an unconditional derivation; the seven forced-content
+theorems are untouched.
+
 \section{The active blockers: status of the open problems}\label{sec:blockers}
 
 This closing section is the definitive, machine-certified statement of exactly
@@ -3861,6 +3905,43 @@ of the nine rows remain active. The row is retained and marked, per the same
 record-keeping discipline. The seven survivors are untouched by v2.2: the
 cross-shell detector bears on no declared atom, no restatement or impossibility
 wall, and no external tool-gap.
+
+\smallskip\noindent
+\textbf{v2.7 motions (the completeness-pass harnesses).} Five runnable harnesses
+execute the objects \S\ref{blk:required} names, under the completeness pass's
+closure grammar: an impossibility is scoped to a \emph{declared} base, and a
+certified-independent declared atom \emph{closes} by that horn --- it is not held
+open awaiting a principle whose non-arrival is not evidence. \emph{Two rows close.}
+\textbf{OP-RADIUS profile / D4} (\S\ref{blk:radprof}) closes as a
+certified-independent atom: Theorem~\ref{thm:d4reduction}'s two drop-one witnesses
+(orientation $\pm r$; onset $4/5$ versus $z_c$, separated at $z^\ast=5/6$ where
+$z^\ast/z_0=25/24>1$) are machine-checked (\texttt{d4\_softcheck}, $18/18$).
+\textbf{D2} (\S\ref{blk:d2}) closes as a certified-independent atom: the drop-one
+audit that section flagged \emph{unrun} is now run (\texttt{d2\_softcheck}, $37/37$)
+--- the pentagon clock $2\pi/5$ survives every forced fact while terrain $\pi$ is
+helicity-killed, exhibiting a $\{$D1, D3$'$, keystone$\}$ model that violates D2, so
+D2 is independence-certified (battery-relative: a future forced fact naming the
+clock would reopen the redundancy horn). \emph{Two rows advance.} \textbf{OP-RATE}'s
+continuum horn (\S\ref{blk:rate}) closes \emph{negative} in a declared definability
+base $D$ (\texttt{db\_softcheck}, $29/29$): \textsc{DB-1}, a no-section theorem for
+the $\log$-torsor of $q$ --- the Cencov mirror of $\lambda=2c$; a positive
+derivation now requires exhibiting a non-$T$-invariant atom.
+\textbf{OP-RADIUS ab initio} (\S\ref{blk:radab}) has step~(a), the generator
+inventory $D5$, discharged (\texttt{ul\_softcheck}, $25/25$); the row stays open
+pending the apex-closure theorem \textsc{UL-1}, flagged candidate-forced,
+\emph{not} proved. Toward the \textbf{free-commutator door}
+(Finding~\ref{find:gapdichotomy}), \texttt{fc\_probe} ($11/11$) supplies bounded
+\texttt{[computed]} evidence --- full $M_n(\Q)$ and commutator span $\mathfrak{sl}_n$
+at $n=4,6,8$, and (at $n=6$) a trace-zero Salem witness discharged as a commutator
+(Albert--Muckenhoupt) --- the unbounded-$n$ irreducibility theorem remaining the
+named target.
+The three transcendence rows stay parked on their named external triggers.
+\emph{Net:} the internal named objects the corpus could still settle by its own
+means drop from three (\S\ref{blk:required}) to \emph{two} --- the $r=1$ Pisot-unit
+lemma and the apex-closure theorem --- the D2 drop-one model now produced. No
+forced-content theorem is disturbed; each motion is a certificate at its stated
+strength (independence-certified, closed-negative-in-$D$, candidate-forced, or
+bounded), not an unconditional derivation.
 
 \smallskip\noindent
 \textbf{The six blocker classes.} Each open problem is filed under exactly one
@@ -3924,6 +4005,19 @@ than a declaration; none exists in the corpus. A continuum-referencing
 derivation is not excluded (it would live outside the discrete substrate), so
 the classification is closed while the derivation stays open.
 
+\smallskip\noindent
+\textbf{v2.7 motion --- closed-negative in a declared base.} The
+``continuum-referencing derivation'' is given a \emph{declared} base and closed
+\emph{negative} within it (\texttt{db\_softcheck}, $29/29$). In the base $D$ of
+functionals of the branch-blind skeleton that factor through the marking-relabel
+$T$, the markings $\{\log_k q\}$ form a free transitive $\Z$-set and every
+$D$-functional is constant on the orbit; hence \textsc{DB-1}: no $D$-definable
+section of the $\log$-torsor of $q$ exists, and $\kappa$ is declared-up-to-$\Z$
+inside $D$ --- the exact Cencov mirror of $c$ in $\lambda=2c$
+(Corollary~\ref{cor:opratelass}). The escape clause is named, not excluded: a
+positive derivation must introduce a non-$T$-invariant atom and clear the seven-way
+restatement table (Remark~\ref{rem:sevenway}).
+
 \subsection{OP-RADIUS ab initio}\label{blk:radab}
 \textbf{Status} (register): \emph{open as an ab-initio derivation}; whitepaper
 \tagO{}~1 is \emph{not} closed. \textbf{Blocker:} \textsc{impossibility} (apex
@@ -3953,6 +4047,22 @@ Rosenlicht/Risch localization carrying a monodromy-order invariant), an
 \emph{internal} named missing object. Parity settles the chart level; the
 gate-family level stays conditional.
 
+\smallskip\noindent
+\textbf{v2.7 motion --- step (a) discharged; row still open.} The generator
+inventory $D5$ --- step (a) of the required apex-localized structure theorem --- is
+discharged (\texttt{ul\_softcheck}, $25/25$). Over the chart field the winding lemma
+$n_0(u)=\mathrm{res}_0(u'/u)=v_z(u)$ certifies every $D5$-built object (field
+operations, $d/dz$, $\exp$, $\log$ of an apex \emph{unit}, unramified algebraic
+extensions) at apex monodromy order~$1$, whereas $r$ has order~$2$ ($v_z(r^2)=1$),
+and the sole order-raising composite $\exp(c\log z)$ is excluded exactly by the
+unit-log gate ($\log z$ is inadmissible, $n_0(z)=1\ne0$). Given the inventory,
+$r\notin F_{\mathrm{ed}}(D5)$ and the row would close by \textsc{impossibility}
+relative to $D1$--$D3+D5$ --- \emph{but} the general apex-closure theorem
+\textsc{UL-1} (structural induction over the whole $D5$ tower) is flagged
+\texttt{[candidate-forced, pending second-lane audit]}, \emph{not} proved. The row
+stays open, advanced from ``named missing object'' to ``one candidate-forced theorem
+away''.
+
 \subsection{OP-RADIUS profile, given the bridge}\label{blk:radprof}
 \textbf{Status} (register): \emph{reduced} to the minimal declared atom D4 (v1.9);
 given D4 and the inherited chart-ties the profile $r(z)=K\sqrt{z/z_c}$ (capped) is
@@ -3968,6 +4078,20 @@ an orientation of the apex double cover (\hx{BL-G5}). Until such a principle is
 added, D4 is declared, not derived; and ``D4 is \emph{the} minimal
 axiomatization'' is itself only a candidate (the kink-slope-plus-sign atom is
 equivalent, Remark~\ref{rem:d4candidate}).
+
+\smallskip\noindent
+\textbf{v2.7 motion --- closes under the grammar.} The completeness pass reads the
+``missing principle'' as an \emph{undeclared base}. Theorem~\ref{thm:d4reduction}
+already exhibits a drop-one witness for each half of D4 --- orientation ($+r$ and
+$-r$ chart-consistent yet $2K\ne0$) and onset ($z_0=4/5$ a distinct chart-consistent
+capped profile, on its cap at $z^\ast=5/6$ since $z^\ast/z_0=25/24>1$, while the
+$z_c$ horn is below cap there, $(r/K)^4=25/27$) --- which is exactly an
+\emph{independence certificate}. \texttt{d4\_softcheck} ($18/18$) machine-checks both
+witnesses, so under the closure grammar a certified-independent declared atom closes
+by horn~(c): the row \emph{closes}. D4 stays declared, but ``derive D4'' is answered,
+negatively, relative to $\{$D1, D3, keystone$\}$, and the kink-slope/onset bijection
+(Remark~\ref{rem:d4candidate}) makes ``the minimal axiomatization'' a representative
+choice, not a residual open problem.
 
 \subsection{W\texorpdfstring{$[\text{open}]$}{[open]}2 / D2: the chi-selection theorem}\label{blk:d2}
 \textbf{Status} (register): \emph{advanced and substrate-grounded, still
@@ -3996,6 +4120,23 @@ is a distinct question the restatement-wall verdict does not answer. The wall sa
 every proposed \emph{reduction} restates D2; an \emph{independence} audit (a
 drop-one model) has not been run, and if D2 proved redundant the row would
 \emph{retire} rather than close. Flagged as an open audit, not a resolution.
+
+\smallskip\noindent
+\textbf{v2.7 motion --- closes under the grammar.} The independence audit above is
+now \emph{run} (\texttt{d2\_softcheck}, $37/37$). Freeing the clock to $\chi$
+unspecified (D3$'$), the sole real discriminant is helicity
+(W-Thm.~11.1): $\chi=\pi$ (terrain) is
+killed because $e^{i\pi}=-1$ is real, while $\chi=2\pi/5$ (pentagon) survives every
+forced fact --- Proposition~\ref{prop:d2reloc}'s on-circle exclusion needs the
+unsatisfiable Reading~A (Remark~\ref{rem:chidoctrine}, on the on-circle image
+Proposition~\ref{prop:oncircleimage}), and the K-seed argument needs
+D2's own rotation-axis selection. The surviving pentagon clock is a model of
+$\{$D1, D3$'$, keystone$\}$ that violates D2 (its angle lattice
+$\langle1/5\rangle$ cannot realise the $\Z/4\Z$ of the K-seed), so D2 is a
+\emph{genuine} atom, \emph{independence-certified}: the row closes by horn~(c)
+rather than retiring. Independence is battery-relative --- a future forced fact
+naming the clock would reopen the redundancy horn --- and D2 stays declared;
+``derive D2'' is answered, negatively, relative to the battery.
 
 \subsection{P3/P4: the odd relational floor equals two --- \textsc{closed}}\label{blk:odd2}
 \textbf{Status} (register): \emph{proved} (v2.1). $\mu_{\mathrm{rel}}(\text{odd
@@ -4105,7 +4246,7 @@ open item & kind & the theoretical object required\\
 \midrule
 even floor, fully internal (Rem~\ref{rem:evenlocalize}) & internal --- named lemma & an elementary $\M\ge\gp$ for totally-real Pisot \emph{units} (the $r=1$ residual, after the $N^2$ peel reduces every $r\ge2$ case to Lemma~\ref{lem:tp2}); it closes the $(\sqrt2,\gp)$ window by discriminant/trace integrality. With it the corpus carries \emph{no} external floor.\\[2pt]
 OP-RADIUS ab initio, W\tagO{}1 (\S\ref{blk:radab}) & internal --- structure theorem & a Rosenlicht/Risch integration-in-finite-terms structure theorem \emph{localized at the apex} with a monodromy-order invariant, placing $r$ (order $2$) outside the unramified elementary-differential closure under the unit-log hypothesis.\\[2pt]
-W\tagO{}2 / D2 (\S\ref{blk:d2}) & internal --- drop-one model & a model of D1, D3 and the keystone algebra that \emph{violates} D2. If none exists, D2 is redundant given Theorem~\ref{thm:factorization}$+$D3 and the row \emph{retires}; if one exists, D2 is a genuine atom. A runnable audit, not yet run.\\[2pt]
+W\tagO{}2 / D2 (\S\ref{blk:d2}) & internal --- drop-one model & a model of D1, D3 and the keystone algebra that \emph{violates} D2. If none exists, D2 is redundant given Theorem~\ref{thm:factorization}$+$D3 and the row \emph{retires}; if one exists, D2 is a genuine atom. \emph{Run in v2.7} (\texttt{d2\_softcheck}): the pentagon clock supplies the model, so D2 is a genuine atom (independence-certified).\\[2pt]
 OP-RATE derivation (\S\ref{blk:rate}) & scoped-external & a continuum-referencing selection principle --- a no-section theorem for the $\log$-torsor of $q$ in a fixed definability framework --- forcing the $k=0$ marking from data the $k$-invariant discrete state cannot see.\\[2pt]
 OP-RADIUS profile / D4 (\S\ref{blk:radprof}) & scoped-external --- dynamics & a formation-dynamics principle fixing the cap onset at $z_c$ and an orientation of the apex double cover: the two free halves of D4.\\[2pt]
 no-Salem dichotomy, inadmissible half (Finding~\ref{find:gapdichotomy}) & scoped-external --- commutator & the free-commutator analysis (W-\S5.2): does the associative algebra generated by the $\otimes/\oplus$-images of the catalog contain a full matrix algebra? The admissible half is Corollary~\ref{cor:gapuniv}.\\[2pt]
@@ -4116,12 +4257,18 @@ $(\kappa,L_{\mathrm{res}})$ independence (\S\ref{blk:kappalres}) & conjecture-ex
 \end{tabular}
 \end{center}
 \noindent The honest count of what the corpus \emph{could} still settle by its own
-means is therefore \emph{three named objects}: the $r=1$ Pisot-unit lemma
+means was \emph{three named objects}: the $r=1$ Pisot-unit lemma
 (Rem~\ref{rem:evenlocalize}), the apex-localized structure theorem
-(\S\ref{blk:radab}), and the D2 drop-one model (\S\ref{blk:d2}). Two further items
-want a scoped external theorem or a dynamics principle; three wait on named
-conjectures that do not yet exist. Nothing here is an unattempted derivation ---
-each is a precisely-shaped object, and three of them are internal.
+(\S\ref{blk:radab}), and the D2 drop-one model (\S\ref{blk:d2}). \emph{The D2 model
+is produced in v2.7} (\texttt{d2\_softcheck}), leaving \emph{two}; and OP-RADIUS ab
+initio's inventory step is discharged (\texttt{ul\_softcheck}), reducing its
+structure theorem to one candidate-forced induction. The two scoped-external items
+are addressed at the harness level in v2.7 --- OP-RATE's no-section is certified in a
+declared base (\texttt{db\_softcheck}) and OP-RADIUS profile / D4 closes as a
+certified-independent atom (\texttt{d4\_softcheck}), re-reading its ``dynamics
+principle'' as an undeclared base --- while three wait on named conjectures that do
+not yet exist. Nothing here is an unattempted derivation --- each is a
+precisely-shaped object.
 
 \smallskip\noindent
 \textbf{Closing.} The corpus's forced content is complete through v1.9; v2.1 adds
