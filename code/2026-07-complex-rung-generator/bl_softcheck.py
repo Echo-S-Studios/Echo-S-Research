@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-# bl_softcheck.py -- the ACTIVE-BLOCKERS ledger harness (v2.0 finalization; updated v2.1:
-# ODD-2 CLOSED, BL-G4 retired, 8 active blockers / 6 labelled walls).  It does NOT re-derive
+# bl_softcheck.py -- the ACTIVE-BLOCKERS ledger harness (v2.0 finalization; updated v2.5:
+# ODD-2 CLOSED (v2.1, BL-G4 retired), P1' cross-shell DISCHARGED (v2.2, BL-G7 off the board);
+# 7 active blockers / 7 labelled walls, 5 active).  It does NOT re-derive
 # the corpus; it RE-CERTIFIES,
 # in one place, the single load-bearing FORCED fact behind each open problem's blocker
 # CLASSIFICATION, and LABELS the external-open items (which no harness can settle) with
@@ -186,9 +187,14 @@ lab("BL-G5", "DECLARED-ATOM (formation dynamics)",
 lab("BL-G6", "RESTATEMENT-WALL",
     "STRICT reduction of D2: any thinner axiom naming the clock is logically equivalent to the "
     "quarter-turn selection (QT). MISSING: a principle forcing the clock from something more primitive.")
-lab("BL-G7", "UNFINISHED-COMPUTATION",
-    "P1' cross-shell nu-criterion: the within-shell detector leaves cross-shell mirrored-class "
-    "coherence NO-TIE (RN-3). Tractable in principle; MISSING: the cross-shell coherence detector.")
+# BL-G7 DISCHARGED in v2.2: P1' cross-shell nu-criterion is CLOSED by Theorem thm:crossnotie
+# (cross-shell coherence <=> charge-admissibility, by conjugation-closure nu(a,b) nu(a,bbar) =
+# a^2/abar^2; the nu-criterion introduces no invariant beyond the within-shell class).  Certified
+# by xs_softcheck.py (10 exact + 3 guards, 855-object window, 0 exceptions).  The
+# UNFINISHED-COMPUTATION class is now empty (like NAMED-LEMMA in v2.1).
+print("DISCHARGED BL-G7 [was UNFINISHED-COMPUTATION] - P1' cross-shell nu-criterion CLOSED (v2.2, "
+      "thm:crossnotie): cross-shell coherence <=> charge-admissibility by conjugation-closure; "
+      "xs_softcheck.py 10/10+3. UNFINISHED-COMPUTATION class now empty.")
 
 print("== BL-H  the blocker LEDGER (display) ==")
 LEDGER = [
@@ -200,18 +206,20 @@ LEDGER = [
     ("L_res transcendence",          "EXTERNAL-TOOL-GAP",                          "no transcendental-modulus theorem"),
     ("(pi, ln phi) independence",    "EXTERNAL-TOOL-GAP (Schanuel)",               "conditional on Schanuel"),
     ("(kappa, L_res) independence",  "EXTERNAL-TOOL-GAP (periods)",                "beyond Schanuel"),
-    ("P1' cross-shell nu",           "UNFINISHED-COMPUTATION",                     "bounded scan; cross-shell open"),
+    ("P1' cross-shell nu",           "CLOSED (v2.2: thm:crossnotie)",              "CLOSED by conjugation-closure (xs_softcheck 10/10+3)"),
 ]
 print("   %-28s | %-38s | %s" % ("open problem", "active blocker class", "status"))
 for prob, klass, status in LEDGER:
     print("   %-28s | %-38s | %s" % (prob[:28], klass[:38], status))
 # meta-consistency: every external/unfinished wall is LABELLED, not falsely 'checked'.
-ck("BL-H1", len(LABEL) == 6 and len(LEDGER) == 9,
-   "ledger consistent (v2.1): 9 rows, P3/P4 now CLOSED -> 8 active; 6 walls LABELLED (BL-G4 retired)")
+ck("BL-H1", len(LABEL) == 5 and len(LEDGER) == 9,
+   "ledger consistent (v2.5): 9 rows, P3/P4 (v2.1) + P1' cross-shell (v2.2) CLOSED -> 7 active; "
+   "7 walls LABELLED, 5 active (BL-G4, BL-G7 off the board)")
 
 # ================================================================ summary
 print("=" * 64)
-print("BL: EXACT %d/%d checks passed | %d walls LABELLED (unsettleable by harness) %s" % (
-    len(PASS), len(PASS) + len(FAIL), len(LABEL),
+OFFBOARD = 2  # BL-G4 (retired v2.1), BL-G7 (discharged v2.2) -- labelled once, now off the board
+print("BL: EXACT %d/%d checks passed | %d walls LABELLED (%d active; BL-G4, BL-G7 off the board) %s" % (
+    len(PASS), len(PASS) + len(FAIL), len(LABEL) + OFFBOARD, len(LABEL),
     "-- ALL PASS" if not FAIL else ("| FAILURES: %s" % FAIL)))
 sys.exit(0 if not FAIL else 1)

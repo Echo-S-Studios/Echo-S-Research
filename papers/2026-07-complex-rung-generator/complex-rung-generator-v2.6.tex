@@ -64,11 +64,11 @@ and the Residual Sphere\\[4pt]
 \small independent verification (\S\ref{sec:verification}):\\
 \small \texttt{ozy\_softcheck.py} 91/91 $+$ \texttt{relational\_softcheck.py} 27/27\\
 \small \texttt{nx\_softcheck.py} 27/27 $+$ \texttt{qx\_softcheck.py} 62/62, exit 0\\
-\small 22 session harnesses (v1.7--v2.5): 498 exact/computed checks\\
+\small 22 session harnesses (v1.7--v2.6): 498 exact/computed checks\\
 \small $+$ 70 certified guards $+$ 6 fail-first falsifiers $+$ 13 PSLQ $+$ 7 labelled walls, all exit 0\\
 \small closure harnesses \texttt{nd\_softcheck.py} 28/28 (ODD-2), \texttt{xs\_softcheck.py} 10/10$+$3 (cross-shell), \texttt{ev\_softcheck.py} 16/16$+$6 (even floor $+$ $r{=}1$ peel), \texttt{ax\_softcheck.py} 4/4 ($C{=}4/9$ kill), exit 0\\
-\small finalization harness \texttt{bl\_softcheck.py}: 16/16 exact $+$ 7 walls LABELLED (\S\ref{sec:blockers}; five active after v2.2), exit 0}
-\date{Version 2.5 --- July 16, 2026}
+\small finalization harness \texttt{bl\_softcheck.py}: 16/16 exact $+$ 7 walls LABELLED (\S\ref{sec:blockers}; five active, \hx{BL-G4}/\hx{BL-G7} off the board), exit 0}
+\date{Version 2.6 --- July 16, 2026}
 
 \begin{document}
 \maketitle
@@ -432,7 +432,7 @@ the record of what its blocker was; \emph{eight} of the nine rows stay active
 and the \textsc{named-lemma} class is now empty. Two findings added
 (\ref{find:sssframe}: the SSS/Lehmer reading of $[\mu_S,2)$ is route-relative,
 not intrinsic; \ref{find:blstale}: \texttt{bl\_softcheck.py}'s P3/P4 row and its
-\hx{BL-G4} wall label are v2.0 artifacts, superseded and not re-run). One
+\hx{BL-G4} wall label are v2.0 artifacts, superseded by Theorem~\ref{thm:odd2nd}). One
 session harness \texttt{nd\_softcheck.py} (28 checks, exit 0) added to
 \S\ref{sec:verification}, bringing the \emph{nineteen} session harnesses to
 $468$ exact/computed $+$ $67$ guards $+$ $13$ PSLQ $+$ $7$ labelled walls. No
@@ -525,6 +525,15 @@ falsifiers; the twenty-two session harnesses total $498$ exact/computed $+$ $70$
 guards $+$ $6$ falsifiers $+$ $13$ PSLQ $+$ $7$ labelled walls. The seven-row
 ledger is unchanged; the even branch stays \tagF{}\emph{/}\tagE{} until the $r=1$
 lemma is proved. All other content unchanged.
+
+\smallskip\noindent
+\textbf{v2.6 changelog.} No new mathematics --- a ledger-harness synchronisation.
+The finalization harness \texttt{bl\_softcheck.py} is brought current: the
+\hx{BL-G4} retirement (v2.1) and the P1$'$ cross-shell discharge (v2.2,
+Theorem~\ref{thm:crossnotie}) are now both reflected in its output, which reads
+\texttt{16/16 exact, 7 walls LABELLED} with \emph{five} active (\hx{BL-G4} and
+\hx{BL-G7} off the board). Finding~\ref{find:blstale} is updated to match. The
+seven-row ledger, the forced content, and every count are unchanged.
 
 \smallskip\noindent
 \textbf{Method note (from the source report).} The investigation began by
@@ -3514,14 +3523,15 @@ kept the item open through three versions.
 The v2.0 finalization harness prints a nine-row blocker ledger in which P3/P4 is
 classified \textsc{named-lemma} (ODD-2) and \hx{BL-G4} labels ``the residual
 lift $\mu_S\to2$'' as a wall no harness can settle. Both are superseded by
-Theorem~\ref{thm:odd2nd}. The harness is \emph{not} re-run in v2.1 and its
-shipped pass line (\texttt{16/16 exact, 7 walls LABELLED}) is retained verbatim
-as the v2.0 record; the row is kept in the \S\ref{sec:blockers} table, marked
-\textsc{closed}, so that the classification history stays legible. Its two
+Theorem~\ref{thm:odd2nd}. As of v2.6 the harness has been brought current: it
+marks P3/P4 \textsc{closed}, retires \hx{BL-G4}, and (with the v2.2 cross-shell
+discharge) retires \hx{BL-G7}, so its shipped pass line reads \texttt{16/16
+exact, 7 walls LABELLED} with \emph{five} active (\hx{BL-G4} and \hx{BL-G7} off
+the board). The P3/P4 row is kept in the \S\ref{sec:blockers} table, marked
+\textsc{closed}, so that the classification history stays legible; its two
 load-bearing forced facts remain true as stated (\hx{BL-E1}: the $=2$ ceiling is
 forced; \hx{BL-E2}: Smyth alone gives only $\mu_S<\gp<2$) --- what lapses is the
-inference that no further internal route existed. For reading purposes the
-labelled-wall count is six, not seven.
+inference that no further internal route existed.
 \end{finding}
 
 \section{Verification manifest}\label{sec:verification}
@@ -3835,9 +3845,10 @@ seven walls that lie outside the substrate (\hx{BL-G1}--\hx{BL-G7}). Pass line:
 \textbf{v2.1 motion.} One row has since moved off the board. P3/P4 (the odd
 relational floor) is \textsc{closed} by Theorem~\ref{thm:odd2nd}: \emph{eight}
 of the nine rows below remain active, the \textsc{named-lemma} class is empty,
-and \hx{BL-G4} is no longer a wall. The row and the harness output are retained
-verbatim rather than rewritten --- the ledger is a record of what blocked what,
-and a blocker that fell is part of that record (Finding~\ref{find:blstale}).
+and \hx{BL-G4} is no longer a wall. The closed row is retained in the table
+rather than deleted --- the ledger is a record of what blocked what, and a
+blocker that fell is part of that record; the harness itself was brought current
+in v2.6 (Finding~\ref{find:blstale}).
 The eight survivors are untouched by v2.1: nothing in the descent bears on a
 declared atom, a restatement wall, or a transcendence tool-gap.
 
