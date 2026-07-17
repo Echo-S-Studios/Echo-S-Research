@@ -60,18 +60,26 @@
 and the Residual Sphere\\[4pt]
 \large A verified unification of the July 14 explorations\\
 (companion to \emph{The Golden Substrate, the Gate Field, and the Explicit Helix})}
-\author{Ozymandias, Rhyan Strouse \& Echo-S-Studios\\[2pt]
-\small independent verification (\S\ref{sec:verification}):\\
-\small \texttt{ozy\_softcheck.py} 91/91 $+$ \texttt{relational\_softcheck.py} 27/27\\
-\small \texttt{nx\_softcheck.py} 27/27 $+$ \texttt{qx\_softcheck.py} 62/62, exit 0\\
-\small 22 session harnesses (v1.7--v2.6): 498 exact/computed checks\\
-\small $+$ 70 certified guards $+$ 6 fail-first falsifiers $+$ 13 PSLQ $+$ 7 labelled walls, all exit 0\\
-\small closure harnesses \texttt{nd\_softcheck.py} 28/28 (ODD-2), \texttt{xs\_softcheck.py} 10/10$+$3 (cross-shell), \texttt{ev\_softcheck.py} 16/16$+$6 (even floor $+$ $r{=}1$ peel), \texttt{ax\_softcheck.py} 4/4 ($C{=}4/9$ kill), exit 0\\
-\small finalization harness \texttt{bl\_softcheck.py}: 16/16 exact $+$ 7 walls LABELLED (\S\ref{sec:blockers}; five active, \hx{BL-G4}/\hx{BL-G7} off the board), exit 0\\
-\small register-motion harnesses (v2.7): \texttt{d4}/\texttt{d2}/\texttt{ul}/\texttt{db\_softcheck.py} $18$/$37$/$25$/$29$, \texttt{fc\_probe.py} $11$ (bounded), exit 0\\
-\small open-tag resolution (v2.8): \texttt{pu\_softcheck.py} $22$ ($r{=}1$ floor), \texttt{ul\_closure\_check.py} $22$ (UL-1), \texttt{fc\_unbounded\_check.py} $24$ (door, all even $n$), \texttt{ws\_structure\_check.py} $23$ (within-shell), exit 0\\
-\small door-traffic dichotomy $+$ degree-$10$ within-shell extension (v2.9): \texttt{open\_tags\_resolution\_check.py} $74$ (Thm~\ref{thm:doortraffic}; python-flint), exit 0}
-\date{Version 2.9 --- July 16, 2026}
+\author{Ozymandias, Rhyan Strouse \& Echo-S-Studios\\[4pt]
+\parbox{0.92\textwidth}{\footnotesize\setlength{\parindent}{0pt}
+\emph{Independent verification} (\S\ref{sec:verification}):
+\texttt{ozy\_softcheck.py} 91/91, \texttt{relational\_softcheck.py} 27/27,
+\texttt{nx\_softcheck.py} 27/27, \texttt{qx\_softcheck.py} 62/62;
+22 session harnesses (v1.7--v2.6): 498 exact/computed checks, 70 certified guards,
+6 fail-first falsifiers, 13 PSLQ, 7 labelled walls; closure harnesses
+\texttt{nd\_softcheck.py} 28/28 (ODD-2), \texttt{xs\_softcheck.py} 10/10$+$3
+(cross-shell), \texttt{ev\_softcheck.py} 16/16$+$6 (even floor $+$ $r{=}1$ peel),
+\texttt{ax\_softcheck.py} 4/4 ($C{=}4/9$ kill); finalization
+\texttt{bl\_softcheck.py} 16/16 exact $+$ 7 walls LABELLED (\S\ref{sec:blockers};
+five active, \hx{BL-G4}/\hx{BL-G7} off the board); register-motion harnesses (v2.7)
+\texttt{d4}/\texttt{d2}/\texttt{ul}/\texttt{db\_softcheck.py} 18/37/25/29,
+\texttt{fc\_probe.py} 11 (bounded); open-tag resolution (v2.8)
+\texttt{pu\_softcheck.py} 22 ($r{=}1$ floor), \texttt{ul\_closure\_check.py} 22
+(UL-1), \texttt{fc\_unbounded\_check.py} 24 (door, all even $n$),
+\texttt{ws\_structure\_check.py} 23 (within-shell); door-traffic dichotomy $+$
+degree-$10$ within-shell extension (v2.9) \texttt{open\_tags\_resolution\_check.py}
+74 (Thm~\ref{thm:doortraffic}; python-flint); all exit 0.}}
+\date{Version 3.0 --- July 17, 2026}
 
 \begin{document}
 \maketitle
@@ -597,6 +605,20 @@ with irreducible quintic fibers; the taxonomy \emph{exhaustiveness} at unbounded
 degree \emph{stays} \tagC{}-open. One harness added to \S\ref{sec:verification}
 (dependency \texttt{python-flint}~$0.9.0$, self-provisioned in CI). No forced-content
 theorem is disturbed; the seven-row ledger is unchanged.
+
+\smallskip\noindent
+\textbf{v3.0 changelog.} Presentation only --- no mathematics, no new harness, no
+tag or count changed. (i) The title-page verification badge, whose per-version
+harness listing had outgrown the text width, is reflowed into a single wrapped
+block. (ii) Theorem~\ref{thm:d4reduction} now states the kink slope $K/\sqrt3$ as
+forced \emph{given} D4(ii)'s onset (to which it is bijectively equivalent,
+Remark~\ref{rem:d4candidate}) rather than grouping it with the
+\emph{absolutely}-forced exponent and cap value --- the distinction
+Remark~\ref{rem:atomledger} already draws, now made local to the theorem. (iii) The
+\texttt{d2\_softcheck} count in \S\ref{sec:verification} is shown as
+$34{+}3{=}37$ so the table's exact$+$falsifier split reconciles on sight with the
+$37/37$ used in prose. Every forced-content theorem, register row, and count is
+otherwise unchanged.
 
 \smallskip\noindent
 \textbf{Method note (from the source report).} The investigation began by
@@ -3142,9 +3164,11 @@ height, the unique-up-to-sign odd generator of
 Proposition~\ref{prop:bridgeobstruction} --- and (ii) fixes the join point
 (formation completes at the lens $z_c$, Remark~\ref{rem:atomledger}). Then,
 \emph{given} D4 and the inherited chart-ties --- exponent $\tfrac12$ (area
-transfer, Proposition~\ref{prop:areatransfer}), cap value $K$ (the $(K,K)$ point,
-whitepaper Thm.~15.1), kink slope $K/\sqrt3$ (whitepaper Prop.~15.2(a)), all
-v1.8-forced --- the profile
+transfer, Proposition~\ref{prop:areatransfer}) and cap value $K$ (the $(K,K)$
+point, whitepaper Thm.~15.1), both v1.8-forced \emph{absolutely}, together with the
+kink slope $K/\sqrt3$ (whitepaper Prop.~15.2(a)), which is forced only \emph{given}
+D4(ii)'s onset $z_c$ --- to which it is bijectively equivalent
+(Remark~\ref{rem:d4candidate}), not an independent tie --- the profile
 \[
 r(z)=K\sqrt{z/z_c}\ \text{ on }[0,z_c],\qquad r(z)=K\ \text{ on }[z_c,1],
 \]
@@ -4016,7 +4040,7 @@ executes an object \S\ref{blk:required} names, at the stated strength):
 harness & content & exact$+$fal.\\
 \midrule
 \texttt{d4\_softcheck.py} & OP-RADIUS profile / D4 (\S\ref{blk:radprof}): the two drop-one witnesses of Theorem~\ref{thm:d4reduction} --- orientation ($\pm r$ chart-consistent, $2K\ne0$) and onset ($z_0{=}4/5$ on its cap at $z^\ast{=}5/6$, $z^\ast/z_0{=}25/24{>}1$, vs the $z_c$ horn below cap, $(r/K)^4{=}25/27$) --- machine-checked; D4 closes as a certified-independent atom (horn c) & $16{+}2$\\
-\texttt{d2\_softcheck.py} & W\tagO{}2 / D2 (\S\ref{blk:d2}), the drop-one audit that section flagged unrun: three-clock sweep, helicity kills terrain $\pi$, the pentagon $2\pi/5$ survives every forced fact (the $74613$-monomial / $60$-unimodular scan reproduced); the model violates D2, so D2 is independence-certified (battery-relative) & $34{+}3$\\
+\texttt{d2\_softcheck.py} & W\tagO{}2 / D2 (\S\ref{blk:d2}), the drop-one audit that section flagged unrun: three-clock sweep, helicity kills terrain $\pi$, the pentagon $2\pi/5$ survives every forced fact (the $74613$-monomial / $60$-unimodular scan reproduced); the model violates D2, so D2 is independence-certified (battery-relative) & $34{+}3{=}37$\\
 \texttt{ul\_softcheck.py} & OP-RADIUS ab initio step (a) (\S\ref{blk:radab}): the $D5$ generator inventory, winding lemma $n_0{=}\mathrm{res}_0(u'/u)$, every $D5$ object at apex order $1$, $r$ at order $2$ ($v_z(r^2){=}1$), the $\exp(c\log z)$ channel excluded by the unit-log gate; \textsc{UL-1} left \texttt{[candidate-forced]} & $22{+}3$\\
 \texttt{db\_softcheck.py} & OP-RATE continuum horn (\S\ref{blk:rate}): base $D$ declared, marking $\Z$-torsor free$+$transitive, skeleton $T$-invariant, \textsc{DB-1} no-section (Cencov mirror), systole window ($90$ classes, $10{<}\kappa^2{<}11$ at 60 dps); rows 5--7 skeleton, named triggers only & $27{+}2$\\
 \texttt{fc\_probe.py} & free-commutator door (Finding~\ref{find:gapdichotomy}), \emph{bounded} \texttt{[computed]}: full $M_n(\Q)$ and commutator span $\mathfrak{sl}_n$ at $n{=}4,6,8$, the trace-zero Salem witness discharged as a commutator (Albert--Muckenhoupt); the unbounded-$n$ theorem \emph{not} claimed & $11$\\
