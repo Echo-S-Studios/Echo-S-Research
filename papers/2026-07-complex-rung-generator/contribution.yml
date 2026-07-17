@@ -4,14 +4,19 @@ member: AceTheDactyl
 title: "The Complex Rung Generator, the State-Angle Chart, and the Residual Sphere"
 domain: math
 artifacts:
-  - papers/2026-07-complex-rung-generator/complex-rung-generator-v2.8.tex
-  - papers/2026-07-complex-rung-generator/complex-rung-generator_v2.8.pdf
+  - papers/2026-07-complex-rung-generator/complex-rung-generator-v2.9.tex
+  - papers/2026-07-complex-rung-generator/complex-rung-generator_v2.9.pdf
   - papers/2026-07-complex-rung-generator/paper.cff
   - code/2026-07-complex-rung-generator
   - tests/2026-07-complex-rung-generator
 
 # The verification "pipes" (code/) are exact-arithmetic softcheck harnesses, not data
 # producers; the drift check just runs each and requires exit 0 (no data/ to diff).
+#
+# open_tags_resolution_check.py (v2.9, the Door-Traffic Dichotomy + degree 7-10
+# within-shell scan) uses python-flint for the companion-power enumeration; per the
+# drift workflow's design ("contributions needing other tools self-provision inside
+# their own check commands"), the verify step installs it before running pytest.
 checks:
   - name: harnesses
-    verify: '{PY} -m pytest tests/2026-07-complex-rung-generator -q -p no:cacheprovider'
+    verify: '{PY} -m pip install --quiet --disable-pip-version-check "python-flint==0.9.0" && {PY} -m pytest tests/2026-07-complex-rung-generator -q -p no:cacheprovider'

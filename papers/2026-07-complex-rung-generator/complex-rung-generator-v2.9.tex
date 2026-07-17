@@ -69,8 +69,9 @@ and the Residual Sphere\\[4pt]
 \small closure harnesses \texttt{nd\_softcheck.py} 28/28 (ODD-2), \texttt{xs\_softcheck.py} 10/10$+$3 (cross-shell), \texttt{ev\_softcheck.py} 16/16$+$6 (even floor $+$ $r{=}1$ peel), \texttt{ax\_softcheck.py} 4/4 ($C{=}4/9$ kill), exit 0\\
 \small finalization harness \texttt{bl\_softcheck.py}: 16/16 exact $+$ 7 walls LABELLED (\S\ref{sec:blockers}; five active, \hx{BL-G4}/\hx{BL-G7} off the board), exit 0\\
 \small register-motion harnesses (v2.7): \texttt{d4}/\texttt{d2}/\texttt{ul}/\texttt{db\_softcheck.py} $18$/$37$/$25$/$29$, \texttt{fc\_probe.py} $11$ (bounded), exit 0\\
-\small open-tag resolution (v2.8): \texttt{pu\_softcheck.py} $22$ ($r{=}1$ floor), \texttt{ul\_closure\_check.py} $22$ (UL-1), \texttt{fc\_unbounded\_check.py} $24$ (door, all even $n$), \texttt{ws\_structure\_check.py} $23$ (within-shell), exit 0}
-\date{Version 2.8 --- July 16, 2026}
+\small open-tag resolution (v2.8): \texttt{pu\_softcheck.py} $22$ ($r{=}1$ floor), \texttt{ul\_closure\_check.py} $22$ (UL-1), \texttt{fc\_unbounded\_check.py} $24$ (door, all even $n$), \texttt{ws\_structure\_check.py} $23$ (within-shell), exit 0\\
+\small door-traffic dichotomy $+$ degree-$10$ within-shell extension (v2.9): \texttt{open\_tags\_resolution\_check.py} $74$ (Thm~\ref{thm:doortraffic}; python-flint), exit 0}
+\date{Version 2.9 --- July 16, 2026}
 
 \begin{document}
 \maketitle
@@ -574,6 +575,28 @@ mechanism lemmas L1/L2 proved degree-free (\texttt{ws\_structure\_check} $23/23$
 the general taxonomy \emph{exhaustiveness} at unbounded degree \emph{stays}
 \tagC{}-open. No claim of ``everything closed'' --- see \S\ref{blk:required}. Four
 harnesses added to \S\ref{sec:verification}.
+
+\smallskip\noindent
+\textbf{v2.9 changelog.} One open tag closes and one \tagC{} scan is widened, both at
+honest strength (one harness, \texttt{open\_tags\_resolution\_check.py} $74/74$,
+exit 0). The no-Salem dichotomy's \emph{inadmissible-traffic} half --- carried
+\tagO{} through v2.8 --- is folded into Finding~\ref{find:gapdichotomy} as the
+\emph{Door-Traffic Dichotomy} (Theorem~\ref{thm:doortraffic},
+Remark~\ref{rem:doortraffic}): the trace obstruction $\operatorname{tr}[A,B]=0$
+refutes naive surjectivity and permits \emph{exact} passage only for trace-balanced
+objects (\tagF{} outright); every other charge-inadmissible spectrum passes
+\emph{escorted} by at most two admissible rational eigenvalues (\tagF{} given
+$A_n=M_n(\Q)$, with the classical \tagE{} Shoda / Albert--Muckenhoupt realization
+load-bearing); the trace-zero Salem sextic $s_6$ passes exactly at the forced onset
+$n=6$, and Lehmer is permanently escort-only (entering at $n=12$). The closure rests
+on fullness and the \tagE{} realization and makes \emph{no} claim on Lehmer's
+problem. Remark~\ref{rem:p1scan}'s within-shell occupancy scan is carried cold
+through Lehmer's degree (degrees $7$--$10$, $38{,}905$ further objects,
+$\mathrm{OTHER}=0$), registering four \emph{new} degree-$10$ unit-twist witnesses
+with irreducible quintic fibers; the taxonomy \emph{exhaustiveness} at unbounded
+degree \emph{stays} \tagC{}-open. One harness added to \S\ref{sec:verification}
+(dependency \texttt{python-flint}~$0.9.0$, self-provisioned in CI). No forced-content
+theorem is disturbed; the seven-row ledger is unchanged.
 
 \smallskip\noindent
 \textbf{Method note (from the source report).} The investigation began by
@@ -1823,6 +1846,27 @@ of \emph{this} scan's scope --- is resolved separately and unconditionally in
 Theorem~\ref{thm:crossnotie} (the no-tie). This within-shell scan is a bounded
 \tagC{} corroboration (candidate), not a proof; the general within-shell
 taxonomy remains \tagC{}-open, while the cross-shell half is now \tagF{}.
+\emph{v2.9 extension.} The scan is carried through Lehmer's degree: degrees
+$7$--$10$ at per-degree cap $1$ (a further $38{,}905$ irreducible objects, running
+tested population $855\to39{,}760$), by a \texttt{python-flint} companion-power
+enumeration. $\mathrm{OTHER}=0$ persists --- no new mechanism through degree $10$
+--- and four \emph{new} degree-$10$ unit-twist witnesses appear, all at order $k=3$,
+fiber $t=2$, with irreducible \emph{quintic} fibers $g=\operatorname{minpoly}(\alpha^3)$
+($p\mid g(x^3)$, $\deg g\cdot t=10$):
+\[
+\begin{aligned}
+&x^{10}+x^{6}+x^{5}+x^{2}-x+1 &&(g=x^5-3x^2-x-1),\\
+&x^{10}+x^{6}-x^{5}+x^{2}+x+1 &&(g=x^5+3x^2-x+1),\\
+&x^{10}+x^{9}+x^{8}-x^{5}+x^{4}+1 &&(g=x^5-x^4+3x^3+1),\\
+&x^{10}-x^{9}+x^{8}+x^{5}+x^{4}+1 &&(g=x^5+x^4+3x^3-1),
+\end{aligned}
+\]
+the two pairs sign-mirrors ($p(x)\leftrightarrow p(-x)$, $g(x)\leftrightarrow-g(-x)$)
+and the first with fibers beyond the base window's two quadratic worlds. Realized
+minimal tie orders across the extended scan are $\{2,3,4,5,6\}$, every fiber inside
+L2's $[2,k]$; Lehmer itself is \emph{inert} to order $420$ (untied and inadmissible).
+A wider \tagC{} corroboration, not a settlement: exhaustiveness over the unbounded
+family stays \tagC{}-open (\texttt{open\_tags\_resolution\_check.py}, group WS).
 \end{remark}
 
 \begin{theorem}[Cross-shell no-tie: the {P1$'$} $\nu$-criterion resolved (v2.2)]\label{thm:crossnotie}\tagF{} \hx{XS-A1--A3, XS-B1--B3, XS-C1--C4}
@@ -2223,10 +2267,82 @@ gap in the argument but a structural one: it is exactly the free-commutator door
 constraints do not extend, and the only place the full Salem spectrum (Lehmer
 included) re-enters. So the dichotomy's two halves are now cleanly separated:
 \emph{admissible $\Rightarrow$ GAP-UNIV (settled here); inadmissible $\Rightarrow$
-the commutator door (external)}. This does not disturb the excision --- Salems
+the commutator door}. This does not disturb the excision --- Salems
 are charge-inadmissible --- and it precisely scopes what the commutator item must
-deliver.
+deliver. \emph{In v2.9 the door's \emph{traffic} is itself resolved}
+(Theorem~\ref{thm:doortraffic}, Remark~\ref{rem:doortraffic}): with the door full
+($A_n=M_n(\Q)$ at every even $n$, \texttt{fc\_unbounded\_check}), every
+charge-inadmissible spectrum passes --- \emph{exactly} iff it is trace-balanced,
+otherwise with an admissible rational escort of at most two eigenvalues --- so the
+inadmissible half is no longer external but a proven dichotomy, conditional on
+fullness and the classical trace-zero realization, and making no claim on Lehmer's
+problem.
 \end{finding}
+
+\begin{theorem}[The Door-Traffic Dichotomy: the inadmissible half resolved (v2.9)]\label{thm:doortraffic}\tagF{}/\tagE{} \hx{DT-A1--A2, DT-B1--B2, DT-C1--C7, DT-D1--D3, DT-E1--E6, DT-F1}
+Finding~\ref{find:gapdichotomy} scopes the inadmissible half of the no-Salem
+dichotomy to the free-commutator door (W-\S5.2); the door being \emph{full}
+($A_n=M_n(\Q)$ at every even $n$, \texttt{fc\_unbounded\_check}), its \emph{traffic}
+--- which spectra actually pass --- is settled as a dichotomy, conditional on that
+fullness and the classical trace-zero realization. Let $p\in\Z[x]$ be monic of
+degree $d$ with trace $t=-[x^{d-1}]p$ and root multiset $R$.
+\begin{enumerate}[nosep,label=(\alph*),leftmargin=2.2em]
+\item\emph{(obstruction, \tagF{} outright)} $\operatorname{tr}[A,B]=0$ identically,
+so if a commutator's spectrum (with multiplicity) is $j$ copies of $R$ then $jt=0$,
+i.e.\ $t=0$: \emph{exact} passage is possible only for trace-balanced objects.
+Lehmer's $\ell$ has $t=-1$, so its exact conjugate multiset is \emph{never} a
+commutator spectrum, at any $n$ or multiplicity --- refuting the naive surjectivity
+hope that every inadmissible object is realized \emph{exactly}.
+\item\emph{(exact passage, \tagF{} given $A_n=M_n(\Q)$, \tagE{} realization)} if
+$t=0$ and $d$ is even the companion $C_p$ is trace-zero, hence $C_p=[A,B]$ with
+$A,B\in M_d(\Q)=A_d$. The realization is the classical trace-zero commutator theorem
+(\emph{\tagE{}: Shoda 1937; Albert--Muckenhoupt 1957}), whose general universality
+over $\Q$ is \emph{load-bearing}; the harness executes it exactly on the relevant
+instances, not as an internal proof of that universality.
+\item\emph{(escorted passage, universal, \tagF{} given $A_n$, \tagE{} realization)}
+for arbitrary $p$ append the rational escort $-t$ (if $t\neq0$) and, to reach even
+size, $0$; the block is trace-zero in $M_n(\Q)=A_n$ at even $n\le d+2$, hence a
+commutator, with $\det\!\bigl(xI-[A,B]\bigr)=p(x)\,(x+t)^{\epsilon_1}x^{\epsilon_2}$.
+The escorts are rational reals --- $-t$ has argument in $\{0,\pi\}\subset(\tfrac\pi2)\Z$
+and $0$ lies on the real axis --- hence charge-admissible. So \emph{every}
+charge-inadmissible spectral object, Salems included, passes the door with an
+admissible escort of at most two rational eigenvalues, and \emph{exactly} (no
+escort) iff its trace vanishes. Lehmer enters at $n=12$ with escort $\{1,0\}$,
+$\det(xI-[A,B])=\ell(x)(x-1)x$; six random monic $\Z$-polynomials pass the same way
+(\hx{DT-F1}).
+\item\emph{(minimal entry, \tagF{})} a Salem number of degree $d$ has trace
+$>2-2(d/2-1)=4-d$ (its $\tau_0+\tau_0^{-1}>2$ and $(d/2-1)$ circle-pairs each
+contribute $2\cos\theta>-2$); at $d=4$ this is $>0$ strictly, so \emph{no degree-$4$
+Salem is trace-zero} (independently, the trace-zero palindromic quartic
+$x^4+bx^2+1$ has trace-down $t^2+(b-2)$, even in $t$: a symmetric root pair that
+cannot flip-straddle the Salem split). Trace zero first occurs at $d=6$ and is
+realized by $s_6=x^6-x^4-x^3-x^2+1$, a trace-zero Salem sextic (irreducible,
+palindromic; trace-down $T=t^3-4t-1$, irreducible, $\operatorname{disc}=229$, one
+trace-root in $(2,3)$ and two in $(-2,2)$ lifting to the unit circle), with
+$\det(xI-[A,B])=s_6$ exactly in $M_6(\Q)$. The degree-$4$ Salem
+$\beta_4=x^4-x^3-x^2-x+1$ (trace $1$) enters \emph{escorted} by $\{-1,0\}$, also at
+$n=6$. The two onsets coincide at $6$ for distinct reasons: the exact onset is the
+minimum trace-zero Salem degree, while the escorted onset is forced \emph{within}
+the emission algebra, supported at even $n$ only --- a degree-$4$ Salem with its
+single escort is trace-zero at size $5$, and the $0$-pad from $5$ to $6$ is the
+even-dimensionality step.
+\end{enumerate}
+\end{theorem}
+
+\begin{remark}[Scope of Theorem~\ref{thm:doortraffic}, carried honestly]\label{rem:doortraffic}\tagF{}
+The theorem consumes two named, load-bearing imports and is \emph{not}
+unconditional: $A_n=M_n(\Q)$ (\texttt{fc\_unbounded\_check}, the fullness of the
+emission algebra), and the general trace-zero universality (\emph{\tagE{}: Shoda /
+Albert--Muckenhoupt}) that powers the exact and escorted clauses. It makes \emph{no}
+claim on Lehmer's problem: the dichotomy routes every Salem \emph{through} the door
+but says nothing about Mahler measures accumulating at $1$. And $s_6$ is \emph{a}
+realized trace-zero Salem sextic, not asserted the minimal one (Boyd's tables,
+\tagE{} context). What the excision grammar recorded as ``the construction never
+goes to fetch them'' is thereby made sharp in the one honest direction available:
+\emph{the construction fetches every inadmissible spectrum, and the ledger price is
+trace balance.} Re-verified cold, $74/74$ exact, by
+\texttt{open\_tags\_resolution\_check.py} (group DT).
+\end{remark}
 
 \section{The state-angle chart}\label{sec:stateangle}
 
@@ -3935,6 +4051,28 @@ closes \emph{relative to a declared ambient}; the within-shell taxonomy gains a
 refutation and a mechanism theorem while its exhaustiveness stays \tagC{}-open. \emph{Not
 ``everything closed''} --- the honest count is in \S\ref{blk:required}.
 
+\smallskip\noindent
+\textbf{v2.9 open-tag-resolution harness} (one, written cold; folds the door's
+inadmissible-traffic half into Theorem~\ref{thm:doortraffic} and extends the
+within-shell occupancy scan through Lehmer's degree):
+\begin{center}\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lp{10.0cm}c@{}}
+\toprule
+harness & content & checks\\
+\midrule
+\texttt{open\_tags\_resolution\_check.py} & the Door-Traffic Dichotomy (Thm~\ref{thm:doortraffic}): trace obstruction $\operatorname{tr}[A,B]{=}0$, Lehmer $t{=}{-}1$ never exact, exact $[A,B]{=}C_{s_6}$ at $n{=}6$, escorted Lehmer at $n{=}12$ and $\beta_4$ at $n{=}6$, the minimal-entry degree floor (group DT); the within-shell scan carried to degrees $7$--$10$ ($38{,}905$ objects, $\mathrm{OTHER}{=}0$, four new degree-$10$ quintic-fiber unit-twist witnesses, group WS); and a cold re-replication of the period-frontier guards and the UL-1 / OP-RATE / D4 / D2 register motions (groups PF/UL/DB/DA/DC) & $74$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\emph{Dependency:} the degree-$7$--$10$ within-shell enumeration uses
+\texttt{python-flint}~$0.9.0$ (companion-power characteristic polynomials over
+$\Z$) alongside \texttt{sympy}~$1.14.0$ / \texttt{mpmath}~$1.3.0$ /
+\texttt{numpy}~$2.4.6$; the CI drift check self-provisions it in the contribution's
+own \texttt{verify} command. The dichotomy's obstruction half is \tagF{} outright;
+its exact and escorted halves are \tagF{} given $A_n=M_n(\Q)$, with the classical
+\tagE{} Shoda / Albert--Muckenhoupt realization \emph{load-bearing}; the degree-$10$
+extension is a \tagC{} corroboration, exhaustiveness \tagC{}-open.
+
 \section{The active blockers: status of the open problems}\label{sec:blockers}
 
 This closing section is the definitive, machine-certified statement of exactly
@@ -4029,8 +4167,14 @@ every even $n$}: the catalog $\otimes/\oplus$-algebra $A_n=M_n(\Q)$ by an $n$-un
 matrix-unit induction whose eight window-local $\Q(\sqrt5)$ certificates are
 $n$-independent (\texttt{fc\_unbounded\_check} $24/24$), with the first trace-zero
 Salem commutator at $n=6$. This \emph{discharges} \S\ref{blk:required}'s
-full-matrix-algebra requirement; the dichotomy's \emph{inadmissible-traffic} half
-(whether every inadmissible object walks through the door) stays \tagO{}.
+full-matrix-algebra requirement; and in v2.9 the dichotomy's
+\emph{inadmissible-traffic} half --- whether every inadmissible object walks through
+the door --- is \emph{resolved} as the Door-Traffic Dichotomy
+(Theorem~\ref{thm:doortraffic}): exact passage iff trace-balanced (\tagF{} outright),
+escorted-universal otherwise (\tagF{} given $A_n=M_n(\Q)$, with the classical
+\tagE{} Shoda / Albert--Muckenhoupt realization load-bearing), Lehmer permanently
+escort-only, forced onset $n=6$ --- and it carries \emph{no} claim on Lehmer's
+problem (measures accumulating at $1$).
 \textbf{Within-shell} (Rem~\ref{rem:p1scan}): the conjectured $p=s(x^k)$ taxonomy is
 \emph{refuted} by four exact unit-twist witnesses (irreducible, non-cyclotomic, with
 a \emph{proper} torsion tie $p\mid g(x^n)$; the order-$3$ pair are the golden cubes
@@ -4047,9 +4191,13 @@ $\le32$) is true but bounds only the \emph{catalog-word} population, not the gen
 integer-polynomial family the scan ranges over. \emph{Net} (the honest count,
 \S\ref{blk:required}): the two internal named objects resolve --- the $r=1$ lemma
 unconditionally, UL-1 conditionally on the declared ambient; the door's
-full-matrix requirement discharges while its traffic stays open; within-shell gains a
-refutation and a mechanism theorem while its exhaustiveness stays \tagC{}. This is
-\emph{not} ``everything closed''. No forced-content theorem is disturbed.
+full-matrix requirement discharges and (v2.9) its traffic is resolved as a
+dichotomy, conditional on fullness ($A_n=M_n(\Q)$) and the classical \tagE{}
+trace-zero realization; within-shell gains a refutation and a mechanism theorem
+while its exhaustiveness stays \tagC{}-open (a wider degree-$10$ scan corroborates,
+never settles). This is \emph{not} ``everything closed'' --- within-shell
+exhaustiveness and the three transcendence rows remain open. No forced-content
+theorem is disturbed.
 
 \smallskip\noindent
 \textbf{The six blocker classes.} Each open problem is filed under exactly one
@@ -4378,7 +4526,7 @@ OP-RADIUS ab initio, W\tagO{}1 (\S\ref{blk:radab}) & internal --- structure theo
 W\tagO{}2 / D2 (\S\ref{blk:d2}) & internal --- drop-one model & a model of D1, D3 and the keystone algebra that \emph{violates} D2. If none exists, D2 is redundant given Theorem~\ref{thm:factorization}$+$D3 and the row \emph{retires}; if one exists, D2 is a genuine atom. \emph{Run in v2.7} (\texttt{d2\_softcheck}): the pentagon clock supplies the model, so D2 is a genuine atom (independence-certified).\\[2pt]
 OP-RATE derivation (\S\ref{blk:rate}) & scoped-external & a continuum-referencing selection principle --- a no-section theorem for the $\log$-torsor of $q$ in a fixed definability framework --- forcing the $k=0$ marking from data the $k$-invariant discrete state cannot see.\\[2pt]
 OP-RADIUS profile / D4 (\S\ref{blk:radprof}) & scoped-external --- dynamics & a formation-dynamics principle fixing the cap onset at $z_c$ and an orientation of the apex double cover: the two free halves of D4.\\[2pt]
-no-Salem dichotomy, inadmissible half (Finding~\ref{find:gapdichotomy}) & scoped-external --- commutator & the free-commutator analysis (W-\S5.2): does the associative algebra generated by the $\otimes/\oplus$-images of the catalog contain a full matrix algebra? The admissible half is Corollary~\ref{cor:gapuniv}. \emph{v2.8: \textsc{discharged} --- $A_n=M_n(\Q)$ at every even $n$ (\texttt{fc\_unbounded\_check}); the inadmissible-traffic half stays \tagO{}.}\\[2pt]
+no-Salem dichotomy, inadmissible half (Finding~\ref{find:gapdichotomy}) & scoped-external --- commutator & the free-commutator analysis (W-\S5.2): does the associative algebra generated by the $\otimes/\oplus$-images of the catalog contain a full matrix algebra? The admissible half is Corollary~\ref{cor:gapuniv}. \emph{v2.8: \textsc{discharged} --- $A_n=M_n(\Q)$ at every even $n$ (\texttt{fc\_unbounded\_check}). v2.9: the inadmissible-\emph{traffic} half is \textsc{resolved} as the Door-Traffic Dichotomy (Thm~\ref{thm:doortraffic}) --- exact iff trace-balanced (\tagF{}), escorted-universal otherwise (\tagF{} given $A_n$ $+$ \tagE{} realization); no claim on Lehmer's problem.}\\[2pt]
 $L_{\mathrm{res}}$ transcendence (\S\ref{blk:lrestrans}) & conjecture-external & a transcendence theorem for an elliptic value at a \emph{transcendental} modulus --- beyond Schneider/Chudnovsky, which need an algebraic modulus or CM.\\[2pt]
 $(\pi,\ln\gp)$ independence (\S\ref{blk:pilnphi}) & conjecture-external & Schanuel's conjecture (the premise, $\{\ln\gp,i\pi\}$ $\Q$-linearly independent, is already forced).\\[2pt]
 $(\kappa,L_{\mathrm{res}})$ independence (\S\ref{blk:kappalres}) & conjecture-external & Kontsevich--Zagier period-relation theory (an elliptic period, beyond Schanuel).\\
@@ -4402,11 +4550,15 @@ resolve --- the $r=1$ Pisot-unit lemma is \emph{proved} (Rem~\ref{rem:evenv28}),
 the apex-localized structure theorem is \emph{supplied} (\S\ref{blk:radab})
 \emph{relative to a declared ambient}, closing UL-1 conditionally in the OP-RATE
 grammar. The scoped-external commutator item is \emph{discharged} at every even $n$
-(\texttt{fc\_unbounded\_check}: $A_n=M_n(\Q)$), and the within-shell $p=s(x^k)$
-conjecture is \emph{refuted} with its mechanism proved degree-free
-(\texttt{ws\_structure\_check}). So the count of \emph{named objects the corpus must
-still produce} drops to \emph{zero} --- carrying exactly two honest caveats: UL-1's
-closure rests on the declared ambient, and the within-shell taxonomy
+(\texttt{fc\_unbounded\_check}: $A_n=M_n(\Q)$), and \emph{in v2.9 its
+inadmissible-traffic half is resolved} as the Door-Traffic Dichotomy
+(Theorem~\ref{thm:doortraffic}), conditional on that fullness and the classical
+\tagE{} trace-zero realization; the within-shell $p=s(x^k)$ conjecture is
+\emph{refuted} with its mechanism proved degree-free (\texttt{ws\_structure\_check};
+the occupancy scan extended cold through degree $10$ in v2.9,
+\texttt{open\_tags\_resolution\_check}). So the count of \emph{named objects the
+corpus must still produce} drops to \emph{zero} --- carrying exactly two honest
+caveats: UL-1's closure rests on the declared ambient, and the within-shell taxonomy
 \emph{exhaustiveness} stays \tagC{}-open (a mechanism partition, not a
 proven-occupied classification at unbounded degree). The three conjecture-external
 rows are unchanged.
