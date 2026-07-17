@@ -68,8 +68,9 @@ and the Residual Sphere\\[4pt]
 \small $+$ 70 certified guards $+$ 6 fail-first falsifiers $+$ 13 PSLQ $+$ 7 labelled walls, all exit 0\\
 \small closure harnesses \texttt{nd\_softcheck.py} 28/28 (ODD-2), \texttt{xs\_softcheck.py} 10/10$+$3 (cross-shell), \texttt{ev\_softcheck.py} 16/16$+$6 (even floor $+$ $r{=}1$ peel), \texttt{ax\_softcheck.py} 4/4 ($C{=}4/9$ kill), exit 0\\
 \small finalization harness \texttt{bl\_softcheck.py}: 16/16 exact $+$ 7 walls LABELLED (\S\ref{sec:blockers}; five active, \hx{BL-G4}/\hx{BL-G7} off the board), exit 0\\
-\small register-motion harnesses (v2.7): \texttt{d4}/\texttt{d2}/\texttt{ul}/\texttt{db\_softcheck.py} $18$/$37$/$25$/$29$, \texttt{fc\_probe.py} $11$ (bounded), exit 0}
-\date{Version 2.7 --- July 16, 2026}
+\small register-motion harnesses (v2.7): \texttt{d4}/\texttt{d2}/\texttt{ul}/\texttt{db\_softcheck.py} $18$/$37$/$25$/$29$, \texttt{fc\_probe.py} $11$ (bounded), exit 0\\
+\small open-tag resolution (v2.8): \texttt{pu\_softcheck.py} $22$ ($r{=}1$ floor), \texttt{ul\_closure\_check.py} $22$ (UL-1), \texttt{fc\_unbounded\_check.py} $24$ (door, all even $n$), \texttt{ws\_structure\_check.py} $23$ (within-shell), exit 0}
+\date{Version 2.8 --- July 16, 2026}
 
 \begin{document}
 \maketitle
@@ -555,6 +556,24 @@ apex-closure theorem (candidate-forced); and the free-commutator door carries
 $11/11$). Five harnesses added to \S\ref{sec:verification}; the internal named
 objects the corpus could still settle drop from three to \emph{two}. Every
 forced-content theorem and every prior count is unchanged.
+
+\smallskip\noindent
+\textbf{v2.8 changelog.} The remaining internal open tags are resolved at honest
+strength (four harnesses, all exit 0). The $r=1$ totally-real-unit floor is
+\emph{proved} (\texttt{pu\_softcheck} $22/22$, Rem~\ref{rem:evenv28}), discharging
+Theorem~\ref{thm:evenfloor}'s Schinzel import --- the even floor is \tagF{} and the
+corpus carries no external floor. UL-1 (\S\ref{blk:radab}) closes by
+\textsc{impossibility} \emph{relative to a declared ambient} (the OP-RATE
+closed-negative-in-$D$ grammar; \texttt{ul\_closure\_check} $22/22$), the ambient
+named as the single hinge --- not an unconditional closure. The free-commutator
+\emph{door} is full at every even $n$ ($A_n=M_n(\Q)$, \texttt{fc\_unbounded\_check}
+$24/24$), discharging \S\ref{blk:required}'s full-matrix-algebra requirement; the
+dichotomy's inadmissible \emph{traffic} half stays \tagO{}. The within-shell
+$p=s(x^k)$ conjecture is \emph{refuted} (four exact unit-twist witnesses) and its
+mechanism lemmas L1/L2 proved degree-free (\texttt{ws\_structure\_check} $23/23$);
+the general taxonomy \emph{exhaustiveness} at unbounded degree \emph{stays}
+\tagC{}-open. No claim of ``everything closed'' --- see \S\ref{blk:required}. Four
+harnesses added to \S\ref{sec:verification}.
 
 \smallskip\noindent
 \textbf{Method note (from the source report).} The investigation began by
@@ -2072,7 +2091,7 @@ through the single parity bit $2\mid m$ and nothing else, taking the value $\gp$
 on the even branch and $2$ on the odd. It adds no new burden.
 \end{remark}
 
-\begin{theorem}[The even relational floor {$=\gp$}, given Schinzel (v2.3)]\label{thm:evenfloor}\tagF{}/\tagE{} \hx{EV-S1--S2, EV-W1--W2, EV-D1--D2, EV-F1--F3}
+\begin{theorem}[The even relational floor {$=\gp$}, given Schinzel (v2.3); import discharged (v2.8, Rem~\ref{rem:evenv28})]\label{thm:evenfloor}\tagF{} \hx{EV-S1--S2, EV-W1--W2, EV-D1--D2, EV-F1--F3}
 Let $m$ be \emph{even} and let $\alpha$ be an algebraic integer, not a root of
 unity, every conjugate of which lies on $R_m$. Then
 \[
@@ -2131,7 +2150,9 @@ $\pi\Q$) has $\M(\alpha)=1$ ($\alpha$ zero or a root of unity, Kronecker \tagE{}
 or $\M(\alpha)\ge\gp$. Indeed the conjugates lie on $R_m$ for $m$ the lcm of their
 angle denominators; least $m$ odd gives $\M\ge2$ (Theorem~\ref{thm:odd2nd}), even
 gives $\M\ge\gp$ (Theorem~\ref{thm:evenfloor}). This is the whitepaper's universal
-gap (W-\S5.2, W-\S22, ``over all charge-admissible''), now \tagF{} given Schinzel.
+gap (W-\S5.2, W-\S22, ``over all charge-admissible''), now \tagF{} (the even
+branch's Schinzel import discharged in v2.8, Rem~\ref{rem:evenv28}; Kronecker
+\tagE{} retained only for the $\M=1$ case).
 \emph{It does not touch Lehmer:} a Salem number is charge-\emph{inadmissible} ---
 an on-circle conjugate with argument in $\pi\Q$ would be a root of unity, forcing
 the minimal polynomial cyclotomic against $\beta>1$ --- so the gap does not apply
@@ -2165,14 +2186,37 @@ the general theorem. Until it is proved the even branch is
 \emph{no} external floor.
 \end{remark}
 
+\begin{remark}[The $r=1$ lemma is proved; the even floor is internal (v2.8)]\label{rem:evenv28}\tagF{}
+Remark~\ref{rem:evenlocalize}'s single $r=1$ target is now discharged.
+\textbf{Lemma (totally-real unit floor).} Every totally-real algebraic unit
+$\beta\ne\pm1$ of degree $\ge2$ has $\M(\beta)\ge\gp$, with equality iff the minimal
+polynomial is $x^2\mp x-1$. \emph{Proof.} The unit hypothesis makes
+$\gamma=\beta-\beta^{-1}$ an algebraic integer, so
+$\prod_i|\beta_i-\beta_i^{-1}|=|N(\beta^2-1)|=|p(1)\,p(-1)|\ge1$; each factor is
+$\le\M-\M^{-1}$ (monotonicity of $t\mapsto t-1/t$ with the house $\le\M$ on the
+out-conjugates, of $s\mapsto1/s-s$ with $|\beta_i|\ge\M^{-1}$ on the in-conjugates),
+so $1\le(\M-\M^{-1})^{\deg}$, giving $\M^2-\M-1\ge0$, i.e.\ $\M\ge\gp$; equality
+forces degree $2$ and the golden pair. $\square$ Machine-checked by
+\texttt{pu\_softcheck.py} ($22/22$: the integer core, a $165$-unit falsifier scan
+finding none below $\gp$, and three drop-one guards --- Lehmer (not totally real),
+the non-unit $x^2-4x+2$, and a planted root at $\pm1$ dropping $\beta\ne\pm1$). Since the $r=1$ residual of Theorem~\ref{thm:evenfloor}
+\emph{is} a totally-real unit and the descent exponent $d'/e\ge1$, $\M(N)\ge\gp$
+suffices, so the Schinzel import is discharged: \emph{Theorem~\ref{thm:evenfloor} is
+now \tagF{} outright and the corpus carries \emph{no} external floor.}
+Corollary~\ref{cor:gapuniv}'s floor input is likewise Schinzel-free (it retains only
+Kronecker \tagE{} for the $\M=1$ characterization, not a floor). The lemma is
+standard Schur--Siegel--Smyth material, claimed as internal self-containment, not
+priority.
+\end{remark}
+
 \begin{finding}[GAP-UNIV is the no-Salem dichotomy's promoting lemma (admissible sector)]\label{find:gapdichotomy}\tagF{}
 The whitepaper's conditionality graph carries the \emph{general no-Salem
 dichotomy} as \tagO{}, ``the one promoting lemma'' (W-\S23.6a: $\Z/3$ forced,
 $\Z/5$ mostly forced, the general case open). Corollary~\ref{cor:gapuniv} \emph{is}
 that promoting lemma for the charge-admissible sector: the uniform floor
 $\M\in\{1\}\cup[\gp,\infty)$ holds at \emph{every} charge group at once, so the
-admissible half of the dichotomy is discharged \tagF{}-given-Schinzel (and, by
-Remark~\ref{rem:evenlocalize}, internally except at $r=1$). What GAP-UNIV
+admissible half of the dichotomy is discharged \tagF{} --- the even-floor Schinzel
+import is removed in v2.8 (Rem~\ref{rem:evenv28}), so this is now internal outright. What GAP-UNIV
 \emph{cannot} reach is the \emph{inadmissible} half --- and that boundary is not a
 gap in the argument but a structural one: it is exactly the free-commutator door
 (W-\S5.2, \S\ref{sec:blockers}), the sole channel across which the emission
@@ -3870,6 +3914,27 @@ candidate-forced (\texttt{ul}'s \textsc{UL-1}), or bounded \texttt{[computed]}
 (\texttt{fc}) --- and none is an unconditional derivation; the seven forced-content
 theorems are untouched.
 
+\smallskip\noindent
+\textbf{v2.8 open-tag-resolution harnesses} (four, written cold; each closes or scopes
+a remaining open tag at the honest strength recorded in its \S\ref{sec:blockers}
+motion):
+\begin{center}\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lp{10.0cm}c@{}}
+\toprule
+harness & content & checks\\
+\midrule
+\texttt{pu\_softcheck.py} & the $r=1$ totally-real-unit floor $\M\ge\gp$ (Rem~\ref{rem:evenv28}): the integer core $|N(\beta^2-1)|=|p(1)p(-1)|\ge1$, the convexity/product step, exact equality at the golden pair, a $165$-unit falsifier scan (none below $\gp$), drop-one guards (Lehmer, the non-unit $x^2-4x+2$, a planted root at $\pm1$) & $22$\\
+\texttt{ul\_closure\_check.py} & UL-1 apex closure over the $D5$ tower (\S\ref{blk:radab}): winding lemma $n_0{=}\mathrm{res}_0(u'/u)$, five gate lemmas preserving apex order $1$ (Newton--Puiseux integrality, unit-log gate), $\mathrm{ord}(r){=}2$ with $v_z(r^2){=}1$, the $\exp(c\log z)$ exclusion; the ambient is \emph{declared} & $22$\\
+\texttt{fc\_unbounded\_check.py} & the free-commutator door at unbounded size (Finding~\ref{find:gapdichotomy}): $A_n{=}M_n(\Q)$ by an $n$-uniform matrix-unit induction (eight $n$-independent $\Q(\sqrt5)$ certificates), trace-zero Salem exclusion at $n{=}2,4$, first commutator at $n{=}6$ (exact $[A,B]{=}W$), mod-$p$ rank corroboration to $n{=}10$ & $24$\\
+\texttt{ws\_structure\_check.py} & within-shell structure (Rem~\ref{rem:p1scan}): L1 ($\zeta_k$-closure $\iff p{=}s(x^k)$, both directions), L2 (tower divisibility, fiber $2\le t\le k$, \texttt{tie\_orders}-empty fail-first) and L4 (degree cap $[E:\Q]{=}32$, $2^{1/3}$-excluded fail-first), the four exact unit-twist witnesses \emph{refuting} $p{=}s(x^k)$, the fiber partition; \emph{exhaustiveness stays} \tagC{} & $23$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The $r=1$ lemma and the free-commutator door close as degree-free theorems; UL-1
+closes \emph{relative to a declared ambient}; the within-shell taxonomy gains a
+refutation and a mechanism theorem while its exhaustiveness stays \tagC{}-open. \emph{Not
+``everything closed''} --- the honest count is in \S\ref{blk:required}.
+
 \section{The active blockers: status of the open problems}\label{sec:blockers}
 
 This closing section is the definitive, machine-certified statement of exactly
@@ -3942,6 +4007,49 @@ lemma and the apex-closure theorem --- the D2 drop-one model now produced. No
 forced-content theorem is disturbed; each motion is a certificate at its stated
 strength (independence-certified, closed-negative-in-$D$, candidate-forced, or
 bounded), not an unconditional derivation.
+
+\smallskip\noindent
+\textbf{v2.8 motions (open-tag resolution).} The remaining internal named objects
+close at honest strength. \textbf{The $r=1$ floor} (Rem~\ref{rem:evenlocalize}) is
+\emph{proved} (Rem~\ref{rem:evenv28}, \texttt{pu\_softcheck} $22/22$): every
+totally-real unit $\beta\ne\pm1$ has $\M(\beta)\ge\gp$, so
+Theorem~\ref{thm:evenfloor}'s Schinzel import is discharged and the corpus carries
+\emph{no external floor}. \textbf{UL-1} (\S\ref{blk:radab}) --- the apex-closure
+theorem the v2.7 inventory step left candidate-forced --- is supplied
+(\texttt{ul\_closure\_check} $22/22$): every object of the elementary tower over $D5$
+has apex monodromy order $1$ (winding lemma $+$ five gate lemmas), while $r$ has
+order $2$, so $r\notin F_{\mathrm{ed}}(D5)$; but the argument runs inside a
+\emph{declared} ambient (log-exp transseries / a $\sigma$-germ ring), so the row
+closes by \textsc{impossibility} \emph{relative to that ambient}, the OP-RATE
+closed-negative-in-$D$ grammar, the ambient carried as the one named hinge --- it is
+\emph{not} unconditional and reverts to candidate-forced if the ambient is rejected
+as the reading of the unramified elementary-differential closure.
+\textbf{The free-commutator door} (Finding~\ref{find:gapdichotomy}) is \emph{full at
+every even $n$}: the catalog $\otimes/\oplus$-algebra $A_n=M_n(\Q)$ by an $n$-uniform
+matrix-unit induction whose eight window-local $\Q(\sqrt5)$ certificates are
+$n$-independent (\texttt{fc\_unbounded\_check} $24/24$), with the first trace-zero
+Salem commutator at $n=6$. This \emph{discharges} \S\ref{blk:required}'s
+full-matrix-algebra requirement; the dichotomy's \emph{inadmissible-traffic} half
+(whether every inadmissible object walks through the door) stays \tagO{}.
+\textbf{Within-shell} (Rem~\ref{rem:p1scan}): the conjectured $p=s(x^k)$ taxonomy is
+\emph{refuted} by four exact unit-twist witnesses (irreducible, non-cyclotomic, with
+a \emph{proper} torsion tie $p\mid g(x^n)$; the order-$3$ pair are the golden cubes
+$\gp^{-3},-\gp^3$), and the mechanism lemmas close degree-free: \textbf{L1}
+(root-multiset $\zeta_k$-closure $\iff$ $p=s(x^k)$) and \textbf{L2}
+($g=\mathrm{minpoly}(\alpha^k)$ gives $p\mid g(x^k)$, and $2\le t=d/\deg g\le k$ since
+$\alpha$ satisfies $X^k-\alpha^k$ over $\Q(\alpha^k)$), partitioning every
+within-shell tie into cyclotomic / radical / saturated-tower ($t=k$) / unit-twist
+($2\le t<k$) (\texttt{ws\_structure\_check} $23/23$). But the \emph{exhaustiveness} of
+this taxonomy over the unbounded-degree \emph{family} is \emph{not} proved and
+\emph{stays} \tagC{}-open, exactly as the corpus records: L4's degree cap
+($[E:\Q]=32$, $E=\Q(i,\sqrt2,\sqrt3,5^{1/4})$, so every catalog-word factor has degree
+$\le32$) is true but bounds only the \emph{catalog-word} population, not the general
+integer-polynomial family the scan ranges over. \emph{Net} (the honest count,
+\S\ref{blk:required}): the two internal named objects resolve --- the $r=1$ lemma
+unconditionally, UL-1 conditionally on the declared ambient; the door's
+full-matrix requirement discharges while its traffic stays open; within-shell gains a
+refutation and a mechanism theorem while its exhaustiveness stays \tagC{}. This is
+\emph{not} ``everything closed''. No forced-content theorem is disturbed.
 
 \smallskip\noindent
 \textbf{The six blocker classes.} Each open problem is filed under exactly one
@@ -4062,6 +4170,27 @@ relative to $D1$--$D3+D5$ --- \emph{but} the general apex-closure theorem
 \texttt{[candidate-forced, pending second-lane audit]}, \emph{not} proved. The row
 stays open, advanced from ``named missing object'' to ``one candidate-forced theorem
 away''.
+
+\smallskip\noindent
+\textbf{v2.8 motion --- closed-negative relative to a declared ambient.} The
+candidate-forced theorem \textsc{UL-1} is now supplied (\texttt{ul\_closure\_check},
+$22/22$). Reading the tower inside a \emph{declared} ambient --- grid-based log-exp
+transseries, or equivalently a $\sigma$-spreadable germ ring at the apex --- the
+winding lemma $n_0(u)=\mathrm{res}_0(u'/u)$ extends to an integer grading, and the
+five gate operations (field ops, $d/dz$, $\exp$, $\log$ of an apex unit, unramified
+algebraic extension) each preserve apex monodromy order $1$; the sole order-raising
+composite $\exp(c\log z)$ is barred by the unit-log gate ($n_0(z)=1\ne0$), and the
+unramified case runs through Newton--Puiseux with the admissible slopes exactly the
+integers ($Y^2=z^2(1+z)$ admitted at slope $1$, $Y^2=z^3(1+z)$ refused at slope
+$3/2$). Since $r$ has order $2$ ($v_z(r^2)=1$, forcing $\sigma r=-r$), $r\notin
+F_{\mathrm{ed}}(D5)$: the row closes by \textsc{impossibility} \emph{relative to
+$D1$--$D3+D5$ and the declared ambient}, in the exact grammar of OP-RATE's
+closed-negative-in-$D$. The ambient is the \emph{one} hinge --- its identification
+with the ``unramified elementary-differential closure'' is a declared modeling
+reading, not a theorem, so the closure is \emph{conditional}: if the reading is
+rejected, UL-1 reverts to candidate-forced. The monodromy order is the invariant
+Rem~\ref{rem:evenlocalize}'s sibling row (\S\ref{blk:required}) named, and step (a)'s
+winding lemma is its computable certificate in the meromorphic regime.
 
 \subsection{OP-RADIUS profile, given the bridge}\label{blk:radprof}
 \textbf{Status} (register): \emph{reduced} to the minimal declared atom D4 (v1.9);
@@ -4244,12 +4373,12 @@ conjecture).
 \toprule
 open item & kind & the theoretical object required\\
 \midrule
-even floor, fully internal (Rem~\ref{rem:evenlocalize}) & internal --- named lemma & an elementary $\M\ge\gp$ for totally-real Pisot \emph{units} (the $r=1$ residual, after the $N^2$ peel reduces every $r\ge2$ case to Lemma~\ref{lem:tp2}); it closes the $(\sqrt2,\gp)$ window by discriminant/trace integrality. With it the corpus carries \emph{no} external floor.\\[2pt]
-OP-RADIUS ab initio, W\tagO{}1 (\S\ref{blk:radab}) & internal --- structure theorem & a Rosenlicht/Risch integration-in-finite-terms structure theorem \emph{localized at the apex} with a monodromy-order invariant, placing $r$ (order $2$) outside the unramified elementary-differential closure under the unit-log hypothesis.\\[2pt]
+even floor, fully internal (Rem~\ref{rem:evenlocalize}) & internal --- named lemma & an elementary $\M\ge\gp$ for totally-real Pisot \emph{units} (the $r=1$ residual, after the $N^2$ peel reduces every $r\ge2$ case to Lemma~\ref{lem:tp2}); it closes the $(\sqrt2,\gp)$ window by discriminant/trace integrality. With it the corpus carries \emph{no} external floor. \emph{v2.8: \textsc{proved} (Rem~\ref{rem:evenv28}); import removed.}\\[2pt]
+OP-RADIUS ab initio, W\tagO{}1 (\S\ref{blk:radab}) & internal --- structure theorem & a Rosenlicht/Risch integration-in-finite-terms structure theorem \emph{localized at the apex} with a monodromy-order invariant, placing $r$ (order $2$) outside the unramified elementary-differential closure under the unit-log hypothesis. \emph{v2.8: \textsc{supplied} relative to a declared ambient (\S\ref{blk:radab} motion); UL-1 closes conditionally.}\\[2pt]
 W\tagO{}2 / D2 (\S\ref{blk:d2}) & internal --- drop-one model & a model of D1, D3 and the keystone algebra that \emph{violates} D2. If none exists, D2 is redundant given Theorem~\ref{thm:factorization}$+$D3 and the row \emph{retires}; if one exists, D2 is a genuine atom. \emph{Run in v2.7} (\texttt{d2\_softcheck}): the pentagon clock supplies the model, so D2 is a genuine atom (independence-certified).\\[2pt]
 OP-RATE derivation (\S\ref{blk:rate}) & scoped-external & a continuum-referencing selection principle --- a no-section theorem for the $\log$-torsor of $q$ in a fixed definability framework --- forcing the $k=0$ marking from data the $k$-invariant discrete state cannot see.\\[2pt]
 OP-RADIUS profile / D4 (\S\ref{blk:radprof}) & scoped-external --- dynamics & a formation-dynamics principle fixing the cap onset at $z_c$ and an orientation of the apex double cover: the two free halves of D4.\\[2pt]
-no-Salem dichotomy, inadmissible half (Finding~\ref{find:gapdichotomy}) & scoped-external --- commutator & the free-commutator analysis (W-\S5.2): does the associative algebra generated by the $\otimes/\oplus$-images of the catalog contain a full matrix algebra? The admissible half is Corollary~\ref{cor:gapuniv}.\\[2pt]
+no-Salem dichotomy, inadmissible half (Finding~\ref{find:gapdichotomy}) & scoped-external --- commutator & the free-commutator analysis (W-\S5.2): does the associative algebra generated by the $\otimes/\oplus$-images of the catalog contain a full matrix algebra? The admissible half is Corollary~\ref{cor:gapuniv}. \emph{v2.8: \textsc{discharged} --- $A_n=M_n(\Q)$ at every even $n$ (\texttt{fc\_unbounded\_check}); the inadmissible-traffic half stays \tagO{}.}\\[2pt]
 $L_{\mathrm{res}}$ transcendence (\S\ref{blk:lrestrans}) & conjecture-external & a transcendence theorem for an elliptic value at a \emph{transcendental} modulus --- beyond Schneider/Chudnovsky, which need an algebraic modulus or CM.\\[2pt]
 $(\pi,\ln\gp)$ independence (\S\ref{blk:pilnphi}) & conjecture-external & Schanuel's conjecture (the premise, $\{\ln\gp,i\pi\}$ $\Q$-linearly independent, is already forced).\\[2pt]
 $(\kappa,L_{\mathrm{res}})$ independence (\S\ref{blk:kappalres}) & conjecture-external & Kontsevich--Zagier period-relation theory (an elliptic period, beyond Schanuel).\\
@@ -4268,7 +4397,19 @@ declared base (\texttt{db\_softcheck}) and OP-RADIUS profile / D4 closes as a
 certified-independent atom (\texttt{d4\_softcheck}), re-reading its ``dynamics
 principle'' as an undeclared base --- while three wait on named conjectures that do
 not yet exist. Nothing here is an unattempted derivation --- each is a
-precisely-shaped object.
+precisely-shaped object. \emph{v2.8:} both remaining internal named objects now
+resolve --- the $r=1$ Pisot-unit lemma is \emph{proved} (Rem~\ref{rem:evenv28}), and
+the apex-localized structure theorem is \emph{supplied} (\S\ref{blk:radab})
+\emph{relative to a declared ambient}, closing UL-1 conditionally in the OP-RATE
+grammar. The scoped-external commutator item is \emph{discharged} at every even $n$
+(\texttt{fc\_unbounded\_check}: $A_n=M_n(\Q)$), and the within-shell $p=s(x^k)$
+conjecture is \emph{refuted} with its mechanism proved degree-free
+(\texttt{ws\_structure\_check}). So the count of \emph{named objects the corpus must
+still produce} drops to \emph{zero} --- carrying exactly two honest caveats: UL-1's
+closure rests on the declared ambient, and the within-shell taxonomy
+\emph{exhaustiveness} stays \tagC{}-open (a mechanism partition, not a
+proven-occupied classification at unbounded degree). The three conjecture-external
+rows are unchanged.
 
 \smallskip\noindent
 \textbf{Closing.} The corpus's forced content is complete through v1.9; v2.1 adds
