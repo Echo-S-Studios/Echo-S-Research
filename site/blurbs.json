@@ -78,5 +78,15 @@
     "title": "The Complex Rung Generator, the State-Angle Chart, and the Residual Sphere",
     "series": "Golden Substrate",
     "description": "The whole discrete rung ladder is the orbit of one complex number q = iτ (q⁴ = gap, a ℤ/4ℤ quarter-turn), on a state-angle chart where every height is a gate. The rate κ = π/(2 ln φ) is transcendental; OP-RATE closes as a classification, with a machine-certified ledger locating every remaining blocker."
+  },
+  "2026-07-torsion-forced-mechanics": {
+    "title": "Forced Mechanics of the Mixed-Boundary Torsion Problem: Exact Laws, Sharp Star-Shaped Bounds, and the Closure of the Distance Conjecture",
+    "series": "Transport Resistance",
+    "description": "The mixed-boundary torsion problem −∇·(𝒜∇u)=q in full: the exact 1-D flux law, a ratio-free ball-mean bound with constant n(n+2) = 15 at n = 3, a sharp star-shaped bound u(x₀) ≥ q·d_E(x₀,Σ)²/(2n·P), and the closure of the distance conjecture — an exactly solvable tapered-horn family drives P‖u‖∞/(qR²) to infimum 0 (rational witness 423/2890 < 1/6), so distance to the supply portion gives no universal lower bound; the straight cone k = 2 is the exact transition."
+  },
+  "2026-07-accumulated-transport-resistance": {
+    "title": "Accumulated Transport Resistance: A Geometry-Only Surrogate for Diffusive Maintenance Burden, and a Phase-A Protocol to Test It",
+    "series": "Transport Resistance",
+    "description": "Built on the horn paper: diffusive maintenance burden tracks the demand routed through each transport cross-section, Q↓(s)/(P·A), not distance or narrowness. Two regimes — volume-graded tapers (ρᵤ ≪ 1) and demand-loaded bottlenecks (ρᵤ = 1.83 > 1) — organize a Phase-A surrogate contest in which a geometry-only ATR must pass a gatekeeper (does it track the exact torsion field u?) before any biological claim; on a matched-distance family the predictive gain is the restriction × demand interaction, not distance, restriction, or demand alone."
   }
 }

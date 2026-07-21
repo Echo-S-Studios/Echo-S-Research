@@ -1,0 +1,778 @@
+\documentclass[10pt]{article}
+\usepackage[margin=1.05in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[T1]{fontenc}
+\allowdisplaybreaks
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Om}{\Omega}
+\newcommand{\Sig}{\Sigma}
+\newcommand{\Gam}{\Gamma}
+\newcommand{\Pmax}{P_{\max}}
+\newcommand{\Pmin}{P_{\min}}
+\newcommand{\dE}{d_{\mathrm{E}}}
+\newcommand{\dP}{d_{\Om}}
+\newcommand{\dA}{d_{\A}}
+\newcommand{\norminf}[1]{\|#1\|_{L^\infty}}
+\newcommand{\eps}{\varepsilon}
+
+\title{Forced Mechanics of the Mixed-Boundary Torsion Problem:\\
+\large Exact Laws, Sharp Star-Shaped Bounds, and the Closure of the Distance
+Conjecture}
+\author{Echo-S Research}
+\date{July 18, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This paper records, with complete proofs, the forced mechanics of the
+mixed-boundary torsion problem $-\nabla\!\cdot\!(\A\nabla u)=q$ with $u=0$ on a
+supply portion $\Sig\subset\partial\Om$ and the natural (conormal Neumann)
+condition on the remainder $\Gam$; coefficients are measurable, symmetric,
+and uniformly elliptic, $\Pmin I\le\A\le\Pmax I$ a.e., with every constant
+below depending on $\Pmax$ only. The results: (1) the exact one-dimensional
+law $u(x)=q\int_0^x (L-s)/A(s)\,ds$, with the sharp far-end bound
+$qL^2/(2\Pmax)$ and equality exactly for $A\equiv\Pmax$; (2) the ball-comparison
+mean bound: for every ball $B_r\subseteq\Om$,
+$\norminf{u}\ge q\,r^2/\bigl(n(n+2)\Pmax\bigr)$ --- constant $15$ in dimension
+three --- via same-operator comparison and torsional-rigidity anti-monotonicity;
+(3) the pointwise full-boundary bound
+$u(x)\ge q\,\mathrm{dist}(x,\partial\Om)^2/(2n\Pmax)$ for constant tensors;
+(4) the sharp star-shaped theorem: if $\Gam$ is star-shaped about $x_0$, then
+$u(x_0)\ge (q/2n)\inf_{\Sig}(z-x_0)^{\!\top}\A^{-1}(z-x_0)\ge
+q\,\dE(x_0,\Sig)^2/(2n\Pmax)$, ratio-free, with equality on balls, central
+reflection sectors, and ellipsoids; (5) the closure of the distance conjecture
+P2: an exactly solvable family of tapered horns yields
+$\Pmax\norminf{u}/(qR^2)\le
+(1-\delta^2+k\eps^2/2)/\bigl((2+k(n-1))(1-\delta)^2\bigr)$, so all three metric
+variants of the conjectured bound $qR^2/(2n\Pmax)$, $R=\sup_x d(x,\Sig)$, are
+false, the infimum of the coefficient over admissible data is $0$, and an
+explicit Lipschitz instance attains the exact rational value bound
+$423/2890<1/6$ in dimension three; and (6) the dichotomy within the horn family: the star
+condition degenerates exactly at the straight cone $k=2$, where the
+coefficient equals $1/(2n)$ in every dimension --- a sharp \emph{sufficient}
+hypothesis whose removal beyond the cone permits arbitrarily severe failure
+(necessity over all geometries is not asserted). Distance to the full
+boundary always controls $u$ from below; distance to the supply portion does
+so under the star condition; on the horns beyond it, the governing quantity is
+the volume-graded resistance, for which they provide the exact identity. Only
+forced material appears; every displayed identity and rational inequality has
+additionally been machine-verified in exact arithmetic.
+\end{abstract}
+
+\section{Setting and conventions}\label{sec:setting}
+
+\paragraph{Standing conventions.}
+Throughout, $n\ge 2$ unless stated otherwise, $q>0$ is constant, and $\A$
+denotes a measurable symmetric coefficient tensor field which is uniformly
+elliptic: $\Pmin I\le\A\le\Pmax I$ a.e.\ for fixed constants
+$0<\Pmin\le\Pmax$. The lower bound enters only through well-posedness
+(coercivity); no constant in any estimate below depends on it. We freely use classical facts --- Lax--Milgram, Rellich
+compactness, trace theory on Lipschitz boundaries, Stampacchia's truncation
+identities, and interior elliptic regularity for constant-coefficient
+operators --- and prove everything else. ``Ratio-free'' means that a constant
+depends on $\Pmax$ only, never on the ellipticity ratio $\Pmax/\Pmin$, the
+volume, or regularity moduli.
+
+\begin{definition}[Mixed torsion problem, trace formulation]\label{def:weak}
+Let $\Om\subset\R^n$ be a bounded connected Lipschitz domain and let
+$\partial\Om=\overline\Sig\cup\overline\Gam$ with $\Sig$ relatively open of
+positive surface measure, and let $\A$ be measurable, symmetric, and uniformly
+elliptic ($\Pmin I\le\A\le\Pmax I$ a.e., $\Pmin>0$). Set
+\[
+V \;=\; \{\varphi\in H^1(\Om)\;:\;\operatorname{tr}\varphi=0
+\ \text{$\sigma$-a.e.\ on }\Sig\}.
+\]
+The \emph{torsion function} $u\in V$ is the unique solution of
+\begin{equation}\label{eq:weak}
+B[u,\varphi]\;:=\;\int_\Om \nabla\varphi\cdot\A\nabla u\,dz
+\;=\;\int_\Om q\,\varphi\,dz\qquad\text{for all }\varphi\in V,
+\end{equation}
+which exists by the standard Poincar\'e inequality on $V$, coercivity from
+uniform ellipticity, and Lax--Milgram.
+Formulation \eqref{eq:weak} encodes $u=0$ on $\Sig$ and the natural condition
+$\A\nabla u\cdot\nu=0$ on $\Gam$.
+\end{definition}
+
+\begin{lemma}[Positivity and nontriviality]\label{lem:pos}
+$u\ge 0$ a.e., and $u\not\equiv 0$.
+\end{lemma}
+
+\begin{proof}
+$u^-:=\max(-u,0)\in V$ (its trace vanishes on $\Sig$). Then
+$B[u,u^-]=-\int_{\{u<0\}}\nabla u\cdot\A\nabla u\le 0$ while
+$B[u,u^-]=\int q\,u^-\ge 0$; hence both vanish, $\nabla u^-\equiv 0$, and the
+constant $u^-$ has zero trace on $\Sig$, so $u^-\equiv 0$. If $u\equiv 0$ then
+\eqref{eq:weak} forces $\int q\varphi=0$ for all $\varphi\in V$, impossible.
+\end{proof}
+
+\paragraph{Metrics and the distance conjecture.}
+Write $\dE(z,\Sig)=\inf_{w\in\Sig}|z-w|$ for the Euclidean distance,
+$\dP(z,\Sig)$ for the infimal length of rectifiable paths inside $\Om$ from $z$
+to $\Sig$, and, for locally Lipschitz $f$ on $\Om$,
+\begin{equation}\label{eq:intrinsic}
+\dA(z,\Sig)\;=\;\sup\Bigl\{f(z)\;:\;\nabla f\cdot\A\nabla f\le 1\ \text{a.e.},
+\ \ \limsup_{w\to\Sig} f(w)\le 0\Bigr\}
+\end{equation}
+for the operator-intrinsic distance. With
+$R_\bullet=\sup_{z\in\Om}d_\bullet(z,\Sig)$, the \emph{distance conjecture} P2
+asserted, for all admissible data,
+\begin{equation}\label{eq:P2}
+\text{(P2-E)}\ \ \norminf{u}\ \ge\ \frac{q\,R_{\mathrm E}^2}{2n\,\Pmax},\qquad
+\text{(P2-G)}\ \ \norminf{u}\ \ge\ \frac{q\,R_{\Om}^2}{2n\,\Pmax},\qquad
+\text{(P2-A)}\ \ \norminf{u}\ \ge\ \frac{q\,R_{\A}^2}{2n}.
+\end{equation}
+Since $\dE\le\dP\le\sqrt{\Pmax}\,\dA$, the variants are nested:
+P2-A $\Rightarrow$ P2-G $\Rightarrow$ P2-E. Sections
+\ref{sec:oned}--\ref{sec:star} establish what \emph{does} hold; Sections
+\ref{sec:horn}--\ref{sec:dichotomy} close \eqref{eq:P2} and exhibit, within an
+explicit family, the exact transition between the star-controlled regime and
+unbounded failure.
+
+\begin{lemma}[Metric collapse for constant scalar coefficients]\label{lem:metric}
+If $\A=P\,I$ with constant $P>0$, then $\dA(z,\Sig)=\dP(z,\Sig)/\sqrt P$ for
+every $z\in\Om$.
+\end{lemma}
+
+\begin{proof}
+``$\ge$'': $f_0:=\dP(\cdot,\Sig)/\sqrt P$ is admissible in
+\eqref{eq:intrinsic}: small balls in $\Om$ are convex, so $\dP$ is locally
+$1$-Lipschitz, hence $|\nabla f_0|\le P^{-1/2}$ a.e., i.e.\
+$\nabla f_0\cdot\A\nabla f_0\le 1$; and $f_0\to 0$ at $\Sig$.
+``$\le$'': any admissible $f$ has $|\nabla f|\le P^{-1/2}$ a.e., hence is
+$P^{-1/2}$-Lipschitz along every rectifiable path in $\Om$; integrating along
+paths from $z$ that approach $\Sig$ and using $\limsup_{\Sig}f\le 0$ gives
+$f(z)\le \dP(z,\Sig)/\sqrt P$.
+\end{proof}
+
+\section{The one-dimensional law}\label{sec:oned}
+
+\begin{theorem}[Exact 1D law]\label{thm:oned}
+Let $0<\Pmin\le A(x)\le\Pmax$ be measurable on $(0,L)$ and $q>0$. The problem
+\[
+-\bigl(A u'\bigr)'=q\ \text{ on }(0,L),\qquad u(0)=0,\qquad (Au')(L)=0,
+\]
+has the unique solution (with $Au'$ absolutely continuous)
+\[
+u(x)\;=\;q\int_0^x \frac{L-s}{A(s)}\,ds .
+\]
+Consequently $u$ is nondecreasing,
+\[
+u(x)\;\ge\;\frac{q\,x^2}{2\Pmax}\quad\text{for every }x\in[0,L],
+\qquad
+\norminf{u}\;=\;u(L)\;=\;q\int_0^L\frac{L-s}{A(s)}\,ds\;\ge\;\frac{qL^2}{2\Pmax},
+\]
+and equality holds in the far-end bound if and only if $A=\Pmax$ a.e.\ on
+$(0,L)$.
+\end{theorem}
+
+\begin{proof}
+\emph{Existence.} With $u$ as displayed, $A(x)u'(x)=q(L-x)$ by construction;
+this is absolutely continuous, vanishes at $x=L$, and $-(Au')'=q$ a.e.;
+$u(0)=0$.
+\emph{Uniqueness.} A difference $v$ of two solutions satisfies $(Av')'=0$, so
+$Av'\equiv c$; the far-end condition gives $c=0$, hence $v'=0$ a.e.\ and
+$v\equiv v(0)=0$.
+\emph{Monotonicity and bounds.} $u'=q(L-x)/A\ge0$. Since $A\le\Pmax$ and
+$L-s\ge x-s$ on $[0,x]$,
+$u(x)\ge \tfrac{q}{\Pmax}\int_0^x(x-s)\,ds=qx^2/(2\Pmax)$; at $x=L$,
+$u(L)\ge \tfrac{q}{\Pmax}\int_0^L(L-s)\,ds=qL^2/(2\Pmax)$, with equality iff
+$\int_0^L(L-s)\bigl(\tfrac1A-\tfrac1{\Pmax}\bigr)ds=0$; the integrand is
+nonnegative and $L-s>0$ a.e., forcing $A=\Pmax$ a.e.
+\end{proof}
+
+\begin{remark}\label{rem:onedconst}
+Here $\Sig=\{0\}$ and $d(x,\Sig)=x$, so the pointwise bound reads
+$u\ge q\,d(\cdot,\Sig)^2/(2\Pmax)$: the constant matches $2n$ at $n=1$; the
+pointwise bound is strict for every $x<L$. The
+sink in Theorem~\ref{thm:oned} is $q$ per unit \emph{length}; the
+volume-graded 1D balance, with sink $q$ per unit \emph{volume} in a tube of
+varying cross-section, is a different law and is the mechanism of
+Section~\ref{sec:horn} (see Remark~\ref{rem:mechanism}).
+\end{remark}
+
+\section{Ball comparison and the mean bound}\label{sec:ball}
+
+\begin{lemma}[Same-operator domain comparison]\label{lem:compare}
+Let $\omega\subseteq\Om$ be open and let $w\in H^1_0(\omega)$ be the
+full-Dirichlet torsion function of $\omega$ for the \emph{same} coefficient
+$\A$ and sink $q$:
+$\int_\omega\nabla\varphi\cdot\A\nabla w=\int_\omega q\varphi$ for all
+$\varphi\in H^1_0(\omega)$. Then $u\ge w$ a.e.\ on $\omega$.
+\end{lemma}
+
+\begin{proof}
+Let $w_j\in C_c^\infty(\omega)$ with $w_j\to w$ in $H^1_0(\omega)$. Since
+$u\ge0$ (Lemma~\ref{lem:pos}), $(w_j-u)^+$ vanishes wherever $w_j=0$, so it is
+an $H^1$ function supported in $\operatorname{supp}w_j\Subset\omega$; hence
+$(w_j-u)^+\in H^1_0(\omega)$, and by truncation continuity
+$\varphi:=(w-u)^+\in H^1_0(\omega)$. Its extension by zero to $\Om$ lies in
+$V$. Testing \eqref{eq:weak} with the extension and the $\omega$-problem with
+$\varphi$ and subtracting,
+\[
+0\;=\;\int_\omega\nabla\varphi\cdot\A\nabla(w-u)
+\;=\;\int_{\{w>u\}}\nabla(w-u)\cdot\A\nabla(w-u)\;\ge\;0,
+\]
+so $\nabla\varphi\equiv0$ and $\varphi\in H^1_0(\omega)$ is constant, hence
+$\varphi\equiv0$: $w\le u$ a.e.\ on $\omega$.
+\end{proof}
+
+\begin{lemma}[Torsional-rigidity anti-monotonicity]\label{lem:rigidity}
+Let $\omega$ be bounded open and let $w,w'$ be the full-Dirichlet torsion
+functions of $\omega$ for coefficients $\A\le\A'$ (a.e., as quadratic forms)
+and the same $q$. Then $\int_\omega w\;\ge\;\int_\omega w'$.
+\end{lemma}
+
+\begin{proof}
+For $\varphi\in H^1_0(\omega)$ set
+$J_{\A}(\varphi)=2q\int\varphi-\int\nabla\varphi\cdot\A\nabla\varphi$. Since
+$B_\A[w,\varphi]=q\int\varphi$,
+\[
+J_\A(\varphi)\;=\;2B_\A[w,\varphi]-B_\A[\varphi,\varphi]
+\;=\;B_\A[w,w]-B_\A[\varphi-w,\varphi-w]
+\;\le\;B_\A[w,w]\;=\;q\int_\omega w ,
+\]
+with equality at $\varphi=w$: thus $q\int w=\max J_\A$. Since
+$J_\A(\varphi)\ge J_{\A'}(\varphi)$ pointwise in $\varphi$,
+$q\int w=\max J_\A\ge\max J_{\A'}=q\int w'$.
+\end{proof}
+
+\begin{theorem}[Ball mean bound; the P1 constant $n(n+2)$]\label{thm:P1}
+Let $u$ be as in Definition~\ref{def:weak}, with measurable, uniformly
+elliptic $\A\le\Pmax I$. For every open ball $B_r(x_0)\subseteq\Om$,
+\[
+\frac{1}{|B_r|}\int_{B_r(x_0)}u\;\ge\;\frac{q\,r^2}{n(n+2)\,\Pmax},
+\qquad\text{hence}\qquad
+\norminf{u}\;\ge\;\frac{q\,r^2}{n(n+2)\,\Pmax}.
+\]
+In particular $\norminf{u}\ge q\,r_{\mathrm{in}}(\Om)^2/(n(n+2)\Pmax)$ with
+$r_{\mathrm{in}}$ the inradius, which is attained:
+$\mathrm{dist}(\cdot,\partial\Om)$ is continuous on the compact
+$\overline\Om$, so the open ball of radius $r_{\mathrm{in}}$ about a maximizer
+lies in $\Om$. For $n=3$ the constant is $15$.
+\end{theorem}
+
+\begin{proof}
+Let $w_\A$ be the full-Dirichlet torsion of $B:=B_r(x_0)$ for $\A$, and
+$w_{\Pmax}$ that for $\Pmax I$, namely
+\[
+w_{\Pmax}(z)\;=\;\frac{q\,(r^2-|z-x_0|^2)}{2n\Pmax}
+\]
+(direct verification: $-\Pmax\Delta w_{\Pmax}=q$, zero boundary values).
+By Lemma~\ref{lem:compare}, $u\ge w_\A$ on $B$; by
+Lemma~\ref{lem:rigidity} with $\A'=\Pmax I$,
+$\int_B w_\A\ge\int_B w_{\Pmax}$. The radial mean of $r^2-|z-x_0|^2$ over $B$
+is
+\[
+\frac{\int_0^r (r^2-\rho^2)\rho^{n-1}d\rho}{\int_0^r \rho^{n-1}d\rho}
+=\frac{r^{n+2}\bigl(\tfrac1n-\tfrac1{n+2}\bigr)}{r^n/n}
+=\frac{2r^2}{n+2},
+\]
+so $\frac1{|B|}\int_B u\ge\frac1{|B|}\int_B w_{\Pmax}
+=\frac{q}{2n\Pmax}\cdot\frac{2r^2}{n+2}=\frac{qr^2}{n(n+2)\Pmax}$, and the
+essential supremum dominates the mean.
+\end{proof}
+
+\begin{remark}\label{rem:P1scope}
+Only $B\subseteq\Om$ is used: the ball may touch $\partial\Om$, including
+$\Sig$, and the coefficient may be any measurable uniformly elliptic tensor. The bound is ratio-free
+and mean-form, not pointwise; the pointwise sharp bound for \emph{constant}
+tensors is Corollary~\ref{cor:fullbdry} below.
+\end{remark}
+
+\section{The star-shaped theorem}\label{sec:star}
+
+Throughout this section $\Om$ is a bounded connected Lipschitz domain as in
+Definition~\ref{def:weak}, and $\A$ is a \emph{constant} symmetric positive
+definite tensor with $\A\le\Pmax I$; constancy makes uniform ellipticity
+automatic, with $\Pmin=\lambda_{\min}(\A)$.
+
+\begin{proposition}[Two identities]\label{prop:f}
+Fix $x_0\in\Om$ and set $f(z)=(z-x_0)^{\!\top}\A^{-1}(z-x_0)$. Then
+\[
+\A\nabla f=2(z-x_0),\qquad
+\nabla\!\cdot\!(\A\nabla f)=2n,\qquad
+\A\nabla f\cdot\nu=2(z-x_0)\cdot\nu\ \ \text{on }\partial\Om,
+\]
+and $f(z)\ge|z-x_0|^2/\Pmax$, since in an orthonormal eigenbasis of $\A$ with
+eigenvalues $\lambda_i\le\Pmax$,
+$f-|z-x_0|^2/\Pmax=\sum_i w_i^2(\Pmax-\lambda_i)/(\lambda_i\Pmax)\ge0$.
+\end{proposition}
+
+\begin{proof}
+$\nabla f=2\A^{-1}(z-x_0)$, hence $\A\nabla f=2(z-x_0)$, whose divergence is
+$2n$; the conormal identity and the eigenbasis decomposition are immediate.
+\end{proof}
+
+\begin{theorem}[Star-shaped lower bound]\label{thm:B}
+Let $u$ be the torsion function of Definition~\ref{def:weak} and let
+$x_0\in\Om$ satisfy the star condition
+\begin{equation}\label{eq:star}
+(z-x_0)\cdot\nu(z)\;\ge\;0\qquad\text{for $\sigma$-a.e. }z\in\Gam .
+\end{equation}
+Then
+\[
+u(x_0)\;\ge\;\frac{q}{2n}\,\inf_{z\in\Sig}
+(z-x_0)^{\!\top}\A^{-1}(z-x_0)
+\;\ge\;\frac{q\,\dE(x_0,\Sig)^2}{2n\,\Pmax}.
+\]
+The constant $2n$ cannot be improved, and the bound is ratio-free: positive
+definiteness of $\A$ is used only qualitatively; the constant involves $\Pmax$
+alone. (Convex $\Om$ satisfies \eqref{eq:star} for every $x_0\in\Om$.)
+\end{theorem}
+
+\begin{proof}
+Set $w=u+\tfrac{q}{2n}f$ with $f$ as in Proposition~\ref{prop:f}. For
+$\varphi\in V$, Gauss--Green for the smooth field $\varphi\,\A\nabla f$ on the
+Lipschitz $\Om$ gives
+\[
+\int_\Om\nabla\varphi\cdot\A\nabla f
+=-2n\int_\Om\varphi
++\int_{\Gam}2\,(z-x_0)\cdot\nu\ \operatorname{tr}\varphi\,d\sigma ,
+\]
+the $\Sig$-part vanishing by the trace condition. Adding \eqref{eq:weak},
+\[
+B[w,\varphi]\;=\;\frac{q}{n}\int_\Gam (z-x_0)\cdot\nu\ \operatorname{tr}
+\varphi\,d\sigma\;\ge\;0
+\qquad\text{whenever }\varphi\in V,\ \varphi\ge0,
+\]
+by \eqref{eq:star}. Since $f$ is continuous and $\overline\Sig$ is compact,
+\[
+\inf_{z\in\Sig}f(z)\;=\;\min_{z\in\overline\Sig}f(z).
+\]
+Let $m=\tfrac{q}{2n}\inf_{\Sig}f$ and
+$\varphi=(m-w)^+$. On $\Sig$, $\operatorname{tr}w=\tfrac{q}{2n}f\ge m$, so
+$\operatorname{tr}\varphi=0$ and $\varphi\in V$, $\varphi\ge0$. Then
+\[
+0\;\le\;B[w,\varphi]\;=\;-\int_{\{w<m\}}\nabla w\cdot\A\nabla w\;\le\;0,
+\]
+so $\nabla\varphi\equiv0$, and the constant $\varphi$ has zero trace on
+$\Sig$, forcing $\varphi\equiv0$: $w\ge m$ a.e. Since $\A$ and $q$ are
+constant, $u$ is smooth in $\Om$; as $f(x_0)=0$,
+$u(x_0)=w(x_0)\ge m$. The second inequality is
+$\inf_{\Sig}f\ge\inf_{\Sig}|z-x_0|^2/\Pmax
+=\dE(x_0,\Sig)^2/\Pmax$ by Proposition~\ref{prop:f}. Sharpness is
+Proposition~\ref{prop:equality}.
+\end{proof}
+
+\begin{proposition}[Equality family]\label{prop:equality}
+Equality holds in Theorem~\ref{thm:B} in each of the following cases.
+\begin{enumerate}
+\item[\emph{(i)}] \textbf{Ball.} $\Om=B_R(x_0)$, $\Sig=\partial B_R(x_0)$,
+$\A=\Pmax I$: here $u=\dfrac{q\,(R^2-|z-x_0|^2)}{2n\Pmax}$ and
+$u(x_0)=\dfrac{qR^2}{2n\Pmax}$.
+\item[\emph{(ii)}] \textbf{Central reflection sectors.}
+$\Om=B_R(x_0)\cap C$ with $C$ an open intersection of half-spaces whose
+boundary hyperplanes pass through $x_0$; $\Sig$ the spherical part, $\Gam$ the
+flat cuts, $\A=\Pmax I$. The function of \emph{(i)}, restricted, satisfies the
+equation, vanishes on $\Sig$, and has conormal derivative
+$\Pmax\nabla u\cdot\nu=-\tfrac qn(z-x_0)\cdot\nu=0$ on each cut; by uniqueness
+it \emph{is} the torsion function, and $u(x_0)=qR^2/(2n\Pmax)$ with
+\eqref{eq:star} holding with equality on $\Gam$.
+\item[\emph{(iii)}] \textbf{Ellipsoids (anisotropic sharpness).}
+$\Om=\{f<r^2\}$, $\Sig=\partial\Om$, $\Gam=\varnothing$: then
+$u=\tfrac{q}{2n}(r^2-f)$ solves the problem and
+$u(x_0)=\tfrac{q}{2n}r^2=\tfrac{q}{2n}\inf_{\Sig}f$, attaining the first
+inequality of Theorem~\ref{thm:B}.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Each candidate is smooth, lies in $V$, satisfies
+$-\nabla\!\cdot\!(\A\nabla u)=q$ by Proposition~\ref{prop:f}
+(e.g.\ in (iii), $-\nabla\!\cdot\!(\A\nabla u)=\tfrac{q}{2n}\cdot 2n=q$),
+vanishes on $\Sig$, and has zero conormal derivative on $\Gam$ where present;
+uniqueness of the weak solution identifies it with the torsion function. The
+stated values are direct evaluations.
+\end{proof}
+
+\begin{corollary}[Distance to the full boundary always works]\label{cor:fullbdry}
+Let $u$ be as in Definition~\ref{def:weak} with \emph{constant}
+$\A\le\Pmax I$, and let the $\Sig/\Gam$ split be arbitrary. Then, for every
+$x_0\in\Om$,
+\[
+u(x_0)\;\ge\;\frac{q\,\mathrm{dist}(x_0,\partial\Om)^2}{2n\,\Pmax},
+\]
+sharp on the ball with $\Sig=\partial\Om$.
+\end{corollary}
+
+\begin{proof}
+Let $r=\mathrm{dist}(x_0,\partial\Om)$ and $B=B_r(x_0)\subseteq\Om$. By
+Lemma~\ref{lem:compare}, $u\ge w_B$ a.e.\ on $B$, where $w_B$ is the
+full-Dirichlet torsion of $B$ for $\A$. Theorem~\ref{thm:B} applied to
+$(B,\Sig=\partial B,\Gam=\varnothing)$ --- the star condition is vacuous ---
+gives $w_B(x_0)\ge \tfrac{q}{2n}\inf_{\partial B}f\ge qr^2/(2n\Pmax)$. Both
+$u$ and $w_B$ are continuous in $B$ (constant coefficients), so the a.e.\
+inequality holds at $x_0$.
+\end{proof}
+
+\begin{remark}[Metric scope]\label{rem:scope}
+Theorem~\ref{thm:B} is \emph{chordal}: it uses straight-line $\A$-distance to
+$\Sig$, which dominates $\dE^2/\Pmax$. The star condition \eqref{eq:star} does
+not force $\dP(x_0,\Sig)=\dE(x_0,\Sig)$, so no path-metric strengthening is
+asserted; likewise Corollary~\ref{cor:fullbdry} is asserted for constant
+tensors only --- for variable coefficients, only the mean bound of
+Theorem~\ref{thm:P1} is claimed. The contrast established by Sections
+\ref{sec:horn}--\ref{sec:dichotomy}: distance to $\partial\Om$ bounds $u$
+unconditionally (Corollary~\ref{cor:fullbdry}); distance to $\Sig$ does so
+under the star condition --- a sharp \emph{sufficient} hypothesis whose
+removal permits arbitrarily severe failure.
+\end{remark}
+
+\section{Tapered horns: closure of the distance conjecture}\label{sec:horn}
+
+\begin{definition}[Truncated horn]\label{def:horn}
+Fix $h>0$, $k>0$, $\eps\in(0,1)$, $\delta\in(0,1)$, and set
+$g(x)=\eps h\,(x/h)^{k/2}$ on $[0,h]$. Define
+\[
+\Om_{k,\eps,\delta}\;=\;\bigl\{(x,y)\in(\delta h,h)\times\R^{n-1}\;:\;
+|y|<g(x)\bigr\},\qquad
+\Sig\;=\;\{h\}\times\{|y|<\eps h\},
+\]
+with $\Gam$ the remaining boundary: the lateral wall $\{|y|=g(x)\}$ and the end
+face $F_\delta=\{\delta h\}\times\{|y|<g(\delta h)\}$. Take $\A=P\,I$ with
+constant $P>0$. Since $g\in C^\infty([\delta h,h])$ has bounded slope and the
+wall meets the two flat faces transversally, $\Om_{k,\eps,\delta}$ is a bounded
+Lipschitz domain, so Definition~\ref{def:weak} applies. Write $\rho=|y|$.
+\end{definition}
+
+\begin{proposition}[Exact solution with exactly vanishing wall flux]\label{prop:exact}
+Let
+\[
+a\;=\;\frac{q}{P\,\bigl(2+k(n-1)\bigr)},\qquad b\;=\;\frac{ak}{2},\qquad
+v(x,y)\;=\;a\,(h^2-x^2)\;-\;b\,|y|^2 .
+\]
+Then, identically:
+\begin{enumerate}
+\item[\emph{(i)}] $-P\Delta v=q$ on $\R^n$;
+\item[\emph{(ii)}] $\partial_\nu v=0$ at every point of the lateral wall
+$\{\rho=g(x)\}$, $0<x<h$;
+\item[\emph{(iii)}] on the end face $F_\delta$ (outward normal $-e_1$),
+$\partial_\nu v=-\partial_x v=2a\delta h>0$;
+\item[\emph{(iv)}] $\sup_{\overline{\Om}_{k,\eps,\delta}} v=v(\delta h,0)
+= a h^2(1-\delta^2)$, and $v|_{\Sig}=-b\rho^2\in[-b(\eps h)^2,0]$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i) $\Delta v=\partial_x^2 v+\Delta_y v=-2a-2b(n-1)$, so
+$-P\Delta v=Pa\bigl(2+k(n-1)\bigr)=q$.
+(ii) The wall is the zero set of $F(x,y)=|y|-g(x)$, with outward normal
+proportional to $(-g'(x),\,y/|y|)$. Since
+$\nabla v=(-2ax,\,-2by)$,
+\[
+\nabla v\cdot(-g',\,y/|y|)\;=\;2axg'(x)-2b\rho
+\;\overset{\rho=g}{=}\;2axg'(x)-2bg(x)\;=\;\bigl(ak-2b\bigr)g(x)\;=\;0,
+\]
+using $xg'(x)=\tfrac{k}{2}g(x)$ for the power profile and $b=ak/2$.
+(iii)--(iv) are direct evaluations; $v$ is strictly decreasing in $x$ and in
+$\rho$.
+\end{proof}
+
+\begin{theorem}[Comparison]\label{thm:comparison}
+On $\Om_{k,\eps,\delta}$, the torsion function satisfies
+\[
+0\;\le\;u\;\le\;v+b(\eps h)^2\quad\text{a.e.},
+\qquad\text{hence}\qquad
+\norminf{u}\;\le\;a h^2\bigl(1-\delta^2\bigr)+b(\eps h)^2 .
+\]
+\end{theorem}
+
+\begin{proof}
+For $\varphi\in H^1(\Om)$ the Gauss--Green identity on the Lipschitz domain,
+applied to the field $\varphi\,P\nabla v$ with $v$ smooth, gives
+\[
+B[v,\varphi]\;=\;\int_\Om q\,\varphi
+\;+\;\int_{\partial\Om}P\,(\partial_\nu v)\,\operatorname{tr}\varphi\,d\sigma .
+\]
+By Proposition~\ref{prop:exact}, the boundary integrand vanishes on the wall,
+equals $2a\delta h\,P\operatorname{tr}\varphi$ on $F_\delta$, and for
+$\varphi\in V$ the $\Sig$-part vanishes because $\operatorname{tr}\varphi=0$
+there. Hence, for $\varphi\in V$ with $\varphi\ge 0$ (whence
+$\operatorname{tr}\varphi\ge 0$),
+\[
+B[u-v,\varphi]\;=\;-\,2a\delta h\,P\int_{F_\delta}\operatorname{tr}\varphi\,
+d\sigma\;\le\;0 .
+\]
+Set $M=b(\eps h)^2$ and $\varphi=(u-v-M)^+$. Its trace on $\Sig$ equals
+$(b\rho^2-M)^+=0$ since $\rho\le\eps h$ on $\Sig$, so $\varphi\in V$, and
+$\varphi\ge0$. By Stampacchia,
+\[
+0\;\ge\;B[u-v,\varphi]\;=\;\int_{\{u-v>M\}}\nabla(u-v)\cdot\A\nabla(u-v)
+\;\ge\;0,
+\]
+so $\nabla\varphi\equiv 0$; the constant $\varphi$ has zero trace on $\Sig$,
+hence $\varphi\equiv0$ and $u\le v+M$. Combining with Lemma~\ref{lem:pos} and
+Proposition~\ref{prop:exact}(iv) yields the $L^\infty$ bound.
+\end{proof}
+
+\begin{lemma}[Distances on the horn]\label{lem:dist}
+For $z=(x,y)\in\Om_{k,\eps,\delta}$,
+\[
+\dE(z,\Sig)\;=\;\dP(z,\Sig)\;=\;h-x,
+\qquad\text{and}\qquad
+\dA(z,\Sig)=\frac{h-x}{\sqrt P}.
+\]
+Consequently $R_{\mathrm E}=R_\Om=\sqrt{P}\,R_\A=h(1-\delta)$.
+\end{lemma}
+
+\begin{proof}
+The horizontal segment $t\mapsto(t,y)$, $t\in[x,h]$, stays in $\Om$ because $g$
+is nondecreasing, and ends on $\overline\Sig$; hence $\dP\le h-x$. Any path from
+$z$ to $\Sig$ has length at least its $x$-displacement $h-x$; and
+$\dE\ge h-x$ for the same reason while $\dE\le\dP$. The last identity is
+Lemma~\ref{lem:metric}. The supremum of $h-x$ over $\Om$ is $h(1-\delta)$.
+\end{proof}
+
+\begin{theorem}[Falsification on Lipschitz domains]\label{thm:A}
+On $\Om_{k,\eps,\delta}$,
+\begin{equation}\label{eq:beta}
+\frac{\Pmax\,\norminf{u}}{q\,R^2}
+\;\le\;\beta(k,\eps,\delta,n)
+\;:=\;\frac{1-\delta^2+\tfrac{k}{2}\eps^2}{\bigl(2+k(n-1)\bigr)(1-\delta)^2},
+\end{equation}
+where $R$ denotes any of $R_{\mathrm E}$, $R_\Om$, $\sqrt{\Pmax}R_\A$
+(all equal here, with $\Pmax=P$). Since
+$\beta(k,\eps,\delta,n)\to \frac{1}{2+k(n-1)}<\frac{1}{2n}$ as
+$(\eps,\delta)\to(0,0)$ whenever $k>2$, every $k>2$ admits explicit
+$(\eps,\delta)$ for which \emph{all three} inequalities in \eqref{eq:P2} fail.
+\end{theorem}
+
+\begin{proof}
+Divide the bound of Theorem~\ref{thm:comparison} by
+$qR^2/P=qh^2(1-\delta)^2/P$ and substitute $a,b$:
+\[
+\frac{P\norminf{u}}{qR^2}
+\le \frac{P\bigl(ah^2(1-\delta^2)+b(\eps h)^2\bigr)}{qh^2(1-\delta)^2}
+=\frac{(1-\delta^2)+\tfrac k2\eps^2}{(2+k(n-1))(1-\delta)^2}.
+\]
+For $k>2$, $\tfrac1{2+k(n-1)}<\tfrac1{2n}\iff 2n<2+k(n-1)\iff k>2$; continuity
+of $\beta$ finishes. By Lemma~\ref{lem:dist} the three statements
+\eqref{eq:P2} coincide on this family, so all fail together.
+\end{proof}
+
+\begin{corollary}[Exact rational instance]\label{cor:instance}
+For $n=3$, $k=4$, $\delta=\tfrac{3}{20}$, $\eps=\tfrac15$:
+\[
+\frac{\Pmax\norminf{u}}{qR^2}
+\;\le\;\frac{1-\tfrac{9}{400}+\tfrac{2}{25}}{10\cdot\bigl(\tfrac{17}{20}\bigr)^{2}}
+\;=\;\frac{423/400}{2890/400}
+\;=\;\frac{423}{2890}\;<\;\frac16,
+\qquad \frac16-\frac{423}{2890}=\frac{88}{4335}.
+\]
+A bounded Lipschitz domain, constant scalar coefficient, flat Dirichlet mouth:
+every hypothesis of the conjecture holds and the coefficient is $12.2\%$ below
+the conjectured sharp constant.
+\end{corollary}
+
+\begin{corollary}[The infimum is zero]\label{cor:inf}
+$\displaystyle
+\inf\Bigl\{\Pmax\norminf{u}/(q R^2)\Bigr\}=0$, the infimum over all admissible
+$(\Om,\Sig,\A,q)$, in each of the three metrics; it is not attained.
+\end{corollary}
+
+\begin{proof}
+Take $\eps_k^2=1/k$ and $\delta_k=1/k$ in \eqref{eq:beta}:
+$\beta=\bigl(\tfrac32-k^{-2}\bigr)/\bigl((2+k(n-1))(1-k^{-1})^2\bigr)
+\to 0$ as $k\to\infty$. The ratio is strictly positive for every fixed datum by
+Lemma~\ref{lem:pos}.
+\end{proof}
+
+\begin{proposition}[Cusp sharpening: the untruncated horn]\label{prop:cusp}
+Let $k>2$ and let $\Om_{k,\eps}$ be the full cusp horn ($\delta=0$), with
+$\Sig$ the mouth. Define
+$V_0$ as the $H^1$-closure of Lipschitz functions on $\overline\Om$ vanishing
+on a neighborhood of $\overline\Sig$, and let $u\in V_0$ solve \eqref{eq:weak}
+for $\varphi\in V_0$. Then $u$ exists and is unique,
+\[
+\norminf{u}\;\le\;a h^2\Bigl(1+\tfrac{k}{2}\eps^2\Bigr),
+\qquad
+\frac{\Pmax\norminf{u}}{qR^2}\;\le\;\frac{1+\tfrac k2\eps^2}{2+k(n-1)},
+\]
+with $R=h$, and this is $<\tfrac{1}{2n}$ exactly when
+$\eps^2<\dfrac{(n-1)(k-2)}{nk}$. (For $n=3$, $k=4$: $\eps^2<\tfrac13$.)
+\end{proposition}
+
+\begin{proof}
+\emph{Well-posedness.} For Lipschitz $\varphi$ vanishing near $\overline\Sig$,
+the segment from $(x,y)$ to $(h,y)$ lies in $\overline\Om$ ($g$ nondecreasing),
+so $\varphi(x,y)=-\int_x^h\partial_t\varphi(t,y)\,dt$ and, by Cauchy--Schwarz
+and Fubini, $\int_\Om\varphi^2\le h^2\int_\Om|\partial_x\varphi|^2$. The
+Poincar\'e inequality passes to the closure $V_0$; Lax--Milgram applies, and
+Lemma~\ref{lem:pos} holds verbatim (the truncations used there preserve the
+approximating class).
+
+\emph{Variational identity for $v$.} Fix Lipschitz $\varphi$ vanishing near
+$\overline\Sig$ and $s\in(0,h)$. On the Lipschitz domain
+$\Om\cap\{x>s\}$, Gauss--Green for $\varphi P\nabla v$ gives
+$\int_{\{x>s\}}\nabla\varphi\cdot P\nabla v
+=\int_{\{x>s\}}q\varphi+\int_{\partial}\!P(\partial_\nu v)\varphi$;
+the wall term vanishes by Proposition~\ref{prop:exact}(ii), the $\Sig$ term
+because $\varphi\equiv0$ there, and the face $\{x=s\}$ contributes at most
+$P\sup|\nabla v|\,\|\varphi\|_\infty\,\kappa_{n-1}g(s)^{n-1}\to0$ as
+$s\downarrow0$. Dominated convergence gives $B[v,\varphi]=\int q\varphi$, and by
+density the identity holds for all $\varphi\in V_0$; hence $B[u-v,\varphi]=0$ on
+$V_0$.
+
+\emph{Admissible test function.} Let $M=b(\eps h)^2$ and $\psi=v+M$. On
+$\overline\Om$ one has $\rho\le g(x)\le\eps h$, so
+$\psi\ge a(h^2-x^2)\ge0$ everywhere. If $u_j$ are Lipschitz approximants of $u$
+vanishing near $\overline\Sig$, then $(u_j-\psi)^+$ vanishes near
+$\overline\Sig$ as well (there $u_j=0$ and $\psi\ge0$) and is Lipschitz; by
+Stampacchia truncation continuity, $(u-\psi)^+\in V_0$.
+
+\emph{Conclusion.} Testing $B[u-v,\cdot]=0$ with $(u-v-M)^+=(u-\psi)^+$ gives,
+as in Theorem~\ref{thm:comparison}, $u\le v+M\le ah^2+b(\eps h)^2$ together
+with $u\ge0$. Lemma~\ref{lem:dist} holds verbatim with $\delta=0$, so $R=h$.
+Finally
+\[
+\frac{1+\tfrac k2\eps^2}{2+k(n-1)}<\frac1{2n}
+\iff 2n+nk\eps^2<2+k(n-1)
+\iff \eps^2<\frac{(n-1)(k-2)}{nk}. \qedhere
+\]
+\end{proof}
+
+\begin{remark}[Status of the cusp realization]\label{rem:cuspstatus}
+Proposition~\ref{prop:cusp} is logically auxiliary: every closure statement
+above --- Theorem~\ref{thm:A}, Corollaries~\ref{cor:instance} and
+\ref{cor:inf} --- rests entirely on the truncated Lipschitz family. The cusp
+version uses the nonstandard boundary realization $V_0$ at the tip and is
+flagged for independent functional-analytic review.
+\end{remark}
+
+\section{The dichotomy within the horn family: the cone as exact
+transition}\label{sec:dichotomy}
+
+\begin{proposition}[Star deficit of the horn wall]\label{prop:deficit}
+On the wall of $\Om_{k,\eps,\delta}$ (or of the untruncated horn), for
+$x_0=(x_*,0)$ with $\delta h\le x_*<h$, the star integrand satisfies
+\[
+(z-x_0)\cdot\nu\;\propto\;g(x)-\,(x-x_*)\,g'(x)
+\;=\;\Bigl(1-\tfrac k2\Bigr)g(x)\;+\;x_*\,g'(x),
+\]
+and on the end face $F_\delta$ (normal $-e_1$),
+$(z-x_0)\cdot\nu=x_*-\delta h\ge0$. Hence:
+$k\le 2$ implies \eqref{eq:star} at every axis point $x_0$, while for every
+$k>2$ the wall integrand is negative for all
+$x>x_*\,k/(k-2)$, so \eqref{eq:star} fails at every interior $x_0$ once the
+horn is long enough.
+\end{proposition}
+
+\begin{proof}
+With $z=(x,g(x)\hat y)$ and outward normal $\propto(-g'(x),\hat y)$,
+$(z-x_0)\cdot\nu\propto -(x-x_*)g'(x)+g(x)$; substituting
+$xg'=\tfrac k2 g$ gives the display. For $k\le2$ both terms are nonnegative
+($g,g'\ge0$). For $k>2$,
+$(1-\tfrac k2)g+x_*g'=g\bigl(1-\tfrac k2+\tfrac{k x_*}{2x}\bigr)<0$ iff
+$x>x_*k/(k-2)$.
+\end{proof}
+
+\begin{theorem}[Dichotomy and pinch at the cone]\label{thm:dichotomy}
+Fix $n\ge2$ and the horn family of Definition~\ref{def:horn} with $P=\Pmax$.
+\begin{enumerate}
+\item[\emph{(i)}] \textbf{Sub-conical ($k\le2$): the distance bound holds with
+the conjectured constant.} For every $\eps,\delta$,
+\[
+\norminf{u}\;\ge\;\frac{q\,R^2}{2n\,\Pmax},\qquad R=h(1-\delta).
+\]
+\item[\emph{(ii)}] \textbf{Super-conical ($k>2$): it fails.} For
+$(\eps,\delta)$ small (explicitly, whenever
+$\beta(k,\eps,\delta,n)<\tfrac1{2n}$, e.g.\ the window of
+Proposition~\ref{prop:cusp}), the coefficient is strictly below
+$\tfrac1{2n}$.
+\item[\emph{(iii)}] \textbf{Cone ($k=2$): pinched at the conjectured constant.}
+\[
+\frac1{2n}\;\le\;\frac{\Pmax\norminf{u}}{qR^2}
+\;\le\;\frac{1-\delta^2+\eps^2}{2n\,(1-\delta)^2}
+\;\xrightarrow[(\eps,\delta)\to0]{}\;\frac1{2n}.
+\]
+\end{enumerate}
+Within the power-law horn family, $k=2$ is thus the exact transition: the
+star condition --- a sharp \emph{sufficient} hypothesis, by
+Theorem~\ref{thm:B} and Proposition~\ref{prop:equality} --- controls the
+sub-conical regime at the constant $1/(2n)$ in every dimension, and beyond the
+cone its removal is accompanied by arbitrarily severe failure of the distance
+bound (Corollary~\ref{cor:inf}). Necessity of the star condition across all
+geometries is not asserted.
+\end{theorem}
+
+\begin{proof}
+(i) By Proposition~\ref{prop:deficit}, every axis point
+$x_0=(x_*,0)$, $x_*\in(\delta h,h)$, satisfies \eqref{eq:star};
+Theorem~\ref{thm:B} with $\A=\Pmax I$ and
+$\dE(x_0,\Sig)=h-x_*$ (Lemma~\ref{lem:dist}) gives
+$u(x_0)\ge q(h-x_*)^2/(2n\Pmax)$. Since $u$ is continuous in $\Om$,
+$\norminf{u}\ge\sup_{x_*\downarrow\delta h}q(h-x_*)^2/(2n\Pmax)
+=qR^2/(2n\Pmax)$.
+(ii) is Theorem~\ref{thm:A} / Proposition~\ref{prop:cusp}.
+(iii) The lower bound is (i) at $k=2$; the upper bound is \eqref{eq:beta} at
+$k=2$, where $2+k(n-1)=2n$.
+\end{proof}
+
+\section{Mechanism and internal consistency}\label{sec:mechanism}
+
+\begin{remark}[Two exact one-dimensional balances; the graded-resistance
+identity]\label{rem:mechanism}
+Theorem~\ref{thm:oned} is the conductivity-graded balance: sink $q$ per unit
+\emph{length}, conductivity $A(x)$ varying; its sharp constant is
+$1/2=1/(2n)|_{n=1}$. The horns realize the volume-graded balance: sink $q$ per
+unit \emph{volume} in a tube of cross-sectional volume
+$\mathfrak A(s)=\kappa_{n-1}g(s)^{n-1}$. The far-end value of the exact
+solution reproduces the series (graded-tube) functional identically: with
+$V(s)=\int_0^s\mathfrak A$,
+\[
+\frac{q}{P}\int_0^h\frac{V(s)}{\mathfrak A(s)}\,ds
+=\frac{q}{P}\int_0^h\frac{s}{\tfrac{k(n-1)}{2}+1}\,ds
+=\frac{q\,h^2}{P\,\bigl(2+k(n-1)\bigr)}
+=v(0,0).
+\]
+The conjectured functional $q\,d(\cdot,\Sig)^2/(2n\Pmax)$ extrapolated the
+first balance; it retains the distance but discards the volume grading
+$V/\mathfrak A$, and the horns are exactly the geometries on which the two
+functionals separate without bound.
+\end{remark}
+
+\begin{remark}[Theorem~\ref{thm:P1} on the horns]\label{rem:p1horn}
+Every ball inside a horn lies in the slab $\{|y|<\eps h\}$, so its radius is at
+most $\eps h$ and Theorem~\ref{thm:P1} asserts only
+$\norminf u\ge q\eps^2h^2/(n(n+2)\Pmax)$ --- far below the actual value
+$\approx ah^2$ for small $\eps$, and consistent with
+Theorem~\ref{thm:comparison}. The mean bound and the falsification never
+touch.
+\end{remark}
+
+\begin{remark}[Corollary~\ref{cor:fullbdry} on the horns]\label{rem:fullbdryhorn}
+On a horn, $\mathrm{dist}(z,\partial\Om)\le g(x)\le\eps h$ for every $z$, so
+the unconditional bound of Corollary~\ref{cor:fullbdry} makes assertions only
+at the scale $\eps h$, again consistent with Theorem~\ref{thm:comparison}. The
+closure of the distance conjecture requires the wall to \emph{reflect}: if the
+wall is made Dirichlet it joins $\Sig$, all distances to the supply collapse to
+$O(\eps h)$, and no conflict can arise.
+\end{remark}
+
+\begin{remark}[Verification]\label{rem:verify}
+Every displayed algebraic identity and rational inequality above --- the 1D
+flux law and its bounds (Theorem~\ref{thm:oned}), the ball-mean constant
+$2r^2/(n+2)$ and the resulting $n(n+2)$ (Theorem~\ref{thm:P1}; $15$ at $n=3$),
+the identities of Proposition~\ref{prop:f}, the horn solution and wall-flux
+identities (Proposition~\ref{prop:exact}), the coefficient formulas and
+windows, the instance $423/2890<1/6$, the star deficit
+(Proposition~\ref{prop:deficit}), and the cone marginality
+$1/(2+k(n-1))|_{k=2}=1/(2n)$ --- has been machine-verified in exact
+symbolic/rational arithmetic ($28$ independent checks; companion artifact
+\texttt{p2-softcheck.py}, exit $0$). Finite-volume corroboration of the horn
+coefficients exists in the companion harness and is deliberately excluded
+here: this paper contains forced material only.
+\end{remark}
+
+\end{document}

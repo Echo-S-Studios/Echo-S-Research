@@ -1,0 +1,688 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1.05in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor={blue!55!black},
+            pdftitle={Accumulated Transport Resistance: A Geometry-Only Surrogate for Diffusive Maintenance Burden},
+            pdfauthor={Echo-S Research}]{hyperref}
+\allowdisplaybreaks
+
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{lemma}[proposition]{Lemma}
+\newtheorem{definition}[proposition]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[proposition]{Remark}
+
+% --- notation ---
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Om}{\Omega}
+\newcommand{\Sig}{\Sigma}
+\newcommand{\Gam}{\Gamma}
+\newcommand{\Acr}{A_{\mathrm{cross}}}
+\newcommand{\Rgeom}{\mathcal{R}_{\mathrm{geom}}}
+\newcommand{\dCtube}{\Delta C_{\mathrm{tube}}}
+\newcommand{\Qdn}{Q_{\downarrow}}
+\newcommand{\RATR}{R_{\mathrm{ATR}}}
+\newcommand{\rhou}{\rho_u}
+\newcommand{\rhohat}{\hat\rho_{\mathrm{ATR}}}
+\newcommand{\Pimaint}{\Pi_{\mathrm{maint}}}
+\newcommand{\RG}{R_{G}}
+\newcommand{\Qstar}{Q^{\!*}}
+\newcommand{\norminf}[1]{\lVert#1\rVert_{\infty}}
+\newcommand{\eps}{\varepsilon}
+
+\title{Accumulated Transport Resistance:\\
+\large A Geometry-Only Surrogate for Diffusive Maintenance Burden,
+and a Phase-A Protocol to Test It}
+\author{Echo-S Research}
+\date{July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Whether an interior point of a living tissue can be maintained is a transport
+question, not a distance question: what matters is how much metabolic demand must
+be served across each available transport cross-section, integrated along the way
+to a supply surface. The companion paper on the mixed-boundary torsion problem
+establishes, with proof, that Euclidean distance to the supply set yields
+\emph{no} universal lower bound on the transport burden, and that on tapered
+``horn'' geometries a distance-only scale can overestimate the true burden by an
+unbounded factor. Building on that forced mathematics, we define the
+\emph{accumulated transport resistance} (ATR): a demand-weighted, cross-section-
+weighted, path-integrated functional whose exact ground truth is the torsion
+field~$u$ solving $-\nabla\!\cdot(P\nabla u)=q$ with a Dirichlet supply portion
+and reflecting walls. We separate two objects the earlier work sometimes ran
+together---a purely geometric resistance under uniform demand and a
+demand-weighted concentration drop---and show they coincide only when demand is
+uniform. We then organize the whole problem around a single ratio,
+$\Qdn(s)/(P(s)\Acr(s))$, the demand routed through each transport cross-section,
+which cleanly separates two regimes: volume-graded tapers, where the burden falls
+\emph{below} the distance prediction, and demand-loaded bottlenecks, where it
+\emph{exceeds} a matched-distance reference (a true-field amplification
+$\rhou=1.83$ is exhibited numerically). Because the exact field is not deployable,
+the scientific content is a protocol: a Phase-A ``surrogate contest'' on synthetic
+geometries with known~$u$, in which a geometry-only ATR surrogate must pass a
+gatekeeper---does it track the exact torsion burden?---before any biological
+claim is licensed. We give the surrogate an ablation decomposition that isolates
+\emph{which} ingredient carries the signal (on a matched-distance family the gain
+is the restriction$\,\times\,$demand interaction, not distance, restriction, or
+demand alone), a validation package stronger than correlation, and a candidate
+eikonal construction whose error we show to be regime-dependent and largest
+exactly where it would be used. We close by demoting the free-energy-principle
+reading to an optional interpretive layer and offering, in its place, a
+measurable one: form responds not to raw distance but to the accumulated
+difficulty of maintaining relation across its own geometry. Every displayed
+identity and numerical claim is machine-checked by the companion harness.
+\end{abstract}
+
+\tableofcontents
+
+\section{Introduction}\label{sec:intro}
+
+A diffusing metabolite entering a tissue from a supply surface---a capillary
+wall, a Haversian canal, the outer boundary of a spheroid---must reach every
+interior cell that consumes it. The classical readout of whether it can is a
+\emph{distance}: Krogh's cylinder model~\cite{krogh1919} fixed a supply radius,
+and much of the downstream tradition asks only how far a cell sits from its
+nearest source. Distance is attractive because it is cheap: it needs only the
+geometry of the supply set, never a transport solve. It is also, as a predictor
+of maintenance burden, provably wrong in a precise and recoverable way.
+
+The companion paper of this line~\cite{torsion} studies the object that actually
+governs the steady maintenance problem---the mixed-boundary torsion function
+\begin{equation}\label{eq:pde}
+-\nabla\!\cdot\!\bigl(\mathcal{A}\nabla u\bigr)=q\ \text{ in }\Om,\qquad
+u=0\ \text{ on }\Sig,\qquad \mathcal{A}\nabla u\cdot\nu=0\ \text{ on }\Gam,
+\end{equation}
+with $\Sig\subset\partial\Om$ the supply (Dirichlet) portion, $\Gam$ the
+reflecting (no-flux) remainder, $q>0$ a volumetric demand, and $\mathcal{A}$ a
+measurable, uniformly elliptic diffusivity. There $u$ is the accumulated cost of
+maintaining an interior point against demand under constrained transport, and its
+supremum $\norminf{u}$ is the worst-case burden. That paper proves two things we
+take as given here. First, distance to $\Sig$ yields no universal lower bound on
+$\norminf{u}$: on a family of tapered horns, all three metric forms of the
+conjectured bound $qR^2/(2n\,P)$ fail, and the ratio
+$P\norminf{u}/(qR^2)$ has infimum $0$. Second---and this is the point most easily
+misread---the failure is that distance \emph{overestimates}: as a horn narrows,
+the true burden \emph{shrinks}, while a distance-only surrogate keeps charging for
+the length. The corrected lesson is not ``narrowing raises resistance'' but
+something sharper, which this paper is built around:
+\begin{quote}
+Transport burden depends on how much maintenance demand must pass through each
+available transport cross-section---not on distance or narrowness in isolation.
+\end{quote}
+
+The remainder of the paper turns that sentence into a research program.
+Section~\ref{sec:forced} recalls exactly what the torsion theorem forces and,
+importantly, what it does \emph{not}, and it separates two transport objects that
+must never be multiplied by demand twice. Section~\ref{sec:tiers} descends from
+the exact field, which is not deployable, through a PDE-derived flux diagnostic to
+a geometry-only surrogate, and states the discipline that governs the descent: a
+gatekeeper that every biological claim must pass. Section~\ref{sec:regimes}
+introduces the organizing ratio and the two regimes it separates.
+Section~\ref{sec:ratios} fixes two amplification numbers that the earlier draft
+conflated. Section~\ref{sec:phaseA} is the core: the Phase-A surrogate contest,
+its ablation decomposition, its model-comparison discipline, and a validation
+package that a high correlation coefficient cannot satisfy. The shorter
+Sections~\ref{sec:outcome}--\ref{sec:branch} settle the preregistration of
+outcomes, the supply-boundary controls, a dimensionless maintenance number, and
+the treatment of branch points as competing primary models rather than a
+sensitivity footnote. Section~\ref{sec:lcn} places the lacuno-canalicular network
+and its controls. Section~\ref{sec:interp} demotes the free-energy reading to an
+optional interpretive layer and states the measurable principle that survives.
+Sections~\ref{sec:status}--\ref{sec:verify} record honestly what is forced, what
+is a modeling choice, and what remains open, and describe the machine
+verification. Throughout, ``$P$'' denotes the diffusivity scale $P_{\max}$ of
+\eqref{eq:pde}, and we write $\Acr(s)$ for a transport cross-section and
+$V(s)=\int_0^s\Acr$ for the volume upstream of arclength~$s$.
+
+\section{What the torsion theorem forces, and what it does not}\label{sec:forced}
+
+\subsection{The comparison field and the direction of the horn result}
+
+The horn analysis of~\cite{torsion} is driven by an explicit \emph{comparison
+field}. On a power-law horn of profile $g(x)=\eps h\,(x/h)^{k/2}$ with constant
+scalar diffusivity $P$, set
+\begin{equation}\label{eq:vfield}
+v(x,y)=a\,(h^2-x^2)-b\,\lvert y\rvert^2,\qquad
+a=\frac{q}{P\bigl(2+k(n-1)\bigr)},\qquad b=\frac{ak}{2}.
+\end{equation}
+This field solves $-P\Delta v=q$ identically and---by the choice $b=ak/2$
+matched to the profile exponent---has \emph{exactly vanishing flux through the
+lateral wall}. It is not the torsion function: $v$ does not vanish on the supply
+mouth $\Sig$ and has positive outflux on the end face. What it delivers is a
+rigorous one-sided comparison,
+\begin{equation}\label{eq:upper}
+0\ \le\ u\ \le\ v+b(\eps h)^2\quad\text{a.e.},
+\end{equation}
+hence a rigorous \emph{upper} bound on $\norminf{u}$. Equation~\eqref{eq:upper}
+is a theorem, established in the companion paper by a Stampacchia truncation
+against the reflecting wall; we recall it, and do not reprove it, here.
+
+The apex value of the comparison field satisfies a graded identity that is the
+mathematical heart of the whole construction:
+\begin{equation}\label{eq:graded}
+\frac{q}{P}\int_0^h\frac{V(s)}{\Acr(s)}\,ds
+=\frac{q\,h^2}{P\bigl(2+k(n-1)\bigr)}=v(0,0),
+\qquad\text{since }\ \frac{V(s)}{\Acr(s)}=\frac{s}{1+\tfrac{k(n-1)}{2}}.
+\end{equation}
+Read \eqref{eq:graded} carefully: the tube quantity on the left \emph{decreases}
+as the taper exponent $k$ grows. Numerically it falls from $0.167$ at $k=2$ to
+$0.046$ at $k=10$; its derivative in $k$ is negative throughout. The object that
+\emph{grows} without bound under narrowing is not the burden but the
+distance-only failure factor $qR^2/\norminf{u}$, which climbs from about $6$ to
+about $22$ across the same range. The horns are therefore geometries on which a
+distance functional and the true burden separate without bound, in the direction
+of distance \emph{over}charging. Whether the true apex value $u(0)$ equals the
+graded integral \eqref{eq:graded}, rather than merely being bounded by it,
+remains open; the exact, path-free, general-domain object is instead the Green
+representation
+\begin{equation}\label{eq:green}
+u(x)=\int_\Om G(x,y)\,q(y)\,dy,
+\end{equation}
+valid wherever the mixed Green function exists, for almost every $x$, and
+pointwise under the additional regularity used in the computational phases. In
+the manuscript's general setting $\mathcal{A}$ may be merely measurable and
+uniformly elliptic, so \eqref{eq:green} is scoped to that existence and not
+claimed beyond it; for the regular synthetic domains of Phase~A the qualification
+imposes no operational limit.
+
+\subsection{Two tube objects that must not be multiplied by demand twice}
+
+A unit ambiguity haunted earlier drafts, and closing it is a prerequisite for
+everything downstream. There are two genuinely different one-dimensional tube
+integrals, and only one of them already contains demand. Define, separately, the
+\emph{geometric resistance} under uniform volumetric demand,
+\begin{equation}\label{eq:rgeom}
+\Rgeom=\int\frac{V(s)}{P(s)\,\Acr(s)}\,ds,\qquad V(s)=\int_0^s\Acr,
+\end{equation}
+and the \emph{predicted concentration drop} under general demand,
+\begin{equation}\label{eq:dctube}
+\dCtube=\int\frac{\Qdn(s)}{P(s)\,\Acr(s)}\,ds,\qquad
+\Qdn(s)=\int_{\text{downstream of }s} q(y)\,dy.
+\end{equation}
+The downstream demand $\Qdn(s)$ already carries the metabolic load, so $\dCtube$
+\emph{is} the predicted drop, with the dimensions of a concentration. The
+geometric resistance $\Rgeom$ carries only geometry. They are related, but only
+under uniform demand, where $\Qdn(s)=q\,V(s)$ and hence
+\begin{equation}\label{eq:qrel}
+\dCtube=q\,\Rgeom\qquad(\text{uniform }q\text{ only}).
+\end{equation}
+Equation~\eqref{eq:qrel} is the whole content of the unit split: multiplying the
+demand-weighted $\dCtube$ by a further factor of $q$ would double-count the load.
+Keeping $\Rgeom$ (volume-weighted) and $\dCtube$ (demand-weighted) as distinct
+named objects removes the ambiguity at the source.
+
+A canonical normalized burden requires a preregistered normalization $\Qstar$:
+$\RG(x)=u(x)/\Qstar$ is meaningful only once $\Qstar$ is fixed. For uniform demand
+the clean choice is $\Qstar=q$, giving $\RG=u/q$ with the dimensions of $\Rgeom$;
+total-demand and characteristic-rate normalizations are legitimate alternatives,
+but a specimen-specific $\Qstar$ chosen after the fact would obscure any
+cross-specimen comparison and is excluded unless declared in advance.
+
+\section{From exact field to deployable surrogate: three tiers and a
+gatekeeper}\label{sec:tiers}
+
+The exact torsion field $u$ is the ground truth, but computing it requires solving
+the full PDE on the true geometry---precisely what a cheap predictor is meant to
+avoid. The program therefore lives on three tiers. At the top is $u$ itself. One
+step down is a \emph{PDE-derived flux diagnostic}, built from the true current
+$J=-P\nabla u$: it records what an ideal reduction of the field would retain, but
+it is not deployable because it still needs $u$. At the bottom is a
+\emph{geometry-only surrogate} $\RATR$, computable from the segmented geometry
+alone. The scientific question is whether the bottom tier can be made to track the
+top.
+
+\paragraph{The gatekeeper.} We elevate one step from ``validation'' to a
+structural gate. Solving \eqref{eq:pde} on the actual geometry and testing whether
+a constructed $\RATR$ tracks the exact $u$ is not a downstream nicety; it is the
+gate every biological claim must pass. Until that tracking is demonstrated across
+synthetic geometries where $u$ is known, the honest register is
+\begin{quote}
+\emph{we are testing a computational surrogate inspired by the exact horn
+functional,}
+\end{quote}
+and never ``we have transported the horn theorem into tissue.'' The theorem is
+exact on its stated geometry; on an arbitrary network the surrogate is a surrogate
+until the gate is passed. Diffusion through irregular tissue does not descend a
+single path---it distributes across a field of paths---so any reduction of the
+field to flux tubes or watersheds is an additional modeling move, not something
+the theorem forces.
+
+\paragraph{Flux geometry and its caveats.} Because $\nabla\!\cdot J=q$, the
+current is not divergence-free: throughput varies along a tube, equal-throughput
+tubes need not remain equal, stream tubes encounter critical points and
+separatrices, a global tiling may fail or require measure-theoretic conventions,
+and the streamlines of $J$ run from the interior \emph{toward} $\Sig$, not inward
+from it. The flux-tube construction is therefore a diagnostic that establishes
+what an ideal reduction would keep; it is not itself cheap. A deployable predictor
+must approximate that diagnostic \emph{without} solving the PDE, or else be
+presented openly as a reduced summary of a PDE solution.
+
+\paragraph{Eikonal descent is one candidate, and its error is
+regime-dependent.} A natural cheap construction takes transport paths to be the
+characteristics of the eikonal equation $\lvert\nabla T\rvert=1/P$, i.e.\ minimum-
+cost paths to $\Sig$. These are not flux lines. In a controlled test the eikonal
+descent points straight along the supply direction ($0^\circ$ from the $-x$ axis,
+demand-blind), while the true current $-\nabla u$ curves $10.6^\circ$ toward the
+demand mass. That single global figure understates the stakes, because the angular
+error between eikonal descent and the true flux \emph{is} the modeling error
+incurred whenever an eikonal ATR is used, and it differs sharply between the two
+regimes of Section~\ref{sec:regimes}. Measured inside the transport corridor---the
+cells where the true flux is dominantly longitudinal toward $\Sig$, about
+$20{,}000$ cells per regime---the taper regime is benign (median $1.8^\circ$,
+ninetieth percentile $5.4^\circ$) because flux runs straight down a smoothly
+tapering axis, whereas the bottleneck regime has a far heavier tail (median
+$3.0^\circ$, ninetieth percentile $21.2^\circ$, a $3.95\times$ larger tail),
+concentrated exactly at the neck where flux magnitude is highest and direction
+matters most. The regime in which an eikonal ATR would be \emph{used to detect}
+$\rhou>1$ is thus the regime in which it is \emph{least reliable}. Separately, a
+sharp constriction produces a small flux-\emph{reversal} pocket just past the neck
+(about $3.9\%$ of $\lvert J\rvert$ at the tightest necks), where the true current
+briefly points back toward the interior and eikonal descent---which always points
+toward $\Sig$---is about $178^\circ$ wrong. This is a localized re-entrant-corner
+effect of classical elliptic type: it scales with corner sharpness and vanishes to
+zero in a straight channel, so it is a categorical rather than an angular failure,
+reported separately from the corridor error and not its driver. The consequences
+for the protocol are concrete: an eikonal ATR is admitted to the contest only with
+its corridor error and corner-reversal share reported per geometry, and it may not
+be adopted for bottleneck prediction on the strength of taper accuracy. The
+flux-tube diagnostic built from the true $J$, which has no such error by
+construction, is the reference against which every cheap surrogate is scored.
+
+\section{Two geometric regimes and the ratio that separates them}\label{sec:regimes}
+
+Replacing the single ``narrowing raises resistance'' story with the corrected
+mathematics produces a genuine dichotomy, and both halves are numerically real.
+In a \emph{volume-graded taper}, downstream demand falls with cross-section fast
+enough that the burden drops below the distance prediction; the power-law horns
+realize it, with the tube quantity shrinking $0.167\to0.046$ as computed in
+\eqref{eq:graded}. In a \emph{demand-loaded bottleneck}, a narrow section still
+carries large downstream demand, and the burden can exceed a matched-distance
+reference. Table~\ref{tab:regimes} records the two.
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}p{0.20\textwidth}p{0.34\textwidth}p{0.34\textwidth}@{}}
+\toprule
+\textbf{Regime} & \textbf{Mechanism} & \textbf{Effect and evidence}\\
+\midrule
+Volume-graded taper &
+downstream demand falls with cross-section fast enough &
+burden falls \emph{below} the distance prediction, $\rhou\ll1$; power-law horns,
+tube quantity $0.167\to0.046$\\[4pt]
+Demand-loaded bottleneck &
+a narrow section still carries large downstream demand &
+burden \emph{exceeds} a matched-distance reference, $\rhou>1$; a matched-Krogh
+bottleneck attains $\rhou=1.83$\\
+\bottomrule
+\end{tabular}
+\caption{The two regimes of the transport burden. The organizing quantity is
+neither distance nor narrowness but the local demand-to-cross-section ratio
+\eqref{eq:localratio}.}
+\label{tab:regimes}
+\end{table}
+
+The quantity that organizes both is the \emph{local ratio}
+\begin{equation}\label{eq:localratio}
+\frac{\Qdn(s)}{P(s)\,\Acr(s)},
+\end{equation}
+the maintenance demand routed through each available transport cross-section. A
+narrow section is cheap when little demand remains beyond it; a modest bottleneck
+is severe when it must serve a large downstream region. This is a stronger and
+more falsifiable statement than the original distance conjecture, and it is what
+Phase~A is built to test. The existence of the $\rhou>1$ regime is not
+hypothetical: a bottleneck matched to its Krogh reference on maximum distance,
+total demand, and volume attains a true-field amplification $\rhou=1.83$. The
+\emph{magnitude} of achievable amplification, and whether a closed-form
+bottleneck family exists, remain the sharpest open targets of the program.
+
+\section{Two amplification ratios, kept distinct}\label{sec:ratios}
+
+An earlier draft wrote a single symbol $\rho$ for two different things, and the
+resulting confusion is worth preventing permanently. The \emph{true-field
+amplification} compares the exact burden to that of the matched Krogh reference
+geometry,
+\begin{equation}\label{eq:rhou}
+\rhou=\frac{\norminf{u}}{u_{\mathrm{Krogh}}},
+\end{equation}
+so $\rhou>1$ means the geometry is more burdensome than its Krogh reference,
+$\rhou<1$ less, $\rhou=1$ neither. Horns have $\rhou\ll1$; the demand-loaded
+bottleneck has $\rhou>1$. The \emph{surrogate amplification} is the same
+comparison computed from the deployable surrogate,
+\begin{equation}\label{eq:rhohat}
+\rhohat=\frac{R^{\text{surr}}_{\mathrm{ATR}}}{R^{\text{surr}}_{\mathrm{ATR,Krogh}}}.
+\end{equation}
+Phase~A asks precisely whether $\rhohat$ predicts $\rhou$. The two must be kept
+apart exactly because the horn family lives at $\rhou\ll1$ while the bottleneck
+family lives at $\rhou>1$: a single word ``amplification'' spanning both would be
+actively misleading.
+
+\section{The Phase-A surrogate contest}\label{sec:phaseA}
+
+The scientific object of this paper is not a biological result but a protocol
+whose first phase settles a mathematical question with no biology in it at all:
+\emph{which} geometry-only summary, if any, tracks the exact torsion burden.
+
+\paragraph{The four phases.} Phase~A runs the contest on synthetic domains matched
+on maximum Euclidean distance, volume, total demand, diffusivity, and
+supply-boundary geometry (Section~\ref{sec:supply}), with cross-sectional
+restriction varied systematically across \emph{both} regimes. For each geometry we
+compute and rank against the exact $\norminf{u}$ a ladder of candidates:
+Euclidean maximum distance; geodesic distance; a skeleton or medial-axis ATR; an
+eikonal ATR; the flux-tube diagnostic from the true $J$; and the exact field
+itself. Phase~B applies the survivors to real segmented geometries and confirms
+calibration against the full PDE on the same geometry---the gatekeeper again---
+with no outcome variable yet. Phase~C introduces a matched biological readout and
+tests incremental predictive power beyond distance and the standard covariates,
+with the outcome-to-functional mapping preregistered
+(Section~\ref{sec:outcome}). Phase~D asks the developmental question---do
+organisms alter architecture in the predicted direction---and is reached only
+after the physical predictor has passed; cross-sectional tissue data can show
+association only, so the threshold-activation claim ultimately wants
+developmental or perturbational evidence.
+
+\paragraph{An ablation ladder, so no surrogate is a black box.} Reporting only a
+surrogate's final score against $u$ would leave unknown \emph{which} ingredient
+produced it. Every surrogate is therefore reported along a fixed ladder that adds
+one information source at a time. The first rung uses Euclidean distance only; the
+second replaces it with geodesic distance; the third adds the local cross-section,
+i.e.\ restriction; the fourth instead adds downstream demand; the fifth is the
+full surrogate, in which restriction and demand are combined multiplicatively and
+integrated along the path; and the sixth rung is the exact PDE burden $u$, the
+ceiling. For each rung we report the same package used everywhere in the
+protocol---grouped cross-validated $R^2$, median relative error, Spearman
+correlation, calibration slope, and matched-pair ordering---so that the
+question ``which rung produces the gain'' has a quantitative answer that is itself
+a result, independent of whether the final surrogate is ever adopted.
+
+\paragraph{The ladder is decidable, and the decomposition is stark.} A ladder is
+only meaningful if its rungs actually separate; two collinear adjacent rungs would
+make the decomposition illusory. On a $16$-geometry family spanning both regimes
+($8$ tapers and $8$ demand-loaded bottlenecks, all matched on maximum distance),
+the largest adjacent-rung collinearity is $\lvert\text{corr}\rvert=0.369$---far
+below the $\approx0.98$ that would signal redundancy, so the rungs carry
+independent information. On that matched family the decomposition is decisive.
+Because maximum distance is held fixed, Euclidean distance is blind
+($\text{corr}=0.00$ with $u$); cross-sectional restriction alone is partial and
+\emph{inversely} aligned ($-0.85$); downstream demand alone is only weakly aligned
+($+0.23$); and only their path-integrated product tracks the true burden
+($+0.92$). The predictive gain is neither geometry nor demand in isolation but the
+restriction$\,\times\,$demand interaction---a concrete, pre-biological instance of
+the thesis that burden tracks $\Qdn(s)/(P(s)\Acr(s))$. Whether this decomposition
+survives on real segmented geometries is itself a Phase-B question.
+
+Where a rung's path or direction is built from an eikonal field, its error is not
+uniform across the family, for the reasons of Section~\ref{sec:tiers}: small in
+the taper regime but with a roughly fourfold heavier tail in the bottleneck, plus
+the re-entrant-corner reversal that eikonal cannot represent. Each
+eikonal-dependent rung is therefore reported separately by regime, so that a rung
+which looks adequate on the taper-dominated average is not credited in the
+bottleneck regime it exists to detect.
+
+\paragraph{Four models and the discipline of comparing them.} The biological test
+of Phase~C is organized around four nested-or-not models,
+\begin{align*}
+M_0&:\ \text{outcome}\sim\text{distance},\\
+M_1&:\ \text{outcome}\sim\text{distance}+\text{demand}+\text{diffusivity}
+        +\text{volume}+\text{covariates},\\
+M_2&:\ M_1+\RATR^{\text{surr}},\\
+M_3&:\ M_1+\RG\quad(\text{the exact-}u\text{ summary}).
+\end{align*}
+The comparisons must respect nesting. $M_1$ versus $M_2$ and $M_1$ versus $M_3$
+are nested and are compared by likelihood-ratio tests together with grouped-CV
+$\Delta R^2$ and AIC/BIC. But $M_2$ versus $M_3$ compares a surrogate against the
+exact burden and is \emph{generally non-nested}: it must be compared by grouped
+cross-validation, information criteria, or Vuong-type tests, never by a likelihood
+ratio. Crucially, ``$M_2\approx M_3$'' is not a discretionary judgment; we declare
+\emph{surrogate parity} only when $M_2$'s grouped out-of-sample performance falls
+within a preregistered tolerance of $M_3$---for instance $\Delta R^2_{\mathrm{CV}}
+\le0.02$ with comparable calibration slope and matched-pair ordering. The
+interpretation then separates two failure modes that a single test would confound:
+if $M_3>M_1$ but $M_2\not>M_1$, the physical burden matters and the surrogate
+failed; if neither beats $M_1$, modeled burden adds nothing in that system; and if
+$M_2\approx M_3>M_1$, burden matters and the surrogate captures it---the target.
+
+\paragraph{Why a high correlation is not enough.} A surrogate can correlate almost
+perfectly with the truth and still invert the comparisons that matter. In a direct
+construction, a surrogate with Pearson correlation $0.995$ against $u$ nonetheless
+reverses the ordering of $20$ matched-distance pairs. The minimum acceptance
+package is therefore not a correlation but the full set: cross-validated $R^2$,
+median relative error, Spearman correlation, calibration slope and intercept, and
+above all \emph{pairwise-ordering preservation at matched distance}, together with
+out-of-sample performance and behavior under severe bottlenecks. The surrogate
+must beat maximum distance on geometries constructed so that the two disagree---not
+on a sample where distance already happens to work.
+
+\section{Matching the summary to the outcome}\label{sec:outcome}
+
+The scalar $\norminf{u}$ is the right summary for a specimen-level failure
+threshold and the wrong one for a local or averaged outcome; the mapping from PDE
+summary to biological readout must be fixed before Phase~C, not chosen to fit.
+Table~\ref{tab:outcome} records the preregistered correspondence.
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}p{0.42\textwidth}p{0.46\textwidth}@{}}
+\toprule
+\textbf{Biological outcome} & \textbf{Matched functional of $u$}\\
+\midrule
+local osteocyte viability & $u(x)$, or a local-neighborhood summary\\
+total necrotic fraction & the measure of $\{x:u(x)>\Delta C_{\text{avail}}\}$\\
+mean oxygenation & a spatial or demand-weighted mean of $u$\\
+architectural density & a percentile, or integrated exposure
+$\int\mathbf{1}[u>\theta]$\\
+\bottomrule
+\end{tabular}
+\caption{Preregistered mapping from the PDE summary to the biological outcome.
+Choosing the summary after seeing the data would invalidate the incremental-
+predictivity test of Phase~C.}
+\label{tab:outcome}
+\end{table}
+
+\section{Supply-boundary geometry as a matched variable}\label{sec:supply}
+
+A clean bottleneck experiment must hold fixed not only the maximum distance but
+the effective supply interface, so that interior cross-sectional restriction is
+the sole varied factor. Phase~A therefore controls or explicitly varies the
+supply set $\Sig$: its total Dirichlet surface area, the number of disconnected
+supply patches, their placement, the boundary concentration, and---if a Robin
+contact condition later replaces ideal Dirichlet---the contact conductance. The
+matched-Krogh bottleneck that attains $\rhou=1.83$ was matched to its reference on
+maximum distance, total demand, and volume for exactly this reason; without the
+supply interface held fixed, an apparent amplification could be an artifact of a
+changed boundary rather than of interior geometry.
+
+\section{A dimensionless maintenance number}\label{sec:pimaint}
+
+With the unit split of Section~\ref{sec:forced} in hand, the feasibility of
+maintenance admits a clean dimensionless form. Writing $C_\Sig$ for the supply
+concentration and $C_{\text{crit}}$ for the viability threshold, set
+\begin{equation}\label{eq:pimaint}
+\Pimaint=\frac{\dCtube}{C_\Sig-C_{\text{crit}}},\qquad\text{and, for uniform }q,\ \
+\dCtube=q\,\Rgeom .
+\end{equation}
+Then $\Pimaint<1$ is viable, $\Pimaint\approx1$ is threshold, and $\Pimaint>1$
+predicts depletion beyond viability. The correction that makes this honest is
+dividing by the \emph{margin above threshold} $C_\Sig-C_{\text{crit}}$, not by
+$C_\Sig$ alone. One should report $\Pimaint$ alongside the true-field
+amplification $\rhou$ of \eqref{eq:rhou}, and never alongside the comparison-field
+quantity, which shrinks with taper and would understate the load.
+
+\section{Branch points: competing primary models, not a footnote}\label{sec:branch}
+
+At a branch point the upstream demand must be split among daughter paths in order
+to evaluate $\Qdn(s)/\Acr(s)$, and there are two natural rules. An
+\emph{area-proportional} split sends demand in proportion to the downstream
+cross-section carried by each daughter, in the spirit of Murray's law and a
+Kirchhoff balance~\cite{murray1926}; a \emph{demand-proportional} split sends it
+in proportion to the downstream integrated demand of each subtree. In the real
+PDE the branch flux is set jointly by conductance, geometry, sources, and
+gradients, and neither shortcut is automatically the biological rule. We therefore
+run both as \emph{competing primary models}, not as a sensitivity appendix, and
+report their full model comparisons side by side. If the ATR surrogate wins under
+both rules, the result is robust and partition-independent; if it wins under only
+one, that is informative about \emph{what} the functional detects---whether
+demand-weighting or area-weighting carries the signal---rather than a nuisance to
+be hidden.
+
+\section{The lacuno-canalicular test case and its controls}\label{sec:lcn}
+
+The lacuno-canalicular network (LCN) of bone is the strongest biological
+discriminator available, because its measured, restricted cross-section departs
+sharply from Krogh distance; it is exactly where distance and ATR most disagree.
+For that same reason it must \emph{not} be the first implementation. An LCN result
+carries meaning only after the surrogate has passed the gatekeeper on controlled
+synthetic horns and branching networks where the true $u$ is known.
+
+Even then, a specimen-level LCN test discharges only under conditions that the
+protocol states in advance. The supply set may exceed the Haversian canal, drawing
+on Volkmann canals, neighboring osteons, bone and marrow surfaces, and pressure
+gradients. Transport may include load-induced advection, requiring
+$-\nabla\!\cdot(P\nabla c)+\mathbf{v}\!\cdot\!\nabla c=q$ rather than pure
+torsion. Canalicular density cannot be both predictor and outcome---it constructs
+the cross-section $\Acr$, so the dependent variable must be independent of it
+(osteocyte viability, lacunar occupancy, recovery time, solute penetration, or
+metabolic markers). And radial averages erase the very bottlenecks, connectivity,
+and dead-ends that the functional is meant to detect, so a confirmatory test needs
+specimen-level three-dimensional geometry paired with matched specimen-level
+readouts, not a mean profile paired with unrelated viability data. Passing all
+four, cross-sectional data still show association only; the threshold-activation
+claim wants the developmental or perturbational evidence of Phase~D.
+
+Two controls frame the discriminator. \emph{Spheroids} are a principled
+near-Krogh negative control, with $\rhou\approx1$ expected; a null result there
+confirms the domain of relevance rather than refuting the concept.
+\emph{Muscle} is a stress test rather than a confirmation: myoglobin-facilitated
+transport and the mitochondrial reticulum can negate classical diffusion
+distances, so both ATR and Krogh distance may fail there, and this should be
+flagged prominently because muscle-literate readers will probe it.
+
+\section{Interpretation: an accessibility potential, and the demotion of the
+free-energy reading}\label{sec:interp}
+
+The empirical content of this program stands with the free-energy principle (FEP)
+discarded. FEP is, at most, an optional and terminal interface language for
+maintenance under uncertainty; it does not generate the transport functional, and
+the explanatory arrow stays physical: geometry sets the PDE burden $\RG=u/\Qstar$,
+which sets maintenance feasibility. We state this demotion plainly so that no
+predictive weight rests on FEP.
+
+What survives, and is measurable, is a reading of $u$ as an \emph{accessibility-
+cost potential}: the scalar cost of maintaining an interior point under a supply
+boundary, distributed demand, and constrained transport geometry, with $\RATR$ its
+pathwise accumulation. The relation is clean---$\RATR$ rising is accessibility
+falling. When passive accessibility becomes too costly, a system can change
+geometry, widen cross-section, alter permeability, add sources, or grow active-
+maintenance architecture. This is a material realization of a single principle,
+offered as interpretation of the same physics rather than as an independent source
+of predictions:
+\begin{quote}
+Form does not respond to raw distance. It responds to the accumulated difficulty
+of maintaining relation across its own geometry.
+\end{quote}
+Unlike the FEP bridge, this reading asserts no upstream awareness or optimization;
+it supplies a middle layer from relational geometry to biological architecture
+that is, in principle, measurable.
+
+\section{Status of the claims}\label{sec:status}
+
+Because the protocol mixes theorems, modeling choices, and open questions, we
+record which is which without decoration.
+
+\emph{Forced by the current mathematics.} The Green representation
+\eqref{eq:green} holds where the mixed Green function exists (a.e.\ $x$, pointwise
+under Phase-A regularity). Distance to the supply set yields no universal lower
+bound. The explicit horn comparison field \eqref{eq:vfield} solves the PDE with
+exactly vanishing lateral-wall flux, and its apex obeys the graded identity
+\eqref{eq:graded}; the field gives a rigorous upper bound \eqref{eq:upper} on the
+true burden. A distance-only burden can overestimate the true torsion by an
+arbitrarily large factor on the horn family (failure factor $6\to22$). For uniform
+demand, $\dCtube=q\,\Rgeom$ \eqref{eq:qrel}. A demand-loaded bottleneck can be more
+burdensome than its matched Krogh reference, $\rhou=1.83$, establishing the
+$\rhou>1$ regime. On a matched-distance family spanning both regimes the ablation
+rungs separate and the predictive gain is the restriction$\,\times\,$demand
+interaction, not distance, restriction, or demand alone (correlations with $u$ of
+$0.00$, $-0.85$, $+0.23$, $+0.92$). The eikonal-surrogate error is regime-
+dependent---small in the taper regime, with a roughly fourfold heavier tail in the
+bottleneck, plus a re-entrant-corner flux-reversal pocket the eikonal cannot
+represent---so it is least reliable in the very regime it would be used to detect.
+
+\emph{Declared constructions.} The distinct objects $\Rgeom$ and $\dCtube$; the
+normalized burden $\RG=u/\Qstar$; the flux-tube diagnostics; the eikonal,
+skeleton, and geometry-only surrogates; the area- and demand-proportional branch
+partitions; the maintenance number $\Pimaint$; the amplifications $\rhou$ and
+$\rhohat$; and the accessibility-potential reading are all modeling choices, sound
+but not forced.
+
+\emph{Open.} Whether the true horn apex $u(0)$ equals the graded tube integral
+rather than merely being bounded by it; the magnitude of achievable $\rhou>1$ and
+any closed-form bottleneck family; whether a uniquely preferred general-domain
+surrogate exists; whether ATR beats distance plus conventional covariates on real
+biology; whether a universal persistence envelope exists; and any FEP derivation.
+
+\section{Computational verification}\label{sec:verify}
+
+Every displayed algebraic identity and rational inequality above, and every
+numerical claim about the two regimes, is machine-checked by the companion
+harness \texttt{surrogate\_contest.py} (exit~$0$), which builds each synthetic
+geometry, solves \eqref{eq:pde} to obtain the exact $u$, and scores the
+candidates. The eight check families are: (C1) eikonal descent differs from the
+true flux, $10.6^\circ$, with eikonal $0^\circ$ from the supply direction; (C2) a
+matched-distance, matched-demand bottleneck raises the true $\norminf{u}$ by
+$1.66\times$, tracked by the exact tube reduction at $1.63\times$---distinct
+ratios---and missed by geodesic distance ($1.6\%$); (C3) a Pearson-$0.995$
+surrogate inverts $20$ matched pairs; (C4) the horn comparison quantity shrinks
+with taper ($0.167\to0.046$) while the distance-only failure factor grows
+($6\to22$); (C5) the uniform-demand reduction $\dCtube=q\,\Rgeom$ holds with no
+double-count; (C6) a demand-loaded bottleneck attains $\rhou=1.83>1$ against its
+matched Krogh reference---the open regime, numerically realized; (C7) the ablation
+ladder is decidable (largest adjacent-rung $\lvert\text{corr}\rvert=0.369$) and
+mechanism-isolating (the gain is the restriction$\,\times\,$demand interaction,
+with correlations $0.00/-0.85/+0.23/+0.92$); and (C8) the eikonal-surrogate error
+is regime-dependent (taper corridor ninetieth percentile $5.4^\circ$ versus
+bottleneck $21.2^\circ$) with a small re-entrant-corner reversal pocket at sharp
+necks. The corner-reversal effect was probed for standalone significance by a
+second companion script, \texttt{reversal\_generality.py}: it is generic and
+resolution-independent but a local elliptic-corner phenomenon that scales with
+neck sharpness and vanishes in a straight channel---classical, not novel---and is
+folded in as a caveat rather than a result.
+
+\section{Outlook}\label{sec:outlook}
+
+The logical spine of the program is short and depends on no equality the horn
+paper did not establish:
+\begin{center}
+exact torsion field $u=\int G\,q$\ \ $\to$\ \ comparison-field horn identity
+$v(0,0)=\tfrac{q}{P}\int V/\Acr$ (an upper bound on $u$)\ \ $\to$\ \ geometry-only
+surrogate contest across both regimes (Phase~A)\ \ $\to$\ \ real-geometry PDE
+calibration, the gatekeeper (Phase~B)\ \ $\to$\ \ biological-outcome test with the
+four models and both branch partitions (Phase~C)\ \ $\to$\ \ a possible
+persistence principle, developmentally probed (Phase~D).
+\end{center}
+The highest-value next step is Phase~A: to determine which general-domain
+surrogate, if any, tracks the exact torsion burden across both the taper and the
+demand-loaded-bottleneck regimes under adversarial perturbation---with the
+bottleneck family, now numerically real at $\rhou=1.83$, as the sharpest probe.
+
+\begin{thebibliography}{9}
+\bibitem{torsion} Echo-S Research,
+\emph{Forced Mechanics of the Mixed-Boundary Torsion Problem: Exact Laws, Sharp
+Star-Shaped Bounds, and the Closure of the Distance Conjecture}, Echo S Research
+archive, 2026. (Companion paper; ``the horn paper'' of this text.)
+\bibitem{krogh1919} A.~Krogh,
+\emph{The number and distribution of capillaries in muscles with calculations of
+the oxygen pressure head necessary for supplying the tissue}, J.~Physiol.\
+\textbf{52} (1919), 409--415.
+\bibitem{murray1926} C.~D.~Murray,
+\emph{The physiological principle of minimum work applied to the angle of
+branching of arteries}, J.~Gen.~Physiol.\ \textbf{9} (1926), 835--841.
+\bibitem{friston2010} K.~Friston,
+\emph{The free-energy principle: a unified brain theory?}, Nature Reviews
+Neuroscience \textbf{11} (2010), 127--138. (Cited only to be demoted; see
+Section~\ref{sec:interp}.)
+\end{thebibliography}
+
+\end{document}

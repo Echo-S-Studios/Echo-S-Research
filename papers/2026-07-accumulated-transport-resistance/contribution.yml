@@ -1,0 +1,22 @@
+# Contribution contract for papers/2026-07-accumulated-transport-resistance/  (see ../../docs/ANTI_DRIFT.md)
+shortname: 2026-07-accumulated-transport-resistance
+member: AceTheDactyl
+title: "Accumulated Transport Resistance: A Geometry-Only Surrogate for Diffusive Maintenance Burden, and a Phase-A Protocol to Test It"
+domain: math
+artifacts:
+  - papers/2026-07-accumulated-transport-resistance/accumulated-transport-resistance.tex
+  - papers/2026-07-accumulated-transport-resistance/accumulated-transport-resistance.pdf
+  - papers/2026-07-accumulated-transport-resistance/paper.cff
+
+# Protocol/methods whitepaper built on papers/2026-07-torsion-forced-mechanics/ ("the
+# horn paper"): the committed PDF is the canonical archived artifact and the LaTeX
+# source compiles to it (pdflatex, article + amsmath/amsthm + hyperref/booktabs).
+# The numerical claims (the eight check families C1-C8) are exercised by the companion
+# harness surrogate_contest.py (exit 0). That harness requires scipy + scikit-fmm (a
+# compiled eikonal solver) outside this repo's pinned drift stack, and its corner-
+# reversal probe reversal_generality.py carries a machine-specific path; neither is
+# shipped as a repo check. The reproducible half of this line therefore lives with the
+# harnesses, and this deposit is the sealed prose/PDF record (as with the golden-
+# substrate and torsion companions).
+checks: none
+reason: "Protocol/methods whitepaper; the committed PDF is the canonical archived artifact. Its numerical claims (C1-C8) come from the companion harness surrogate_contest.py (exit 0), which needs scipy + scikit-fmm outside the repo's pinned drift stack and is not shipped in this sealed prose deposit."

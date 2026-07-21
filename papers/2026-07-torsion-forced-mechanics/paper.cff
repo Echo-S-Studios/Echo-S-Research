@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you cite this paper, please use the metadata below."
+title: "Forced Mechanics of the Mixed-Boundary Torsion Problem: Exact Laws, Sharp Star-Shaped Bounds, and the Closure of the Distance Conjecture"
+authors:
+  # Pre-filled from .github/members.yml. Every alias must be a registered handle.
+  - name: "AceTheDactyl"
+    alias: "AceTheDactyl"
+date-released: "2026-07-18"
+references:
+  - type: generic
+    title: "Consolidated bibliography for the Echo S Research archive"
+    notes: "Add any new citations to ../references.bib (the shared BibTeX file); do not keep a separate per-paper bibliography."
+    authors:
+      - name: "Echo S Studios Research Developments"
