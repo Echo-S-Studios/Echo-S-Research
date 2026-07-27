@@ -90,6 +90,7 @@ def collect_papers():
             fail(f"papers/{sn}: declared PDF missing on disk: {pdf_rel}")
 
         tex_rel = pick_artifact(manifest, sn, ".tex")
+        html_rel = pick_artifact(manifest, sn, ".html")  # HTML-canonical papers (e.g. the booklet)
 
         released = ""
         cff = folder / "paper.cff"
@@ -109,6 +110,8 @@ def collect_papers():
             "pages": pages,
             "src_pdf": pdf,
             "file": f"papers/{sn}.pdf",
+            "src_html": (ROOT / html_rel) if html_rel else None,
+            "html": f"papers/{sn}.html" if html_rel else None,
             "tex": f"{REPO_URL}/blob/main/{tex_rel}" if tex_rel else None,
         })
     if not papers:
@@ -170,7 +173,13 @@ def render_course_paper(p: dict) -> str:
     desc = html.escape(p["description"]) if p.get("description") else ""
     pp = f"{p['pages']} pp" if p["pages"] else ""
     meta = " · ".join(x for x in (pp, month_label(p["date"], p["shortname"])) if x)
-    links = [f'<a class="pdf" href="{html.escape(p["file"])}" target="_blank" rel="noopener">Read PDF ↗</a>']
+    # For an HTML-canonical paper (e.g. the booklet) the course opens the HTML itself, not the
+    # print-render PDF; the PDF stays available as a secondary "PDF" link.
+    if p.get("html"):
+        links = [f'<a class="pdf" href="{html.escape(p["html"])}" target="_blank" rel="noopener">Read the booklet ↗</a>',
+                 f'<a href="{html.escape(p["file"])}" target="_blank" rel="noopener">PDF</a>']
+    else:
+        links = [f'<a class="pdf" href="{html.escape(p["file"])}" target="_blank" rel="noopener">Read PDF ↗</a>']
     if p.get("tex"):
         links.append(f'<a href="{html.escape(p["tex"])}" target="_blank" rel="noopener">Source</a>')
     lines = [
@@ -223,9 +232,11 @@ def main() -> None:
 
     for p in papers:
         shutil.copyfile(p["src_pdf"], OUT / p["file"])
+        if p.get("src_html"):  # serve the canonical HTML alongside its print-render PDF
+            shutil.copyfile(p["src_html"], OUT / p["html"])
 
     catalog = [{k: p[k] for k in
-                ("shortname", "title", "member", "date", "pages", "file", "tex")}
+                ("shortname", "title", "member", "date", "pages", "file", "html", "tex")}
                | {"series": p.get("series"), "description": p.get("description")}
                for p in papers]
     (OUT / "papers" / "catalog.json").write_text(
