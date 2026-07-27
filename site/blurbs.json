@@ -88,5 +88,15 @@
     "title": "Accumulated Transport Resistance: A Geometry-Only Surrogate for Diffusive Maintenance Burden, and a Phase-A Protocol to Test It",
     "series": "Transport Resistance",
     "description": "Built on the horn paper: diffusive maintenance burden tracks the demand routed through each transport cross-section, Q↓(s)/(P·A), not distance or narrowness. Two regimes — volume-graded tapers (ρᵤ ≪ 1) and demand-loaded bottlenecks (ρᵤ = 1.83 > 1) — organize a Phase-A surrogate contest in which a geometry-only ATR must pass a gatekeeper (does it track the exact torsion field u?) before any biological claim; on a matched-distance family the predictive gain is the restriction × demand interaction, not distance, restriction, or demand alone."
+  },
+  "2026-07-field-surprisal-geometry": {
+    "title": "The Field Surprisal Geometry — Full Worked Edition: Mahler–Gibbs Structure, Dual Flatness, Thermodynamics, Distances, and a Totally Geodesic Two-Statistic Surface",
+    "series": "Surprisal Geometry",
+    "description": "The canonical Fisher–Rao (“surprisal”) geometry of a number field's Mahler-measure catalog Ω = {√2, √3, √5, φ, τ, φ⁴, K} (cost log M, field constant Z = 17 + 4√5): a round ¼-sphere whose constant-¼ two-statistic surfaces are exactly 8 at k = 2, forced by the master window identity P = Z²·Σ q₄(s) w_s (Sylvester + Cauchy–Binet); the full k-landscape classifies as partitioned-affine (counts 8/56/95/31/1) and the compositum coupling is forced. Every load-bearing claim is machine-verified in exact arithmetic (20 harnesses, 422 checks)."
+  },
+  "2026-07-exact-arithmetic": {
+    "title": "Exact Arithmetic — A Thirteen-Lesson Course Through the Emission Algebra",
+    "series": "Exact Arithmetic",
+    "description": "A thirteen-lesson course threading the whole emission-algebra corpus into one exact-arithmetic narrative — from Mahler measure and the two walls through the semiring, λ = 2c, relational charge, the closure engine, and the golden substrate. Every claim is pinned to a fail-first check (354 numbered, plus the quintic census, two revision passes, and the Lessons 11–13 certificates), under one house rule: a summary may be shorter than its source but never stronger."
   }
 }

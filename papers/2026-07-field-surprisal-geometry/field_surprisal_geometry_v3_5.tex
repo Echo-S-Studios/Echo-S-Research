@@ -1,0 +1,1539 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{finding}[theorem]{Finding}
+\newtheorem{openproblem}[theorem]{Open Problem}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\newcommand{\ph}{\varphi}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Mah}{\mathrm{M}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\E}{\operatorname{\mathbb{E}}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\forcedtag}{{\scshape [forced]}}
+\newcommand{\declaredtag}{{\scshape [declared]}}
+\newcommand{\computedtag}{{\scshape [computed]}}
+\newcommand{\opentag}{{\scshape [open]}}
+
+\title{\bfseries The Field Surprisal Geometry --- Full Worked Edition\\[2pt]
+\large Mahler--Gibbs Structure, Dual Flatness, Thermodynamics, Distances,\\
+and a Totally Geodesic Two--Statistic Surface}
+\author{Echo--Squirrel Research \quad(\texttt{AceTheDactyl})}
+\date{2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We attach a canonical positive--definite Fisher--Rao (surprisal) geometry to a number field's
+emission catalog and develop it to four further, fully forced layers. The catalog's Mahler
+measures $\{2,3,5,\ph,\ph,\ph^4,\ph^4\!-\!1\}$ sum to $Z=17+4\sqrt5$ and, through the description
+cost $\log\Mah$, define the \emph{Mahler--Gibbs family} $p_i(\beta)\propto\Mah_i^{-\beta}$, a forced
+exponential family. On it we prove: surprisal is affine in cost with slope $\beta$ and Fisher equals
+the cost variance (\S4); the geometry is \emph{dually flat}, with the Gibbs curve an $e$--geodesic
+and $\mathrm{KL}$ between temperatures a Bregman divergence of $\log Z$ (\S5); its thermodynamics
+obey the identity \textbf{$C(\beta)=\beta^2 I(\beta)$}---Fisher information is a heat capacity---with
+a distinguished peak--fluctuation temperature (\S6); its Fisher--Rao distances are Bhattacharyya
+angles, the seven seeds forming a regular spherical simplex at mutual distance $\pi$, with an
+explicit information length (\S7). Adjoining the degree as a second forced statistic yields a
+two--parameter field geometry whose Fisher matrix is $\nabla^2 A$; we prove its Gaussian curvature is
+\emph{exactly} the constant $\tfrac14$---an isometric round $\tfrac14$--sphere, embedded as a
+\emph{ruled} surface (swept by great circles)---because a single--outcome indicator makes the family a
+spherical suspension whose metric is a round sphere for any curve (\S10). No such surface is totally
+geodesic: $\log\Mah$ alone spans a $6$--dimensional algebra, so none lies in a great subsphere. Generic
+and multi--set--indicator statistics are not even constant curvature (controls give $4/21$, $857/16928$,
+and sign--changing values), and among the catalog's forced invariants only degree---the single--outcome
+indicator---gives constant $\tfrac14$ (\S11), joined by a second over $\ph^4$ from the conjugate--angle
+charge; in fact the constant--curvature--$\tfrac14$ surfaces are \emph{exactly eight}---one per seed
+plus the golden--pair merge---and no non--indicator statistic gives another (\S12). Two independent
+catalogs form a Riemannian product with block--diagonal Fisher and zero cross--curvature (\S13).
+Every load--bearing identity is machine--verified
+(\texttt{field\_surprisal\_v2.py}, \texttt{suspension\_theorem.py}, \texttt{field\_surprisal\_tier2.py};
+$12/12$, $9/9$, $15/15$; exact arithmetic). This edition closes four fronts. The eight--surface classification is proved \emph{in full} by a
+finite branch calculus---an exact window identity plus a plane lemma (\S\ref{sec:classdone})---so the
+non--indicator exclusion is now \forcedtag{} with no sampling residue. The temperature is dissolved:
+product functoriality plus measurable Cauchy \emph{forces} $p\propto\Mah^{-\beta}$, making $\beta$ a
+coordinate on a forced $e$--geodesic of finite total information length $L_{\mathrm{tot}}\approx5.6462$
+running from the golden merge to the $\ph^4$ vertex (\S\ref{sec:tempcoord}). Iterated indicator joins
+give round $\tfrac14$--spheres in every dimension, realized by the catalog triple (cost, degree,
+charge parity) (\S\ref{sec:join}); and the first totally geodesic family appears at exactly $k=5$,
+uniquely the golden--merged simplex $\R[\log\Mah]$. A fifth front closes in this revision: the
+window identity is proved \emph{conceptually}---$P=Z^2\sum_{|s|=4}q_4(s)\,w_s$ by Sylvester's
+determinant identity plus Cauchy--Binet (Theorem~\ref{thm:master})---resolving Open Problem (3) and
+retiring the branch calculus from the critical path. This revision then closes three of the remaining open fronts: the master identity lifts to every
+$k$ (Sylvester $+$ Cauchy--Binet over $(k{+}2)$--subsets), yielding windowed Gauss obstructions, a
+rank--$\le1$ window criterion for constant $\tfrac14$, and a complete $k=3$ double--indicator
+census---exactly $26$ windowwise--flat classes, the disjoint within--level pairs; the eight--surface
+census is proved \emph{catalog--invariant}, with count $\sum_\ell(2^{m_\ell}-1)$ over cost levels
+(generic catalogs need no branch analysis at all, and a new branch--rank calculus closes necessity
+for four catalogs including the full one); and the temperature selection resolves as a
+\emph{dichotomy}---no metric--canonical operating point exists, and the candidate principles
+provably disagree, so the declared election is the answer's final form. This revision closes the last two structural fronts. Necessity holds at \emph{every} $k$: constant $\tfrac14$ is exactly windowwise rank $\le1$, because window collisions are squarefree---the Salem square cannot act on windows, only the golden swap can, and twin symmetry neutralizes it---so the $26$--class census is the complete constant--$\tfrac14$ double--indicator landscape and the analytic problem reduces to finite linear algebra. And the compositum \emph{couples}: on its own tensor catalog the Mahler--Gibbs cost is provably non--separable (interaction contrast exactly $\log 2$; golden sector $-6\log\ph$; interaction tensor of exact rank $5$), resolving the multi--field question on its forced horn. This final revision completes the program: the landscape is classified at every $k$---constant $\tfrac14$ is exactly the \emph{partitioned--affine} condition, by a moment trichotomy on window circuits, with catalog counts $8/56/95/31/1$ and the indicator--join conjecture refuted---and the coupled compositum family is proved \emph{not} constant--$\tfrac14$: the coupling is curvature--visible, already at the uniform point where the cross--covariance vanishes exactly, and $\Delta$ is not determined by the charge data. Sixteen harnesses ($61/61$,
+$17/17$, $4/4$, $16/16$, $12/12$, $24/24$, $44/44$, $16/16$, $13/13$, $9/9$, $72/72$, $18/18$, $28/28$, $13/13$, $21/21$, $9/9$; exact
+arithmetic over $\Q(\log2,\log3,\log5,\log\ph)$, plus $\log7$ for the extended catalog) verify
+every new decision.
+\end{abstract}
+
+\section{Introduction and discipline}
+The companion $\lambda=2c$ manuscript charges a number field's growth rule a description cost
+$\log\Mah(\theta)$ and reads its parameter geometry as the (flat) trace form. Here we build the
+complementary object: the positive--definite Fisher--Rao geometry of the catalog's outcome
+distribution, and four forced layers on top of it. Nothing new is assumed about the field; we use
+only its forced data. Each claim is tagged \forcedtag{} (theorem/exact computation), \computedtag{}
+(validated numeric), \declaredtag{} (a principled invariance--free choice), or \opentag. All
+symbolic identities are checked in exact \texttt{sympy}; the one numeric object (\S10 curvature)
+uses a routine validated against four metrics of known curvature.
+
+\section{The catalog and its forced Mahler data}
+\begin{table}[h]\centering
+\begin{tabular}{lllc}
+\toprule
+seed & minimal polynomial & $\Mah$ (exact) & degree\\ \midrule
+$\sqrt2$ & $x^2-2$ & $2$ & $2$\\
+$\sqrt3$ & $x^2-3$ & $3$ & $2$\\
+$\sqrt5$ & $x^2-5$ & $5$ & $2$\\
+$\ph$ & $x^2-x-1$ & $\ph=(1+\sqrt5)/2$ & $2$\\
+$\tau$ & $x^2+x-1$ & $\ph$ & $2$\\
+$\ph^4$ & $x^2-7x+1$ & $\ph^4=(7+3\sqrt5)/2$ & $2$\\
+$K$ & $x^4+5x^2-5$ & $\ph^4-1=(5+3\sqrt5)/2$ & $4$\\
+\bottomrule
+\end{tabular}
+\caption{The catalog $\Omega$, with $\Mah(\alpha)=\prod_{|\zeta|>1}|\zeta|$ and degrees. All exact
+and machine--verified.}
+\end{table}
+
+Each measure is $\prod_{|\zeta|>1}|\zeta|$ over the roots $\zeta$. For a quadratic $x^2-D$ ($D>1$)
+both roots $\pm\sqrt D$ lie outside the unit circle, giving $\Mah=D$; the golden seeds keep only the
+dominant root, $\Mah(\ph)=\Mah(\tau)=\ph$, and $\Mah(\ph^4)=\ph^4$. The quartic $K$ is the one
+non--obvious case: $x^4+5x^2-5=0$ gives $x^2=\tfrac{-5\pm3\sqrt5}{2}$, hence real roots $\pm K$ with
+$|K|=5^{1/4}/\ph<1$ (inside) and imaginary roots $\pm i\beta$ with $\beta^2=\tfrac{5+3\sqrt5}{2}>1$
+(outside); only the imaginary pair contributes, so $\Mah(K)=\beta^2=\ph^4-1$.
+
+\begin{lemma}[Field constant]\label{lem:Z}
+$Z:=\sum_{\alpha\in\Omega}\Mah(\alpha)=10+2\ph+2\ph^4-1=17+4\sqrt5.$ \forcedtag
+\end{lemma}
+\begin{proof}
+$2+3+5=10$; $\ph+\ph=1+\sqrt5$; $\ph^4+(\ph^4-1)=2\cdot\tfrac{7+3\sqrt5}{2}-1=6+3\sqrt5$; summing
+gives $10+(1+\sqrt5)+(6+3\sqrt5)=17+4\sqrt5$.
+\end{proof}
+The integer $17$ is a computed coincidence of this catalog, not a structural invariant, and is read
+as nothing more.
+
+\section{The Mahler--Gibbs family}
+The forced cost is $E_i:=\log\Mah_i$; the maximum--entropy law at inverse temperature $\beta$ is
+\[
+p_i(\beta)=\frac{\Mah_i^{-\beta}}{Z(\beta)},\qquad Z(\beta)=\sum_j\Mah_j^{-\beta},\qquad
+A(\beta):=\log Z(\beta).
+\]
+This is an exponential family with sufficient statistic $\log\Mah$ (structure \forcedtag; the value
+of $\beta$ is \declaredtag). Distinguished temperatures: $\beta=0$ (uniform); $\beta=1$ (MDL/Occam
+prior $p\propto1/\Mah$); $\beta=\lambda=\sqrt5$ (the field's forced exchange rate); $\beta=-1$
+(exact anchor $p\propto\Mah$, algebraic in $\Q(\sqrt5)$).
+
+\section{Surprisal geometry}
+\begin{proposition}[Surprisal--cost affinity]\label{prop:affine}
+$S_i(\beta):=-\log p_i(\beta)=\beta\log\Mah_i+\log Z(\beta)$; hence
+$\partial S_i/\partial(\log\Mah_i)=\beta$ and $S_i-S_j=\beta\log(\Mah_i/\Mah_j)$. \forcedtag
+\end{proposition}
+\begin{proof}
+From $p_i(\beta)=\Mah_i^{-\beta}/Z(\beta)$,
+$S_i=-\log p_i=-\log\Mah_i^{-\beta}+\log Z(\beta)=\beta\log\Mah_i+\log Z(\beta)$. The partial
+derivative and the difference are immediate. The slope of surprisal against the Mahler cost is
+exactly the inverse temperature $\beta$; at $\beta=\lambda=\sqrt5$ the surprisal therefore equals the
+growth--rule cost $\lambda\log\Mah_i$ up to the common constant $\log Z$.
+\end{proof}
+
+\begin{proposition}[Fisher $=$ cost variance]\label{prop:fisher}
+$I(\beta)=A''(\beta)=\Var_\beta(\log\Mah)\ge0$, where $A(\beta):=\log Z(\beta)$. \forcedtag
+\end{proposition}
+\begin{proof}
+Since $Z'(\beta)=\sum_j\Mah_j^{-\beta}(-\log\Mah_j)$,
+\[
+A'(\beta)=\frac{Z'(\beta)}{Z(\beta)}=-\sum_j p_j(\beta)\log\Mah_j=-\E_\beta[\log\Mah].
+\]
+Differentiating once more,
+\[
+A''(\beta)=-\frac{d}{d\beta}\,\E_\beta[\log\Mah]
+=\E_\beta[(\log\Mah)^2]-\big(\E_\beta[\log\Mah]\big)^2=\Var_\beta(\log\Mah),
+\]
+the standard identity that the second derivative of the log--partition of an exponential family is
+the variance of its sufficient statistic; non--negativity is that of a variance.
+\end{proof}
+
+\begin{lemma}[The geometry is a sphere]\label{lem:sphere}
+The Fisher--Rao metric $g_{ij}=\delta_{ij}/p_i$ on the interior of $\Delta^{m-1}$ is isometric, via
+$\Phi(p)=2\sqrt p$, to the positive orthant of the sphere $S^{m-1}(2)$; its constant sectional
+curvature is $\tfrac14$. \forcedtag
+\end{lemma}
+\begin{proof}
+With $\Phi(p)=(2\sqrt{p_1},\dots,2\sqrt{p_m})$ one has $d(2\sqrt{p_i})=p_i^{-1/2}dp_i$, so the
+pullback of the Euclidean metric is $\sum_i(d\,2\sqrt{p_i})^2=\sum_i p_i^{-1}dp_i^2$, which is exactly
+$g$. The image satisfies $\sum_i(2\sqrt{p_i})^2=4\sum_i p_i=4$, hence lies on the sphere of radius
+$2$; a round sphere of radius $r$ has constant sectional curvature $1/r^2$, here $\tfrac14$
+(Rao~\cite{rao}; the $m=3$ case is checked symbolically in Appendix~\ref{app:verify}). The Gibbs
+curve $\beta\mapsto p(\beta)$ thus lives on a fixed curvature--$\tfrac14$ sphere, and its length
+element is $\sqrt{I(\beta)}=\sqrt{\Var_\beta(\log\Mah)}$.
+\end{proof}
+
+\section{Dual flatness}\label{sec:dual}
+The family is a dually flat manifold in the sense of Amari--Nagaoka \cite{amari}: the natural
+($e$--affine) coordinate is $\beta$, the expectation ($m$--affine) coordinate is
+$\eta=A'(\beta)=-U(\beta)$ with $U(\beta):=\E_\beta[\log\Mah]$ the mean cost, and the two dual
+potentials are $A(\beta)=\log Z$ and its Legendre transform, the negentropy $A^\ast(\eta)=-H(p)$.
+
+\begin{proposition}[Bregman form of $\mathrm{KL}$]\label{prop:bregman}
+The Kullback--Leibler divergence between two temperatures is the Bregman divergence of $\log Z$:
+\[
+\mathrm{KL}\!\big(p(\beta_1)\,\|\,p(\beta_2)\big)=A(\beta_2)-A(\beta_1)+(\beta_2-\beta_1)\,U(\beta_1).
+\]
+In particular the Gibbs curve $\beta\mapsto p(\beta)$ is an $e$--geodesic (a straight line in the
+natural coordinate), and $A^\ast(\eta)=-H$ holds identically. \forcedtag
+\end{proposition}
+\begin{proof}
+For any $i$,
+\[
+\log\frac{p_i(\beta_1)}{p_i(\beta_2)}
+=\big(-\beta_1\log\Mah_i-A(\beta_1)\big)-\big(-\beta_2\log\Mah_i-A(\beta_2)\big)
+=(\beta_2-\beta_1)\log\Mah_i+A(\beta_2)-A(\beta_1).
+\]
+Averaging over $p(\beta_1)$ and using $\E_{\beta_1}[\log\Mah]=U(\beta_1)$,
+\[
+\mathrm{KL}\big(p(\beta_1)\|p(\beta_2)\big)
+=(\beta_2-\beta_1)U(\beta_1)+A(\beta_2)-A(\beta_1),
+\]
+which is the Bregman divergence generated by the convex potential $A$. The Legendre identity
+$A^\ast(\eta)=\beta\eta-A(\beta)=\sum_i p_i\log p_i=-H$ is the standard exponential--family duality.
+Both are verified in Appendix~\ref{app:verify}.
+\end{proof}
+
+As a worked instance, taking $\beta_1=-1,\ \beta_2=1$ and reading $A,U$ from the thermodynamic table
+of \S\ref{sec:thermo}, $\mathrm{KL}(p(-1)\|p(1))=A(1)-A(-1)+2\,U(-1)=0.950-3.256+2(1.458)=0.610$
+nats---a description--length gap of $0.610$ nats between the anchor and the MDL prior.
+
+Consequently the generalized Pythagorean theorem holds: if the $e$--geodesic from $p$ to $q$ meets
+the $m$--geodesic from $q$ to $r$ Fisher--orthogonally, then
+$\mathrm{KL}(p\|r)=\mathrm{KL}(p\|q)+\mathrm{KL}(q\|r)$.
+
+\section{Thermodynamics of the catalog}\label{sec:thermo}
+With energies $E_i=\log\Mah_i$ and temperature $T=1/\beta$: free energy $F(\beta)=-A(\beta)/\beta$,
+internal energy $U(\beta)=-A'(\beta)$, and Gibbs entropy $S(\beta)=A(\beta)+\beta U(\beta)$, which
+coincides with the Shannon entropy $H(p(\beta))$.
+
+\begin{proposition}[Fisher information is a heat capacity]\label{prop:heat}
+\[
+C(\beta)=\frac{dU}{dT}=\beta^2\,I(\beta)=\beta^2\,\Var_\beta(\log\Mah)\ \ge 0 .
+\]
+\forcedtag
+\end{proposition}
+\begin{proof}
+$dU/d\beta=-A''(\beta)=-I(\beta)$ and $dT/d\beta=-1/\beta^2$, so
+$C=(dU/d\beta)/(dT/d\beta)=\beta^2 I(\beta)$; the non--negativity is $I\ge0$ (verified in
+Appendix~\ref{app:verify}).
+\end{proof}
+
+The fluctuation $\Var_\beta(\log\Mah)$ peaks at a distinguished \emph{peak--fluctuation temperature}
+$\beta^\ast\approx-0.0768$, where $\Var_{\beta^\ast}(\log\Mah)\approx0.3289$ \computedtag; the heat
+capacity $C=\beta^2 I$ is however suppressed near $\beta=0$ by the $\beta^2$ factor and grows with
+$|\beta|$. As $\beta\to+\infty$ the measure concentrates on the minimal--Mahler seeds $\ph,\tau$, and
+as $\beta\to-\infty$ on the maximal--Mahler seed $\ph^4$. Table~\ref{tab:thermo} records the
+functions at the distinguished temperatures.
+
+\begin{table}[h]\centering
+\begin{tabular}{lcccccc}
+\toprule
+$\beta$ & $Z(\beta)$ & $A=\log Z$ & $U=\langle\log\Mah\rangle$ & $S=H$ & $C=\beta^2 I$ & $F=-A/\beta$\\ \midrule
+$-1$ & $25.944$ & $3.256$ & $1.458$ & $1.798$ & $0.2626$ & $3.256$\\
+$\beta^\ast\!\approx\!-0.077$ & $7.654$ & $2.035$ & $1.176$ & $1.945$ & $0.0019$ & $26.51$\\
+$0$ & $7$ & $1.946$ & $1.151$ & $1.946$ & $0$ & ---\\
+$1$ & $2.586$ & $0.950$ & $0.855$ & $1.806$ & $0.243$ & $-0.950$\\
+$\sqrt5$ & $1.040$ & $0.039$ & $0.648$ & $1.487$ & $0.520$ & $-0.018$\\
+\bottomrule
+\end{tabular}
+\caption{Thermodynamics of the Mahler--Gibbs family at the distinguished temperatures ($A,U,S,C$ in
+nats). Entropy $S=H$ is maximal, $\log 7\approx1.946$, at $\beta=0$; the fluctuation peaks at
+$\beta^\ast$; the heat capacity $C=\beta^2 I$ vanishes at $\beta=0$ and grows on either side. All
+values \computedtag.}\label{tab:thermo}
+\end{table}
+
+\section{Distances and information length}
+\begin{proposition}[Fisher--Rao distance]\label{prop:dist}
+For distributions $p,q$, the geodesic distance is the Bhattacharyya angle
+$d_{\mathrm{FR}}(p,q)=2\arccos\sum_i\sqrt{p_i q_i}$. The seven pure states (vertices) are mutually
+equidistant, $d_{\mathrm{FR}}(\delta_i,\delta_j)=\pi$ for $i\neq j$, forming a regular spherical
+simplex. \forcedtag
+\end{proposition}
+\begin{proof}
+Under $\Phi(p)=2\sqrt p$ (Lemma~\ref{lem:sphere}) the images $\Phi(p),\Phi(q)$ lie on the radius--2
+sphere with Euclidean inner product $\Phi(p)\cdot\Phi(q)=4\sum_i\sqrt{p_iq_i}$; on a sphere of radius
+$r$ the geodesic distance is $r$ times the central angle, here
+$2\arccos\!\big(\tfrac14\Phi(p)\cdot\Phi(q)\big)=2\arccos\sum_i\sqrt{p_iq_i}$. For distinct vertices
+the Bhattacharyya coefficient $\sum_k\sqrt{\delta_i(k)\delta_j(k)}=0$, so
+$d_{\mathrm{FR}}=2\arccos 0=\pi$.
+\end{proof}
+The information length of the Gibbs curve is $L(\beta_0,\beta_1)=\int_{\beta_0}^{\beta_1}
+\sqrt{I(\beta)}\,d\beta=\int\!\sqrt{\Var_\beta(\log\Mah)}\,d\beta$. Between the exact anchor and the
+exchange--rate temperature, $L(-1\to\sqrt5)\approx1.5999$ nats, while the chord distance
+$d_{\mathrm{FR}}(p(-1),p(\sqrt5))\approx1.5812\le L$ \computedtag, as an arc bounds its chord.
+Table~\ref{tab:dist} gives the full distance matrix among the distinguished temperatures.
+
+\begin{table}[h]\centering
+\begin{tabular}{lcccc}
+\toprule
+$d_{\mathrm{FR}}$ & $\beta=-1$ & $\beta=0$ & $\beta=1$ & $\beta=\sqrt5$\\ \midrule
+$\beta=-1$ & $0$ & $0.553$ & $1.092$ & $1.581$\\
+$\beta=0$ & $0.553$ & $0$ & $0.542$ & $1.040$\\
+$\beta=1$ & $1.092$ & $0.542$ & $0$ & $0.502$\\
+$\beta=\sqrt5$ & $1.581$ & $1.040$ & $0.502$ & $0$\\
+\bottomrule
+\end{tabular}
+\caption{Fisher--Rao distances $d_{\mathrm{FR}}=2\arccos\sum_i\sqrt{p_iq_i}$ (nats) between the Gibbs
+distributions at the distinguished temperatures. Distances are monotone along the ordered curve but
+\emph{sub--additive}: $d(-1,\sqrt5)=1.581<0.553+0.542+0.502=1.597$. This is the signature that the
+Gibbs curve is an $e$--geodesic (straight in $\beta$, \S\ref{sec:dual}) but \emph{not} a Fisher--Rao
+metric geodesic---the metric geodesic between the endpoints is shorter, and the full arc length
+$1.600$ (the information length) exceeds the chord $1.581$. Every pure--state pair sits at the
+maximal distance $\pi$. All values \computedtag.}\label{tab:dist}
+\end{table}
+
+\section{The exact anchor ($\beta=-1$, $p\propto\Mah$)}
+Here $p_i=\Mah_i/Z$, $Z=17+4\sqrt5$, all algebraic in $\Q(\sqrt5)$, and the metric is the exact
+diagonal $g=\operatorname{diag}(Z/\Mah_i)$.
+\begin{table}[h]\centering
+\begin{tabular}{lccc}
+\toprule
+seed & $p_i=\Mah_i/Z$ & $p_i$ & $S_i=-\log p_i$\\ \midrule
+$\sqrt2$ & $2/(17+4\sqrt5)$ & $0.0771$ & $2.5628$\\
+$\sqrt3$ & $3/(17+4\sqrt5)$ & $0.1156$ & $2.1573$\\
+$\sqrt5$ & $5/(17+4\sqrt5)$ & $0.1927$ & $1.6465$\\
+$\ph$ & $\ph/(17+4\sqrt5)$ & $0.0624$ & $2.7747$\\
+$\tau$ & $\ph/(17+4\sqrt5)$ & $0.0624$ & $2.7747$\\
+$\ph^4$ & $\ph^4/(17+4\sqrt5)$ & $0.2642$ & $1.3311$\\
+$K$ & $(\ph^4-1)/(17+4\sqrt5)$ & $0.2256$ & $1.4888$\\
+\bottomrule
+\end{tabular}
+\caption{The exact anchor distribution ($\beta=-1$, $p\propto\Mah$): weights exact in $\Q(\sqrt5)$,
+surprisals for display. The measure favours the high--Mahler seeds $\ph^4,K$ and most suppresses the
+golden pair $\ph,\tau$ (equal weight, as $\Mah(\ph)=\Mah(\tau)$). The seven weights sum to $1$.}
+\label{tab:anchor}
+\end{table}
+
+\section{The keystone--power sub--model: entry and order}
+With $R=\bigl(\begin{smallmatrix}0&1\\1&1\end{smallmatrix}\bigr)$, $R^n=F_nR+F_{n-1}I$ and
+$\Mah(\mathrm{charpoly}\,R^n)=\ph^n$, so on the ordered sequence $\{R^n:n_0\le n\le N\}$ the cost is
+linear, $E_n=n\log\ph$.
+\begin{proposition}[Geometric sub--model]\label{prop:geo}
+With $r=\ph^{-\beta}\in(0,1)$, the Gibbs law is the shifted geometric $p_n=(1-r)r^{\,n-n_0}$,
+$Z=\dfrac{r^{n_0}-r^{N+1}}{1-r}\to\dfrac{r^{n_0}}{1-r}$, the surprisal is linear
+$S_n=(n-n_0)\beta\log\ph-\log(1-r)$, and $I(\beta)=(\log\ph)^2\,r/(1-r)^2$. The point of entry $n_0$
+shifts the law; the order $n$ is its support. \forcedtag
+\end{proposition}
+
+The sequence data are exact integers and their forced measures (Table~\ref{tab:keystone}); the row
+$n=4$ carries the catalog gap seed $x^2-7x+1$, whose trace $L_4=7$ is the normalisation appearing
+throughout the corpus.
+
+\begin{table}[h]\centering
+\begin{tabular}{ccccc}
+\toprule
+$n$ & $F_n$ & $L_n=\ph^n+\psi^n$ & $\Mah(R^n)=\ph^n$ & cost $E_n=n\log\ph$\\ \midrule
+$1$ & $1$ & $1$ & $1.618$ & $0.481$\\
+$2$ & $1$ & $3$ & $2.618$ & $0.962$\\
+$3$ & $2$ & $4$ & $4.236$ & $1.444$\\
+$4$ & $3$ & $7$ & $6.854$ & $1.925$\\
+$5$ & $5$ & $11$ & $11.090$ & $2.406$\\
+$6$ & $8$ & $18$ & $17.944$ & $2.887$\\
+\bottomrule
+\end{tabular}
+\caption{The keystone--power sub--catalog $\{R^n\}$: Fibonacci $F_n$, Lucas $L_n$, the forced Mahler
+measure $\ph^n$, and the linear cost $n\log\ph$. Linearity of the cost is what makes the Gibbs law
+exactly geometric (Prop.~\ref{prop:geo}).}\label{tab:keystone}
+\end{table}
+
+\section{Two--statistic field geometry: a constant--curvature ruled surface}
+Adjoin the degree $d_i$ as a second forced statistic; note $d_i=2+2\cdot\mathbf 1_{\{i=K\}}$, so
+degree is affinely the indicator of the single outcome $K$. The two--parameter family
+$p_i\propto\exp(-\beta_1\log\Mah_i-\beta_2 d_i)$ is an exponential family whose Fisher matrix is the
+Hessian $\nabla^2 A(\beta_1,\beta_2)=\Cov_\beta(\log\Mah,\,\mathrm{deg})$. At the uniform point,
+\[
+g=\begin{pmatrix}0.3283 & 0.1761\\[1pt] 0.1761 & 0.4898\end{pmatrix},\qquad
+\Var(\mathrm{deg})=\tfrac{24}{49}=0.4898,
+\]
+symmetric positive definite. This is the genuinely two--dimensional field metric; we now determine
+its curvature exactly.
+
+\begin{theorem}[Indicator--suspension]\label{thm:susp}
+Let $(a,c)$ be statistics on a finite set $\Omega$ with positive base measure $\nu$, and suppose $c$
+is affinely the indicator of a single outcome $K$ (i.e. $c=\alpha+\beta\,\mathbf 1_K$, $\beta\neq0$)
+while $a$ is non--constant on $\Omega\setminus\{K\}$. Then the Fisher--Rao geometry of
+$p_i\propto\nu_i e^{\theta_1 a_i+\theta_2 c_i}$ has \emph{constant} Gaussian curvature $\tfrac14$; it
+is an isometric round $\tfrac14$--sphere, embedded in $S^{|\Omega|-1}(2)$ as a \emph{ruled} surface
+swept by great circles (the $c$--direction flow lines). It is \emph{not} totally geodesic unless $a$
+is affinely constant on $\Omega\setminus\{K\}$ (which fails whenever there are three or more distinct
+$a$--values). \forcedtag
+\end{theorem}
+\begin{proof}
+The Fisher metric of an exponential family depends on the statistics only through the affine span
+$\langle 1,a,c\rangle$ and is invariant, as a Riemannian manifold, under affine reparametrization; so
+replace $c$ by $\mathbf 1_K$ and parametrize by $(\theta,q)$, with $q=p_K\in(0,1)$ the apex mass and
+$\theta$ the natural parameter of the conditional family $\rho(\theta)$ on $\Omega\setminus\{K\}$, so
+$p=((1-q)\rho(\theta),q)$. Pass to square--root coordinates: $p\mapsto\sqrt p$ is an isometry onto the
+unit sphere whose round metric is $\tfrac14$ the Fisher metric. With $x(\theta)=\sqrt{\rho(\theta)}$ a
+unit vector ($|x|^2=\sum_i\rho_i=1$) tracing a curve on the equatorial sphere, and $\sqrt q=\sin\psi$
+($\psi\in(0,\tfrac\pi2)$),
+\[
+\sqrt p=\big(\cos\psi\,x(\theta),\ \sin\psi\big),\qquad
+\partial_\psi\sqrt p=(-\sin\psi\,x,\cos\psi),\qquad
+\partial_\theta\sqrt p=(\cos\psi\,x',0).
+\]
+Using $|x|^2=1\Rightarrow x\cdot x'=0$, the induced unit--sphere metric is
+\[
+g^{\text{unit}}=\underbrace{(\sin^2\!\psi\,|x|^2+\cos^2\!\psi)}_{=\,1}\,d\psi^2
++2\underbrace{(-\sin\psi\cos\psi\,x\!\cdot\! x')}_{=\,0}\,d\psi\,d\theta
++\cos^2\!\psi\,|x'|^2\,d\theta^2
+= d\psi^2+\cos^2\!\psi\,d\ell^2,
+\]
+reparametrizing $\theta$ by the arc length $\ell$ of $x$ ($d\ell=|x'|\,d\theta$). This is the round
+unit--sphere metric (latitude $\psi$, longitude $\ell$), of Gaussian curvature $-f''/f=1$ with
+$f=\cos\psi$---\emph{independent of the curve} $x$. As the Fisher metric is $4\,g^{\text{unit}}$, its
+curvature is the constant $\tfrac14$. The family is thus the spherical suspension of the apex $K$ over
+the $a$--curve; non--constancy of $a$ makes $x(\theta)$ a genuine immersed curve, so the surface is
+two--dimensional.
+\end{proof}
+
+The embedding structure is exactly a ruled surface. Writing $s=\sqrt p$ and $\tau_\alpha=T_\alpha-\langle
+T_\alpha\rangle$ (centred statistics), the second fundamental form in the sphere is $\mathrm{II}_{\alpha
+\beta}=\tfrac14(\tau_\alpha\tau_\beta\,s)^\perp$, and $\mathrm{II}_{\alpha\beta}=0$ iff the pointwise
+product $T_\alpha T_\beta\in V:=\langle 1,a,c\rangle$. For $c=\mathbf 1_K$: $c^2=c\in V$ (idempotent)
+and $a\,c=a_K\,c\in V$ (the indicator localises the product), so $\mathrm{II}_{cc}=\mathrm{II}_{ac}=0$
+---the $c$--flow lines are great circles and the surface is ruled by them. But $a^2\notin V$ whenever
+$a$ has $\ge3$ distinct values (Prop.~\ref{prop:notTG}), so $\mathrm{II}_{aa}\neq0$: the surface bends
+in the $a$--direction and is not totally geodesic. This is why the curvature is constant $\tfrac14$
+(the extrinsic curvature $\det\mathrm{II}=\langle\mathrm{II}_{aa},\mathrm{II}_{cc}\rangle-|\mathrm{II}
+_{ac}|^2=0$) without the surface being a great subsphere.
+
+\begin{corollary}[the catalog surface]\label{cor:catsurf}
+Since $\mathrm{deg}=2+2\cdot\mathbf 1_{\{i=K\}}$ (only the quartic $K$, minimal polynomial
+$x^4+5x^2-5$, has degree $4$) and $\log\Mah$ is non--constant on the remaining seeds, the catalog's
+$(\log\Mah,\mathrm{deg})$ Gibbs surface satisfies Theorem~\ref{thm:susp} and has \emph{exactly}
+constant curvature $\tfrac14$. The multiplicity of $\ph,\tau$ (equal $\log\Mah$ and degree) is
+absorbed as a base--measure weight and does not affect the result. \forcedtag
+\end{corollary}
+
+\paragraph{The catalog surface, explicitly.} At the anchor $\beta=-1$ the apex mass is
+$q_K=p_K=0.2256$, giving latitude $\psi=\arcsin\sqrt{q_K}=0.495$; the conditional distribution on the
+six non--apex seeds is $(0.0996,0.1493,0.2489,0.0805,0.0805,0.3412)$, whose square roots are the
+point $x$ on the equatorial $S^5$. One checks $\cos^2\psi=1-q_K=0.7744$, so the catalog point sits on
+the suspension exactly as $\sqrt p=(\cos\psi\,x,\sin\psi)$. Sweeping $\beta$ moves $x$ along the
+$\log\Mah$--curve and $\psi$ toward the apex $K$, tracing out the constant--curvature--$\tfrac14$
+sphere; the coordinate $(\psi,\ell)$ of Theorem~\ref{thm:susp}, with $\ell$ the arc length
+of the $\log\Mah$--curve, realises it as a round sphere intrinsically (though not as a great subsphere
+of the ambient).
+
+This inverts the naive expectation: the second statistic does not bend the geometry into a new
+varying--curvature object; the $(\log\Mah,\mathrm{deg})$ family sits inside the surprisal sphere as a
+constant--curvature ruled surface. The apex is essential---a generic two--statistic family (no
+indicator) has non--constant, sign--changing curvature; explicit controls give $4/21$ ($m=4$) and
+$857/16928$ ($m=5$), both $\neq\tfrac14$. The general Brioschi curvature of an indicator family, its
+invariance under base measure (hence constancy), the ruled second fundamental form, and the suspension
+metric are all machine--verified (\texttt{suspension\_theorem.py} and
+\texttt{field\_surprisal\_classification.py}).
+
+\begin{remark}
+Neither the trace form nor the $(\log\Mah,\mathrm{deg})$ surface is totally geodesic in the surprisal
+sphere---but for opposite reasons. Totally geodesic surfaces are the curvature--$\tfrac14$ subspheres;
+the field's \emph{flat} trace--form geometry misses this because its curvature is $0\neq\tfrac14$
+(forcing extrinsic $k_1k_2=-\tfrac14$, \S12), while the $(\log\Mah,\mathrm{deg})$ surface has the right
+intrinsic curvature $\tfrac14$ but the wrong embedding---it is ruled, not geodesic ($\mathrm{II}_{aa}
+\neq0$). In fact (Prop.~\ref{prop:notTG}) \emph{no} $(\log\Mah,X)$ surface is totally geodesic.
+\end{remark}
+
+\section{The multi-statistic landscape: degree is geometrically distinguished}\label{sec:landscape}
+Theorem~\ref{thm:susp} singles out one property of the degree statistic---being an indicator of a
+\emph{single} outcome. The catalog carries other forced invariants, and comparing their two--statistic
+surfaces shows how special that property is (Table~\ref{tab:landscape}).
+
+\begin{table}[h]\centering
+\begin{tabular}{llll}
+\toprule
+statistic $X$ & values & type & $K$ of $(\log\Mah,X)$ at three points\\ \midrule
+degree & $\{2,4\}$ & $\mathbf 1_{\{K\}}$ (single outcome) & $0.250,\ 0.250,\ 0.250$\\
+$\#\{|\zeta|>1\}$ & $\{1,2\}$ & $\mathbf 1_{\{\ph,\tau,\ph^4\}}$ ($3$--set) & $0.020,\ 0.066,\ -0.006$\\
+trace & $\{-1,0,1,7\}$ & non--indicator & $0.177,\ 0.056,\ 0.197$\\
+house $\max|\zeta|$ & six values & non--indicator & $0.211,\ 0.114,\ 0.227$\\
+\bottomrule
+\end{tabular}
+\caption{Gaussian curvature of the two--statistic Gibbs surface $(\log\Mah,X)$ for four forced
+invariants, sampled at three natural--parameter points. Only the single--outcome indicator (degree)
+is the constant $\tfrac14$. All \computedtag{} (curvature routine validated on four metrics of known
+curvature).}\label{tab:landscape}
+\end{table}
+
+The number of conjugates outside the unit circle is itself an indicator, $\#\{|\zeta|>1\}
+=2-\mathbf 1_{\{\ph,\tau,\ph^4\}}$---but of a \emph{three--element} set, not a single outcome. Its
+surface has non--constant, sign--changing curvature, so the single--outcome hypothesis of
+Theorem~\ref{thm:susp} is sharp: a set indicator makes the family a join of two non--trivial curves
+(one on the set's sub--sphere, one on its complement), which is not a suspension over a point, hence
+not a round sphere. The trace and house are generic (non--indicator) and likewise vary. Among the
+catalog's forced invariants, \emph{degree is the unique one whose Gibbs surface with $\log\Mah$ has
+constant curvature $\tfrac14$}---a geometric distinction of the single quartic seed $K$, verified in
+\texttt{field\_surprisal\_tier2.py} ($15/15$).
+
+\section{The charge grading: a second constant--curvature--$\tfrac14$ surface}\label{sec:charge}
+The catalog carries a further forced invariant from the companion charge--measure coupling
+\cite{cmc}: the conjugate--angle charge. An algebraic number is charge--admissible if every conjugate
+$\alpha$ satisfies $\alpha^n\in\R_{>0}$ for some $n\ge1$; the least such $n$ is its charge group
+$\Z/n\Z$, and the charge of a root at argument $\theta$ is $\chi_n=\operatorname{round}(n\theta/2\pi)
+\bmod n$. Read off the catalog:
+\[
+\begin{array}{lccccccc}
+\text{seed} & \sqrt2 & \sqrt3 & \sqrt5 & \ph & \tau & \ph^4 & K\\[1pt]
+\text{charge group} & \Z/2 & \Z/2 & \Z/2 & \Z/2 & \Z/2 & \Z/1 & \Z/4
+\end{array}
+\]
+The seed $\ph^4$ is the \emph{unique} one with both conjugates real positive (roots $\ph^4,\ph^{-4}$),
+so its charge group is trivial $\Z/1$; $K$ alone has complex conjugates $\pm i\beta$, giving the
+maximal $\Z/4$; the remaining five sit at $\Z/2$.
+
+The paper's central grading is charge \emph{parity}, which sets the Mahler floor---$\ph$ for even $n$,
+$2$ for odd $n$, the odd gap $(\ph,2)$ being the no--Salem closure \cite[Thm.~5.1, 6.2]{cmc}. For this
+catalog parity is $\mathbf 1_{\{\ph^4\}}$, a single--outcome indicator, so by Theorem~\ref{thm:susp}
+the surface $(\log\Mah,\text{charge parity})$ again has constant curvature $\tfrac14$---verified
+at $K=0.250,0.250,0.250$, and exactly, the Brioschi curvature of an arbitrary statistic with the
+$\ph^4$ indicator being identically $\tfrac14$ \forcedtag. The charge group \emph{order}
+$\{1,2,4\}$ is three--valued and gives a non--$\tfrac14$, varying surface ($0.339,0.362,0.342$),
+consistent with \S\ref{sec:landscape}.
+
+We can now classify \emph{all} such surfaces completely, and the answer corrects a natural
+over--expectation: constant curvature $\tfrac14$ is strictly weaker than being totally geodesic (a great
+subsphere), and here only the former ever holds.
+
+\begin{proposition}[No surface is totally geodesic]\label{prop:notTG}
+For every second statistic $X$, the $(\log\Mah,X)$ surface is \emph{not} totally geodesic in
+$S^{6}(2)$. Indeed a totally geodesic $V=\langle 1,\log\Mah,X\rangle$ would be a unital subalgebra of $\R^7$,
+forcing the number of distinct value pairs $(\log\Mah_i,X_i)$ down to $\dim V=3$; but the cost takes
+six distinct values, so the pair count is always $6$ or $7$, never the $3$ a great $2$--subsphere
+requires. \forcedtag
+\end{proposition}
+
+\begin{remark}[Correction]\label{rem:corr}
+An earlier draft argued $\mathrm{II}_{aa}\neq0$ from ``$\log^2\Mah\notin V$''; that inference is false
+as stated: for $X$ affinely $\log^2\Mah$ one has $\log^2\Mah\in V$ and $\mathrm{II}_{aa}=0$ (then
+$\mathrm{II}_{ac}\neq0$ instead, since $\log^3\Mah\notin\langle1,\log\Mah,\log^2\Mah\rangle$;
+machine--checked in \texttt{t1\_core.py}). The value--count argument above is the correct and complete
+proof; the proposition's statement is unchanged.
+\end{remark}
+
+\begin{theorem}[Complete constant--curvature classification]\label{thm:classification}
+The $(\log\Mah,X)$ surface has constant Gaussian curvature $\tfrac14$ iff $X$ is affinely the indicator
+$\mathbf 1_S$ of a set $S$ with $\log\Mah$ constant on $S$ or on its complement. There are
+\emph{exactly eight} such surfaces (a surface depends only on the partition $\{S,S^c\}$): the seven
+single--seed indicators and the golden--pair merge $\mathbf 1_{\{\ph,\tau\}}$. Each is a ruled
+constant--curvature--$\tfrac14$ surface (Theorem~\ref{thm:susp}), none totally geodesic. No
+\emph{non}--indicator $X$ gives constant curvature $\tfrac14$.
+\end{theorem}
+\noindent\emph{Proof.} Sufficiency is Theorem~\ref{thm:susp} (idempotency gives
+$\mathrm{II}_{cc}=0$; $\log\Mah$ constant on $S$ gives $\mathrm{II}_{ac}=0$; hence $\det\mathrm{II}=0$);
+the $16$--subset census among all $127$ indicators is exhaustive (\texttt{field\_surprisal\_classification.py},
+$9/9$). Necessity---no non--indicator $X$ is constant--$\tfrac14$---is proved in full in
+\S\ref{sec:classdone} (Theorem~\ref{thm:classfull}); the earlier $\approx5000$--sample evidence is
+retired and the tag upgrades to \forcedtag.
+
+\begin{remark}[The eight surfaces and their forcing]
+Seven of the eight are single--seed, and each is \emph{forced} by an arithmetic invariant:
+\[
+\begin{array}{lccccccc}
+\text{seed } s & \sqrt2 & \sqrt3 & \sqrt5 & \ph & \tau & \ph^4 & K\\[1pt]
+\text{singled out by} & \Mah{=}2 & \Mah{=}3 & \Mah{=}5 & \mathrm{tr}{=}1 & \mathrm{tr}{=}{-}1 & \Mah{=}\ph^4 & \Mah{=}\ph^4{-}1
+\end{array}
+\]
+The Mahler measure alone distinguishes five seeds; the only degeneracy is the golden pair
+$\{\ph,\tau\}$ tied at $\Mah=\ph$, split by the trace $\pm1$---the same sign the $\lambda=2c$
+construction uses to select the Perron keystone $R^2=R+I$ (trace $+1$) over the Clifford conjugate gate
+$R^2=I-R$ (trace $-1$) \cite{lambda}. The eighth surface is precisely $\mathbf 1_{\{\ph,\tau\}}$, the
+single--outcome indicator of the \emph{effective} catalog in which the Mahler--tied seeds $\ph,\tau$ are
+merged. The two deepest of the seven are $K$ and $\ph^4$, the charge--extreme seeds (charge group $\Z/4$
+and $\Z/1$), additionally distinguished by degree, non--reality, and total positivity.
+\end{remark}
+
+\section{The classification completed: a finite branch calculus}\label{sec:classdone}
+Theorem~\ref{thm:classification} left one \opentag: ruling out every non--indicator statistic. We
+close it. Write $a=\log\Mah$, $V=\langle1,a,X\rangle$ (assumed $3$--dimensional), and let $Q_\theta$
+be the $L^2(p_\theta)$--projection onto $V^\perp$ along the family $p\propto e^{\theta_1a+\theta_2X}$.
+The Gauss equation reduces constancy to one scalar: with $F=a^2$, $G=X^2$, $H=aX$,
+\[
+q(\theta)\;=\;\langle Q_\theta F,\,Q_\theta G\rangle-\|Q_\theta H\|^2,
+\qquad K\equiv\tfrac14\iff q\equiv0 .
+\]
+
+\begin{lemma}[$\theta$--rigidity]\label{lem:rigid}
+$\ker Q_\theta=V$ for every $\theta$ (the Gram matrix of $(1,a,X)$ is nonsingular under any positive
+weight). Hence $\mathrm{II}_{ac}\equiv0\iff aX\in V$ and $\mathrm{II}_{cc}\equiv0\iff X^2\in V$: each
+ruled condition holds at one temperature iff at all. \forcedtag
+\end{lemma}
+
+\begin{theorem}[The ruled system, solved]\label{thm:ruled}
+$\{aX\in V,\;X^2\in V\}\iff X\!\cdot\!V\subseteq V\iff X$ is affinely $\mathbf 1_S$ with $a$ constant
+on $S$ or $S^c$---exactly the eight families. Module route: $X\!\cdot\!V\subseteq V$ makes $V$ a module
+over itself, hence a sum of level--set blocks of $X$; $\dim V=3$ against six distinct costs leaves
+two levels with $a$ constant on one. Elimination route: $aX\in V$ makes $X$ a M\"obius function
+$\mu(a)$ off at most one pole level; the increment identity
+$\mu(s)-\mu(t)=(d_0+d_1d_2)(t-s)/\{(s-d_2)(t-d_2)\}$ and $X^2\in V$ force $\mu$ constant off--pole,
+leaving pole--level indicators. \forcedtag\ (\texttt{t1\_core.py}: the invariant module
+$N(X)=\{v\in V:vV\subseteq V\}$ is $2$--dimensional exactly on the eight families, $1$--dimensional on
+every control, including $X\simeq\log^2\Mah$ and the pair--pole family.)
+\end{theorem}
+
+Off the ruled locus, $q\equiv0$ must hold with both forms nonzero. Two exact reductions make the
+question finite.
+
+\begin{proposition}[Numerator and the window identity]\label{prop:window}
+Put $C(f,g)=\sum_{i<j}w_iw_j(f_i-f_j)(g_i-g_j)$ on weights $w_i=e^{\theta_1a_i+\theta_2X_i}$,
+$D=C(a,a)C(X,X)-C(a,X)^2$, and $R(f,g)=D\,C(f,g)-C(f,\cdot)\,\mathrm{adj}\,C\;C(\cdot,g)$. Then
+$Z^2Dq=P(w):=R(F,G)-R(H,H)$, a degree--$6$ form whose $462$ monomials all have support $\ge4$. For a
+four--set $s$ let $\ell_s$ be the signed $3\times3$ minors of the rows $(1,a,X)|_s$ and
+\[
+q_4(s)\;=\;\ell_s(a^2)\,\ell_s(X^2)-\ell_s(aX)^2 .
+\]
+Then the coefficient of $w_h^3w_jw_kw_l$ in $P$ \emph{equals} $q_4(s)$, cofactor exactly $1$, for all
+$140$ heavy placements; and on the four--point face itself $\langle Qf,Qg\rangle=\kappa\,
+\ell_s(f)\ell_s(g)$ with $\kappa>0$, so $q=\kappa\,q_4(s)$ there. \forcedtag\
+(\texttt{t1\_engine.py}, \texttt{t1\_reduction.py}.)
+\end{proposition}
+
+\begin{theorem}[Master window identity: the coefficient law is Sylvester plus Cauchy--Binet]\label{thm:master}
+As a polynomial identity in independent weights $w_1,\dots,w_m$ and arbitrary statistics $(a,X)$,
+\[
+P(w)\;=\;Z^2\sum_{|s|=4}q_4(s)\,w_s,\qquad Z=\textstyle\sum_iw_i,\ \ w_s=\textstyle\prod_{i\in s}w_i,\qquad
+q_4(s)=\ell_s(a^2)\,\ell_s(X^2)-\ell_s(aX)^2,
+\]
+where $\ell_s(f)=\det\,(\mathbf 1,a,X,f)|_s$ realizes the signed--minor functional of
+Proposition~\ref{prop:window}. \forcedtag
+\end{theorem}
+\begin{proof}
+Three classical steps. \emph{(i)} $R(f,g)$ is the $3\times3$ determinant of the matrix
+$\bigl(C(u,v)\bigr)_{u\in(f,a,X),\,v\in(g,a,X)}$: expanding along the first row reproduces
+$D\,C(f,g)-C(f,\cdot)\,\mathrm{adj}\,C\,C(\cdot,g)$ term by term. \emph{(ii)} With
+$\langle u,v\rangle_w=\sum_iw_iu_iv_i$ one has
+$C(u,v)=Z\langle u,v\rangle_w-\langle u,\mathbf 1\rangle_w\langle\mathbf 1,v\rangle_w$, the
+$2\times2$ minor of the mixed Gram matrix
+$B(f,g)=\bigl(\langle u,v\rangle_w\bigr)_{u\in(\mathbf 1,f,a,X),\,v\in(\mathbf 1,g,a,X)}$ bordered on
+its $(1,1)$ entry $\langle\mathbf 1,\mathbf 1\rangle_w=Z$. Sylvester's determinant identity with
+pivot $Z$ \cite{hj} gives $\det\bigl(C(u,v)\bigr)=Z^{4-2}\det B(f,g)$ (reordering rows and columns
+simultaneously leaves determinants unchanged). \emph{(iii)} Writing $B(f,g)=UWV^{\mathsf T}$ with
+$U,V$ the $4\times m$ statistic matrices and $W=\operatorname{diag}(w)$, Cauchy--Binet \cite{hj}
+gives $\det B(f,g)=\sum_{|s|=4}w_s\,\ell_s(f)\,\ell_s(g)$. Hence
+$P=R(F,G)-R(H,H)=Z^2\sum_sw_s\bigl[\ell_s(F)\ell_s(G)-\ell_s(H)^2\bigr]$.
+\end{proof}
+\begin{corollary}[Coefficient law and structure]\label{cor:windowlaw}
+(a) Every monomial of $P$ has degree $6$ and support $\ge4$, with the exact law
+$[w^\kappa]P=\sum_{|s|=4,\ \mathbf 1_s\le\kappa}c(\kappa-\mathbf 1_s)\,q_4(s)$, where $c(2e_i)=1$ and
+$c(e_i+e_j)=2$; the monomial census $140+210+105+7=462$ over the shapes
+$(3,1,1,1),(2,2,1,1),(2,1,1,1,1),(1^6)$ is forced. (b) The heavy coefficient
+$[w_h^3w_jw_kw_l]\,P=q_4(s)$ with cofactor exactly $1$: $w_h^2$ is the unique contribution of $Z^2$.
+(c) Since the squarefree monomials $\{w_s\}$ are linearly independent, $q\equiv0$ iff $q_4(s)=0$ for
+\emph{all} $35$ windows---with no collision analysis. (d)
+$q_4(s)=-\prod_{t\in s}\det\,(\mathbf 1,a,X)|_{s\setminus t}$, a product of the four triple minors,
+so the four--point trichotomy (Lemma~\ref{lem:tri}) is immediate: $q_4(s)=0$ iff some three of the
+four plane points are affinely dependent (collinear, or a coincident pair as at the golden merge).
+(e) $D=Z\sum_{|t|=3}w_t\,\Delta_t^2$ by the same two identities one order down, so
+$q=\bigl[\sum_sw_sq_4(s)\bigr]/\bigl[Z\sum_tw_t\Delta_t^2\bigr]$: the $\alpha=0$ curvature
+obstruction is a ratio of consecutive Cauchy--Binet compound sums (the Hessian--metric picture of
+\cite{shima}), and restricting $w$ to a four--point face recovers $q=\kappa\,q_4(s)$ with the
+explicit $\kappa=w_s/\bigl(Z\sum_{t\subset s}w_t\Delta_t^2\bigr)>0$. \forcedtag
+\end{corollary}
+\begin{remark}[Architecture; Open Problem 3 resolved]\label{rem:master}
+Theorem~\ref{thm:master} replaces the machine discovery of Proposition~\ref{prop:window} ($140$
+exact divisions) by a two--line determinantal mechanism and resolves Open Problem (3) of the
+previous edition. The classification chain now runs rigidity $\to$ ruled system $\to$
+Theorem~\ref{thm:master} $\to$ trichotomy $\to$ plane lemma; the collision pencil and branch
+survival (Proposition~\ref{prop:pencil}, Lemma~\ref{lem:survival}) are no longer load--bearing and
+are retained as an independent verification lane and as results on the collision structure in their
+own right. Verified end to end in \texttt{t1\_windowproof.py} ($44/44$, exit $0$): the chain
+symbolically at $m=4,5$; the factorization (d) symbolically for four generic points; exact rational
+instances at $m=6,7$; and, on the catalog ring, the full $462$--coefficient dictionary equality of
+$P$ with $Z^2\sum_sq_4(s)\,w_s$, string--exact against the \texttt{t1\_engine.py} artifact.
+\end{remark}
+
+\begin{proposition}[Collision pencil]\label{prop:pencil}
+$q\equiv0$ iff the coefficients of $P$ vanish after grouping monomials with equal frequency pairs
+$(\sum_ik_ia_i,\ \sum_ik_iX_i)$. Since $\log2,\log3,\log5,\log\ph$ are $\Q$--linearly independent
+(multiplicative independence by norms in $\Q(\sqrt5)$; no transcendence input), the cost collisions
+form a rank--$2$ lattice generated by the golden swap $e_\ph-e_\tau$ and the Salem square
+$2e_K-e_{\sqrt5}-e_{\ph^4}$, reflecting $(\ph^4-1)^2=5\ph^4$. Every $X$--collision condition lies on
+the pencil $j\Delta_1+k\Delta_2=0$ with $\Delta_1=X_\ph-X_\tau$, $\Delta_2=2X_K-X_{\sqrt5}-X_{\ph^4}$;
+the realizable primitive relations are only $\Delta_1,\ \Delta_2,\ \Delta_1\pm\Delta_2,\
+2\Delta_1\pm\Delta_2$, and two independent relations force $\Delta_1=\Delta_2=0$. \forcedtag
+\end{proposition}
+
+\begin{lemma}[Branch survival]\label{lem:survival}
+In every branch of the pencil---generic, each of the five nontrivial single relations, and both
+sub--branches of the merged six--point recursion for $\Delta_1=0$ (whose own collision lattice has
+rank $1$, again the Salem square; the base weight $2$ at the merged point is invisible to vanishing
+since the collision support misses it)---every window $s$ retains at least one heavy placement whose
+group is a singleton. Hence $q\equiv0$ forces $q_4(s)=0$ for \emph{all} windows in \emph{every}
+branch. \forcedtag\ (\texttt{t1\_branches.py}: zero windows lost across all eight branch runs; all
+$35$ windows vanish identically on the eight families in symbolic $(\alpha,\beta,\gamma)$, and a
+random control violates one.)
+\end{lemma}
+
+\begin{lemma}[Four--point trichotomy]\label{lem:tri}
+$q_4(s)=0$ iff some three of the four plane points $T_i=(a_i,X_i)$, $i\in s$, are collinear, or
+$\{\ph,\tau\}\subset s$ with $T_\ph=T_\tau$. Collinear triples are automatically non--vertical, the
+cost having a single tie.
+\end{lemma}
+\begin{proof}
+$q_4$ is the determinant of the face's residual scalar form; it vanishes iff
+$\operatorname{rank}(1,a,X)|_s\le2$ (all four collinear) or a null direction $v=\alpha a+\beta X$ has
+$vV|_s\subseteq V|_s$. Diagonalizing $v$: four distinct $v$--levels are impossible ($\mathbf 1$ has
+full support); three levels, or a $2{+}2$ split, force the tied pair constant in both coordinates,
+i.e.\ $T_\ph=T_\tau$; a $1{+}3$ split puts $X$ affine in $a$ on the triple. The ray $\beta=0$ reduces
+to $V|_s=\langle1,a,a^2\rangle$ and the minimal polynomial of $a|_s$, landing in the same two
+alternatives.
+\end{proof}
+
+\begin{lemma}[Plane lemma]\label{lem:plane}
+If $n\ge5$ plane points are such that every $4$--subset contains a collinear triple, then all but at
+most one lie on a single line.
+\end{lemma}
+\begin{proof}
+Let $L$ be a line through the most points, $|L|\ge3$. Suppose $p\ne q$ lie off $L$. For any
+$x,y\in L$, the $4$--set $\{p,q,x,y\}$ contains a collinear triple; $\{p,x,y\}$ or $\{q,x,y\}$ would
+put $p$ or $q$ on $L$, so $\mathrm{line}(p,q)$ contains $x$ or $y$---for every pair $x,y\in L$.
+Taking three points of $L$ pairwise, $\mathrm{line}(p,q)$ would contain two of them and meet $L$
+twice: contradiction.
+\end{proof}
+
+\begin{theorem}[Complete classification, closed]\label{thm:classfull}
+$q\equiv0$ iff $X$ is affinely $\mathbf 1_S$ with $S$ one of the seven seeds or the golden pair.
+Theorem~\ref{thm:classification} therefore holds as stated with tag \forcedtag: the eight surfaces
+are the only constant--curvature--$\tfrac14$ two--statistic surfaces.
+\end{theorem}
+\begin{proof}
+If $\Delta_1\ne0$ the coincidence alternative of Lemma~\ref{lem:tri} cannot fire, so by
+Lemmas~\ref{lem:survival}--\ref{lem:plane} at least six of the seven $T_i$ lie on one non--vertical
+line $\ell$, i.e.\ $X=\alpha+\beta a+\gamma\mathbf 1_S$ with $S$ the exceptional point. Both golden
+points on $\ell$ would give $X_\ph=X_\tau$ (equal abscissae on a non--vertical line), contradicting
+$\Delta_1\ne0$; so the exception is $\ph$ or $\tau$, automatically an $a$--level. If $\Delta_1=0$ the
+family is the merged six--point catalog, whose six costs are distinct; the same
+window--trichotomy--plane chain on its $15$ windows puts five of six points on a line, giving the
+merged singletons---pulling back to the golden merge, or a singleton with $X_\ph=X_\tau$. All cases
+land in the eight families; the converse is Theorem~\ref{thm:susp}.
+\end{proof}
+
+\begin{remark}[Below the ceiling]
+For \emph{any} subset $S$, idempotency gives $\mathrm{II}_{cc}=0$, hence
+$\det\mathrm{II}=-|\mathrm{II}_{ac}|^2\le0$ and $K\le\tfrac14$ pointwise: every indicator surface sits
+at or below the $\tfrac14$ ceiling, the eight families being exactly the equality case---consistent
+with the $3$--set indicator row of Table~\ref{tab:landscape}.
+\end{remark}
+
+\section{Product geometry: independent catalogs do not curve each other}
+Two catalogs $\Omega_1,\Omega_2$ with their own temperatures give the product family
+$p_{ij}(\beta_1,\beta_2)\propto\Mah^{(1)}_i{}^{-\beta_1}\Mah^{(2)}_j{}^{-\beta_2}
+=p^{(1)}_i(\beta_1)\,p^{(2)}_j(\beta_2)$. Its log--partition splits, $A(\beta_1,\beta_2)=A_1(\beta_1)
++A_2(\beta_2)$, so the Fisher matrix is block--diagonal:
+\[
+\nabla^2 A=\begin{pmatrix}\Var_{\beta_1}(\log\Mah^{(1)}) & 0\\[2pt] 0 & \Var_{\beta_2}(\log\Mah^{(2)})\end{pmatrix},
+\qquad \frac{\partial^2 A}{\partial\beta_1\,\partial\beta_2}=0 ;
+\]
+the two fields' description costs are statistically independent.
+
+\begin{proposition}[No cross--curvature]\label{prop:product}
+The joint categorical model of two independent catalogs is the Riemannian product
+$S^{m_1-1}(2)\times S^{m_2-1}(2)$: its sectional curvature is $\tfrac14$ within each spherical factor
+and $0$ on every mixed $2$--plane; equivalently, all Christoffel symbols mixing the two blocks vanish.
+\forcedtag
+\end{proposition}
+\begin{proof}
+The product metric is block--diagonal with each block a function of its own coordinates only; hence
+every Christoffel symbol with indices spanning both blocks vanishes, so does every mixed Riemann
+component, and the sectional curvature of a plane spanning one direction from each factor is $0$
+(verified in \texttt{field\_surprisal\_tier2.py}). Each factor keeps its intrinsic curvature
+$\tfrac14$ (Lemma~\ref{lem:sphere}).
+\end{proof}
+
+To make two fields interact geometrically---nonzero cross--curvature---one must replace the product by
+a warped metric $g_1\oplus f(\cdot)^2 g_2$ (or a nontrivial fibration), introducing a coupling
+function $f$. No invariance selects $f$: by the same \v{C}encov argument that leaves the temperature
+$\beta$ (and the companion paper's conformal scale $c$) undetermined, the coupling is a \emph{declared}
+datum \declaredtag, of exactly that epistemic status. The product of the two Gibbs \emph{curves} (one
+temperature each) is, by contrast, flat---a product of one--dimensional manifolds---a degenerate
+special case carrying no field interaction at all.
+
+\section{The temperature is a coordinate, not a parameter}\label{sec:tempcoord}
+The ledger has carried one \declaredtag{} since \S3: the Gibbs form $p\propto\Mah^{-\beta}$ and the
+choice of $\beta$. Product functoriality dissolves the first half.
+
+\begin{theorem}[Forced form]\label{thm:forcedform}
+Let $p_i\propto f(\Mah_i)$ depend on the seeds through the Mahler measure alone, with
+$f:\R_{>0}\to\R_{>0}$ Lebesgue measurable, and require product functoriality: on every product
+catalog the joint weight matrix $[f(\Mah_i\Mah'_j)]$ factorizes as a product measure. Then
+$f(x)=c\,x^{-\beta}$: the Mahler--Gibbs family is \emph{forced}, and $\beta$ is the canonical affine
+coordinate of its $e$--geodesic. \forcedtag\ (modulo the stated regularity)
+\end{theorem}
+\begin{proof}
+Factorization is the rank--$1$ condition on $[f(\Mah_i\Mah'_j)]$, i.e.\ $f(xy)=f(x)f(y)/f(1)$ on the
+value grid; ranging over finite mass sets this is Cauchy's multiplicative equation on $\R_{>0}$,
+whose measurable solutions are the power laws \cite{aczel}. The regularity is genuinely necessary: on
+the bare multiplicative lattice generated by $\{2,3,5,\ph\}$, independent per--generator exponents are
+multiplicative without being any single power (\texttt{t2\_temperature.py} exhibits one exactly), so
+``a single $\beta$'' is precisely the content of measurability.
+\end{proof}
+
+What remains declared is only the selection of an operating \emph{point} on a forced curve, and the
+curve's marked points are each forced by a separate principle:
+\[
+\begin{array}{lllr}
+\beta & \text{forced by} & I(\beta) & s(\beta)\\[2pt]
+-1 & \text{anchor } Z(-1)=17+4\sqrt5 & 0.26260 & -0.5539\\
+\beta^\ast\approx-0.07677 & \text{max Fisher }(I'=-\kappa_3=0) & 0.32886 & -0.0440\\
+0 & \text{maximum entropy} & 0.32832 & 0\\
+1 & \text{MDL} & 0.24304 & +0.5430\\
+\sqrt5 & \text{exchange rate }\lambda=2c & 0.10405 & +1.0461\\
+\beta_C\approx2.5455 & \text{heat--capacity peak }(\beta>0) & \text{---} & +1.1401
+\end{array}
+\]
+with $Z(+1)=\sum\Mah^{-1}=\tfrac{91}{30}-\tfrac{\sqrt5}{5}$ exact. \forcedtag{} for the anchors and
+the identity $I'(\beta)=-\kappa_3(\beta)$; \computedtag{} for the numeric column.
+
+\begin{proposition}[Finite total information length]\label{prop:ltot}
+$I(\beta)\to0$ exponentially in both directions (spectral--gap concentration), so the Gibbs curve has
+finite total Fisher--Rao length
+\[
+L_{\mathrm{tot}}=\int_{-\infty}^{\infty}\!\sqrt{I(\beta)}\,d\beta\;\approx\;5.64622 ,
+\]
+an intrinsic invariant of the catalog. Its endpoints are forced: $\beta\to+\infty$ concentrates on the
+cost minimizers---the golden merge $\{\ph,\tau\}$, uniform---and $\beta\to-\infty$ on the cost
+maximizer, the $\ph^4$ vertex. The forced $e$--geodesic runs from the eighth surface's apex to the
+charge--trivial seed, and arc length $s$ is its canonical parametrization; the segment
+$[-1,\sqrt5]$ carrying all six marked points uses only $28.3\%$ of the total length. \forcedtag{} for
+the limits; \computedtag{} for the values (\texttt{t2\_temperature.py}).
+\end{proposition}
+
+\begin{theorem}[Selection dichotomy]\label{thm:dichotomy}
+The metric selects no operating point: a finite--length one--dimensional Riemannian curve has
+isometry group $\{\mathrm{id},\mathrm{flip}\}$, and the flip swaps the endpoints, which are
+distinguishable (the $\beta\to+\infty$ limit is uniform on the golden pair, the
+$\beta\to-\infty$ limit is the $\ph^4$ vertex); the labeled--endpoint isometry group is therefore
+trivial, and no interior point is metrically canonical. \forcedtag\ Meanwhile the invariant
+principles on offer provably disagree: with $s(0)=0$, the arc--length midpoint sits at
+$s(\beta_{\mathrm{mid}})\approx-0.3401$, the max--Fisher point at $s(\beta^\ast)\approx-0.0440$,
+maximum entropy at $0$, and the heat--capacity peak at $s(\beta_C)\approx+1.1401$: pairwise
+distinct with margins far above numeric error. \computedtag\ Selecting an operating temperature is
+therefore \emph{irreducibly} an election among inequivalent invariant principles; the
+\declaredtag{} on the selection is not a gap awaiting closure but the honest form of the answer
+(\texttt{t6\_selection.py}, $18/18$: exact $\Q(\sqrt5)$ anchors, symbolic $I'=-\kappa_3$,
+dps--$30/50$ stability).
+\end{theorem}
+
+\section{Higher statistics: the iterated join and the geodesic threshold}\label{sec:join}
+\begin{theorem}[Iterated join]\label{thm:join}
+Let $s_1,\dots,s_{k-1}$ be distinct outcomes and $a$ non--constant on the complement. The
+$k$--parameter family $p\propto\nu\exp(\theta_0a+\sum_j\theta_j\mathbf 1_{s_j})$ maps under
+$\sqrt{p}$ onto the spherical join of the totally geodesic corner $S^{k-2}$ spanned by the apexes
+with the base curve of the $a$--family on the complement; in join coordinates the metric is
+\[
+d\Psi^2+\sin^2\!\Psi\,g_{S^{k-2}}+\cos^2\!\Psi\,d\ell^2 ,
+\]
+of constant sectional curvature $1$. The family is therefore, isometrically, an open subset of a
+round $\tfrac14$--sphere of dimension $k$: the suspension theorem iterates in every dimension.
+\forcedtag\ (\texttt{t3\_suspension.py}: $R_{ijkl}=g_{ik}g_{jl}-g_{il}g_{jk}$ exactly for $k=3,4$;
+the pullback of the round metric under the join map is computed symbolically.)
+\end{theorem}
+
+\begin{corollary}[The catalog three--fold]\label{cor:threefold}
+$(\log\Mah,\ \deg,\ \text{charge parity})=(\mathrm{cost},\ \mathbf 1_K,\ \mathbf 1_{\ph^4})$ is a
+three--dimensional round $\tfrac14$--sphere: cost, degree structure, and total positivity together
+still curve exactly like the simplex. Sampled sectional curvatures agree with $\tfrac14$ to
+$10^{-18}$ over random natural parameters and $2$--planes (routine validated on four metrics of known
+curvature); the family is not totally geodesic ($\log^2\Mah\notin V$). \forcedtag/\computedtag
+\end{corollary}
+
+\begin{theorem}[Geodesic threshold]\label{thm:threshold}
+A family $V\ni\log\Mah$ is totally geodesic in $S^6(2)$ iff $V$ is a unital subalgebra of $\R^7$.
+Any such $V$ contains $\R[\log\Mah]$, which is six--dimensional and equals the algebra of functions
+constant on the golden pair. Hence no totally geodesic family with $k\le4$ statistics exists; the
+first appears at exactly $k=5$, uniquely $V=\R[\log\Mah]$---the \emph{effective--catalog simplex}, a
+great $S^5$ realizing the golden merge as forced geometry---and $k=6$ is the full simplex.
+\forcedtag
+\end{theorem}
+
+\section{The $k$--window calculus and the $k=3$ census}\label{sec:kwindow}
+The master identity lifts to every $k$ by the same three steps, and the lift carries a complete
+classification of a first $k=3$ landscape.
+
+\begin{theorem}[Generalized window identity]\label{thm:kmaster}
+Let $T_1,\dots,T_k$ be statistics with $\dim V=k+1$, $V=\mathrm{span}(\mathbf 1,T)$, and for
+$|s|=k+2$ put $\ell_s(f)=\det[(\mathbf 1,T_1,\dots,T_k,f)|_s]$. With
+$C(u,v)=Z\langle u,v\rangle_w-\langle u,\mathbf 1\rangle_w\langle\mathbf 1,v\rangle_w$,
+Sylvester's identity with pivot $Z$ and Cauchy--Binet give, exactly as at $k=2$,
+\[
+\det\bigl[C(u_i,v_j)\bigr]_{(k+1)\times(k+1)}=Z^{k}\!\!\sum_{|s|=k+2}\!\!w_s\,\ell_s(f)\ell_s(g),
+\qquad
+D_k\,\langle Q f,\,Q g\rangle_p=Z^{\,k-2}\!\!\sum_{|s|=k+2}\!\!w_s\,\ell_s(f)\ell_s(g),
+\]
+over rows $u=(f,T)$, columns $v=(g,T)$, with $D_k=\det[C(T_a,T_b)]=Z^{k-1}\det\mathrm{Gram}_w(\mathbf 1,T)$
+and $Q$ the $L^2(p)$--projection off $V$. \forcedtag\ (\texttt{t4\_kwindows.py}: fully symbolic at
+$k=3$, $m=5$; exact rational instances $m=6,7$; both Sylvester scalings.)
+\end{theorem}
+
+\begin{proposition}[Windowed Gauss obstructions and the flat criterion]\label{prop:kgauss}
+The curvature--$\tfrac14$ obstructions
+$G^{abcd}=\langle Q(T_aT_c),Q(T_bT_d)\rangle_p-\langle Q(T_aT_d),Q(T_bT_c)\rangle_p$ satisfy
+\[
+D_k\,G^{abcd}=Z^{\,k-2}\!\!\sum_{|s|=k+2}\!\!w_s\bigl[\ell_s(T_aT_c)\ell_s(T_bT_d)-\ell_s(T_aT_d)\ell_s(T_bT_c)\bigr],
+\]
+the right side running over the $2\times2$ minors of the \emph{window matrix}
+$L(s)=[\ell_s(T_aT_b)]$. If $\dim V=k+1$ then $h\in V\iff\ell_s(h)=0$ for every window (flat
+lemma). Hence: \emph{if every window matrix has rank $\le1$, all Gauss obstructions vanish
+identically and the family has constant sectional curvature $\tfrac14$.} \forcedtag
+\end{proposition}
+
+\begin{corollary}\label{cor:kcatalog}
+The catalog three--fold $(\log\Mah,\mathbf 1_K,\mathbf 1_{\ph^4})$ has all $21$ window matrices of
+rank $\le1$ identically over $\Q(\log2,\log3,\log5,\log\ph)$, and the four--fold
+$(\log\Mah,\mathbf 1_K,\mathbf 1_{\ph^4},\mathbf 1_{\sqrt5})$ has all $7$: exact linear--algebra
+reconfirmations of Corollary~\ref{cor:threefold} and of Theorem~\ref{thm:join} at $k=4$, with no
+curvature routine involved. \forcedtag
+\end{corollary}
+
+\begin{theorem}[The $k=3$ double--indicator census]\label{thm:kcensus}
+Consider triples $(\log\Mah,\mathbf 1_S,\mathbf 1_T)$ over pairs of nonempty proper subsets with
+$\dim V=4$ ($7812$ of the $7875$ unordered pairs). Windowwise flatness reduces, by rank $\le1$ on
+the symmetric window matrix and the flat lemma, to three exact memberships
+$\{a\mathbf 1_S,\;a\mathbf 1_T,\;\mathbf 1_{S\cap T}\}\subset V$ over $\Q(\log2,\log3,\log5,\log\ph)$.
+Exactly $312$ pairs pass, and they collapse onto exactly $\mathbf{26}$ distinct spans
+\[
+V=\langle\mathbf 1,\;\log\Mah,\;\mathbf 1_{S'},\;\mathbf 1_{T'}\rangle,\qquad
+S',T'\ \text{disjoint subsets each inside a single cost level}
+\]
+($\binom82-2$: eight within--level subsets, the two golden overlaps being redundant presentations
+of the all--golden class, where $\mathbf 1_\ph+\mathbf 1_\tau=\mathbf 1_{\ph\tau}$ collapses). Each
+of the $26$ families is constant--curvature $\tfrac14$ by Proposition~\ref{prop:kgauss}, and the
+eight $k=2$ surfaces embed as the pairs with one within--level generator. \forcedtag\ (Two lanes:
+\texttt{t4\_kwindows.py} decides membership by symbolic rank over the coefficient field;
+\texttt{t4b\_census\_fast.py} re--derives the block--collapsed linear system and decides by exact
+$\Q^5$--vector annihilator tests with quadratic cross--ratio consistency; sampled cross--lane
+agreement on $24$ pairs $\times$ $3$ targets.)
+\end{theorem}
+
+\begin{remark}\label{rem:kobstruction}
+What does \emph{not} lift verbatim is the $k=2$ chain ``windows $\Rightarrow$ trichotomy
+$\Rightarrow$ plane lemma'': the multiset analog of the plane lemma is false at $k\ge3$ (a doubled
+support point defeats the general--position projection). Both halves of the $k\ge3$ program
+nonetheless close, by different routes: necessity in \S\ref{sec:knec} (squarefree collisions and
+twin symmetry), and the landscape in \S\ref{sec:landscape2}, where the moment trichotomy makes
+the doubled point harmless---a $2$--circuit never obstructs---and the plane lemma is bypassed
+rather than repaired (Remark~\ref{rem:planebypass}). The census above is the double--indicator
+stratum of the full landscape (Theorem~\ref{thm:paclass}).
+\end{remark}
+
+\begin{openproblem}\label{op:kclass}
+\emph{Resolved in this edition, in both parts.} Necessity: Theorem~\ref{thm:knec}---constant
+$\tfrac14$ is exactly windowwise rank $\le1$. Landscape: \S\ref{sec:landscape2}---constant
+$\tfrac14$ is exactly the partitioned--affine condition $V=V(\pi)$, with catalog counts
+$8/56/95/31/1$ for $k=2,\dots,6$; the conjecture of the previous edition, that within--level
+indicator joins exhaust, is \emph{refuted} by the $30$ split--affine classes
+$\langle1,a,\mathbf 1_B,a\mathbf 1_B\rangle$ (Corollary~\ref{cor:landres}).
+\end{openproblem}
+
+\section{Catalog invariance: the census theorem and the branch--rank calculus}\label{sec:census}
+The eight--surface census is not an artifact of the seed selection: its shape is a theorem about
+cost coincidences, and the coincidences are localized exactly.
+
+\begin{theorem}[Generic census]\label{thm:generic}
+If the costs $a_1,\dots,a_m$ are $\Q$--linearly independent, the collision lattice
+$\{d\in\Z^m:\sum d_ia_i=0,\ \sum d_i=0\}$ is zero; by the master identity the vanishing $q\equiv0$
+then forces every monomial coefficient of $P$ individually, hence every window $q_4(s)=0$, hence
+(trichotomy and plane lemma, both catalog--free) exactly the $m$ single--seed surfaces. No branch
+analysis occurs. \forcedtag
+\end{theorem}
+
+\begin{theorem}[Census count and catalog invariance]\label{thm:countform}
+For any catalog, every within--level indicator $\mathbf 1_S$ ($S$ inside one cost level) is a
+nondegenerate constant--$\tfrac14$ surface: in the factorization $q_4=-\prod\Delta$ each window
+carries a vanishing factor (a coincident pair if $|s\cap S|\ge2$, three collinear points on $X=0$
+otherwise). When the necessity analysis closes, the census is exactly
+\[
+\#\{\text{constant--}\tfrac14\text{ surfaces}\}\;=\;\sum_{\text{levels }\ell}\bigl(2^{m_\ell}-1\bigr),
+\]
+so the ``eighth surface'' is precisely the golden coincidence's $2^2-1=3$. Verified end to end for
+four catalogs: the full catalog (collision lattice of rank $2$: golden swap $\Delta_1$, Salem square
+$\Delta_2$; census $8$), drop--$K$ (rank $1$, golden; $7$), drop--$\tau$ (rank $1$, Salem; $6$), and
+add--$\sqrt7$ (rank $2$ embedded; $9$). \forcedtag\ (\texttt{t5\_catalog\_census.py}, $72/72$.)
+\end{theorem}
+
+\begin{theorem}[Branch--rank calculus]\label{thm:branchrank}
+Necessity closes for an arbitrary catalog by a rank criterion. The realizable primitive relation
+directions $D$ are the primitive lattice vectors $d$ with $k$ and $k+d$ both monomials of $P$ (for
+the full catalog, $D=\{\Delta_1,\Delta_2,\Delta_1\pm\Delta_2,2\Delta_1\pm\Delta_2\}$); the
+branches are the flats of the arrangement they span. Per branch, group the monomials of
+$P=Z^2\sum_sq_4(s)w_s$ by (cost class, $X$--class mod the active relations): $q\equiv0$ forces each
+grouped $\Z$--combination of window symbols to vanish, and
+\[
+\operatorname{rank}_{\Q}(M_{\mathrm{branch}})=\#\{\text{windows}\}\;\Longrightarrow\;
+\text{every }q_4(s)\text{ forced to }0 .
+\]
+A coincidence direction $\pm(e_i-e_j)$ with $a_i=a_j$ merges the two seeds as plane points: windows
+containing both are automatically zero (coincident pair), the remaining symbols identify pairwise,
+and the rank test runs against the $\binom{m-1}{4}$ surviving classes. This upgrades the $k=2$
+singleton--survival lemma of \S\ref{sec:classdone} to a complete criterion (a unit heavy row per
+window is the special case), mechanically reproduces the eight--branch tree of the full catalog, and
+closes every branch of all four catalogs, with a one--sided mod--$p$ rank certificate and an exact
+$\Q$ fallback. \forcedtag
+\end{theorem}
+
+\section{$k$--necessity: constant $\tfrac14$ is exactly windowwise flatness}\label{sec:knec}
+
+Remark~\ref{rem:kobstruction} left necessity at $k\ge3$ open: the multiset plane lemma fails, so
+the $k=2$ route does not lift. It turns out necessity never needed that route. The observation is
+that the exponential identity behind the Gauss obstructions lives at the \emph{window} level,
+where every monomial is squarefree---and the catalog's collision lattice has only one squarefree
+direction.
+
+\begin{theorem}[Window collisions are golden]\label{thm:goldencollide}
+Let $T=(\log\Mah,T_2,\dots,T_k)$ be any statistics on the catalog, $2\le k\le5$. Two distinct
+$(k{+}2)$--windows $s\ne s'$ have equal frequency vectors $\sum_{i\in s}T_i=\sum_{i\in s'}T_i$ iff
+$s'=s\,\triangle\,\{\ph,\tau\}$ and \emph{every} statistic ties on the golden pair,
+$T_{j,\ph}=T_{j,\tau}$ for all $j$. \forcedtag
+\end{theorem}
+
+\begin{proof}
+The difference $\delta=\mathbf 1_s-\mathbf 1_{s'}$ has entries in $\{-1,0,1\}$ and zero sum, and
+the cost coordinate forces $\delta$ into the zero--sum collision lattice $\langle d_1,d_2\rangle$
+of Proposition~\ref{prop:pencil} ($d_1$ the golden swap, $d_2$ the Salem square). The general element
+$jd_1+kd_2=(0,0,-k,\,j,\,-j,\,-k,\,2k)$ carries the entry $2k$ at $K$, so a cube point forces
+$k=0$ and $|j|\le1$: $\delta=\pm d_1$, i.e.\ $s'=s\,\triangle\,\{\ph,\tau\}$. The swap then
+preserves the remaining frequency coordinates iff every statistic ties on the pair.
+\end{proof}
+
+\begin{theorem}[$k$--necessity; the equivalence]\label{thm:knec}
+On the catalog, for $2\le k\le 5$ and statistics $T=(\log\Mah,T_2,\dots,T_k)$ with $\dim V=k+1$:
+the family has constant sectional curvature $\tfrac14$ iff every window matrix
+$L(s)=[\ell_s(T_aT_b)]$ has rank $\le1$. \forcedtag\ (\texttt{t7\_knecessity.py}, $28/28$.)
+\end{theorem}
+
+\begin{proof}
+Sufficiency is Proposition~\ref{prop:kgauss}. For necessity, constant $\tfrac14$ means the Gauss
+obstructions $G^{abcd}$ of Proposition~\ref{prop:kgauss} vanish identically: they form an algebraic
+curvature tensor, so vanishing of all sectional values forces the full tensor by polarization.
+Since $D_k>0$ and $Z>0$ on the family, Proposition~\ref{prop:kgauss} turns $G^{abcd}\equiv0$ into the
+exponential identity
+\[
+\sum_{|s|=k+2} w_s(\theta)\,M^{abcd}(s)\;\equiv\;0,\qquad
+M^{abcd}(s)=\ell_s(T_aT_c)\,\ell_s(T_bT_d)-\ell_s(T_aT_d)\,\ell_s(T_bT_c),
+\]
+whose coefficients range, over all quadruples, over exactly the $2\times2$ minors of the symmetric
+matrix $L(s)$ (rows $\{a,b\}$, columns $\{c,d\}$). If some statistic separates the golden pair,
+Theorem~\ref{thm:goldencollide} gives pairwise distinct frequencies, so every $M^{abcd}(s)=0$
+individually. If every statistic ties, the pair are \emph{twins}: for a swap pair the bordered
+matrices $(\mathbf 1,T,T_aT_b)|_s$ and $(\mathbf 1,T,T_aT_b)|_{s'}$ agree row for row (the twins
+occupy the same sorted slot, the indices being adjacent), so
+$\ell_{s\triangle\{\ph,\tau\}}=\ell_s$ exactly and the grouped coefficient is $2M^{abcd}(s)$,
+forcing each; and a window containing both twins carries two identical rows, so $L(s)=0$ outright.
+In every case all $2\times2$ minors of every $L(s)$ vanish, i.e.\ rank $L(s)\le1$.
+\end{proof}
+
+\begin{corollary}[Open Problem~\ref{op:kclass}(i) closed; the census upgraded]\label{cor:knecclosed}
+Constant $\tfrac14$ and windowwise flatness coincide unconditionally, so
+Theorem~\ref{thm:kcensus}'s $26$ classes are exactly the constant--$\tfrac14$ double--indicator
+triples---the complete such landscape---and Corollary~\ref{cor:kcatalog}'s three-- and four--folds
+need no curvature routine. The analytic classification problem is reduced, at every $k$, to
+finite linear algebra. \forcedtag
+\end{corollary}
+
+\begin{remark}[Squarefreeness; the branch tree retires]\label{rem:squarefree}
+Windows are squarefree monomials; the Salem square is a multiplicity--two relation and cannot act
+at window level---the same mechanism that made the heavy cofactor exactly $1$ in
+Corollary~\ref{cor:windowlaw}(b). At $k=2$ this collapses the eight--branch analysis to the golden
+dichotomy above: the branches lived on the \emph{expanded} monomials of $P$, where the prefactor
+$Z^2$ reintroduces multiplicities; on the family one divides $Z^2$ out first. The branch machinery
+(\S\ref{sec:classdone}, Theorem~\ref{thm:branchrank}) is retained as an independent verification lane
+and as the general--catalog tool.
+\end{remark}
+
+\begin{theorem}[General catalogs]\label{thm:tame}
+Call a catalog \emph{transposition--tame} if its zero--sum cost kernel meets $\{-1,0,1\}^m$ only
+in signed sums of disjoint equal--cost transpositions. For such catalogs the equivalence of
+Theorem~\ref{thm:knec} holds at every $k$, by the same twin argument classwise. All four studied
+catalogs qualify: full, drop--$K$, and add--$\sqrt7$ (cube points $\pm d_1$ only), and
+drop--$\tau$ (no cube points at all---no window collisions whatsoever). A catalog with a genuine
+$\{-1,0,1\}$ trade (e.g.\ costs with $a_1+a_4=a_2+a_3$, all distinct) falls instead to the
+window--level branch--rank test---group windows by frequency class and require rank
+$=\#$windows---the $k$--window analog of Theorem~\ref{thm:branchrank}, strictly smaller than its
+monomial--level version. \forcedtag
+\end{theorem}
+
+What remained of Open Problem~\ref{op:kclass}---its part (ii), the landscape beyond double
+indicators---is closed in \S\ref{sec:landscape2}: the answer is the partitioned--affine
+classification, and the conjecture recorded below it fails.
+
+\section{The compositum couples: forced interaction between fields}\label{sec:compositum}
+
+Open Problem (4) asked whether the compositum's own arithmetic forces a nonzero cross--structure
+between two fields, or whether they remain geometrically independent even there. It resolves on
+the first horn, with an exact witness.
+
+For catalog seeds $p,q$ let $p\otimes q$ be the \emph{tensor polynomial}, whose roots are all
+conjugate products $\alpha_i\beta_j$---no root is chosen, so the construction is gauge--free---and
+let $c(p,q)=\log\Mah(p\otimes q)$ be the compositum cost. Every conjugate log--magnitude of the
+catalog is a $\Q$--vector over $(\log2,\log3,\log5,\log\ph)$: for the quartic,
+$|K_{\mathrm{out}}|^2=\sqrt5\,\ph^{2}$ and $|K_{\mathrm{in}}|^2=\sqrt5\,\ph^{-2}$. Hence each
+$c(p,q)$ is an exact $\Q$--vector; products on the unit circle (zero vector, e.g.\ $\ph\psi=-1$)
+are excluded symbolically, and every remaining sign is certified by rigorous interval arithmetic.
+
+\begin{theorem}[The compositum couples]\label{thm:coupled}
+The compositum cost is not additively separable: the interaction contrasts
+\[
+c(\sqrt2,\sqrt3)+c(\ph,\ph)-c(\sqrt2,\ph)-c(\ph,\sqrt3)=\log 2,
+\qquad
+c(\ph,\ph)+c(\ph^4,\ph^4)-2\,c(\ph,\ph^4)=-6\log\ph,
+\]
+both exactly, as nonzero coefficient vectors. Consequently the compositum's Mahler--Gibbs family
+$p\propto\Mah(p\otimes q)^{-\beta}$ factors through the marginal families for no $\beta\ne0$; its
+Fisher geometry carries nonzero cross--structure,
+$\mathrm{Cov}_\beta(\mathrm{cost}_1,\mathrm{cost}_2)\ne0$ at the marked temperatures
+\computedtag; and the coupling left \declaredtag\ by the product construction is, in the
+compositum reading, \emph{forced}. \forcedtag\ (\texttt{t8\_compositum.py}, $13/13$.)
+\end{theorem}
+
+\begin{proposition}[Structure of the coupling]\label{prop:coupstruct}
+(i) The rational sector $\{\sqrt2,\sqrt3,\sqrt5\}$ is exactly separable:
+$c(\sqrt D,\sqrt{D'})=2\log D+2\log D'$, and all its interaction contrasts vanish. (ii) The
+golden tie persists: $c(\ph,\cdot)=c(\tau,\cdot)$ (the conjugate magnitude multisets agree), so
+the compositum inherits the golden merge. (iii) The double--centered interaction tensor $\Delta$
+is nonzero of exact rank $5$ over $\Q(\log2,\log3,\log5,\log\ph)$: five independent coupling
+modes. The coupling is a golden/quartic phenomenon; the fields do not decouple anywhere off the
+rational sector. \forcedtag
+\end{proposition}
+
+\begin{proposition}[Charge tensor law, instance--verified]\label{prop:chargelcm}
+With seed charge groups ($\Z/2$ at $\sqrt2,\sqrt3,\sqrt5,\ph,\tau$; $\Z/1$ at $\ph^4$; $\Z/4$ at
+$K$), every tensor conjugate is real or purely imaginary, and on all $28$ unordered pairs the
+tensor polynomial's charge group is exactly $\Z/\mathrm{lcm}(n_1,n_2)$---e.g.\
+$\sqrt2\otimes K\to\Z/4$, $\ph^4\otimes\ph^4\to\Z/1$---consistent with the tensor charge law of
+the charge--measure companion. \forcedtag\ (finite instance check)
+\end{proposition}
+
+\begin{remark}[Relation to the product geometry]\label{rem:coupwarp}
+Proposition~\ref{prop:product} stands: the \emph{declared} product of two catalogs is a Riemannian
+product with zero cross--curvature. The theorem says the compositum does not instantiate that
+construction: its forced costs are not the product costs, and the discrepancy is the exact tensor
+$\Delta$. What the product section left as a declared warp is here a forced nonzero datum. The two
+questions this leaves---the coupled family's geometry, and whether $\Delta$ is
+charge--determined---are settled in \S\ref{sec:coupledcurv}.
+\end{remark}
+
+\section{The landscape completed: the partitioned--affine classification}\label{sec:landscape2}
+
+With Theorem~\ref{thm:knec}, constant $\tfrac14$ \emph{is} windowwise flatness; what Open
+Problem~\ref{op:kclass} still asked for was the classification of the windowwise--flat spans
+$V\ni 1,a$ with $\dim V=k+1$. This section completes it, at every $k$, and the conjecture
+recorded there turns out to be \emph{false}. The right chart is the point configuration: write
+$P_i=(T_1,\dots,T_k)(i)\in\R^k$ for the statistic values at seed $i$ (with $T_1=a$). For a
+window $s$ whose points affinely span $\R^k$, the functional $\ell_s$ is exactly the unique
+affine dependency $\lambda$ of the $k+2$ points---supported on the window's unique circuit---and
+\[
+L(s)\;=\;\bigl[\ell_s(T_aT_b)\bigr]_{a,b}\;=\;\sum_{i\in s}\lambda_i\,P_iP_i^{\top},
+\]
+whose rank is invariant under affine changes of the statistic basis (the cross terms die on
+$\sum\lambda_i=0$, $\sum\lambda_iP_i=0$). Non--spanning windows carry $L(s)=0$ and no condition,
+so the window criterion is a statement about circuits.
+
+\begin{theorem}[Moment trichotomy]\label{thm:momtri}
+Let $s$ be a spanning window with unique circuit $C$ and dependency $\lambda$. If $|C|=2$ (a
+coincident pair), $L(s)=0$. If $|C|=3$ (a collinear triple with parameters $t_1,t_2,t_3$),
+$L(s)$ has rank exactly $1$, with moment
+$\sum_i\lambda_it_i^2=-(t_1-t_2)(t_2-t_3)(t_3-t_1)\ne0$. If $|C|\ge4$,
+$\operatorname{rank}L(s)\ge2$. Consequently a $k$--family is constant--$\tfrac14$ if and only if
+every circuit of its configuration has size $\le3$. \forcedtag
+\end{theorem}
+
+\begin{proof}
+Only $|C|\ge4$ needs an argument. A circuit's points are in general position in their
+$(d{=}|C|{-}2)$--flat; affinely normalize $d+1$ of them to $0,e_1,\dots,e_d$, so the last is
+$(x_1,\dots,x_d)$ and $\lambda=(\sum_jx_j-1,\,-x_1,\dots,-x_d,\,1)$, all entries nonzero on a
+circuit. Then $Q=\sum\lambda_iP_iP_i^{\top}$ has $Q_{jj}=x_j^2-x_j$ and $Q_{jl}=x_jx_l$. For
+$d\ge3$ the mixed $2\times2$ minor on rows $\{j,l\}$, columns $\{l,r\}$ equals $x_jx_lx_r$; for
+$d=2$, $\det Q=xy(1-x-y)$. Both are products of circuit weights, hence nonzero.
+(\texttt{t9}, blocks 1--2: symbolic at $d=2,3,4$, plus exact instances.)
+\end{proof}
+
+\begin{theorem}[Structure: flat $=$ partitioned--affine]\label{thm:pastruct}
+Suppose the configuration is windowwise flat. Then its maximal collinear location--sets with
+$\ge3$ locations (\emph{rich lines}) are pairwise disjoint and pairwise skew; every collinear
+triple of locations lies inside a single rich line; and, writing $\pi$ for the partition of the
+seeds into rich--line blocks and free locations (coincident clusters and singletons),
+\[
+V\;=\;V(\pi)\;:=\;\{\,f:\ f\ \text{is affine in }a\text{ on every block of }\pi\,\}.
+\]
+Conversely, every $V(\pi)$ with $\dim V(\pi)=k+1$ is windowwise flat. \forcedtag
+\end{theorem}
+
+\begin{proof}
+Two rich lines sharing a location or lying in a common plane yield four coplanar locations, two
+per line, with no collinear triple---a $4$--circuit---contradicting Theorem~\ref{thm:momtri}; so
+rich lines are disjoint and skew. A collinear triple across structures would make its own line
+rich and meeting another. On each rich line the cost is affine and nonconstant (three locations
+in one level would need level multiplicity $\ge3$), hence an injective parameter, and every
+statistic is affine along the line; so $V\subseteq V(\pi)$. If $\dim V<\dim V(\pi)=2r+f$, the
+affine hull is deficient and a transversal selection---two locations per line, one per free
+location---is affinely dependent; its circuit has no coincidence, at most two points per line,
+and no transversal triple, hence size $\ge4$: again a contradiction. So $\dim V=2r+f$ and
+$V=V(\pi)$. For sufficiency, in the block chart the functionals $\mathbf 1_{B_j}$,
+$a\mathbf 1_{B_j}$, $\mathbf 1_{C}$ annihilate any dependency using $\le2$ points per line block
+and $\le1$ per free location (two locations of a line block carry distinct costs), so every
+circuit is a coincident pair or an in--block collinear triple, and Theorem~\ref{thm:momtri}
+gives rank $\le1$ on every spanning window.
+\end{proof}
+
+A block with at most two distinct cost values is the \emph{same} function space as its
+within--level refinement---affine in $a$ through two values is no constraint---so the canonical
+presentation has two block types: \emph{clusters}, within--level subsets (on this catalog
+singletons or the golden pair $\{\ph,1/\ph\}$), and \emph{line blocks} carrying at least three
+distinct cost values. Then $\dim V(\pi)=c+2b_2$ with $c$ clusters and $b_2$ line blocks.
+
+\begin{theorem}[Classification and counts]\label{thm:paclass}
+The constant--$\tfrac14$ $k$--families of the catalog are exactly the canonical $V(\pi)$ with
+$c+2b_2=k+1$, and the counts are
+\[
+k=2{:}\ 8,\qquad k=3{:}\ 56,\qquad k=4{:}\ 95,\qquad k=5{:}\ 31,\qquad k=6{:}\ 1 .
+\]
+At $k=2$ this recovers the eight surfaces of Theorem~\ref{thm:classification} in one line. At
+$k=3$ the $26$ double--indicator classes of Theorem~\ref{thm:kcensus} are joined by $30$
+\emph{split--affine} classes $\langle 1,a,\mathbf 1_B,a\mathbf 1_B\rangle$---the two--block
+partitions with at least three cost values on both sides; the five $(3,4)$--splits whose
+$3$--side is $\{\ph,1/\ph,x\}$ coincide with $\langle1,a,\mathbf 1_{\{\ph,1/\ph\}},\mathbf
+1_x\rangle$ and are not new. At $k=5$ the golden merge $\R[\log M]$---the totally geodesic
+family of Theorem~\ref{thm:threshold}---appears among the $31$; at $k=6$ only the full simplex
+remains. \forcedtag\ (\texttt{t9\_landscape.py}: exhaustive exact window verification of all
+$8+56+95+31$ families over $\Q(\log2,\log3,\log5,\log\ph)$; the five overlap equalities by
+symbolic rank; pairwise distinctness of the $56$ certified at the true logarithms by $1540$
+interval rank--$5$ witnesses; twenty exact random controls violate flatness.)
+\end{theorem}
+
+\begin{corollary}[Open Problem~\ref{op:kclass} resolved; the conjecture refuted]\label{cor:landres}
+Within--level indicator joins do \emph{not} exhaust the landscape: a split--affine class
+contains no indicators beyond $\mathbf 1_B$ and $\mathbf 1_{B^c}$ (an affine $0/1$ pattern
+across three or more distinct cost values is constant), so it is not an indicator join, yet it
+is constant--$\tfrac14$. Theorem~\ref{thm:kcensus} stands exactly as the double--indicator
+stratum of the $56$. \forcedtag
+\end{corollary}
+
+\begin{remark}[The plane lemma, bypassed]\label{rem:planebypass}
+The moment trichotomy replaces the $k=2$ chain wholesale. The multiset failure of
+Remark~\ref{rem:kobstruction} is not repaired but made irrelevant: a doubled support point is a
+$2$--circuit and never obstructs. At $k=2$ the structure theorem \emph{implies} the plane lemma
+(the plane holds no two skew lines, so $r\le1$ and $f\le1$), which is how the eight surfaces
+drop out.
+\end{remark}
+
+\begin{remark}[Scope: level multiplicities]\label{rem:fatlevels}
+The proofs use only that every cost level of the catalog holds at most two seeds; the theorem
+applies verbatim to the drop--$K$, drop--$1/\ph$ and add--$\sqrt7$ catalogs. A catalog with a
+level of multiplicity $\ge3$ admits genuinely new \emph{vertical} line blocks (a line inside one
+level, transverse to the cost coordinate), classified by the same proof with the line parameter
+replacing $a$; the counts above are for the studied catalogs.
+\end{remark}
+
+\section{The coupled family curves}\label{sec:coupledcurv}
+
+Remark~\ref{rem:coupwarp} left two residuals: the geometry of the coupled family
+$(\mathrm{cost}_1,\mathrm{cost}_2,c)$ on the $49$--cell tensor catalog, and whether $\Delta$ is
+determined by the charge data. Both close, the first with the machinery of
+\S\ref{sec:landscape2}.
+
+\begin{theorem}[The coupled family is not constant--$\tfrac14$]\label{thm:coupcurv}
+On the tensor catalog the triple $T=(\mathrm{cost}_1,\mathrm{cost}_2,c)$ spans, $\dim V=4$, and
+its configuration contains a genuine $5$--circuit---all five dependency weights nonzero,
+certified at the true logarithms by interval arithmetic---so by Theorem~\ref{thm:pastruct} it is
+\emph{not} of partitioned--affine type, and the corresponding window matrix has rank $\ge2$: the
+family is not windowwise flat. Directly, the Gauss obstructions at the uniform point are nonzero
+(rigorous enclosures), with sectional curvatures
+\[
+\sec(\mathrm{cost}_1,\mathrm{cost}_2)\;=\;\tfrac14-0.248531\ldots\;\approx\;0.0015,
+\qquad
+\sec(\mathrm{cost}_i,c)\;=\;\tfrac14-0.083802\ldots\;\approx\;0.1662 .
+\]
+The forced coupling of Theorem~\ref{thm:coupled} is curvature--visible; the near--vanishing of
+the first plane is the ghost of the product geometry (Proposition~\ref{prop:product}).
+\forcedtag/\computedtag\ (\texttt{t10\_coupled.py}, $9/9$; enclosures at $60$ digits.)
+\end{theorem}
+
+\begin{proposition}[Invisible to covariance, visible to curvature]\label{prop:covinvis}
+At the uniform point $\Cov(\mathrm{cost}_1,\mathrm{cost}_2)=0$ exactly---the marginals are
+independent there---yet the sectional curvatures above already deviate from $\tfrac14$. The
+coupling enters through the compositum cost $c$, below the reach of the cross--covariance at
+that point: the covariance witness of Theorem~\ref{thm:coupled} lives at $\beta\ne0$, the
+curvature witness already at $\beta=0$. \forcedtag
+\end{proposition}
+
+\begin{proposition}[$\Delta$ is not determined by the charge data]\label{prop:deltacharge}
+The pairs $(\sqrt2,\sqrt3)$ and $(\sqrt2,\sqrt5)$ carry the same charge pair $(\Z/2,\Z/2)$, but
+\[
+\Delta(\sqrt2,\sqrt3)=\tfrac{5}{49}\log2-\tfrac{5}{49}\log3+\tfrac{20}{49}\log\ph
+\;\ne\;
+\Delta(\sqrt2,\sqrt5)=\tfrac{5}{49}\log2+\tfrac{2}{49}\log3-\tfrac17\log5+\tfrac{20}{49}\log\ph,
+\]
+exactly. The interaction tensor is a forced datum beyond the charge grading. \forcedtag
+\end{proposition}
+
+\begin{remark}[The ledger closes]\label{rem:closed}
+With \S\ref{sec:landscape2} and this section, every enumerated open problem of the corpus is
+resolved. The temperature selection remains \declaredtag{} by the dichotomy of
+Theorem~\ref{thm:dichotomy}---its honest final form---and the standing conditioning is, as
+throughout, the $\Q$--linear independence of the seed logarithms.
+\end{remark}
+
+\section{Interaction with the trace form}
+\begin{theorem}[Embedding obstruction]\label{thm:embed}
+The field's flat trace--form geometry admits no totally geodesic isometric embedding into the
+surprisal sphere; any isometric surface realization is forced to satisfy $k_1k_2=-\tfrac14$
+(Gauss: $0=\tfrac14+k_1k_2$), witnessed by the Clifford torus in $S^3(2)$ with principal curvatures
+$\pm\tfrac12$. \forcedtag
+\end{theorem}
+
+\begin{theorem}[Fisher monotonicity]\label{thm:mono}
+Coarse--graining the field's conjugate data into the catalog outcomes is a Markov morphism under
+which $I_{\mathrm{surprisal}}\preceq I_{\mathrm{trace}}$ (data--processing \cite{zamir,chentsov}),
+equality iff sufficient. The catalog surprisal geometry is therefore a lossy, one--way contraction
+of the trace--form geometry. \forcedtag
+\end{theorem}
+
+Together with Theorem~\ref{thm:susp} the picture is sharp: the arithmetic (trace--form) geometry is
+flat and signature--flexible; the surprisal geometry is curved ($\tfrac14$) and positive definite;
+and the two--statistic field surface sits inside the latter as a constant--curvature--$\tfrac14$ ruled
+surface---neither it nor the trace form is totally geodesic (Prop.~\ref{prop:notTG}), for the opposite
+reasons of wrong embedding and wrong intrinsic curvature respectively.
+
+\section{Epistemic ledger}
+\begin{table}[h]\centering
+\begin{tabular}{lc}
+\toprule
+claim & status\\ \midrule
+$Z=17+4\sqrt5$; Mahler--Gibbs is an exponential family with statistic $\log\Mah$ & \forcedtag\\
+surprisal $=\beta\log\Mah+\log Z$; Fisher $=\Var_\beta(\log\Mah)$; geometry $=S^{m-1}(2)$, $K=\tfrac14$ & \forcedtag\\
+dual flatness; $\mathrm{KL}$ $=$ Bregman divergence of $\log Z$; $A^\ast=-H$ & \forcedtag\\
+$C(\beta)=\beta^2 I(\beta)$ (Fisher information is a heat capacity) & \forcedtag\\
+$d_{\mathrm{FR}}=2\arccos$ BC; vertices mutually $\pi$ apart & \forcedtag\\
+keystone sequence: shifted geometric law; $I=(\log\ph)^2 r/(1-r)^2$ & \forcedtag\\
+embedding obstruction $k_1k_2=-\tfrac14$; Fisher monotonicity (lossy contraction) & \forcedtag\\
+$(\log\Mah,\mathrm{deg})$ Fisher matrix SPD; peak--fluctuation $\beta^\ast$; information length & \computedtag\\
+no $(\log\Mah,X)$ surface is totally geodesic ($\log\Mah$ spans a $6$--dim algebra) & \forcedtag\\
+$(\log\Mah,\mathrm{deg})$ surface: constant curvature $\tfrac14$, ruled (indicator--suspension) & \forcedtag\\
+among forced invariants only degree gives constant $\tfrac14$; $\#$outside/trace/house vary & \computedtag\\
+product of independent catalogs: block--diagonal Fisher, zero cross--curvature & \forcedtag\\
+charge parity $=\mathbf 1_{\{\ph^4\}}$: a second constant--$\tfrac14$ surface (dual to degree) & \forcedtag\\
+exactly eight constant--$\tfrac14$ surfaces; non--indicator exclusion by branch calculus & \forcedtag\\
+master window identity $P=Z^2\sum_sq_4(s)w_s$ (Sylvester $+$ Cauchy--Binet); heavy cofactor $1$ & \forcedtag\\
+iterated join: multi--indicator families are round $\tfrac14$--spheres; catalog $3$--fold & \forcedtag\\
+geodesic threshold $k=5$, uniquely $\R[\log\Mah]$ (the golden--merged simplex) & \forcedtag\\
+total information length $L_{\mathrm{tot}}\approx5.6462$; endpoints golden merge $\leftrightarrow\ \ph^4$ & \computedtag\\
+coupling of two fields is a declared warp (\v{C}encov), like $\beta$ and $c$ & \declaredtag\\
+Gibbs form $p\propto\Mah^{-\beta}$ forced by product functoriality $+$ measurable Cauchy & \forcedtag\\
+selection of a single operating temperature among the marked points & \declaredtag\\
+generalized window identity, every $k$ (Sylvester $+$ Cauchy--Binet over $(k{+}2)$--subsets) & \forcedtag\\
+window criterion: rank--$\le1$ windows $\Rightarrow$ constant $\tfrac14$; catalog $3$-- and $4$--folds exact & \forcedtag\\
+$k=3$ double--indicator census: exactly $26$ windowwise--flat classes (disjoint within--level pairs) & \forcedtag\\
+generic census: independent costs $\Rightarrow$ coefficientwise vanishing $\Rightarrow$ $m$ surfaces & \forcedtag\\
+census count $\sum_\ell(2^{m_\ell}{-}1)$; catalogs full/drop--$K$/drop--$\tau$/add--$\sqrt7$: $8/7/6/9$ & \forcedtag\\
+branch--rank calculus (grouped window symbols, rank $=\#$windows per branch) & \forcedtag\\
+selection dichotomy: no metric--canonical point; midpoint/max--Fisher/max--entropy/peak--$C$ distinct & \forcedtag/\computedtag\\
+$k$--necessity, every $k$: constant $\tfrac14$ $\Leftrightarrow$ windowwise rank $\le1$ (squarefree collisions $+$ twin symmetry) & \forcedtag\\
+window collisions are golden--only: the Salem square cannot act at window level & \forcedtag\\
+compositum forces coupling: contrast exactly $\log2$; rational sector separable; golden tie persists; $\mathrm{rank}\,\Delta=5$ & \forcedtag\\
+charge tensor law $n(p\otimes q)=\mathrm{lcm}$ on all $28$ compositum pairs; cross--Fisher $\mathrm{Cov}_\beta\ne0$ & \forcedtag/\computedtag\\
+moment trichotomy: window circuits of size $2/3/{\ge}4$ give rank $0/1/{\ge}2$ & \forcedtag\\
+landscape classified: constant--$\tfrac14$ $=$ partitioned--affine $V(\pi)$; counts $8/56/95/31/1$, $k=2..6$ & \forcedtag\\
+indicator--join conjecture refuted: $30$ split--affine classes $\langle1,a,\mathbf 1_B,a\mathbf 1_B\rangle$ & \forcedtag\\
+coupled family not constant--$\tfrac14$: Gauss obstruction $\ne0$ at uniform; $\Delta$ not charge--determined & \forcedtag/\computedtag\\
+$Z$'s integer $17$; $I(1/\ph)=\ph^3$ & {\scshape [coincidence]}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Open problems}
+(1) \emph{Resolved in this edition as a dichotomy} (Theorem~\ref{thm:dichotomy}): no invariance
+principle selects an operating point canonically---the labeled--endpoint isometry group is trivial,
+and the candidate principles (arc--length midpoint, maximal Fisher information, maximum entropy,
+peak heat capacity) select provably distinct temperatures. The \declaredtag{} on the selection is
+the answer's honest form, not a gap.
+(2) \emph{Resolved in this edition} (\S\ref{sec:landscape2}): with necessity closed at every
+$k$ (Theorem~\ref{thm:knec}), constant $\tfrac14$ \emph{is} windowwise flatness, and the
+windowwise--flat spans are classified---$V=V(\pi)$, partitioned--affine, with catalog counts
+$8/56/95/31/1$ for $k=2,\dots,6$. The indicator--join conjecture is refuted by the $30$
+split--affine classes at $k=3$ (Corollary~\ref{cor:landres}).
+(3) \emph{Resolved in this edition.} The conceptual proof of the window identity is
+Theorem~\ref{thm:master}: $P=Z^2\sum_{|s|=4}q_4(s)\,w_s$ by Sylvester's determinant identity (pivot
+$Z$) plus Cauchy--Binet, with the heavy cofactor--$1$ law, the full coefficient law and $462$--census,
+the factorization $q_4=-\prod\Delta$, and the compound--ratio form of $q$ as corollaries
+(Corollary~\ref{cor:windowlaw}). What was found by machine ($140$ exact divisions) is now a two--line
+determinantal mechanism; the collision/branch machinery is retired from the critical path
+(Remark~\ref{rem:master}).
+(4) \emph{Resolved in this edition, on the first horn} (\S\ref{sec:compositum}): the
+compositum's own tensor catalog forces the coupling---the cost $\log\Mah(p\otimes q)$ is provably
+non--separable, with interaction contrast exactly $\log 2$ (and $-6\log\ph$ in the golden
+sector), nonzero cross--Fisher covariance, and an interaction tensor of exact rank $5$; the
+tensor charge law $\Z/\mathrm{lcm}$ holds on all $28$ pairs. The declared warp is promoted to a
+forced nonzero datum in the compositum reading. Its residuals are closed in
+\S\ref{sec:coupledcurv}: the coupled family is provably not constant--$\tfrac14$---the coupling
+is curvature--visible, already at the uniform point where the cross--covariance vanishes
+exactly---and $\Delta$ is not determined by the charge data.
+(5) \emph{Resolved in this edition} (Theorem~\ref{thm:knec}): constant $\tfrac14$
+$\Rightarrow$ windowwise rank $\le1$ at every $k$, by squarefree window collisions (the Salem
+square cannot act on windows) plus twin symmetry at the golden pair.
+
+\medskip
+\noindent\emph{Outlook.} What remains is outward--facing rather than internal: catalogs with
+cost levels of multiplicity $\ge3$, where vertical line blocks enter the partitioned--affine
+classification (Remark~\ref{rem:fatlevels}); composita of two \emph{distinct} catalogs, where
+the tensor construction and $\Delta$ generalize verbatim; the coupled family's curvature
+landscape away from the uniform point; and, as throughout, the standing conditioning of the
+collision analysis on the $\Q$--linear independence of the seed logarithms.
+
+\appendix
+\section{Reproducible verification}\label{app:verify}
+All load--bearing identities are checked in \texttt{field\_surprisal\_v2.py} (\texttt{sympy} exact
+arithmetic; \texttt{mpmath} for transcendental and numeric values), printing $12/12$ passed. The
+checks: $Z=17+4\sqrt5$, the affinity, and $I=\Var(\log\Mah)$ (\S\S3--4); the Bregman--$\mathrm{KL}$
+identity and $A^\ast=-H$ (\S5); $C=\beta^2 I$ and the peak--fluctuation temperature (\S6); the
+vertex distance $\pi$ and the information length (\S7); the finite geometric closed form and the
+geometric variance of the keystone sub--model (\S9); the two--statistic Fisher matrix and the
+peak--fluctuation temperature (\S\S6,10); and the embedding obstruction $k_1k_2=-\tfrac14$ and the
+strict Fisher contraction (\S11). Theorem~\ref{thm:susp}---the exact constant curvature $\tfrac14$ of
+the $(\log\Mah,\mathrm{deg})$ surface---is proved in the text and verified symbolically in
+\texttt{suspension\_theorem.py} ($9/9$): the Brioschi curvature of a general indicator family equals
+$\tfrac14$ identically in the free statistic, remains $\tfrac14$ under arbitrary base measure (hence
+constant everywhere), the suspension metric has $g_{\psi\psi}=1,\ g_{\theta\psi}=0$ and curvature
+$1$, the catalog specialization gives $\tfrac14$, and generic controls give $4/21$ and $857/16928$.
+The Tier--2 results---the multi--statistic landscape (only the single--outcome indicator is
+constant $\tfrac14$; the $3$--set indicator and generic statistics vary) and the product geometry
+(block--diagonal Fisher, zero cross--curvature), and the charge grading (charge parity
+$=\mathbf 1_{\{\ph^4\}}$ is a second constant--$\tfrac14$ surface; the charge--group order varies)---are
+verified in \texttt{field\_surprisal\_tier2.py} ($15/15$). The complete classification---no surface
+totally geodesic ($d\in\{6,7\}$, $\log\Mah^2\notin V$), the ruled second fundamental form
+($\mathrm{II}_{ac}=\mathrm{II}_{cc}=0$, $\mathrm{II}_{aa}\neq0$), the exactly eight constant--$\tfrac14$
+surfaces among all $127$ indicators, and the $\approx5000$--sample exclusion of non--indicators---is
+verified in \texttt{field\_surprisal\_classification.py} ($9/9$). Across the four harnesses ($12/12$,
+$9/9$, $15/15$, $9/9$) a reviewer reruns every value; all numbered results are proved in full or
+established as marked.
+
+The closures of \S\S\ref{sec:classdone}--\ref{sec:join} are verified in six further harnesses,
+with exact \texttt{sympy} arithmetic over $\Q(\log2,\log3,\log5,\log\ph)$ at every decision
+boundary and floats display--only: \texttt{t1\_core.py} ($61/61$: cost--value structure, the ruled
+system, the invariant--module dimensions $N(X)$, the $r=\dim V^2/V$ census, the M\"obius elimination
+steps); \texttt{t1\_reduction.py} ($17/17$: $Z^2Dq=P$, $q=\operatorname{Tr}(\Gamma N)$, the
+four--point rank--one law $q=\kappa q_4$, the rank--$2$ collision lattice); \texttt{t1\_engine.py}
+($4/4$: the full $462$--monomial coefficient dictionary of $P$, support--$\le3$ vanishing, the window
+identity at all $140$ heavy placements, and the $\nu$--group census); \texttt{t1\_branches.py}
+($16/16$: window survival in every branch of the collision pencil, the merged six--point recursion
+with its rank--$1$ lattice, and identical window vanishing on the eight families in symbolic
+$(\alpha,\beta,\gamma)$); \texttt{t2\_temperature.py} ($12/12$: factorization rank tests, the
+lattice--Cauchy pathology, the exact anchors $Z(\mp1)$, the identity $I'=-\kappa_3$, and the curve
+invariants); \texttt{t3\_suspension.py} ($24/24$: the join metrics' constant curvature for $k=3,4$
+exactly, curvature routines validated on sphere, hyperbolic plane, flat plane, and the simplex, the
+catalog three--fold at $\tfrac14$ to $10^{-18}$, and the geodesic threshold). Session total: $134$
+checks, all exit $0$.
+
+Two harnesses added in this edition. \texttt{t1\_windowproof.py} ($44/44$, exit $0$) machine--proves
+Theorem~\ref{thm:master} and Corollary~\ref{cor:windowlaw}: the Sylvester and Cauchy--Binet steps as
+fully symbolic polynomial identities at $m=4,5$; the factorization
+$q_4=-\prod_{t\in s}\Delta_{s\setminus t}$ symbolically for four generic points; the compound--ratio
+form of $q$ and the face law $q=\kappa q_4$ at exact rational instances for $m=6,7$; and, on the
+catalog ring $\Q[X_1,\dots,X_7,\log2,\log3,\log5,\log\ph]$, the dictionary--level equality of all
+$462$ coefficients of $P$ with $Z^2\sum_sq_4(s)w_s$, string--exact against the artifact saved by
+\texttt{t1\_engine.py}. \emph{Ordering note}: that final cross--check reads the artifact
+\texttt{P\_coeffs.pkl} written by \texttt{t1\_engine.py}, so run \texttt{t1\_engine.py} first for the
+full $44/44$; standalone, the artifact check auto--skips (reported ``not counted'') and the tally is
+$43/43$. The one--line runner \texttt{run\_all.sh} executes all harnesses in a correct order. \texttt{t3c\_partC\_exact.py} ($16/16$, exit $0$) re--proves the Part--C
+claims of \texttt{t3\_suspension.py} (checks $[016]$--$[024]$) by explicit certificates that avoid
+symbolic--rank heuristics: the level--set annihilator $\prod_{r=1}^{6}(a-v_r\mathbf 1)=0$ identically
+in $\Q[\log2,\log3,\log5,\log\ph]^7$, the explicit closure recursion for $a^k$ ($k\ge6$) with
+elementary--symmetric coefficients, the Vandermonde lower bound (conditioned, as everywhere, only on
+the $\Q$--linear independence of the four logarithms), the golden--pair span equality, the $k\le4$
+exclusion and $k=5$ uniqueness, and the non--geodesy of the catalog three--fold.
+
+Four harnesses close this edition's remaining fronts. \texttt{t4\_kwindows.py} proves the
+generalized window identity symbolically at $k=3$, $m=5$, checks it at exact rational instances
+$m=6,7$ with both Sylvester scalings, verifies the windowed Gauss--obstruction identity and the flat
+lemma, certifies the catalog three-- and four--fold window matrices rank $\le1$ over the coefficient
+field, and runs the double--indicator census by symbolic--rank membership (checks
+$[001]$--$[013]$, exit--clean in--sandbox; the census block's symbolic ranks exceed the execution
+ceiling there and are superseded by the second lane).
+\texttt{t4b\_census\_fast.py} ($9/9$, exit $0$) is the census's second lane: an independent
+block--system reduction deciding the same memberships by exact $\Q^5$--annihilator and quadratic
+cross--ratio tests, completing all $7875$ pairs ($7812$ nondegenerate, $312$ flat, $26$ classes)
+with sampled cross--lane agreement. \texttt{t5\_catalog\_census.py} ($72/72$, exit $0$) proves the
+generic census theorem, the count formula, the collision lattices (ranks $2/1/1/2$ with the named
+generators, $\Z$--saturated), the sufficiency factorization, and the branch--rank necessity in every
+branch of all four catalogs, the full catalog reproducing exactly the eight--branch tree of
+\texttt{t1\_branches.py}. \texttt{t6\_selection.py} ($18/18$, exit $0$) proves the exact anchors
+$Z(+1)=\tfrac{91}{30}-\tfrac{\sqrt5}5$ and $Z(-1)=17+4\sqrt5$ in $\Q(\sqrt5)$, the identity
+$I'=-\kappa_3$ symbolically, and the selection dichotomy's numeric margins at dps $30/50$
+agreement below $10^{-12}$.
+
+Two harnesses close the final fronts. \texttt{t7\_knecessity.py} ($28/28$, exit $0$) is
+the machine lane of \S\ref{sec:knec}: the window--collision census of all four catalogs at every
+window size (every collision class is a single golden--swap pair; drop--$\tau$ has none), the
+cube fact for $\langle d_1,d_2\rangle$, twin symmetry of the window functionals at $k=2$ (all ten
+swap pairs and all ten twin--containing windows, by $4\times4$ determinants) and $k=3$ (entrywise
+row agreement plus determinant spot--checks), the minor/rank equivalence, the $k=3$ windowed
+identity $D_kG^{abcd}=Z^{k-2}\sum_sw_s[\,2\times2\ \text{minor}\,]$ at an exact rational instance
+($m=7$, all nine quadruples), and exact windowwise--rank recertification of the catalog three--
+and four--folds with a failing control. \texttt{t8\_compositum.py} ($13/13$, exit $0$) verifies
+\S\ref{sec:compositum}: the $7\times7$ tensor--cost matrix as exact $\Q$--vectors (the ten
+on--circle root products excluded symbolically; every remaining sign certified by rigorous
+interval arithmetic), the two exact interaction witnesses, rational--sector separability, the
+persistent golden tie, $\mathrm{rank}\,\Delta=5$ over $\Q(\log2,\log3,\log5,\log\ph)$, nonzero
+cross--Fisher covariance at $\beta\in\{1,-1,\sqrt5\}$, and the $\mathrm{lcm}$ charge law on all
+$28$ pairs. A practical note: the exhaustive \emph{symbolic} census lane of
+\texttt{t4\_kwindows.py} (block 3) exceeds a sandbox execution ceiling; the fast
+$\Q^5$--annihilator lane \texttt{t4b\_census\_fast.py} is the census's practical lane, with
+sampled two--lane agreement.
+
+Two final harnesses. \texttt{t9\_landscape.py} ($21/21$, exit $0$): the moment trichotomy
+symbolically at $d=2,3,4$ and on exact instances; the full canonical enumeration with every
+window matrix certified rank $\le1$ over $\Q(\log2,\log3,\log5,\log\ph)$ ($26+30$ classes at
+$k=3$, $50+45$ at $k=4$, $30+1$ at $k=5$, the eight at $k=2$); the five golden--overlap span
+equalities by symbolic rank; pairwise distinctness of the $56$ at the true logarithms ($1540$
+rank--$5$ witness minors, interval--certified); and twenty exact random controls violating
+flatness. \texttt{t10\_coupled.py} ($9/9$, exit $0$): the coupled triple's spanning
+($\dim V=4$); a genuine $5$--circuit and a rank--$\ge2$ window at the true logarithms; the three
+nonzero Gauss obstructions at the uniform point with certified sectional enclosures; the exact
+vanishing of the uniform cross--covariance; and the $\Delta$--charge witness.
+
+\begin{thebibliography}{9}
+\bibitem{amari} S.~Amari and H.~Nagaoka, \emph{Methods of Information Geometry}, AMS/OUP, 2000.
+\bibitem{rao} C.~R.~Rao, ``Information and accuracy attainable in the estimation of statistical
+parameters,'' \emph{Bull. Calcutta Math. Soc.} \textbf{37} (1945), 81--91.
+\bibitem{chentsov} N.~N.~\v{C}encov, \emph{Statistical Decision Rules and Optimal Inference}, AMS,
+1982.
+\bibitem{zamir} R.~Zamir, ``A proof of the Fisher information inequality via a data processing
+argument,'' \emph{IEEE Trans. Inform. Theory} \textbf{44} (1998), 1246--1250.
+\bibitem{rissanen} J.~Rissanen, ``Modeling by shortest data description,'' \emph{Automatica}
+\textbf{14} (1978), 465--471.
+\bibitem{shima} H.~Shima, \emph{The Geometry of Hessian Structures}, World Scientific, 2007.
+\bibitem{aczel} J.~Acz\'el, \emph{Lectures on Functional Equations and Their Applications},
+Academic Press, 1966.
+\bibitem{hj} R.~A.~Horn and C.~R.~Johnson, \emph{Matrix Analysis}, 2nd ed., Cambridge University
+Press, 2013.
+\bibitem{smyth} C.~J.~Smyth, ``On the product of the conjugates outside the unit circle of an
+algebraic integer,'' \emph{Bull. London Math. Soc.} \textbf{3} (1971), 169--175.
+\bibitem{cmc} Echo--Squirrel Research, ``The Charge--Measure Coupling on a Spectral Semiring:
+Cyclicity, Composition, and a Parity-Graded Mahler Floor,'' 2026.
+\bibitem{lambda} Echo--Squirrel Research, ``The Exchange Rate $\lambda=2c$,'' companion manuscript,
+2026.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,32 @@
+# Contribution contract for papers/2026-07-exact-arithmetic/  (see ../../docs/ANTI_DRIFT.md)
+shortname: 2026-07-exact-arithmetic
+member: AceTheDactyl
+title: "Exact Arithmetic — A Thirteen-Lesson Course Through the Emission Algebra"
+domain: math
+artifacts:
+  - papers/2026-07-exact-arithmetic/exact-arithmetic-thirteen-lessons.html
+  - papers/2026-07-exact-arithmetic/exact-arithmetic-thirteen-lessons.pdf
+  - papers/2026-07-exact-arithmetic/paper.cff
+  - code/2026-07-exact-arithmetic
+
+# The canonical artifact is the self-contained HTML booklet (thirteen lessons threading the
+# emission-algebra corpus into one exact-arithmetic narrative); the committed PDF is a
+# headless-Chrome print render of it (119 pp) that the archive site serves as the card.
+# code/ ships the full evidence bundle: 14 fail-first exact-arithmetic check scripts +
+# run_all.py + SHA256SUMS (LF, checksum-stable), reproduced by run_all.py --full (verify
+# checksums, then run every lesson/census/revision/synthesis/certificate; ALL GREEN,
+# ~1-4 min). ci_check.py is a thin UTF-8 wrapper (NOT in SHA256SUMS) so the lessons' Unicode
+# output does not crash a legacy-codepage stdout on a local Windows pre-flight.
+#
+# HONEST SCOPE (HANDOFF.md §5, non-negotiable):
+#  * The Lesson 11-13 AUTHORING scripts (88 checks) are unrecoverable. certificates.py is a
+#    SELECTED HEADLINE RECHECK of them (24 executable + 2 cited theorems) -- stronger per
+#    check, weaker in coverage. It does NOT supersede the lost 88.
+#  * Counts are kept separate, never merged into one headline: 354 numbered checks across the
+#    thirteen lessons, plus census (6), two revision passes (13 + 21), and the certificates.
+#  * The D5 finding lives IN the check: lesson6_census.py D3 asserts the corrected count
+#    (Rat° squarefree 67/67, irreducible 66/67, the D5 instance x^5-x^3-2x^2-2x-1 named),
+#    rather than the source note's original "irreducible on all 67".
+checks:
+  - name: exact-arithmetic-suite
+    verify: "{PY} code/2026-07-exact-arithmetic/ci_check.py"

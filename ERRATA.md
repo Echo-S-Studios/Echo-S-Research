@@ -57,3 +57,49 @@ y-roots straddling zero), never a counted category. 163 occurs only as an RGB
 color component in paper preambles; no 160/163 tally pair exists in any
 `.tex`, committed PDF, test, or data file. If this erratum is real it targets
 an external Zenodo deposit revision only.
+
+## D5 — pisot-residue §6: `Rat°` irreducible on 66/67, not all 67 (in-lineage)
+
+**Applies to this lineage; correction pending an owner decision** (finding
+verified 2026-07-27, from the Exact Arithmetic booklet's fourth audit; see
+`papers/2026-07-exact-arithmetic/`).
+
+`pisot_residue_whitepaper.tex` §"Decision (stage 2)" states that on the 67
+two-pair instances the cross-shell residue `Rat°_p` was "squarefree **and in
+fact irreducible of degree 20 on all 67**", and Observation `obs:generic` tags
+the Galois-genericity of that as `[PLAUSIBLE]`. The squarefree-on-all-67 claim
+(and Theorem `thm:box`, which asserts only squarefree `67/67`) is **correct**.
+The **irreducibility** claim is off by one: `Rat°_p` is irreducible on **66 of
+67**, the sole exception being
+
+    p = x^5 - x^3 - 2x^2 - 2x - 1,   Gal(p) = D_5,
+
+whose `Rat°_p` splits into two self-reciprocal degree-10 factors. Certified by
+exact re-multiplication (engine-independent), and independently reproduced here:
+`sympy` gives `Gal(p) = D_5` (order 10; discriminant 2209 = 47², so `Gal ⊆ A_5`;
+`p` irreducible over ℚ), and the shipped `code/2026-07-exact-arithmetic/
+lesson6_census.py --full` re-derives it (its D3 check now encodes the corrected
+count rather than the source note's "all 67").
+
+**Theorem `thm:box` is untouched.** Both degree-10 factors carry 2 unimodular
+roots, so `S* = Rat°_p` remains the full degree-20 product, `deg C_2 = 400`, and
+the complete cyclotomic scan still returns `{Φ_1^20}`: the `D_5` instance is
+relationally inert, exactly as the theorem concludes.
+
+**The upgrade worth folding in** (supersedes `obs:generic`'s `[PLAUSIBLE]` with a
+`[FORCED]` criterion): for squarefree `Rat°_p`, irreducibility over ℚ is
+transitivity on the `n(n−1)` ordered distinct root pairs, i.e. **iff `Gal(p)` is
+2-transitive**. The Galois census of the 67 is **S₅ × 65, M₂₀ × 1, D₅ × 1**;
+`M₂₀ = AGL(1,5)` (order 20) is sharply 2-transitive → irreducible, while `D₅`
+(order 10) has two length-10 orbits → the observed split — reproducing 66/67 with
+no residue. Consequence for the degree 6–7 frontier (pisot-residue item N4):
+irreducible `Rat°` needs `n(n−1) ∣ |G|`, i.e. `30 ∣ |G|` at degree 6 (only
+PSL(2,5), PGL(2,5), A₆, S₆) and `42 ∣ |G|` at degree 7.
+
+**Action:** this is the *erratum-note* form. Whether to instead **fold the
+correction into the paper** — rewrite the §"Decision (stage 2)" clause to
+"squarefree 67/67, irreducible 66/67 (exception `x^5−x^3−2x^2−2x−1`, `Gal = D_5`)"
+and replace `obs:generic` with the 2-transitivity criterion, then recompile the
+pisot PDF and capture it in the next tagged release — is the maintainer's call
+(the note's own N6 anticipates it). Until then the finding lives in the booklet's
+`lesson6_census.py` D3 check.

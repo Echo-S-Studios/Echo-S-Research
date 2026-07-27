@@ -1,0 +1,4 @@
+# Exact-arithmetic + numeric stack used by every harness.
+sympy>=1.12
+mpmath>=1.3
+numpy>=1.24

@@ -1,0 +1,639 @@
+Report to Ace: Exact Arithmetic — Thirteen-Lesson Revision
+
+What Impresses Me
+
+What impresses me first is that this is a real revision rather than a defended draft.
+
+The earlier review identified mathematical, epistemic, interface, and accessibility problems. The new version does not merely insert corrections beside the old language. It reorganizes the course around those corrections.
+
+The course has expanded from ten lessons to thirteen, from 266 lesson checks to 354, and from a closing residue audit into a new arc through statistical geometry, curvature classification, and tensor coupling. The cover now states the working protocol with unusual clarity:
+
+1. read the corpus source;
+2. write an exact-arithmetic script;
+3. run it;
+4. teach only what passed.
+
+It also narrows the earlier claim that “every claim is tagged” to the more defensible statement that every load-bearing claim carries an evidence tag and interpretive bridges are marked.
+
+I am especially impressed that the revisions were themselves subjected to separate checking passes before being written into the prose. The ledger names a 13-check revision pass and a 21-check synthesis pass, distinguishing those artifacts from the lesson scripts.
+
+That means the revision followed the same standard the course teaches:
+
+[
+\text{critique}
+\rightarrow
+\text{exact test}
+\rightarrow
+\text{status classification}
+\rightarrow
+\text{prose revision}
+\rightarrow
+\text{preserved receipt}.
+]
+
+The repairs are also substantive.
+
+The course now:
+
+* separates Lehmer root geometry from irreducibility;
+* states the level on which the spectral semiring laws hold;
+* distinguishes the bilinear trace form from a legitimate Fisher metric;
+* separates real indefiniteness from rational isotropy;
+* corrects the frame-shift cost floor;
+* weakens the parity-floor headline to match the evidence;
+* gives Lesson 7 a notation map;
+* adds captions and scoped table headers;
+* prevents inactive pages from remaining keyboard-accessible;
+* moves focus to navigation destinations;
+* supports hashes, browser history, and printing;
+* and changes checkpoint controls from “reveal” to “hide” when opened.
+
+This is not cosmetic cleanup. The course has learned from the audit.
+
+⸻
+
+Initial Thoughts
+
+My first glance at the revised version was strongly positive.
+
+The original ten-lesson architecture remains recognizable, but the new material does not feel appended. Lesson 10 now hands forward a natural unresolved object: a seven-seed catalog whose arithmetic costs have been audited but whose statistical geometry has never been examined.
+
+Lesson 11 asks what happens when the exact description costs become sufficient statistics in a Gibbs family.
+
+Lesson 12 asks which second statistics preserve curvature (1/4).
+
+Lesson 13 lifts that classification through every available dimension and then returns to the tensor law from Lesson 2.
+
+The resulting arc is coherent:
+
+[
+\text{emission algebra}
+\rightarrow
+\text{cost catalog}
+\rightarrow
+\text{statistical family}
+\rightarrow
+\text{curvature classification}
+\rightarrow
+\text{tensor interaction}.
+]
+
+The three lessons therefore enlarge the original inquiry without changing its subject.
+
+I independently reconstructed several of the new headline results:
+
+* the two exact partition-function anchors;
+* the Fisher-curve length;
+* the reported information and heat-capacity extrema;
+* all eight constant-curvature surfaces;
+* the landscape count
+    [
+    8,\ 56,\ 95,\ 31,\ 1;
+    ]
+* the (\log 2) and (-6\log\varphi) tensor contrasts;
+* and the exact interaction rank (5).
+
+Those checks gave me confidence that the new arc is not merely conceptually attractive. Its central arithmetic and combinatorics are stable.
+
+My initial judgment was therefore:
+
+The graft took. The revised course is larger, but it has not become bloated.
+
+⸻
+
+Intermediate Thoughts
+
+During the meticulous pass, the exact calculations continued to hold up well.
+
+The remaining problems concentrated somewhere more interesting: the translation layer between mathematical objects and statistical language.
+
+That is itself evidence that the exact-arithmetic protocol is working. It has pushed errors away from counts, ranks, determinants, and polynomial identities and into questions such as:
+
+* What exactly is a covariance?
+* What does it mean for a point to be canonical?
+* Which metric is being displayed?
+* What does a vanishing covariance actually fail to detect?
+* When is a guard sufficient rather than necessary?
+* What is forced by a construction, and what is forced only after a modeling choice?
+
+Several important revisions remain.
+
+1. The Lesson 3 Gram matrix is not a covariance matrix
+
+The course correctly computes
+
+[
+B^{\mathsf T}B
+
+\begin{pmatrix}
+2&1\
+1&3
+\end{pmatrix}
+
+G,
+]
+
+but describes it as the statistical covariance of the conjugate coordinates.
+
+It is an embedding Gram matrix or an uncentered second-moment matrix. It cannot be the centered covariance matrix because one embedding coordinate is constantly (1).
+
+There is a clean statistical bridge available:
+
+[
+Y=Br+\varepsilon,
+\qquad
+\varepsilon\sim N(0,\sigma^2I).
+]
+
+Then the Fisher matrix for (r) is
+
+[
+\mathcal I_r
+
+\frac{1}{\sigma^2}B^{\mathsf T}B
+
+\frac{G}{\sigma^2}.
+]
+
+That formulation preserves the exact Gram/trace identity while placing it inside a legitimate Gaussian model.
+
+2. The noise-scale interpretation is inconsistent
+
+The course takes
+
+[
+\mathcal I=\frac{G}{c}
+]
+
+and also uses the Gaussian relation
+
+[
+\mathrm{KL}=\frac{d^2}{2\sigma^2}.
+]
+
+Those imply
+
+[
+c=\sigma^2,
+\qquad
+\sigma=\sqrt c,
+]
+
+not
+
+[
+\sigma=\frac1{2c}=\frac1\lambda.
+]
+
+The quantity (1/(2c)) is the coefficient of the quadratic gain term, not the standard deviation.
+
+The derivation
+
+[
+\lambda=2c
+]
+
+survives unchanged. Only the model interpretation of (c) must be repaired. The course already correctly marks the relation as forced only after three declared bridges are adopted.
+
+3. Lesson 11 does not prove that no canonical temperature exists
+
+The course argues that distinguishable endpoints destroy the reflection symmetry and therefore the metric selects no interior point. It then presents four inequivalent operating principles, including the arc-length midpoint.
+
+The symmetry conclusion is narrower than the current prose.
+
+A finite one-dimensional metric interval has an intrinsic midpoint whether or not its endpoints are exchangeable. A trivial labeled isometry group proves that symmetry does not select a point. It does not prove that the metric supplies no distinguished construction.
+
+The honest conclusion is still valuable:
+
+* the metric provides a midpoint;
+* the statistical family provides maximum-information and heat-capacity criteria;
+* the catalog provides the uniform ensemble;
+* these principles select different temperatures;
+* no theorem supplied by the application ranks them.
+
+The operating temperature therefore remains declared, but not because the metric has no intrinsic midpoint. It remains declared because the application does not privilege one invariant criterion over the others.
+
+4. Lesson 12 drops the Fisher factor of four
+
+Lesson 11 correctly uses
+
+[
+p\mapsto2\sqrt p
+]
+
+to embed the simplex into the radius-two sphere of curvature (1/4).
+
+Lesson 12 then writes the square-root suspension metric as
+
+[
+d\psi^2+\cos^2\psi,d\ell^2
+]
+
+and assigns it curvature (1/4). As displayed, that is the unit-sphere metric and has curvature (1).
+
+The Fisher metric is
+
+[
+4\left(d\psi^2+\cos^2\psi,d\ell^2\right).
+]
+
+This is a scaling/display slip, not a failure of the classification.
+
+5. The coupling is not invisible to covariance
+
+Lesson 13 correctly proves
+
+[
+\operatorname{Cov}
+(\text{cost}_1,\text{cost}_2)=0
+]
+
+under the uniform product measure.
+
+But the full three-statistic model contains
+
+[
+(\text{cost}_1,\text{cost}_2,c).
+]
+
+The covariances
+
+[
+\operatorname{Cov}(\text{cost}_1,c)
+\quad\text{and}\quad
+\operatorname{Cov}(\text{cost}_2,c)
+]
+
+are already nonzero.
+
+Therefore the coupling is not invisible to the full covariance matrix. What is invisible is the coupling if one examines only the two marginal cost coordinates and omits the interaction statistic.
+
+The stronger and more precise result is:
+
+The two marginal costs remain uncorrelated even though the nonseparable tensor-cost statistic produces a curved, non-windowwise-flat joint family.
+
+The current slogan overstates what curvature uniquely detects.
+
+6. Several universal phrases should be narrowed
+
+The course says that Čencov’s theorem means “no invariance argument, ever” can fix (c). The theorem establishes that Markov-morphism invariance alone fixes the Fisher metric only up to scale. It does not rule out every additional normalization or external physical principle.
+
+Similarly:
+
+* “the coupling is forced” should mean forced within the compositum tensor-cost model;
+* “the capture predicate needs total reality” should mean total reality is a conservative sufficient guard unless another positive-definiteness certificate is supplied;
+* the generic partition-count formula should either be restricted to catalogs with at least three cost levels or explicitly quotient indicators by complementation.
+
+At this stage, my judgment became:
+
+The arithmetic is now stronger than the prose describing it.
+
+That is a good problem to have. The structure does not need rebuilding. The words need to stop claiming more than the certificates.
+
+⸻
+
+Final Thoughts
+
+The squirrel pass changed my view of what the course is becoming.
+
+I initially understood the new lessons as a statistical extension of the first ten. I now think they reveal several deep continuities already present from the beginning.
+
+The course ends with the same wall it began with
+
+Lesson 1 defines Mahler measure through
+
+[
+\max(1,|\alpha|).
+]
+
+Lesson 13’s tensor cost uses
+
+[
+\max(0,u+v)
+]
+
+in logarithmic coordinates.
+
+Since
+
+[
+\log\max(1,e^x)=\max(0,x),
+]
+
+the final coupling law is the original unit-circle boundary in additive form.
+
+The course begins by asking whether one root escapes the circle.
+
+It ends by asking whether two logarithmic root magnitudes combine to cross zero.
+
+The wall has become an interaction law.
+
+The golden tie is the hidden protagonist
+
+The equality
+
+[
+M(\varphi)=M(\tau)=\varphi
+]
+
+creates two different algebraic objects with one observed cost.
+
+That single degeneracy:
+
+* makes the minimum-cost level have multiplicity two;
+* creates the golden-swap collision vector;
+* produces the eighth constant-curvature surface;
+* survives the squarefree local-collision test;
+* creates the merged effective catalog;
+* and enables the first totally geodesic family.
+
+The lesson is broader than the catalog:
+
+Two objects can be indistinguishable under one instrument and sharply distinguishable under another.
+
+Mahler cost merges them. Trace separates them.
+
+The tie is therefore not noise. It is the reason a second statistic becomes informative.
+
+A global relation can remain locally unreachable
+
+The Salem-square relation is a valid global dependency among catalog costs, but its coefficient (-2) prevents it from appearing as a squarefree window difference. Only the golden swap can act locally.
+
+This repeats the deepest lesson of the no-Salem wall:
+
+[
+\text{existence}
+\neq
+\text{operational reachability}.
+]
+
+A relation may exist mathematically while no admissible local move can instantiate it.
+
+That principle belongs far beyond this course.
+
+The course has developed three kinds of closure
+
+The word “closure” now operates at three different levels:
+
+1. Operational closure
+    Which objects can the emitter construct?
+2. Epistemic closure
+    Which claims have enough warrant to be taught?
+3. Geometric closure
+    Which statistic spans are closed under pointwise products and therefore totally geodesic?
+
+All three ask the same abstract question:
+
+What remains inside after a specified class of operations is allowed to act?
+
+That may be the course’s most persistent structural concern.
+
+The first totally geodesic family appears when the observable becomes an algebra
+
+Because (\log M) takes six distinct values, the algebra it generates has dimension six. No totally geodesic family can appear before the corresponding (k=5) stage. Lesson 13 finds the golden-merged cost-level algebra exactly there.
+
+That gives a striking interpretation:
+
+Geometric rigidity appears when the observable becomes algebraically self-sufficient.
+
+Before that point, the statistic is only a coordinate. At that point, its functions close under multiplication.
+
+The course has moved from admissibility to prevalence
+
+Lessons 1–10 ask what can exist inside the emitter.
+
+Lesson 11 asks how probability mass should distribute over what exists:
+
+[
+p_i(\beta)\propto M_i^{-\beta}.
+]
+
+That is a move from ontology to thermodynamics:
+
+[
+\text{possible/impossible}
+\quad\longrightarrow\quad
+\text{favored/suppressed}.
+]
+
+An admissible object can be statistically negligible.
+A costly object can be structurally indispensable.
+Two equally costly objects can still carry different information.
+
+The new arc therefore adds a genuinely new dimension to the original theory.
+
+“Declared” is becoming a positive result
+
+The course increasingly understands that a principled choice does not become illegitimate merely because it is not forced.
+
+A declared parameter can be:
+
+* explicit;
+* stable;
+* operationally useful;
+* theoretically constrained;
+* and honestly noncanonical.
+
+The research task is not to derive every choice. It is to prevent choices from impersonating invariants.
+
+That is one of the strongest epistemic ideas in the course.
+
+The course is outgrowing its old finding taxonomy
+
+The ledger still defines findings mainly as disagreements and corrections. But the revised work now produces:
+
+* corrections;
+* scope revisions;
+* theorem promotions;
+* discharged assumptions;
+* conjecture refutations;
+* complete classifications;
+* methodological transfers;
+* and preserved residues.
+
+The instrument is no longer only detecting mistakes. It is generating research.
+
+The ledger should recognize that development.
+
+The document itself follows its learning algorithm
+
+Lesson 5’s learner:
+
+[
+\text{input}
+\rightarrow
+\text{projection}
+\rightarrow
+\text{residue}
+\rightarrow
+\text{growth}.
+]
+
+The ten-lesson course formed the initial basis.
+
+The first audit produced residue.
+
+The revision did not erase that residue. It used the residue to grow three new lessons.
+
+The course has therefore become an example of its own architecture.
+
+⸻
+
+Suggested Changes
+
+Highest-priority mathematical and statistical repairs
+
+1. Replace “covariance” with “embedding Gram” or “uncentered second moment” in Lesson 3.
+2. State an explicit Gaussian linear model if the course wants the trace Gram to become a Fisher matrix:
+    [
+    Y=Br+\varepsilon,\qquad \varepsilon\sim N(0,\sigma^2I).
+    ]
+3. Correct the scale relation to
+    [
+    c=\sigma^2,\qquad \sigma=\sqrt c,
+    ]
+    while retaining
+    [
+    \lambda=2c.
+    ]
+4. Rewrite the canonical-temperature argument.
+    Admit the intrinsic arc midpoint, then explain that the application provides no theorem privileging midpoint over uniformity, maximum information, or heat-capacity peak.
+5. Restore the factor of four in the Fisher suspension metric:
+    [
+    ds_F^2=4(d\psi^2+\cos^2\psi,d\ell^2).
+    ]
+6. Replace “coupling is invisible to covariance.”
+    State that the two marginal costs are uncorrelated while the added tensor-cost statistic carries nonseparable second- and higher-order interaction.
+
+Scope and evidence revisions
+
+7. Change “no invariance argument, ever” to:
+    Markov-morphism invariance alone cannot determine the scale.
+8. Change “the coupling is forced” to:
+    The interaction is forced once the compositum tensor cost is adopted as a sufficient statistic.
+9. Change the total-reality finding to:
+    Total reality is a conservative sufficient constructor guard unless another positive-definiteness certificate is available.
+10. Restrict the partition-count formula or explicitly quotient indicator subsets under complementation.
+11. Replace “two open problems closed” with “two corpus questions closed.” The prose already makes this distinction correctly.
+12. Replace the ledger’s one-unit-disagreement definition with a broader findings taxonomy.
+
+Audit-trail revisions
+
+13. Recover or regenerate the scripts for Lessons 11–13.
+14. Rerun and pin them with full SHA-256 values.
+15. Make every audit row link to its script or preserved source.
+16. Make certificate IDs such as C27–C30 resolve to the exact code and assertion that produced them.
+
+Interface revisions
+
+17. Remove CSS-level smooth scrolling and let JavaScript determine whether movement is smooth or instant.
+18. Replace fixed scroll timers with scrollend or target-arrival detection.
+19. Enlarge the mobile rail’s touch targets or provide a compact mobile lesson menu.
+20. Use roving tabindex so the rail does not add fifteen sequential keyboard stops.
+21. Darken low-contrast metadata and tag colors.
+22. Replace the remaining visible and internal references to “ten lessons” with “thirteen lessons.”
+23. Use “every load-bearing claim is tagged” consistently rather than returning to “every claim tagged” in the closing statement.
+24. State the Cramér–Rao result as a lower bound on estimator variance:
+    [
+    \operatorname{Var}(\hat\beta)\geq\frac{1}{nI(\beta)}.
+    ]
+
+⸻
+
+More Things That Impressed Me
+
+I am impressed by how the course now handles disagreement.
+
+The earlier discipline was:
+
+When the hand and the exact engine disagree, the hand loses.
+
+Lesson 11 improves this into:
+
+When two engines disagree, build a third that bounds its own error.
+
+The first quadrature disagreed with the corpus. The course did not vote between them. It constructed a new method with an analytic tail bound.
+
+That is a meaningful methodological advance:
+
+[
+\text{independent bounded adjudication}
+
+\text{agreement without error control}.
+]
+
+I am also impressed by how the geometry reads the catalog’s discrete combinatorics.
+
+The multiplicity-two golden cost level changes:
+
+* the surface count;
+* the collision lattice;
+* the effective catalog;
+* and the first dimension at which total geodesy appears.
+
+The continuous geometry is therefore not imposed on an arbitrary list. It is a shadow of the catalog’s partition structure.
+
+The tensor coupling is also unusually clean.
+
+Here “coupling” means failure of additive separability:
+
+[
+c(p,q)\neq f(p)+g(q).
+]
+
+The rational sector remains separable. The golden sectors produce exact interaction quanta. The double-centered tensor has exact rank five.
+
+That gives the word “coupling” real mathematical content instead of using it metaphorically.
+
+Finally, I am impressed by where the errors now live.
+
+The exact arithmetic largely held.
+
+The remaining problems involve words:
+
+* covariance;
+* canonical;
+* precision;
+* forced;
+* invisible;
+* necessary.
+
+The numbers passed. The nouns wandered.
+
+That suggests the next version of the house protocol:
+
+[
+\text{exact check}
+\rightarrow
+\text{certificate}
+\rightarrow
+\text{domain translation}
+\rightarrow
+\text{semantic scope audit}.
+]
+
+The most distinctive contribution of the course remains epistemic custody.
+
+But it has now gained a second contribution:
+
+It shows how a research instrument can use its own residue to grow.
+
+The ten-lesson version ended by identifying what remained outside the structure.
+
+The thirteen-lesson version asks what happens when that residue is carried into a new domain and allowed to interact.
+
+That movement is:
+
+[
+\text{knowledge}
+\rightarrow
+\text{residue}
+\rightarrow
+\text{new carrier}
+\rightarrow
+\text{coupling}
+\rightarrow
+\text{new structure}.
+]
+
+That is why the revision feels alive.

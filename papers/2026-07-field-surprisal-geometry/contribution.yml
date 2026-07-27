@@ -1,0 +1,25 @@
+# Contribution contract for papers/2026-07-field-surprisal-geometry/  (see ../../docs/ANTI_DRIFT.md)
+shortname: 2026-07-field-surprisal-geometry
+member: AceTheDactyl
+title: "The Field Surprisal Geometry — Full Worked Edition: Mahler–Gibbs Structure, Dual Flatness, Thermodynamics, Distances, and a Totally Geodesic Two-Statistic Surface"
+domain: math
+artifacts:
+  - papers/2026-07-field-surprisal-geometry/field_surprisal_geometry_v3_5.tex
+  - papers/2026-07-field-surprisal-geometry/field_surprisal_geometry_v3_5.pdf
+  - papers/2026-07-field-surprisal-geometry/paper.cff
+  - code/2026-07-field-surprisal-geometry
+
+# The committed PDF is the canonical sealed artifact (26 pp; the LaTeX source compiles to
+# it under pdflatex — article + amsmath/amsthm/mathtools + booktabs + hyperref). code/
+# ships the full exact-arithmetic verification suite: 20 fail-first harnesses, 422 checks
+# over Q(log2,log3,log5,logphi) (+log7 for the extended catalog), reproduced in dependency
+# order by run_all.sh. The per-push CI check (ci_check.py) runs the load-bearing FAST lane
+# (13 harnesses, ~2.5 min): the five foundational layers, the k=2 ruled classification and
+# its conceptual master window identity P = Z^2 sum q4(s) w_s, the temperature dichotomy,
+# k-necessity, and the compositum coupling. The exhaustive census / ~5000-sample exclusion
+# lanes (classification, t1_core, t3_suspension, t4/t4b/t5/t9) are held out of CI for time
+# and reproduced IN FULL offline by run_all.sh; in CI their results are covered by the proved
+# master identity and the rank-<=1 window criterion (see code/.../ci_check.py header).
+checks:
+  - name: harnesses-fast
+    verify: "{PY} code/2026-07-field-surprisal-geometry/ci_check.py"
