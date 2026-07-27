@@ -391,6 +391,14 @@ details.cp[open] .reveal::before{content:"hide"}
 
     <div class="run"><b>12/12</b><i>field_surprisal_v2.py · exact</i></div>
 
+    <p>Before any geometry, a question of pricing. A number field emits algebraic seeds, and information
+      theory says the fair charge for an outcome is its <em>description length</em>. This lesson fixes that
+      price — the Mahler measure — turns the price into a probability law with a single knob, an inverse
+      temperature β, and then extracts the two facts the whole course runs on: surprisal is a straight line
+      in the price, and the information the ensemble carries is exactly how much the price
+      <em>fluctuates</em>. Every layer downstream is geometry read off those two facts, so it is worth
+      meeting the seven prices first, and seeing that not one of them was chosen.</p>
+
     <h3>&#167;1 <em>&nbsp;One catalog, seven forced numbers</em></h3>
     <p>The emission catalog is the finite set
       <span class="m">Ω = {√2, √3, √5, φ, τ, φ⁴, K}</span>. Each seed α carries a
@@ -446,6 +454,13 @@ details.cp[open] .reveal::before{content:"hide"}
       anchor p ∝ M, algebraic in ℚ(√5)).</span>
     </div>
 
+    <p>Intuitively β is a dial on how sharply description cost is punished. At β = 0 the dial is off and
+      every seed is equally likely; turn it up and the cheap-to-describe seeds crowd out the rest; turn it
+      negative and the law rewards the <em>expensive</em> seeds instead. The same seven numbers,
+      re-weighted along a single one-parameter curve — that curve is the whole object the rest of the
+      course measures. Nothing else varies; the seeds and their prices are fixed, and β slides the ensemble
+      along them.</p>
+
     <h3>&#167;3 <em>&nbsp;Surprisal is affine in cost</em></h3>
     <p>The <strong>surprisal</strong> of an outcome is its description length
       <span class="m">S<sub>i</sub> = −log p<sub>i</sub></span>. On the Gibbs family it is exactly a
@@ -459,6 +474,12 @@ details.cp[open] .reveal::before{content:"hide"}
       growth-rule cost λ·log M up to the shared constant log Z, tying this geometry back to the
       exchange rate.</span>
     </div>
+
+    <p>Read plainly: "surprise" and "cost" are the same axis, only rescaled by β and shifted by log Z. A
+      seed that costs one extra nat to describe is exactly β nats more surprising — no more, no less. That
+      is why the single knob β does so much work: it is literally the exchange rate between description
+      cost and surprise, and the next section shows its derivative controls how <em>informative</em> the
+      ensemble is.</p>
 
     <h3>&#167;4 <em>&nbsp;Fisher information is cost variance</em></h3>
     <p>Differentiate the log-partition twice. The first derivative is the (negative) mean cost, the
@@ -480,10 +501,14 @@ details.cp[open] .reveal::before{content:"hide"}
       not noise here; it is the signal.</p>
 
     <h3>&#167;5 <em>&nbsp;Two concrete slices</em></h3>
-    <p>The <strong>exact anchor</strong> β = −1 sets <span class="m">p<sub>i</sub> = M<sub>i</sub>/Z</span>,
-      all weights algebraic in ℚ(√5): it favours the high-Mahler seeds φ⁴ (weight ≈ 0.264) and K
-      (≈ 0.226) and most suppresses the golden pair φ, τ (equal weight ≈ 0.062, since
-      M(φ) = M(τ) = φ). And the <strong>keystone sub-catalog</strong> <span class="m">{R<sup>n</sup>}</span>
+    <p>Work one temperature explicitly. The <strong>exact anchor</strong> β = −1 sets
+      <span class="m">p<sub>i</sub> = M<sub>i</sub>/Z</span> with <span class="m">Z = 17 + 4√5 ≈ 25.944</span>:
+      the costliest seed φ⁴ has <span class="m">M = (7+3√5)/2 ≈ 6.854</span>, so
+      <span class="m">p(φ⁴) = 6.854/25.944 ≈ 0.264</span>, and running the same division down the catalog
+      gives the seven anchor weights <span class="m">(0.077, 0.116, 0.193, 0.062, 0.062, 0.264, 0.226)</span>
+      — all algebraic in ℚ(√5), summing to 1. So β = −1 favours the high-Mahler seeds φ⁴, K and most
+      suppresses the golden pair φ, τ (equal weight 0.062, since M(φ) = M(τ) = φ). And the
+      <strong>keystone sub-catalog</strong> <span class="m">{R<sup>n</sup>}</span>
       — powers of the Fibonacci companion matrix, with <span class="m">M(R<sup>n</sup>) = φ<sup>n</sup></span>
       — has cost <em>linear</em> in n, so its Gibbs law is exactly a shifted geometric distribution
       <span class="m">p<sub>n</sub> = (1−r)r<sup>n−n₀</sup></span> with <span class="m">r = φ<sup>−β</sup></span>
@@ -563,15 +588,37 @@ details.cp[open] .reveal::before{content:"hide"}
 
     <div class="run"><b>12/12</b><i>field_surprisal_v2.py · dual-flat + thermo</i></div>
 
-    <h3>&#167;1 <em>&nbsp;Two flat coordinate systems</em></h3>
-    <p>In the sense of Amari–Nagaoka <span class="tag estab">established</span> the family is a
-      <strong>dually flat</strong> manifold. The natural (e-affine) coordinate is β itself; the
-      expectation (m-affine) coordinate is <span class="m">η = A′(β) = −U(β)</span> with
-      <span class="m">U = 𝔼<sub>β</sub>[log M]</span> the mean cost; and the two dual potentials are
-      <span class="m">A(β) = log Z</span> and its Legendre transform, the negentropy
+    <p>Lesson 1 pulled two very different things out of a single function. Differentiate
+      <span class="m">A = log Z</span> once and you get the mean cost; differentiate it twice and you get
+      the Fisher information — a bookkeeping constant that quietly <em>generates</em> the statistics of the
+      whole family. This lesson explains why. A is a <strong>convex potential</strong>, and a convex
+      potential never travels alone: it drags a second coordinate system, a notion of divergence, and —
+      once we agree to read β as an inverse temperature — an entire thermodynamics behind it. The payoff is
+      a single identity, <span class="m">C(β) = β²·I(β)</span>: the same cost-variance that measured
+      <em>information</em> in Lesson 1 measures <em>heat</em> here.</p>
+
+    <h3>&#167;1 <em>&nbsp;One potential, two flat coordinates</em></h3>
+    <p>A coordinate is <strong>flat</strong> when the family's natural straight lines — its geodesics for a
+      chosen connection — really are straight lines in that coordinate. An exponential family always has
+      two such coordinates, dual to each other, and <span class="m">A = log Z</span> is the hinge between
+      them. In the sense of Amari–Nagaoka <span class="tag estab">established</span> the Mahler–Gibbs
+      family is <strong>dually flat</strong>: the natural (e-affine) coordinate is β itself; the
+      expectation (m-affine) coordinate is <span class="m">η = A′(β) = −U(β)</span>, where
+      <span class="m">U(β) = 𝔼<sub>β</sub>[log M]</span> is the mean description cost; and the two dual
+      potentials are <span class="m">A(β) = log Z</span> and its Legendre transform, the negentropy
       <span class="m">A*(η) = −H(p)</span>.</p>
+    <p>The picture to hold is Legendre duality — the same move that trades a function for its slope, or
+      position for momentum. β indexes the family by <em>temperature</em>; η indexes the very same points
+      by their <em>mean cost</em>. Because A is strictly convex — its second derivative I(β) is a variance,
+      hence positive — the map β ↦ η is a strictly monotone change of coordinate, so nothing is lost
+      passing between them. But a curve straight in one coordinate need not be straight in the other, and
+      that mismatch is the entire source of the geometry Lesson 3 will measure.</p>
 
     <h3>&#167;2 <em>&nbsp;KL is a Bregman divergence of log Z</em></h3>
+    <p>How far apart are two temperatures? The honest information-theoretic answer is the
+      Kullback–Leibler divergence — the expected number of extra nats you pay to describe emissions drawn
+      from p(β₁) using a codebook tuned to p(β₂). On a dually flat family that divergence has a closed
+      form: it is exactly the <strong>Bregman divergence</strong> of the convex potential A.</p>
     <div class="eq"><span class="cid">Prop · Bregman KL</span>
       KL(p(β₁) ‖ p(β₂)) = A(β₂) − A(β₁) + (β₂ − β₁)·U(β₁)
       <span class="note">Exactly the Bregman divergence generated by the convex potential A, and the
@@ -579,32 +626,52 @@ details.cp[open] .reveal::before{content:"hide"}
       <span class="tag forced">forced</span>. Consequence: the Gibbs curve β ↦ p(β) is an
       <b>e-geodesic</b> — a straight line in the natural coordinate.</span>
     </div>
-    <p>A worked instance, reading A and U from the thermodynamic table of §4:
+    <p>A Bregman divergence measures exactly one thing: the gap between a convex curve and its own tangent
+      line. Stand at β₁ and draw the tangent to A there; the divergence to β₂ is how far the true value
+      A(β₂) sits <em>above</em> that tangent. Strict convexity makes the gap positive whenever β₂ ≠ β₁ and
+      zero only when they coincide — which is why KL, though not a genuine metric, behaves like a squared
+      distance near the diagonal.</p>
+    <p>Worked, reading A and U from the thermodynamic table of §4:
       <span class="m">KL(p(−1) ‖ p(1)) = A(1) − A(−1) + 2U(−1) = 0.950 − 3.256 + 2(1.458) = 0.610</span>
-      nats — the description-length gap between the exact anchor and the MDL prior. And because the
-      geometry is dually flat, the generalized <strong>Pythagorean theorem</strong> holds: if the
-      e-geodesic from p to q meets the m-geodesic from q to r Fisher-orthogonally, then
-      <span class="m">KL(p‖r) = KL(p‖q) + KL(q‖r)</span>.</p>
+      nats <span class="tag computed">computed</span> — the description-length gap between the exact anchor
+      and the MDL prior, and summing p(−1)·log[p(−1)/p(1)] directly over the seven seeds returns the same
+      0.610. Because the geometry is dually flat, the generalized <strong>Pythagorean theorem</strong> also
+      holds: if the e-geodesic from p to q meets the m-geodesic from q to r Fisher-orthogonally, then
+      <span class="m">KL(p‖r) = KL(p‖q) + KL(q‖r)</span> — a right-triangle law for information, with KL in
+      the role of squared length.</p>
 
     <h3>&#167;3 <em>&nbsp;The catalog as a thermodynamics</em></h3>
-    <p>With energies <span class="m">E<sub>i</sub> = log M<sub>i</sub></span> and temperature
-      <span class="m">T = 1/β</span>, every classical potential is present: free energy
-      <span class="m">F = −A/β</span>, internal energy <span class="m">U = −A′</span>, and Gibbs
-      entropy <span class="m">S = A + βU</span>, which coincides with the Shannon entropy
-      <span class="m">H(p(β))</span>. Entropy is maximal, log 7 ≈ 1.946, at the uniform point β = 0.</p>
+    <p>Nothing so far has named a temperature; the name is a choice, but a productive one. Read the cost as
+      an <em>energy</em>, <span class="m">E<sub>i</sub> = log M<sub>i</sub></span>, and β as an inverse
+      temperature <span class="m">T = 1/β</span>, and every classical potential of statistical mechanics is
+      already sitting inside Lesson 1's objects: free energy <span class="m">F = −A/β</span>, internal
+      energy <span class="m">U = −A′</span>, and Gibbs entropy <span class="m">S = A + βU</span>, which is
+      exactly the Shannon entropy <span class="m">H(p(β))</span>. The dictionary is not an analogy bolted on
+      afterward — the Gibbs law <em>is</em> the Boltzmann distribution of these energies, so the
+      thermodynamic identities are theorems, not metaphors.</p>
+    <p>Two limits anchor the intuition. As <span class="m">β → +∞</span> (cooling toward T = 0) the measure
+      freezes onto the <em>cheapest</em> seeds, the golden pair φ, τ; as <span class="m">β → −∞</span> it
+      concentrates on the <em>costliest</em>, φ⁴. Disorder is greatest in between, at the
+      infinite-temperature point β = 0, where the law is uniform and
+      <span class="m">S = log 7 ≈ 1.946</span> — the most entropy seven seeds can carry.</p>
 
     <h3>&#167;4 <em>&nbsp;Fisher information is a heat capacity</em></h3>
+    <p>Heat capacity asks a physical question: warm the ensemble by one degree — how much energy does it
+      soak up? In statistical mechanics the answer is always an energy fluctuation, and here the energy is
+      the description cost, whose fluctuation is precisely Lesson 1's Fisher information. The two notions
+      are one variance, read through the temperature:</p>
     <div class="eq" style="border-left-color:var(--verdigris)"><span class="cid">Prop · C = β²I</span>
       <b>C(β) = dU/dT = β²·I(β) = β²·Var<sub>β</sub>(log M) ≥ 0</b>
       <span class="note">dU/dβ = −A″ = −I and dT/dβ = −1/β², so C = (dU/dβ)/(dT/dβ) = β²I
       <span class="tag forced">forced</span>. The same variance that measures information also measures
       how the ensemble's energy responds to warming: information <em>is</em> heat capacity.</span>
     </div>
-    <p>The two faces come apart at the temperatures. The fluctuation Var<sub>β</sub>(log M) peaks at a
-      distinguished <strong>peak-fluctuation temperature</strong> β* ≈ −0.0768, where
-      Var ≈ 0.3289 <span class="tag computed">computed</span>; but the heat capacity C = β²I is
-      <em>suppressed</em> near β = 0 by the β² factor and grows with |β|. As β → +∞ the measure
-      concentrates on the minimal-cost seeds φ, τ; as β → −∞ on the maximal-cost seed φ⁴.</p>
+    <p>It pays to read one entry by hand. At <span class="m">β = √5</span> the cost fluctuation is
+      <span class="m">I(√5) = Var<sub>√5</sub>(log M) = 0.10405</span>, so
+      <span class="m">C = β²·I = 5 × 0.10405 = 0.520</span> — the whole heat capacity is the cost variance
+      scaled by β². Now compare β = −1, where a <em>larger</em> fluctuation 0.2626 yields a
+      <em>smaller</em> C = 0.2626 because there β² = 1: warming is always measured against T = 1/β, so the
+      same jitter of costs buys more or less stored heat depending on how cold the ensemble already is.</p>
 
     <div class="tw"><table><caption class="vh">Lesson 2 — §4 Thermodynamics at the distinguished temperatures</caption>
       <thead><tr><th scope="col">β</th><th scope="col">Z(β)</th><th scope="col">A = log Z</th><th scope="col">U = ⟨log M⟩</th><th scope="col">S = H</th><th scope="col">C = β²I</th></tr></thead>
@@ -620,10 +687,37 @@ details.cp[open] .reveal::before{content:"hide"}
       is maximal at β = 0, the fluctuation peaks at β*, and the heat capacity vanishes at β = 0 and
       grows on either side.</p>
 
+    <h3>&#167;5 <em>&nbsp;Where information and heat part ways</em></h3>
+    <p>C and I are built from one variance, yet they peak at different places, and that gap is the most
+      instructive fact of the lesson. The bare fluctuation <span class="m">Var<sub>β</sub>(log M)</span> is
+      largest at a distinguished <strong>peak-fluctuation temperature</strong> β* ≈ −0.0768, where
+      Var ≈ 0.3289 <span class="tag computed">computed</span> — barely above the value 0.3283 it takes at
+      the uniform point β = 0. But the heat capacity C = β²·I carries the extra β² weight, so it is
+      <em>crushed</em> to zero at β = 0 and grows with |β|. Information is maximal where the ensemble is
+      most uncertain; heat capacity is suppressed there, because at infinite temperature the populations
+      are already flat and hardly shift when warmed. The one variance wears two hats, and the β² factor is
+      what tells them apart — the crossing the next lesson will hear as sub-additive distances.</p>
+
     <div class="cpwrap">
       <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
 
-      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">The Gibbs curve is an
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Worked: verify
+        Fisher = Var(log M) at the uniform point β = 0 by hand, and read off why C(0) = 0 while I(0) is
+        near its maximum.</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>At β = 0 every seed has weight 1/7, so we just take unweighted moments of the seven costs
+          log M = (0.6931, 1.0986, 1.6094, 0.4812, 0.4812, 1.9248, 1.7671). Their mean is
+          U(0) = 8.055/7 = 1.1508. The mean of the squares is 11.568/7 = 1.6526, so
+          Var₀(log M) = 1.6526 − 1.1508² = 1.6526 − 1.3243 = <b>0.3283</b> — exactly I(0) in the table,
+          confirming Fisher = Var directly on the catalog.</p>
+          <p>Yet C(0) = β²·I(0) = 0²·0.3283 = 0. The costs fluctuate maximally at β = 0, but the
+          temperature there is infinite, and warming an already-uniform ensemble stores no heat per degree.
+          The β² prefactor is the entire difference between the information reading and the heat reading of
+          the one variance.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">The Gibbs curve is an
         e-geodesic — a straight line in β. Why does that <em>not</em> make it a shortest path in the
         Fisher–Rao metric?</span><span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
@@ -636,17 +730,6 @@ details.cp[open] .reveal::before{content:"hide"}
         </div>
       </details>
 
-      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Fisher information is
-        near its maximum at β = 0, yet the heat capacity is exactly 0 there. Reconcile.</span><span class="reveal" aria-hidden="true"></span></summary>
-        <div class="ans"><span class="lbl">answer</span>
-          <p>C = β²·I. At β = 0 the fluctuation I = Var₀(log M) ≈ 0.328 is essentially at its peak, but
-          the prefactor β² = 0 kills it: C(0) = 0. Physically, at infinite temperature (β → 0) the
-          populations are uniform and insensitive to a change in T, so no heat is stored per degree even
-          though the cost still fluctuates maximally. The two "faces of the variance" — information and
-          heat capacity — are weighted differently, and they separate exactly at β = 0.</p>
-        </div>
-      </details>
-
       <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Write KL(p(β₁)‖p(β₂))
         as a Bregman divergence and use it to explain in one line why KL is not symmetric.</span><span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
@@ -655,6 +738,22 @@ details.cp[open] .reveal::before{content:"hide"}
           asymmetric because the linearization is taken at β₁ — swapping the arguments linearizes at
           β₂ instead, and a strictly convex A gives a different remainder. The worked value
           KL(p(−1)‖p(1)) = 0.610 nats is one such one-sided gap.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q4</span><span class="qtext">The cost fluctuation
+        Var<sub>β</sub>(log M) peaks not at the uniform point β = 0 but slightly off it, at
+        β* ≈ −0.0768. What singles out β*, and how does the heat capacity behave there?</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Differentiate the fluctuation: I′(β) = −κ₃(β), minus the third cumulant — the skew — of the
+          description cost <span class="tag forced">forced</span>. So the fluctuation is stationary exactly
+          where the cost distribution is momentarily unskewed, κ₃ = 0; that point is β* ≈ −0.0768, with
+          Var ≈ 0.3289, a hair above the 0.3283 at β = 0. The peak sits just negative of uniform because
+          the seven costs are mildly asymmetric.</p>
+          <p>The heat capacity ignores this peak entirely: C = β²·I is near-zero across the whole
+          neighbourhood of 0 (C(β*) ≈ 0.0019), because the β² factor dominates there. Maximal information
+          with negligible heat is the sharpest form of the two readings coming apart — and it is where
+          Lesson 3's max-Fisher principle will place one candidate temperature.</p>
         </div>
       </details>
     </div>
@@ -686,6 +785,14 @@ details.cp[open] .reveal::before{content:"hide"}
 
     <div class="run"><b>18/18</b><i>t6_selection.py · the dichotomy</i></div>
 
+    <p>Lessons 1–2 measured the family one number at a time — a variance, a heat capacity. But a variance
+      is a <em>local</em> quantity: it reports how the family responds to an infinitesimal nudge, not what
+      shape it has in the large. This lesson supplies the shape. A single change of coordinate — take the
+      square root of every probability — turns the Fisher–Rao geometry into a patch of an ordinary round
+      sphere, where "distance" becomes an angle you can picture and every earlier quantity acquires a
+      geometric meaning. It then spends that picture on a sharp question: is the temperature β, the one
+      thing we were allowed to choose, secretly forced after all?</p>
+
     <h3>&#167;1 <em>&nbsp;The categorical model is a sphere</em></h3>
     <p>On the interior of the simplex Δ<sup>m−1</sup> the Fisher–Rao metric is
       <span class="m">g<sub>ij</sub> = δ<sub>ij</sub>/p<sub>i</sub></span>. The square-root embedding
@@ -700,6 +807,13 @@ details.cp[open] .reveal::before{content:"hide"}
       <span class="m">(Bull. Calcutta Math. Soc. 37 (1945), 81–91)</span>. What is corpus content is
       that <em>this</em> seven-seed catalog forms the family at all, and everything downstream.</span>
     </div>
+    <p>Why the square root? The Fisher–Rao metric weights each coordinate by
+      <span class="m">1/p<sub>i</sub></span>, which blows up as a probability nears zero — the geometry is
+      badly stretched near the edges of the simplex. The map <span class="m">p ↦ 2√p</span> is precisely
+      the substitution that cancels that stretch: <span class="m">d(2√p) = p<sup>−1/2</sup>dp</span>, so
+      squared lengths collapse into flat Euclidean sums, while the constraint ∑p = 1 becomes
+      <span class="m">∑(2√p)² = 4</span> — the equation of a sphere of radius 2. A radius-r sphere has
+      curvature 1/r², here 1/2² = ¼, and that single line is the entire origin of the number ¼.</p>
     <p>Every object of Lessons 1–2 now lives on a fixed curvature-¼ sphere, and the Gibbs curve's length
       element is <span class="m">√I(β) = √Var<sub>β</sub>(log M)</span>.</p>
 
@@ -712,6 +826,13 @@ details.cp[open] .reveal::before{content:"hide"}
       <span class="tag forced">forced</span>. The information length of the Gibbs curve is
       L(β₀,β₁) = ∫ √I(β) dβ.</span>
     </div>
+    <p>The quantity <span class="m">∑√(p<sub>i</sub>q<sub>i</sub>)</span> is the
+      <strong>Bhattacharyya coefficient</strong>, the overlap between two distributions — 1 when they
+      coincide, 0 when their supports are disjoint. On the sphere it is a cosine: the two square-root
+      vectors sit at a central angle whose cosine is exactly that overlap, and the geodesic distance is
+      twice the angle (twice, because the radius is 2). So distinguishability <em>is</em> angle — two laws
+      that barely overlap sit almost antipodally, and two pure seeds, sharing no support, sit a full
+      quarter-turn apart, at distance π.</p>
 
     <div class="tw"><table><caption class="vh">Lesson 3 — §2 Fisher–Rao distances between the marked temperatures</caption>
       <thead><tr><th scope="col">d<sub>FR</sub></th><th scope="col">β = −1</th><th scope="col">β = 0</th><th scope="col">β = 1</th><th scope="col">β = √5</th></tr></thead>
@@ -802,7 +923,24 @@ details.cp[open] .reveal::before{content:"hide"}
         </div>
       </details>
 
-      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Why is no interior
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Worked: compute the
+        Fisher–Rao distance between the uniform ensemble β = 0 and the MDL prior β = 1 from the
+        Bhattacharyya formula, and confirm the table entry 0.542.</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Uniform: <span class="m">p(0) = (1/7, …, 1/7)</span>. MDL:
+          <span class="m">q = p(1) = M<sup>−1</sup>/Z(1)</span> with Z(1) = 2.586, giving weights
+          (0.193, 0.129, 0.077, 0.239, 0.239, 0.056, 0.066). Because p is uniform, the Bhattacharyya
+          coefficient factors: ∑√(p<sub>i</sub>q<sub>i</sub>) = √(1/7)·∑√q<sub>i</sub> =
+          0.378 × 2.549 = 0.963. Then
+          <span class="m">d<sub>FR</sub> = 2·arccos(0.963) = 2 × 0.271 = <b>0.542</b></span> nats — the
+          table value.</p>
+          <p>Contrast Q1's pure-state answer: there the overlap is 0 and the angle is a full π. Here the
+          two ensembles still overlap heavily (coefficient 0.96), so they sit only 0.542 apart — a short
+          arc on the radius-2 sphere <span class="tag computed">computed</span>.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q4</span><span class="qtext">Why is no interior
         temperature canonical — and what would a catalog need for the metric alone to select one?</span><span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
           <p>The curve's two ends are not exchangeable: one limit is the golden <em>level</em> {φ, τ}
@@ -843,6 +981,14 @@ details.cp[open] .reveal::before{content:"hide"}
     </div>
 
     <div class="run"><b>44/44</b><i>t1_windowproof.py · the master identity</i></div>
+
+    <p>So far one statistic — the description cost — built the entire sphere. The paper's real subject
+      begins now: measure a <em>second</em> forced feature of each seed at the same time (its degree, its
+      charge, its trace) and the ensemble is pinned in a two-parameter family that bends the surprisal
+      sphere into a surface. The question is stark — which second statistics leave the curvature at exactly
+      ¼, and which warp it away? The answer is a short, exact list, but it is reachable only after one
+      seductive wrong guess is cleared out of the way, and only sealed by a determinant identity that turns
+      thousands of samples into two lines.</p>
 
     <h3>&#167;1 <em>&nbsp;The correction that shaped everything</em></h3>
     <p>Adjoin a statistic X to <span class="m">a = log M</span>: the two-parameter Gibbs family
@@ -984,6 +1130,25 @@ details.cp[open] .reveal::before{content:"hide"}
           dependent, and the plane lemma finishes it.</p>
         </div>
       </details>
+
+      <details class="cp"><summary><span class="qn">Q4</span><span class="qtext">Worked: take the degree
+        surface (X = 𝟙<sub>K</sub>) and check the window identity by hand — show every one of the 35
+        windows has q₄(s) = 0.</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Plot each seed as a plane point <span class="m">(log M<sub>i</sub>, X<sub>i</sub>)</span>. For
+          X = 𝟙<sub>K</sub> only K sits at height 1; the other six seeds all lie on the horizontal line
+          X = 0. Since <span class="m">q₄(s) = −∏<sub>t∈s</sub>(triple minor)</span> vanishes the moment
+          three of a window's four points are collinear, count the seeds off K: any 4-subset of the seven
+          contains at least three seeds that are not K — hence at least three points on the line X = 0. So
+          every window has a collinear triple, every q₄(s) = 0, the master sum
+          P = Z²·∑ q₄(s) w<sub>s</sub> is identically zero, and the degree surface is constant-¼. A direct
+          machine run confirms 0 of the 35 windows survive <span class="tag computed">computed</span>.</p>
+          <p>Now perturb to a non-indicator such as the trace {−1, 0, 1, 7}: its points no longer share a
+          line, some window has four points in general position with no collinear triple, that q₄(s) ≠ 0,
+          and the curvature leaves ¼ — matching the varying values 0.177, 0.056, 0.197 of §3. The single
+          off-line point of an indicator is exactly what keeps every window degenerate.</p>
+        </div>
+      </details>
     </div>
 
     <div class="handoff"><span class="lbl">hands on to Lesson 5</span>
@@ -1013,6 +1178,14 @@ details.cp[open] .reveal::before{content:"hide"}
     </div>
 
     <div class="run"><b>21/21</b><i>t9_landscape.py · the landscape</i></div>
+
+    <p>Lesson 4 settled two statistics — eight surfaces. But a catalog of seven seeds can be pinned by
+      three, four, even five statistics at once, and the natural expectation is that the story only grows
+      more tangled. It does the opposite. A single observation about the arithmetic of collisions closes
+      the classification at <em>every</em> k in one stroke; the full count turns out to be a partition
+      tally that quietly refutes the obvious conjecture; and when two fields are forced to share a
+      compositum, the coupling that looked like a free choice in the product becomes forced — and
+      curvature-visible.</p>
 
     <h3>&#167;1 <em>&nbsp;The squarefree key</em></h3>
     <p>At k = 2 the weights were free and the window monomials independent. On the family they are not:

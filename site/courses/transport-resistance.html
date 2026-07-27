@@ -408,6 +408,11 @@ details.cp[open] .reveal::before{content:"hide"}
     <div class="run"><b>28/28</b><i>exact checks · p2-softcheck</i></div>
 
     <h3>&#167;1 <em>&nbsp;The mixed-boundary problem</em></h3>
+    <p>Before we can ask &#8220;how hard is an interior point to maintain,&#8221; we need one clean
+      object that <em>means</em> exactly that. The torsion problem is it: a demand q is poured in
+      throughout the body, allowed to drain only through a supply surface, and the solution u(x)
+      records the cost that accumulates at the point x. Every result in this course is a bound on that
+      u. Here is the object, stated once and precisely.</p>
     <p>Let &#937; &#8834; &#8477;&#8319; be a bounded connected Lipschitz domain whose boundary splits
       into a <strong>supply portion</strong> &#931; (relatively open, positive surface measure) and the
       <strong>reflecting remainder</strong> &#915;. A measurable symmetric coefficient tensor 𝒜 is
@@ -476,6 +481,32 @@ details.cp[open] .reveal::before{content:"hide"}
       conjecture is simply <strong>true</strong>, and sharp. The trouble starts when "distance" stops
       being the only thing that varies.</p>
 
+    <h3>&#167;4 <em>&nbsp;A line you can actually compute</em></h3>
+    <p>None of this is abstract — the law is a formula you can evaluate by hand, and doing so once
+      makes the far-end bound tangible. Take the simplest coefficient, a uniform bar
+      A(s) &#8801; P<sub>max</sub> on (0, L) with demand q. The integral is elementary:</p>
+
+    <div class="eq"><span class="cid">worked &#183; uniform bar</span>
+      u(x) = q &#8747;<sub>0</sub><sup>x</sup> (L &#8722; s)/P<sub>max</sub> ds = (q/P<sub>max</sub>)(Lx &#8722; x&#178;/2),&nbsp;&nbsp; &#8741;u&#8741;<sub>&#8734;</sub> = u(L) = q L&#178; / (2 P<sub>max</sub>)
+      <span class="note">Check the three defining facts against the formula: u(0) = 0; the flux
+      A u&#8242; = q(L &#8722; x) vanishes at the reflecting end x = L; and u(L) meets the far-end bound
+      <em>with equality</em> — exactly as Theorem 1 predicts when A never dips below P<sub>max</sub>.
+      The burden grows quadratically as you walk in from the supply.
+      <span class="tag computed">computed</span></span>
+    </div>
+
+    <p>Now let the conductivity sag on the downstream half — a stretch of bar that carries current
+      worse. Keep P<sub>max</sub> as the ceiling but set A = P<sub>max</sub>/2 on (L/2, L). Every part
+      of the integrand there doubles, so the burden must rise above the uniform
+      qL&#178;/(2P<sub>max</sub>); the far-end bound still holds, now strictly. The exact figure is the
+      worked exercise below.</p>
+
+    <h3>&#167;5 <em>&nbsp;The fork ahead: two one-dimensional balances</em></h3>
+    <p>One subtlety decides the whole story to come. The balance we just solved has a sink of q per
+      unit <em>length</em>. A real narrowing channel instead has a sink of q per unit <em>volume</em>,
+      and in a tube whose cross-section changes those are genuinely different laws. Hold onto the
+      distinction — it is the hinge on which Lesson 3 turns.</p>
+
     <div class="eq" style="border-left-color:var(--ochre)"><span class="cid">the fork ahead</span>
       <span class="note" style="margin:0;font-size:15px">Theorem 1 is the <b>conductivity-graded</b>
       balance: a sink of q per unit <em>length</em>, with conductivity A(x) varying. There is a second,
@@ -506,6 +537,24 @@ details.cp[open] .reveal::before{content:"hide"}
           <em>increases</em>. The bound &#8741;u&#8741;<sub>&#8734;</sub> &#8805; qL&#178;/(2P<sub>max</sub>)
           stays valid — it is a floor set by the <em>largest</em> the conductivity is ever allowed to
           be — and it is met with equality only when A never dips at all.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Worked exercise. With
+        A = P<sub>max</sub> on (0, L/2) and A = P<sub>max</sub>/2 on (L/2, L), and q, L fixed, compute
+        &#8741;u&#8741;<sub>&#8734;</sub> = u(L) exactly and compare it to the uniform bar.</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Split the far-end integral u(L) = q&#8747;<sub>0</sub><sup>L</sup>(L&#8722;s)/A(s) ds at
+          s = L/2. On the first half A = P<sub>max</sub>, and
+          &#8747;<sub>0</sub><sup>L/2</sup>(L&#8722;s) ds = [Ls &#8722; s&#178;/2]<sub>0</sub><sup>L/2</sup>
+          = L&#178;/2 &#8722; L&#178;/8 = 3L&#178;/8. On the second half A = P<sub>max</sub>/2, so
+          1/A = 2/P<sub>max</sub>, and &#8747;<sub>L/2</sub><sup>L</sup>(L&#8722;s) ds = L&#178;/8. Hence</p>
+          <p>u(L) = (q/P<sub>max</sub>)(3L&#178;/8) + (2q/P<sub>max</sub>)(L&#178;/8) =
+          <b>5qL&#178;/(8P<sub>max</sub>)</b>.</p>
+          <p>That is 25% above the uniform bar&#8217;s qL&#178;/(2P<sub>max</sub>) = 4qL&#178;/(8P<sub>max</sub>),
+          and still above the far-end floor qL&#178;/(2P<sub>max</sub>) — which the theorem guarantees,
+          equality now lost because A dips under the ceiling. A weaker downstream stretch is paid for
+          by the point at the far end, exactly as Q2 said qualitatively.</p>
         </div>
       </details>
     </div>
@@ -541,6 +590,11 @@ details.cp[open] .reveal::before{content:"hide"}
     <div class="run"><b>exit 0</b><i>p2-softcheck · ball &amp; star</i></div>
 
     <h3>&#167;1 <em>&nbsp;Comparison, then the ball mean</em></h3>
+    <p>The line was easy because everything was explicit. In n dimensions we cannot write u down, so
+      we need a different move: <em>trap</em> u between things we <em>can</em> write down. The idea
+      running through this whole lesson is to drop an explicit constant-coefficient ball inside the
+      domain — its torsion function is known exactly — and let two short monotonicity lemmas push u
+      around from there.</p>
     <p>Two one-line lemmas do the work. First, <strong>same-operator domain comparison</strong>: if
       &#969; &#8838; &#937; and w is the <em>full-Dirichlet</em> torsion of &#969; for the same 𝒜 and
       q, then u &#8805; w a.e. on &#969; <span class="tag forced">forced</span> — shrinking the domain to
@@ -589,13 +643,33 @@ details.cp[open] .reveal::before{content:"hide"}
       condition at every point. <span class="tag forced">forced</span></span>
     </div>
 
-    <p>Sharpness is exhibited, not asserted: equality holds on the ball (&#931; = &#8706;B), on
-      <strong>central reflection sectors</strong> (wedges cut by hyperplanes through x&#8320;, where the
-      star condition holds with equality on every flat cut), and on <strong>ellipsoids</strong>
-      {f &lt; r&#178;} where u = (q/2n)(r&#178; &#8722; f) exactly. The anisotropic ellipsoid case attains
-      the sharper first inequality, the one with 𝒜&#8315;&#185; still inside.</p>
+    <p>The claim that the constant 2n <em>cannot be improved</em> is not asserted but exhibited: the
+      paper writes down an explicit family on which the bound holds as an exact equality. That family
+      — ball, central reflection sectors, ellipsoids — is worth seeing in full, so it gets its own
+      section (&#167;5) once the two competing distances are on the table.</p>
 
-    <h3>&#167;3 <em>&nbsp;Distance to the full boundary always works</em></h3>
+    <h3>&#167;3 <em>&nbsp;A ball you can compute: where 6 and 15 come from</em></h3>
+    <p>Both constants live, side by side, on one explicit object — the round ball with the plain
+      Laplacian. Take &#937; = B<sub>R</sub>(x&#8320;), the whole sphere &#931; = &#8706;B<sub>R</sub>
+      as supply, no reflecting wall (&#915; = &#8709;), and 𝒜 = P<sub>max</sub>I. Then the torsion
+      function is known in closed form, and you can read <em>both</em> bounds straight off it:</p>
+
+    <div class="eq"><span class="cid">worked &#183; the round ball</span>
+      u(z) = q(R&#178; &#8722; |z&#8722;x&#8320;|&#178;) / (2n P<sub>max</sub>),&nbsp;&nbsp; peak u(x&#8320;) = q R&#178;/(2n P<sub>max</sub>),&nbsp;&nbsp; mean = q R&#178;/(n(n+2)P<sub>max</sub>)
+      <span class="note">Direct check: &#8722;P<sub>max</sub>&#916;u = q and u = 0 on the sphere, so
+      this <em>is</em> the solution. At n = 3 the peak is qR&#178;/(6P<sub>max</sub>) — the star bound
+      with 2n = 6, met with equality because d<sub>E</sub>(x&#8320;,&#931;) = R — and the ball-average
+      is qR&#178;/(15P<sub>max</sub>), the mean bound with n(n+2) = 15.
+      <span class="tag computed">computed</span></span>
+    </div>
+
+    <p>So on the very same ball the peak is <b>qR&#178;/(6P<sub>max</sub>)</b> and the average is
+      <b>qR&#178;/(15P<sub>max</sub>)</b>: their ratio is exactly 15/6 = 2.5, and the summit sits above
+      the plateau, as it must. That is the whole reason the two theorems carry different constants —
+      one weighs the peak, the other the average. The ball is where both are simultaneously tight, and
+      it is the picture to keep for everything that follows.</p>
+
+    <h3>&#167;4 <em>&nbsp;Distance to the full boundary always works</em></h3>
     <p>One corollary needs <em>no</em> star condition at all, only constant 𝒜, and it is the fact
       Lesson 3 will contrast against:</p>
 
@@ -610,6 +684,24 @@ details.cp[open] .reveal::before{content:"hide"}
       <em>always</em> (constant coefficients). Distance to the <strong>supply &#931;</strong> bounds u
       <em>under the star condition</em> — a sharp <em>sufficient</em> hypothesis. The next lesson removes
       it and watches the second bound fail without limit, while the first stays true.</p>
+
+    <h3>&#167;5 <em>&nbsp;Where the star bound is exactly sharp</em></h3>
+    <p>Why can&#8217;t the constant 2n be pushed lower? Because there is an explicit family that
+      already <em>touches</em> it — three geometries where the &#8805; becomes an =, each verified as
+      a genuine solution of the PDE (it satisfies the equation, vanishes on &#931;, and has zero
+      conormal derivative on &#915;), so &#8220;sharp&#8221; means an identity, not a numerical
+      near-miss:</p>
+    <ul>
+      <li><b>The ball</b> (&#931; = &#8706;B): the worked instance above,
+        u(x&#8320;) = qR&#178;/(2nP<sub>max</sub>) exactly.</li>
+      <li><b>Central reflection sectors</b> — wedges cut from that ball by hyperplanes through
+        x&#8320;. The same ball function, restricted, still solves the problem: on each flat cut the
+        conormal derivative &#8722;(q/n)(z&#8722;x&#8320;)·&#957; vanishes, so the star condition holds
+        with <em>equality</em> there and u(x&#8320;) is unchanged.</li>
+      <li><b>Ellipsoids</b> {f &lt; r&#178;}, where u = (q/2n)(r&#178; &#8722; f) exactly. This attains
+        the <em>sharper</em> first inequality — the one with 𝒜&#8315;&#185; still inside — so the
+        anisotropy is captured, not just its P<sub>max</sub> shadow. <span class="tag forced">forced</span></li>
+    </ul>
 
     <div class="cpwrap">
       <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
@@ -633,6 +725,23 @@ details.cp[open] .reveal::before{content:"hide"}
           and &#915; is empty, so the star condition "(z&#8722;x&#8320;)·&#957; &#8805; 0 on &#915;" is a
           condition on the empty set — vacuously true. The reflecting wall is what can violate the star
           condition; with no reflecting wall there is nothing to check.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Worked exercise. On
+        the unit ball B<sub>1</sub>(0) in n = 3 with 𝒜 = P<sub>max</sub>I, evaluate the peak burden
+        u(0), the ball-average, and their ratio; confirm the star bound is met with equality.</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Put R = 1, n = 3 in the worked ball: u(z) = q(1 &#8722; |z|&#178;)/(6P<sub>max</sub>). The
+          peak is at the centre, u(0) = <b>q/(6P<sub>max</sub>)</b>. The star bound predicts
+          q d<sub>E</sub>(0,&#931;)&#178;/(2n P<sub>max</sub>) = q&#183;1&#178;/(6P<sub>max</sub>) =
+          q/(6P<sub>max</sub>) — <em>equality</em>, since the whole sphere is supply and
+          d<sub>E</sub>(0,&#931;) = 1.</p>
+          <p>The average is q/(15P<sub>max</sub>) (constant n(n+2) = 15), so peak/mean = 15/6 = 2.5.
+          The mean bound alone would certify only &#8741;u&#8741;<sub>&#8734;</sub> &#8805;
+          q/(15P<sub>max</sub>); the star bound, buying one geometric hypothesis, certifies the
+          2.5&#215;-larger truth q/(6P<sub>max</sub>). That is what &#8220;pointwise-sharp&#8221; buys
+          you.</p>
         </div>
       </details>
     </div>
@@ -667,7 +776,10 @@ details.cp[open] .reveal::before{content:"hide"}
     <div class="run"><b>exit 0</b><i>p2-softcheck · 28 checks</i></div>
 
     <h3>&#167;1 <em>&nbsp;A horn, and a field that solves it</em></h3>
-    <p>Fix a power profile g(x) = &#949; h (x/h)<sup>k/2</sup> and build the truncated horn</p>
+    <p>To break a conjecture you need one honest counterexample, solved exactly. The horn is that
+      counterexample: a tube flaring from a narrow tip to a wide supply mouth, shaped so we can write
+      a field solving it in closed form and watch the supply-distance bound collapse. Fix a power
+      profile g(x) = &#949; h (x/h)<sup>k/2</sup> and build the truncated horn</p>
 
     <div class="eq"><span class="cid">def · truncated horn</span>
       &#937;<sub>k,&#949;,&#948;</sub> = { (x,y) &#8712; (&#948;h, h) &#215; &#8477;<sup>n&#8722;1</sup> : |y| &lt; g(x) },&nbsp; &#931; = {h} &#215; {|y| &lt; &#949;h},&nbsp; 𝒜 = P·I
@@ -810,6 +922,23 @@ details.cp[open] .reveal::before{content:"hide"}
           finished counterexample.</p>
         </div>
       </details>
+      <details class="cp"><summary><span class="qn">Q4</span><span class="qtext">Worked exercise.
+        Verify the witness from scratch: for n = 3, k = 4, &#948; = 3/20, &#949; = 1/5, evaluate
+        &#946; and show &#946; &lt; 1/6 with the exact gap.</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>&#946; = (1 &#8722; &#948;&#178; + (k/2)&#949;&#178;) / ((2 + k(n&#8722;1))(1 &#8722; &#948;)&#178;).
+          Numerator first: &#948;&#178; = 9/400; (k/2)&#949;&#178; = 2·(1/25) = 2/25 = 32/400; so
+          1 &#8722; 9/400 + 32/400 = 423/400. Denominator: 2 + k(n&#8722;1) = 2 + 4·2 = 10, and
+          (1 &#8722; &#948;)&#178; = (17/20)&#178; = 289/400, so the product is 2890/400. The 400s
+          cancel:</p>
+          <p>&#946; = (423/400)/(2890/400) = <b>423/2890</b>. And 423/2890 &lt; 1/6 because
+          6·423 = 2538 &lt; 2890; the exact gap is 1/6 &#8722; 423/2890 = 1445/8670 &#8722; 1269/8670 =
+          <b>88/4335</b>. One bounded Lipschitz horn, every hypothesis of the conjecture satisfied,
+          the coefficient a certified 12.2% under the &#8220;sharp&#8221; floor 1/6.
+          <span class="tag computed">computed</span></p>
+        </div>
+      </details>
     </div>
 
     <p class="small"><b>Verify it.</b> The horn solution and wall-flux identities, the coefficient
@@ -901,7 +1030,28 @@ details.cp[open] .reveal::before{content:"hide"}
       Q<sup>&#8727;</sup> = q, giving 𝓡<sub>G</sub> = u/q. A specimen-specific Q<sup>&#8727;</sup> chosen
       after the fact would wreck any cross-specimen comparison.</p>
 
-    <h3>&#167;3 <em>&nbsp;Three tiers, and a gatekeeper</em></h3>
+    <h3>&#167;3 <em>&nbsp;A tube you can compute</em></h3>
+    <p>The unit split is easiest to trust once you have run it on a real tube. Take the plainest case
+      — a straight cylinder of constant cross-section 𝔄, length h, uniform demand q per unit volume,
+      constant P — with arclength s measured from the interior tip (s = 0) out to the mouth (s = h).
+      Then the upstream volume is V(s) = 𝔄s and, under uniform demand, the demand still to be served
+      past s is Q<sub>&#8595;</sub>(s) = q&#8747;<sub>0</sub><sup>s</sup>𝔄 = q𝔄s:</p>
+
+    <div class="eq"><span class="cid">worked &#183; straight cylinder</span>
+      Q<sub>&#8595;</sub>(s)/(P𝔄) = q𝔄s/(P𝔄) = qs/P,&nbsp;&nbsp; &#916;C<sub>tube</sub> = &#8747;<sub>0</sub><sup>h</sup> (qs/P) ds = q h&#178;/(2P),&nbsp;&nbsp; 𝓡<sub>geom</sub> = &#8747;<sub>0</sub><sup>h</sup> (𝔄s/(P𝔄)) ds = h&#178;/(2P)
+      <span class="note">The 𝔄 cancels in the local ratio — a fatter tube is cheaper only through
+      the demand it need <em>not</em> route. And &#916;C<sub>tube</sub> = q·h&#178;/(2P) =
+      q·𝓡<sub>geom</sub>, the unit split holding on the nose. This is the no-taper (k &#8594; 0) corner
+      of the horn apex identity q h&#178;/(P(2+k(n&#8722;1))). <span class="tag computed">computed</span></span>
+    </div>
+
+    <p>Turn on the taper and that same graded integral shrinks: at n = 3 it is q h&#178;/(P(2 + 2k)),
+      the fraction 1/(2+2k) of qh&#178;/P — 1/6 at the cone k = 2, falling to
+      <b>1/22 = 0.045 at k = 10</b>. Less tube quantity as the horn narrows, the exact mirror image of
+      the distance-only failure factor climbing 6 &#8594; 22. (The 1/22 value is logged in ERRATA F1;
+      an earlier draft misprinted it.)</p>
+
+    <h3>&#167;4 <em>&nbsp;Three tiers, and a gatekeeper</em></h3>
     <p>The exact field u is the ground truth but needs a full PDE solve — precisely what a cheap
       predictor is meant to avoid. So the program lives on three tiers, and the whole scientific question
       is whether the bottom can be made to track the top:</p>
@@ -929,6 +1079,7 @@ details.cp[open] .reveal::before{content:"hide"}
       reduction of the field to flux tubes is an extra modelling move, not something the theorem
       forces.</p>
 
+    <h3>&#167;5 <em>&nbsp;A cheap candidate, and where it lies</em></h3>
     <p>One cheap candidate is <strong>eikonal descent</strong> — minimum-cost paths to &#931;,
       |&#8711;T| = 1/P. These are not flux lines, and the gap is measurable and <em>regime-dependent</em>:</p>
 
@@ -970,6 +1121,23 @@ details.cp[open] .reveal::before{content:"hide"}
           ideal reduction of the true current would retain. A cheap surrogate is scored against it (and
           against u) to separate "the surrogate is a bad predictor" from "path-reduction itself loses the
           signal." Without the diagnostic tier you cannot tell which of the two failed.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Worked exercise. In
+        the same cylinder, move all the demand to the tip, so every cross-section must pass the same
+        total load Q<sub>&#8595;</sub>(s) = Q<sub>tot</sub> (not q V(s)). Compute &#916;C<sub>tube</sub>,
+        and show why writing &#916;C<sub>tube</sub> = q𝓡<sub>geom</sub> would now double-count.</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>&#916;C<sub>tube</sub> = &#8747;<sub>0</sub><sup>h</sup> Q<sub>tot</sub>/(P𝔄) ds =
+          Q<sub>tot</sub> h/(P𝔄). The matched uniform rate is q = Q<sub>tot</sub>/V(h) =
+          Q<sub>tot</sub>/(𝔄h), so q𝓡<sub>geom</sub> = [Q<sub>tot</sub>/(𝔄h)]·h&#178;/(2P) =
+          Q<sub>tot</sub> h/(2P𝔄) — exactly <b>half</b> of &#916;C<sub>tube</sub>.</p>
+          <p>The true drop is 2&#215; the &#8220;q𝓡<sub>geom</sub>&#8221; value, because the load sits
+          at the far tip and must traverse the whole tube, whereas 𝓡<sub>geom</sub> weights by
+          upstream volume as if demand were spread out. Since Q<sub>&#8595;</sub> &#8800; qV the &#167;2
+          identity fails — and multiplying the already-demand-weighted &#916;C<sub>tube</sub> by a
+          further q would compound the very error the split exists to prevent.</p>
         </div>
       </details>
     </div>
@@ -1053,7 +1221,28 @@ details.cp[open] .reveal::before{content:"hide"}
       decidable: the largest adjacent-rung collinearity is |corr| = 0.369, far below the &#8776;0.98 that
       would signal redundant rungs, so each rung carries independent information.</p>
 
-    <h3>&#167;3 <em>&nbsp;Comparing models, and why correlation is not enough</em></h3>
+    <h3>&#167;3 <em>&nbsp;A family where distance is blind</em></h3>
+    <p>Here is the dichotomy as a single measured picture. Build a family of geometries all sharing the
+      <em>same</em> maximum distance to supply; then distance, by construction, cannot tell them apart.
+      Yet the true burden ranges across the whole dichotomy:</p>
+
+    <div class="eq"><span class="cid">worked &#183; matched distance, unmatched burden</span>
+      taper horns: &#961;<sub>u</sub> &#8810; 1&nbsp;&nbsp;&#8226;&nbsp;&nbsp; matched-Krogh bottleneck: &#961;<sub>u</sub> = &#8741;u&#8741;<sub>&#8734;</sub>/u<sub>Krogh</sub> = <b>1.83</b>
+      <span class="note">The bottleneck, matched to its Krogh cylinder on maximum distance, total
+      demand, and volume, is 83% <em>more</em> burdensome than that cylinder — while a horn at the same
+      maximum distance is far <em>less</em>. Distance is identical across the family, so its
+      correlation with the true burden is exactly <b>0.00</b>. Whatever carries the signal, it is not
+      distance. <span class="tag forced">forced</span></span>
+    </div>
+
+    <p>And a surrogate that watches the right thing <em>can</em> see it. On a matched bottleneck the
+      exact burden &#8741;u&#8741;<sub>&#8734;</sub> rises <b>1.66&#215;</b>; the exact flux-tube
+      reduction tracks it at <b>1.63&#215;</b> (close, and a genuinely distinct ratio); geodesic
+      distance moves by <b>1.6%</b> — essentially nothing. That gap between 1.63&#215; and 1.6% is the
+      entire case for measuring demand-through-cross-section instead of length.
+      <span class="tag forced">forced</span></p>
+
+    <h3>&#167;4 <em>&nbsp;Comparing models, and why correlation is not enough</em></h3>
     <p>The eventual biological test (Phase C) is organized around four models, and the comparison
       discipline is the point:</p>
 
@@ -1080,7 +1269,7 @@ details.cp[open] .reveal::before{content:"hide"}
       maximum distance on geometries built so the two disagree.</span>
     </div>
 
-    <h3>&#167;4 <em>&nbsp;What it means, with free-energy demoted</em></h3>
+    <h3>&#167;5 <em>&nbsp;What it means, with free-energy demoted</em></h3>
     <p>The empirical content stands with the free-energy principle <em>discarded</em>: FEP is at most an
       optional interface language, it does not generate the transport functional, and the explanatory
       arrow stays physical — geometry sets the PDE burden 𝓡<sub>G</sub> = u/Q<sup>&#8727;</sup>, which
@@ -1131,6 +1320,24 @@ details.cp[open] .reveal::before{content:"hide"}
           (&#961;<sub>u</sub> &#8776; 1) are the principled near-Krogh negative control; muscle, where
           facilitated transport can negate diffusion distance, is a stress test both ATR and Krogh may
           fail.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q4</span><span class="qtext">Worked exercise. On
+        the 16-geometry matched-distance family the ablation rungs correlate with the true burden u at
+        0.00 (distance), &#8722;0.85 (restriction alone), +0.23 (demand alone), +0.92
+        (restriction&#215;demand). You may ship one rung. Which, and what do the four numbers
+        prove?</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Ship the restriction&#215;demand product (+0.92) — nothing else. Distance is blind here by
+          design (0.00). Restriction alone is not merely weak but <em>inversely</em> aligned
+          (&#8722;0.85): shipped by itself it would rank geometries backwards. Demand alone is weakly
+          aligned (+0.23). Only when the two are multiplied and integrated along the path does the
+          correlation jump to +0.92 — a direct, pre-biological readout of the thesis that burden tracks
+          Q<sub>&#8595;</sub>(s)/(P𝔄).</p>
+          <p>And the jump is real information, not double counting: the largest adjacent-rung
+          collinearity is |corr| = 0.369, far below the &#8776;0.98 that would flag two rungs measuring
+          the same thing. The interaction genuinely carries what neither factor holds alone.
+          <span class="tag forced">forced</span></p>
         </div>
       </details>
     </div>

@@ -409,66 +409,108 @@ details.cp[open] .reveal::before{content:"hide"}
 
     <div class="run"><b>33/33</b><i>exact checks passed</i></div>
 
+    <p>Here is the question the whole course answers: <em>what would it mean for a piece of mathematics to
+      learn?</em> The framework's answer is disarmingly concrete. Take a number field — the numbers you reach
+      by adjoining one algebraic number &#952; to the rationals — and equip it with a single exact ruler. Then
+      "learning" is nothing more mysterious than driving a measured error to zero, and "understanding" a new
+      number is the exact event that its error vanishes. This first lesson builds the ruler. Everything after
+      it is that ruler used in earnest.</p>
+
     <h3>&#167;1 <em>&nbsp;Three coordinate systems, one object</em></h3>
     <p>Let <span class="m">&#8474;(&#952;)</span> be a number field of degree
       <span class="m">n = [&#8474;(&#952;):&#8474;]</span>, with <span class="m">&#952;</span> a root of an
       irreducible monic <span class="m">m&#952; &#8712; &#8484;[x]</span>. It admits three classical
       descriptions that are <em>not</em> three analogies but one object in three coordinate systems:</p>
     <ul>
-      <li>a <strong>&#8474;-vector space</strong> of dimension n, basis {1, &#952;, &#8230;, &#952;<sup>n&#8722;1</sup>};</li>
+      <li>a <strong>&#8474;-vector space</strong> of dimension n, basis {1, &#952;, &#8230;, &#952;<sup>n&#8722;1</sup>} — a number is a list of n rationals;</li>
       <li>a commutative <strong>matrix algebra</strong> in M<sub>n</sub>(&#8474;) — the <em>regular
         representation</em> &#961;, under which multiplication by &#952; is the companion matrix
         C(m&#952;);</li>
       <li>a full-rank <strong>Euclidean lattice</strong> in &#8477;<sup>n</sup> via the Minkowski
-        embedding &#963; = (&#963;&#8321;, &#8230;, &#963;<sub>n</sub>) of the n archimedean places.</li>
+        embedding &#963; = (&#963;&#8321;, &#8230;, &#963;<sub>n</sub>) — the n ways to send &#952; to one of
+        its conjugates.</li>
     </ul>
+    <p>A single rational bilinear form glues the three faces, and it is the object the rest of the course
+      computes with. It is the <strong>trace form</strong>: pair two numbers by multiplying them and taking the
+      field trace — the sum over all n embeddings.</p>
 
     <div class="eq"><span class="cid">eq:traceform</span>
       T(x, y) = Tr<sub>K/&#8474;</sub>(xy) = &#8721;&#7522; &#963;&#7522;(x)&#183;&#963;&#7522;(y)
-      <span class="note">The <b>trace form</b>: one rational bilinear form. Membership in the field
-      becomes decidable by exact rational arithmetic under it.</span>
+      <span class="note">The <b>trace form</b>: one rational bilinear form. The trace collapses all n
+      conjugates to a single rational, so <em>membership in the field becomes decidable by exact rational
+      arithmetic</em> — no floating point, no roots. That decidability is the entire point.</span>
     </div>
 
     <h3>&#167;2 <em>&nbsp;The gluing matrix G = M&#7488;M</em></h3>
-    <p>In a basis {&#969;&#7522;}, the matrix <span class="m">G&#7522;&#11388; = Tr(&#969;&#7522;&#969;&#11388;)</span>
-      is the bridge: it is simultaneously the Gram matrix of the algebra's pairing and the Gram matrix of
-      the embedded lattice, because each embedding is a ring homomorphism.</p>
+    <p>Pick a basis {&#969;&#7522;}. Recording the trace form on it gives one matrix
+      <span class="m">G&#7522;&#11388; = Tr(&#969;&#7522;&#969;&#11388;)</span>, and this single matrix is the
+      bridge: it is at once the Gram matrix of the algebra's pairing and the Gram matrix of the embedded
+      lattice, because each embedding &#963;&#7522; is a ring homomorphism and the trace is their sum.</p>
 
     <div class="eq"><span class="cid">Thm 2.13</span>
       G = M&#7488;M, &nbsp; det G = d<sub>K</sub> &nbsp;(integral basis), &nbsp;
       signature (r&#8321;+r&#8322;, r&#8322;) &#8212; <b>positive definite iff totally real</b>
-      <span class="note">M is the embedding matrix M<sub>ki</sub> = &#963;<sub>k</sub>(&#969;&#7522;). The
-      determinant of the trace form <em>is</em> the field discriminant on an integral basis; its Jeffreys
-      volume &#8730;|d<sub>K</sub>| identifies the discriminant with an information volume
-      <span class="tag forced">forced</span>. When complex places enter (r&#8322; &gt; 0) the
+      <span class="note">M is the embedding matrix M<sub>ki</sub> = &#963;<sub>k</sub>(&#969;&#7522;). Reading
+      G = M&#7488;M off the definition takes one line: G&#7522;&#11388; = &#8721;<sub>k</sub>
+      &#963;<sub>k</sub>(&#969;&#7522;)&#963;<sub>k</sub>(&#969;&#11388;). The determinant of the trace form
+      <em>is</em> the field discriminant on an integral basis. When complex places enter (r&#8322; &gt; 0) the
       positive-definite companion is the Hermitian form G&#8322; = M*M, det = |d<sub>K</sub>|.</span>
     </div>
 
-    <p>The running example is the golden field. In <span class="m">&#8474;(&#8730;5)</span> with basis
-      {1, &#966;} (&#966; = (1+&#8730;5)/2, the root of x² &#8722; x &#8722; 1):</p>
+    <p>Make it concrete in the golden field. In <span class="m">&#8474;(&#8730;5)</span> with basis
+      {1, &#966;} (&#966; = (1+&#8730;5)/2, the root of x² &#8722; x &#8722; 1), every entry of G is a trace you
+      can do in your head:</p>
 
     <div class="eq"><span class="cid">test_trace_form</span>
       G = <span class="mat c2"><i>2</i><i>1</i><i>1</i><i>3</i></span>,
       &nbsp; det G = 5 = d<sub>&#8474;(&#8730;5)</sub>, &nbsp; sign(det G) = (&#8722;1)<sup>r&#8322;</sup>
-      <span class="note">Read straight off three traces: Tr(1) = 2, Tr(&#966;) = 1 (since
-      &#966; + &#968; = 1), and Tr(&#966;²) = Tr(&#966; + 1) = 3. &#8484;[&#966;] <em>is</em> the maximal
-      order, so det G is exactly the discriminant, and the sign of the determinant is the definiteness
-      flag — a fact Lesson 4 will read as the sign of a discriminant.</span>
+      <span class="note">Read straight off three traces: Tr(1) = 2 (each of two embeddings fixes 1),
+      Tr(&#966;) = 1 (since &#966; + &#968; = 1, the sum of the two roots), and Tr(&#966;²) = Tr(&#966; + 1) = 3.
+      &#8484;[&#966;] <em>is</em> the maximal order, so det G = 2&#183;3 &#8722; 1 = 5 is exactly the
+      discriminant, and the sign of the determinant is the definiteness flag — a fact Lesson 4 will read as the
+      sign of a discriminant.</span>
     </div>
 
     <h3>&#167;3 <em>&nbsp;The spectral bridge</em></h3>
-    <p>The regular representation is diagonalised by the Minkowski embedding, so its spectrum <em>is</em>
-      the set of Galois conjugates. Hence the Mahler measure — the product of root moduli that escape the
-      unit circle — is a <strong>spectral invariant of the companion matrix</strong>: M(&#952;) =
-      &#8719;<sub>|&#955;|&gt;1</sub> |&#955;| over the eigenvalues &#955; of &#961;(&#952;)
+    <p>Why should a metric matrix know anything about heights and dynamics? Because the matrix face and the
+      lattice face are one operator in two bases. The Minkowski embedding <em>diagonalises</em> the regular
+      representation: <span class="m">M&#961;(x)M&#8315;&#185; = diag(&#963;&#8321;(x), &#8230;,
+      &#963;<sub>n</sub>(x))</span> for every x at once. So the eigenvalues of the companion matrix
+      &#961;(&#952;) are exactly the Galois conjugates of &#952; — its <em>roots</em>.</p>
+    <p>One consequence is the hinge of the whole series. The Mahler measure — the product of root moduli that
+      escape the unit circle — is therefore a <strong>spectral invariant of the companion matrix</strong>:
+      M(&#952;) = &#8719;<sub>|&#955;|&gt;1</sub> |&#955;| over the eigenvalues &#955; of &#961;(&#952;)
       <span class="tag forced">forced</span>. The same rational matrix that carries the metric carries the
-      height. This single identification is why the geometry of Lessons 1–3 and the cost of Lesson 4 are
-      one object.</p>
+      height. This single identification is why the geometry of Lessons 1&#8211;3 and the cost of Lesson 4 are
+      one object. Worked once: in &#8474;(&#8730;5), M diagonalising &#961;(&#966;) gives eigenvalues &#966;
+      and &#968;, so charpoly(&#961;(&#966;)) = x² &#8722; x &#8722; 1 = m&#966; and M(&#966;) = &#966;
+      <span class="tag computed">computed</span>.</p>
 
-    <h3>&#167;4 <em>&nbsp;Capture is a vanishing residual</em></h3>
-    <p>Fix a <em>forced basis</em>: a full-rank <span class="m">B &#8712; &#8474;<sup>n&#215;m</sup></span>
-      whose columns are coordinate vectors of algebraic integers, spanning col(B). Provided
-      B&#7488;GB is invertible, define the trace-form projector and residual:</p>
+    <h3>&#167;4 <em>&nbsp;The discriminant is an information volume</em></h3>
+    <p>Before the metric learns anything, it already prices the <em>field itself</em>. Read G as a Fisher
+      information matrix: put an isotropic Gaussian on the Minkowski space with mean Ma, and the Fisher
+      information in the coordinate a is exactly M&#7488;M = G <span class="tag forced">forced</span>. This is a
+      classical location-family fact, assembled here rather than proved new — and it makes the trace form a
+      natural Riemannian metric of a statistical manifold, the reading Lesson 4 turns into an exchange rate.</p>
+
+    <div class="eq"><span class="cid">prop:discvol</span>
+      vol<sub>Jeffreys</sub> = &#8730;(det G) = &#8730;|d<sub>K</sub>| = covol(&#963;(&#119978;<sub>K</sub>))
+      <span class="note">The Jeffreys prior density of a Fisher metric is &#8730;(det Fisher); for the constant
+      metric G it integrates over one lattice cell to &#8730;|d<sub>K</sub>|, the Minkowski covolume. So the
+      square root of the discriminant is the natural <em>information volume</em> of one integer cell: a more
+      ramified field is, in a precise statistical sense, larger to learn.</span>
+    </div>
+
+    <p>The numbers are legible. &#8474;(&#8730;5) has cell volume &#8730;5 &#8776; 2.236; &#8474;(&#8730;2)
+      has 2&#8730;2 &#8776; 2.828; the more ramified &#8474;(&#8731;2) has 6&#8730;3 &#8776; 10.39 — about 4.6
+      times a golden cell. "More ramified" is here <em>literally</em> "more information volume per lattice cell"
+      <span class="tag computed">computed</span>.</p>
+
+    <h3>&#167;5 <em>&nbsp;Capture is a vanishing residual</em></h3>
+    <p>Now the metric learns. Fix a <em>forced basis</em>: a full-rank
+      <span class="m">B &#8712; &#8474;<sup>n&#215;m</sup></span> whose columns are coordinate vectors of
+      algebraic integers, spanning col(B) — the model's current dictionary. Provided B&#7488;GB is invertible,
+      define the trace-form projector and residual:</p>
 
     <div class="eq"><span class="cid">eq:projector &#183; eq:capture</span>
       P = B(B&#7488;GB)&#8315;&#185;B&#7488;G, &nbsp;&nbsp; r(x) = x &#8722; Px<br>
@@ -478,8 +520,8 @@ details.cp[open] .reveal::before{content:"hide"}
       pure novelty, carrying no component already explained. The capture criterion is
       <span class="tag forced">forced</span> — the last equivalence needs G positive definite, i.e. a
       totally real field. "Understanding" is, in this framework, <em>exactly</em> a zero residual: the
-      predicate is forced, but reading it as "learned" is a <span class="tag declared">declared</span>
-      naming choice, and it is an equation either way, never a threshold.</span>
+      predicate is forced, but reading it as "learned" is a <span class="tag declared">declared</span> naming
+      choice, and it is an equation either way, never a threshold.</span>
     </div>
 
     <p>Watch it decide, entirely in &#8474;. Take the forced basis
@@ -488,13 +530,13 @@ details.cp[open] .reveal::before{content:"hide"}
       <span class="m">2&#966; = (0, 2)&#7488;</span> has P(2&#966;) = 2&#966;, residual 0:
       <strong>captured</strong>. The element <span class="m">&#8730;5 = 2&#966; &#8722; 1 = (&#8722;1, 2)&#7488;</span>
       projects to (0, &#8531;)&#7488;, so r = (&#8722;1, &#8531;)&#7488; &#8800; 0 with
-      &#8214;r&#8214;<sub>G</sub>² = 5/3 &gt; 0: <strong>off-axis novelty</strong>. Every quantity is an
-      exact rational.</p>
+      &#8214;r&#8214;<sub>G</sub>² = 5/3 &gt; 0: <strong>off-axis novelty</strong>. Every quantity is an exact
+      rational — the residual norm is read only as a real <em>magnitude</em> ("how far off"), never thresholded
+      to make the decision.</p>
 
     <div class="eq" style="border-left-color:var(--ochre)"><span class="cid">the discipline</span>
       <span class="note" style="margin:0;font-size:15px"><b>Decide over &#8474;/&#8484;, measure over
-      &#8477;.</b> The number &#8214;r&#8214;<sub>G</sub> is read only as a real <em>magnitude</em> ("how
-      far off"). A float never crosses a decision boundary anywhere in the construction — the same discipline
+      &#8477;.</b> A float never crosses a decision boundary anywhere in the construction — the same discipline
       that makes the height gate of Lesson 2 immune to rounding noise.</span>
     </div>
 
@@ -512,34 +554,47 @@ details.cp[open] .reveal::before{content:"hide"}
         </div>
       </details>
 
-      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Why is the equivalence
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">A second worked build. In
+        &#8474;(&#8730;2), basis {1, &#8730;2}, compute G from the traces, read det G, and give the field's
+        Jeffreys information volume.</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Tr(1) = 2; Tr(&#8730;2) = &#8730;2 + (&#8722;&#8730;2) = 0; Tr((&#8730;2)²) = Tr(2) = 4. So
+          G = <span class="mat c2"><i>2</i><i>0</i><i>0</i><i>4</i></span>, diagonal because 1 and &#8730;2 are
+          trace-orthogonal, and det G = 8 = d<sub>&#8474;(&#8730;2)</sub>. The information volume is
+          &#8730;(det G) = &#8730;8 = 2&#8730;2 &#8776; 2.828 — a touch larger than the golden cell's &#8730;5,
+          because &#8474;(&#8730;2) is the more ramified field <span class="tag computed">computed</span>.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Why is the equivalence
         &#8214;r&#8214;<sub>G</sub>² = 0 &#8660; r = 0 guaranteed only on a <em>totally real</em> field,
         and what replaces G when it fails?</span><span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
           <p>The forward direction needs G <strong>positive definite</strong>, which holds iff r&#8322; = 0
           (totally real). With a complex place the signature is (r&#8321;+r&#8322;, r&#8322;) — indefinite —
           and a nonzero r can satisfy r&#7488;Gr = 0, so the norm-zero test would report a false capture.
-          The fix the paper prescribes is the Hermitian companion <strong>G&#8322; = M*M</strong>, which is
-          positive definite with det = |d<sub>K</sub>|; the whole projector/residual calculus runs verbatim
-          over it. (Lesson 4 shows this is the same event as the sign flip of a discriminant.)</p>
+          The fix the paper prescribes is the Hermitian companion <strong>G&#8322; = M*M</strong>, positive
+          definite with det = |d<sub>K</sub>|; the whole projector/residual calculus runs verbatim over it.
+          (Lesson 4 shows this is the same event as the sign flip of a discriminant.)</p>
         </div>
       </details>
 
-      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">The residual is G-orthogonal
+      <details class="cp"><summary><span class="qn">Q4</span><span class="qtext">The residual is G-orthogonal
         to col(B). In one sentence, why does that make it exactly the object to be learned?</span>
         <span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
           <p>Because B&#7488;G&#183;r = 0 means r pairs to zero, under the trace, against the entire current
-          dictionary — it is the part of x <em>invisible</em> to the model in the trace pairing, so
-          capturing it is exactly adjoining the missing direction and nothing already known.</p>
+          dictionary — it is the part of x <em>invisible</em> to the model in the trace pairing (its
+          dual-basis direction), so capturing it is exactly adjoining the missing direction and nothing
+          already known.</p>
         </div>
       </details>
     </div>
 
     <div class="handoff"><span class="lbl">hands on to Lesson 2</span>
-      A projector that decides capture over &#8474;, a residual that is pure novelty, and a spectral
-      reading of the Mahler measure — waiting for the loop that drives the residual to zero, and the height
-      that keeps the growth finite.
+      A projector that decides capture over &#8474;, a residual that is pure novelty, a discriminant read as an
+      information volume, and a spectral reading of the Mahler measure — waiting for the loop that drives the
+      residual to zero, and the height that keeps the growth finite.
     </div>
   </div>
 </section>
@@ -562,26 +617,42 @@ details.cp[open] .reveal::before{content:"hide"}
 
     <div class="run"><b>56/56</b><i>exact checks passed</i></div>
 
+    <p>Lesson 1 built a ruler that says <em>captured</em> or <em>not captured</em>. That is a static verdict; a
+      learner has to <em>do</em> something when the verdict is "not captured" — it must grow until the novelty
+      is explained. Two dangers appear the moment growth is allowed. Growth could run forever, defeating the
+      point of an exact finite model; and growth could be triggered by noise. This lesson turns the static
+      criterion into a streaming loop, then fences it with a single arithmetic idea — the height of a number —
+      that makes both dangers provably bounded.</p>
+
     <h3>&#167;1 <em>&nbsp;The residual is the loss</em></h3>
-    <p>In place of a differentiable loss minimised by gradient descent, the framework uses the exact
-      residual as its error signal. The Pythagorean decomposition splits each observation, and learning
-      drives the residual to zero by enlarging col(B):</p>
+    <p>In place of a differentiable loss minimised by gradient descent, the framework uses the exact residual
+      as its error signal. There is no learning rate and no approximation; the Pythagorean decomposition splits
+      each observation cleanly into what the model already explains and what it does not:</p>
 
     <div class="eq"><span class="cid">eq:pythagoras</span>
       &#8214;x&#8214;<sub>G</sub>² = &#8214;Px&#8214;<sub>G</sub>² + &#8214;r(x)&#8214;<sub>G</sub>²
-      <span class="note">Immediate from G-orthogonality of Px and r. The streaming <em>learner</em> makes
-      this a loop: residual is loss, capture is r&#8202;&#8594;&#8202;0, and growth is a gated
-      <b>propose-for-confirm</b> protocol whose sole basis mutator (<code>confirm</code>) appends a
-      SHA-256 witness chain. Every decision is over &#8474;; a float raises <code>TypeError</code> before it
-      touches the decision core <span class="tag forced">forced</span>.</span>
+      <span class="note">Immediate from G-orthogonality of Px and r. Learning drives the second term to zero by
+      enlarging col(B). The streaming <em>learner</em> makes this a loop: residual is loss, capture is
+      r&#8202;&#8594;&#8202;0, and growth is a gated <b>propose-for-confirm</b> protocol whose sole basis
+      mutator (<code>confirm</code>) appends a SHA-256 witness chain. Every decision is over &#8474;; a float
+      raises <code>TypeError</code> before it touches the decision core <span class="tag forced">forced</span>.</span>
     </div>
 
+    <p>Three operations keep the mutation honest. <code>observe</code> computes the residual and never touches
+      the basis; <code>propose</code> is pure — it returns a candidate seed only after the residual direction
+      has persisted and the capacity gate admits it; <code>confirm</code> is the <em>one</em> line that adjoins
+      a column, re-derives P, and appends a tamper-evident hash link. A trained model is therefore a short
+      replayable record, not an opaque blob: a restart is exact re-derivation from the seeds, agreeing as an
+      operator and not merely to a tolerance.</p>
+
     <h3>&#167;2 <em>&nbsp;Growth: basis enlargement, and the compositum</em></h3>
-    <p>The learner's ambient field never changes silently — a deliberate invariant. When a
-      <em>persistent</em> off-field residual appears, a new field is mathematically a new learner. The
-      coordinates-to-minimal-polynomial bridge computes the seed exactly:
-      <span class="m">m&#945;</span> is the largest invariant factor of xI &#8722; &#961;(&#945;), read off
-      the Smith normal form <span class="tag forced">forced</span>. Two construction modes, one decision:</p>
+    <p>The learner's ambient field never changes silently — a deliberate invariant. Sometimes the residual is
+      still an element of the current field K, and growth is just a new column. But sometimes the observed
+      quantity is forced into a strictly larger field: then a new field is mathematically a new learner. To name
+      the seed exactly the framework reads its minimal polynomial off linear algebra —
+      <span class="m">m&#945;</span> is the largest invariant factor of xI &#8722; &#961;(&#945;), from the
+      Smith normal form, computed rationally and rootlessly <span class="tag forced">forced</span>. Two
+      construction modes, one decision:</p>
     <ul>
       <li><strong>Disjoint:</strong> W = K &#8855; L with Kronecker Gram
         <span class="m">G<sub>W</sub> = G<sub>K</sub> &#8855; G<sub>L</sub></span> — and
@@ -589,73 +660,131 @@ details.cp[open] .reveal::before{content:"hide"}
         running as a runtime self-check <span class="tag forced">forced</span>.</li>
       <li><strong>Non-disjoint:</strong> the <em>true</em> compositum of smaller degree, built by factoring
         the candidate's minimal polynomial over K. This <strong>resolves the open problem the substrate
-        paper flagged</strong> (its O4) in the bounded-degree case, with a machine-verified degree-4
-        witness &#8474;(&#8730;2)(&#8730;2+&#8730;3) = &#8474;(&#8730;2, &#8730;3)
-        <span class="tag computed">computed</span>.</li>
+        paper flagged</strong> (its O4) in the bounded-degree case <span class="tag computed">computed</span>.</li>
     </ul>
 
+    <p>The non-disjoint witness is worth seeing, because it is exactly where the naive picture fails. Over
+      K = &#8474;(&#8730;2), adjoin &#946; = &#8730;2 + &#8730;3, whose minimal polynomial
+      x&#8308; &#8722; 10x² + 1 <em>factors</em> over K as (x² &#8722; 2&#8730;2&#8202;x &#8722; 1)(x² +
+      2&#8730;2&#8202;x &#8722; 1). So &#946; satisfies a <em>quadratic</em> over K, not a quartic: the true
+      compositum &#8474;(&#8730;2, &#8730;3) has degree 4, <em>not</em> the tensor degree 2&#183;4 = 8. A
+      Kronecker 8&#215;8 Gram would describe a space that does not exist. The construction picks the primitive
+      element &#952; = &#8730;2 + &#946;, whose degree-6 operator polynomial factors as
+      (x² &#8722; 3)(x&#8308; &#8722; 22x² + 25), and selects the genuine factor
+      <span class="m">m&#952; = x&#8308; &#8722; 22x² + 25</span>, rejecting the spurious x² &#8722; 3
+      <span class="tag computed">computed</span>.</p>
+
     <h3>&#167;3 <em>&nbsp;The height gate: Northcott, decided in &#8484;</em></h3>
-    <p>Unbounded growth would defeat an exact finite model. Capacity is bounded by arithmetic height,
-      which makes the admissible seed set provably finite.</p>
+    <p>Unbounded growth would defeat an exact finite model. Capacity is bounded by arithmetic height, which
+      makes the admissible seed set not merely finite but <em>listable</em>.</p>
 
     <div class="eq"><span class="cid">Thm 5.2 &#183; Prop 5.5</span>
       M(&#952;) = height(&#952;)<sup>deg &#952;</sup>, &nbsp; M(p)² &#8804; &#8721;&#7522; c&#7522;²
       &#8712; &#8484; &nbsp;(Landau)<br>
       admissible &#8660; deg(m) &#8804; D<sub>max</sub> &nbsp;<b>and</b>&nbsp; ch(m) &#8804; H<sub>max</sub>
-      <span class="note">Landau's inequality bounds the (float) Mahler measure by an exact integer;
-      Northcott's theorem makes finitely many algebraic integers of bounded degree and height
-      <span class="tag estab">established</span>. So the gate is decided <em>entirely in &#8484;</em> from
-      (degree, coefficient-height) — the Mahler value never enters
+      <span class="note">Landau's inequality bounds the (float) Mahler measure by an exact integer — the sum of
+      squared coefficients; Northcott's theorem makes finitely many algebraic integers of bounded degree and
+      height <span class="tag estab">established</span>. So the gate is decided <em>entirely in &#8484;</em>
+      from (degree, coefficient-height) — the Mahler value never enters
       <span class="tag forced">forced</span>. The gate <code>capacity_decision</code> returns
       GROW / STOP / REJECT.</span>
     </div>
 
-    <p class="small"><em>The float never crosses the gate.</em> The exact value M(&#8730;7) = 7 is returned
-      by a root finder as 7.000000000000001 — strictly above 7. A naive test "M &#8804; 7" would reject
-      &#8730;7 on rounding noise; the integer gate, reading only (deg, ch), cannot. This is Lesson 1's
-      discipline cashed in at a decision boundary.</p>
+    <p>Finiteness is concrete, not asymptotic. Under the tiny budget (D<sub>max</sub>, H<sub>max</sub>) =
+      (2, 1) the admissible monic integer polynomials number exactly 3 + 9 = 12: three linear and nine
+      quadratic. Two of the quadratics are irreducible new fields (x² &#8722; x &#8722; 1 = &#966; and
+      x² + x &#8722; 1); x² + 1 cuts out &#8474;(i); the rest are reducible and define no new field. Raising
+      H<sub>max</sub> to 24 first admits 2&#8730;6 (x² &#8722; 24). The budget is precisely the dial that
+      bounds an <em>explicitly enumerable</em> dictionary.</p>
+
+    <p class="small"><em>The float never crosses the gate.</em> The exact value M(&#8730;7) = 7 is returned by
+      a root finder as 7.000000000000001 — strictly above 7. A naive test "M &#8804; 7" would reject &#8730;7 on
+      rounding noise; the integer gate, reading only (deg, ch), cannot. This is Lesson 1's discipline cashed in
+      at a decision boundary.</p>
 
     <h3>&#167;4 <em>&nbsp;The cost floor: Smyth, and the reciprocal core</em></h3>
     <p>Frame growth as information gained versus spent: gain = &#8214;r&#8214;<sub>G</sub>², cost =
       &#955;&#183;log M(&#952;), where log M is the seed's topological entropy (its intrinsic description
-      length). Then how cheap can a genuine seed be?</p>
+      length). One grows precisely when the code saved exceeds the code spent — a minimum-description-length
+      test. Then how cheap can a genuine seed be?</p>
 
     <div class="eq"><span class="cid">thm:smythfloor</span>
       non-reciprocal, non-cyclotomic &nbsp;&#8658;&nbsp; M(p) &#8805; &#956;&#8347; = 1.3247179&#8230;
       <span class="note">Smyth's theorem: &#956;&#8347; is the plastic number, the real root of
       x&#179; &#8722; x &#8722; 1, and the smallest Mahler measure of a non-reciprocal algebraic integer
-      <span class="tag estab">established</span>. Hence the cost of any non-reciprocal genuine seed is at
-      least &#955;&#183;log &#956;&#8347; &gt; 0 <span class="tag forced">forced</span>. The worked seeds
+      <span class="tag estab">established</span>. Hence the cost of any non-reciprocal genuine seed is at least
+      &#955;&#183;log &#956;&#8347; &gt; 0 <span class="tag forced">forced</span>. The worked seeds
       &#966; (x² &#8722; x &#8722; 1), 2&#8730;6 (x² &#8722; 24), &#8730;7 (x² &#8722; 7) are all
       non-reciprocal, so their floors are unconditional.</span>
     </div>
 
-    <p>The reciprocal case is the unsolved core. Every known Mahler measure in (1, &#956;&#8347;) comes
-      from a <em>reciprocal</em> integer, and Salem numbers and units arise naturally as seeds; for them
-      there is <strong>no proven uniform positive floor</strong> — only Dobrowolski's degree-dependent
-      bound, which tends to 1, or Lehmer's conjectural &#956;<sub>L</sub> = 1.17628&#8230;
+    <p>Why insist on a <em>nonzero</em> floor? Because a floor of 0 grows on noise. In &#8474;(&#8730;5) take
+      the residual centroid r = (1/10)&#8730;5 — an exact rational multiple of the off-axis direction,
+      trace-zero and genuinely off-axis, yet tiny: &#8214;r&#8214;<sub>G</sub>² = (1/100)&#183;10 = 1/10. The
+      shipped gate (floor 0) would GROW on it — noise that merely happens to land on the lattice — while the
+      Smyth floor &#955;&#183;log &#956;&#8347; = 0.562 STOPs it, since 1/10 &lt; 0.562
+      <span class="tag computed">computed</span>. That is the concrete job of the floor.</p>
+
+    <p>The reciprocal case is the unsolved core. Every known Mahler measure in (1, &#956;&#8347;) comes from a
+      <em>reciprocal</em> integer, and Salem numbers and units arise naturally as seeds; for them there is
+      <strong>no proven uniform positive floor</strong> — only Dobrowolski's degree-dependent bound, which
+      tends to 1, or Lehmer's conjectural &#956;<sub>L</sub> = 1.17628&#8230;
       <span class="tag open">open</span>. Lesson 4 closes exactly this gap on the framework's <em>own</em>
       emission image, without touching general Lehmer.</p>
+
+    <h3>&#167;5 <em>&nbsp;One streaming episode, end to end</em></h3>
+    <p>All the pieces run in one loop. Ambient field K = &#8474;(&#8730;2+&#8730;3), forced basis {1, &#952;};
+      the off-axis quantity 2&#8730;6 = &#952;² &#8722; 5 arrives repeatedly. The detector scores each
+      observation by the exact residual norm and alerts only once a calibration gate opens — detection is
+      decoupled from acting:</p>
+
+    <div class="tw"><table><caption class="vh">Lesson 2 — one streaming episode</caption>
+      <thead><tr><th scope="col">t</th><th scope="col">observation</th><th scope="col">&#8214;r&#8214;<sub>G</sub>²</th><th scope="col">action</th></tr></thead>
+      <tbody>
+        <tr><td>1&#8211;2</td><td>a + b&#952; (in col B)</td><td>0</td><td>captured; nothing proposed</td></tr>
+        <tr><td>3</td><td>1 + 2&#8730;6 (off-axis)</td><td>96</td><td>novelty recorded, alert <em>suppressed</em> (uncalibrated)</td></tr>
+        <tr><td>4</td><td>1 + 2&#8730;6</td><td>96</td><td>calibrated; <em>propose</em> seed x² &#8722; 24</td></tr>
+        <tr><td>5</td><td>confirm</td><td>&#8212;</td><td>basis grows to {1, &#952;, 2&#8730;6}; witnessed</td></tr>
+        <tr><td>6</td><td>1 + 2&#8730;6</td><td>0</td><td><strong>captured</strong> — residual returned to 0</td></tr>
+      </tbody>
+    </table></div>
+
+    <p>The gain 96 clears the cost 2&#183;log 24 = 6.36 by a wide margin, so the decision is GROW — and it is
+      <em>certified</em> without trusting any rounded value: interval arithmetic gives
+      log 24 &#8712; [3.17805, 3.17806], so the cost &#8804; 6.35612, and the exact rational gain 96 dominates
+      that rigorous upper bound <span class="tag forced">forced</span>. Step 6 is the whole point: after one
+      <code>confirm</code>, the once-novel residual is exactly 0.</p>
 
     <div class="cpwrap">
       <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
 
-      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">The worked episode runs in
-        K = &#8474;(&#8730;2+&#8730;3), forced basis {1, &#952;}. The stream carries
-        2&#8730;6 = &#952;² &#8722; 5, G-orthogonal to the basis. Compute the gain
-        &#8214;r&#8214;<sub>G</sub>², and say where the seed's coefficient-height 24 comes from.</span>
-        <span class="reveal" aria-hidden="true"></span></summary>
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">The episode's seed 2&#8730;6 is
+        G-orthogonal to {1, &#952;}. Compute the gain &#8214;r&#8214;<sub>G</sub>², and say where the seed's
+        coefficient-height 24 comes from.</span><span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
           <p>Since the trace is basis-independent,
           &#8214;r&#8214;<sub>G</sub>² = Tr((2&#8730;6)²) = Tr(24) = 4&#183;24 = <strong>96</strong> (the
           degree is 4). The residual <em>is</em> 2&#8730;6 exactly. Its multiplication matrix satisfies
-          M&#945;² = 24I, so its minimal polynomial is x² &#8722; 24, with coefficient-height
-          <strong>24</strong> — the seed is derived, not quoted, and its height is what the Northcott gate
-          reads.</p>
+          M&#945;² = 24I, so its minimal polynomial is x² &#8722; 24, coefficient-height <strong>24</strong> —
+          the seed is derived, not quoted, and its height is what the Northcott gate reads.</p>
         </div>
       </details>
 
-      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Why does raising a basis
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">A worked count. Under the
+        budget (D<sub>max</sub>, H<sub>max</sub>) = (2, 1), how many admissible monic integer polynomials are
+        there, and which of them cut out genuinely new fields?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Each non-leading coefficient ranges over {&#8722;1, 0, 1} (three values); with the leading
+          coefficient fixed at 1 there are 3 linear and 3² = 9 quadratic, so <strong>12</strong> in all — a
+          small, listable set (constructive Northcott). New fields come only from the irreducibles:
+          x² &#8722; x &#8722; 1 (&#966;) and x² + x &#8722; 1, both discriminant 5, and x² + 1 (&#8474;(i)).
+          The reducibles x² &#8722; 1, x² + x, &#8230; factor and define no new field. Finiteness here is not a
+          limit statement; it is an explicit list.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Why does raising a basis
         column by a nonzero rational scale leave P — hence every residual and every capture verdict —
         unchanged?</span><span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
@@ -666,8 +795,8 @@ details.cp[open] .reveal::before{content:"hide"}
         </div>
       </details>
 
-      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Which of the corpus's
-        worked seeds carry an <em>unconditional</em> cost floor, and which class of seed leaves the floor
+      <details class="cp"><summary><span class="qn">Q4</span><span class="qtext">Which of the corpus's worked
+        seeds carry an <em>unconditional</em> cost floor, and which class of seed leaves the floor
         open?</span><span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
           <p>The non-reciprocal seeds — &#966; (x² &#8722; x &#8722; 1), 2&#8730;6 (x² &#8722; 24),
@@ -705,30 +834,53 @@ details.cp[open] .reveal::before{content:"hide"}
 
     <div class="run"><b>21/21</b><i>exact checks passed</i></div>
 
+    <p>So far "residual &#8594; 0" has meant a number field learning. The surprising claim of this lesson is
+      that the <em>identical</em> mechanism, moved to a small matrix algebra, becomes a
+      <strong>language</strong>: a growing dictionary of meanings in which two tokens mean the same thing
+      exactly when they return to the same residue. Nothing here is analogy-by-hand — the two faces share a
+      literal arithmetic object and a byte-identical witness chain. This lesson builds the second face, then
+      shows the bridge.</p>
+
     <h3>&#167;1 <em>&nbsp;The exact carrier</em></h3>
-    <p>The language layer lives in a separate, strictly one-way module — it reads the number-field engine
-      only through a bridge and is never imported back. Its carrier is
-      <span class="m">Cl(2,0) &#8773; M&#8322;(&#8477;)</span>, realised exactly over &#8474; (no float in
-      any decision). A <em>holding</em> is <span class="m">X = a + b&#8202;e&#8321; + c&#8202;e&#8322; + d&#8202;i</span>
-      with a, b, c, d &#8712; &#8474;, where e&#8321;² = e&#8322;² = 1, i = e&#8321;e&#8322;, i² = &#8722;1,
-      and mat(X) = <span class="mat c2"><i>a+c</i><i>b&#8722;d</i><i>b+d</i><i>a&#8722;c</i></span>.</p>
+    <p>The language layer lives in a separate, strictly one-way module — it reads the number-field engine only
+      through a bridge and is never imported back. Its carrier is
+      <span class="m">Cl(2,0) &#8773; M&#8322;(&#8477;)</span>, the algebra of 2&#215;2 real matrices in
+      disguise, realised exactly over &#8474; (no float in any decision). A <em>holding</em> is a four-number
+      code <span class="m">X = a + b&#8202;e&#8321; + c&#8202;e&#8322; + d&#8202;i</span> with
+      a, b, c, d &#8712; &#8474;, where e&#8321;² = e&#8322;² = 1, i = e&#8321;e&#8322;, i² = &#8722;1, and
+      mat(X) = <span class="mat c2"><i>a+c</i><i>b&#8722;d</i><i>b+d</i><i>a&#8722;c</i></span>.</p>
+    <p>Every question about a holding is an exact equality over &#8474;. The gate P&#8320; = &#189;(1 +
+      e&#8322;) is a symmetric idempotent — its idempotence defect vanishes exactly, so it is "captured" by that
+      reading — yet it is <em>not</em> conformal: its trace-free Gram residue is &#189;e&#8322; &#8800; 0. By
+      contrast the unit 1 is conformal, and the keystone R below has type {generator} because it satisfies the
+      golden law X² = X + 1 exactly <span class="tag computed">computed</span>. Each of these is an "==" decision
+      over &#8474;, never a tolerance — the same zero-tolerance discipline as Lesson 1's capture.</p>
 
     <h3>&#167;2 <em>&nbsp;The &#966;-keystone return operator</em></h3>
     <p>The keystone is <span class="m">R = &#189; + e&#8321; &#8722; &#189;e&#8322;</span>, i.e.
       mat(R) = <span class="mat c2"><i>0</i><i>1</i><i>1</i><i>1</i></span> — the companion matrix of
-      x² &#8722; x &#8722; 1. It satisfies the golden law <span class="m">R² = R + I</span>, and mat(R) is
-      symmetric. The <strong>return operator</strong> is the Sylvester self-action:</p>
+      x² &#8722; x &#8722; 1, the very matrix &#961;(&#966;) that opened Lesson 1. It satisfies the golden law
+      <span class="m">R² = R + I</span>, and mat(R) is symmetric. The <strong>return operator</strong> is its
+      Sylvester self-action — apply R on both sides and subtract the identity:</p>
 
     <div class="eq"><span class="cid">eq:Lop</span>
       &#8466;(X) = RX + XR &#8722; X
-      <span class="note">Computed by the exact geometric product and cross-checked against an independent
+      <span class="note">&#8466; measures how far X is from being reproduced by the two-sided action of the
+      keystone. It is computed by the exact geometric product and cross-checked against an independent
       matrix-route oracle, ruling out a single-route bug. R itself is <em>not</em> in the kernel
       (&#8466;(R) = 5/2 + e&#8321; &#8722; &#189;e&#8322; &#8800; 0)
       <span class="tag forced">forced</span>.</span>
     </div>
 
+    <p>Why subtract exactly the identity? The Sylvester map S(X) = RX + XR alone shifts every eigenvalue up by
+      one; the &#8722;X re-centres "no change" at zero, so that <em>captured</em> means literally "the
+      keystone's two-sided action returns X to itself." R is the <em>generator</em> of that action, which is
+      why R itself is the one holding &#8466; cannot fix: it is the source of the dynamics, not one of its
+      settled meanings.</p>
+
     <h3>&#167;3 <em>&nbsp;The kernel is the lexicon</em></h3>
-    <p>The payoff is an exact, hand-rolled rational nullspace — not a floating SVD:</p>
+    <p>The payoff is an exact, hand-rolled rational nullspace — not a floating SVD. Where does the returned
+      residue live?</p>
 
     <div class="eq"><span class="cid">thm:kernel</span>
       ker &#8466; = span{ e&#8321; + 2e&#8322;, &nbsp; i } &nbsp; (<b>exactly 2-dimensional</b>)<br>
@@ -745,13 +897,40 @@ details.cp[open] .reveal::before{content:"hide"}
     <p>Calling that kernel the <strong>&#966;-slack, the lexicon</strong> is the source's own reading: the
       dimension is proved <span class="tag forced">forced</span>, the interpretation is named
       <span class="tag declared">declared</span>. The <em>commit</em> is the exact idempotent projector onto
-      ker &#8466; (a value-pinned matrix, not merely some P² = P), and a learned dictionary value is exactly
-      a committed residue. Tokens with the <em>same</em> exact residue merge to one entry; distinct residues
-      stay distinct <span class="tag forced">forced</span>. So E&#8321; and E&#8321;+1 merge — the constant
-      1 is orthogonal to the slack — while i and 2i share the coarse sign-word (+i) yet remain
-      <em>distinct</em> entries, because dedup keys on the exact value, not the word.</p>
+      ker &#8466; (a value-pinned matrix, not merely some P² = P), and a learned dictionary value is exactly a
+      committed residue. Two tokens with the <em>same</em> exact residue merge to one entry; distinct residues
+      stay distinct <span class="tag forced">forced</span>.</p>
 
-    <h3>&#167;4 <em>&nbsp;One mechanism, two faces</em></h3>
+    <p>This is the very shape of Lesson 1's trace-form projector P: an exact idempotent onto a landing space,
+      with "learned" meaning "lands in the space." The one honest difference between the faces is which piece
+      grows. Here the landing space is fixed — the 2-dimensional &#966;-slack — and the model (the lexicon)
+      grows <em>inside</em> it; on the number-field face the landing space col(B) is itself what grows. Same
+      projector calculus, opposite thing moving.</p>
+
+    <h3>&#167;4 <em>&nbsp;A growing lexicon, traced</em></h3>
+    <p>Generalisation is collapse to a shared residue. Feed five tokens through
+      <em>commit</em>&#8202;&#8594;&#8202;<em>add</em> and the lexicon grows to four entries — the merges and the
+      splits are both decided on the exact value, never the coarse word:</p>
+
+    <div class="tw"><table><caption class="vh">Lesson 3 — five tokens, four lexicon entries</caption>
+      <thead><tr><th scope="col">token</th><th scope="col">committed residue</th><th scope="col">word</th><th scope="col">lexicon</th></tr></thead>
+      <tbody>
+        <tr><td>E&#8321;</td><td>H(0, 1/5, 2/5, 0)</td><td>(+e&#8321;+2e&#8322;)</td><td>new entry</td></tr>
+        <tr><td>E&#8321; + 1</td><td>H(0, 1/5, 2/5, 0)</td><td>(+e&#8321;+2e&#8322;)</td><td><em>merged</em> — same residue</td></tr>
+        <tr><td>i</td><td>H(0, 0, 0, 1)</td><td>(+i)</td><td>new entry</td></tr>
+        <tr><td>2i</td><td>H(0, 0, 0, 2)</td><td>(+i)</td><td>new — same word, distinct value</td></tr>
+        <tr><td>&#8722;i</td><td>H(0, 0, 0, &#8722;1)</td><td>(&#8722;i)</td><td>new — antipode</td></tr>
+      </tbody>
+    </table></div>
+
+    <p>So E&#8321; and E&#8321;+1 merge — the constant 1 is orthogonal to the slack, so it commits to the same
+      residue — a clean picture of generalisation as collapse. But i and 2i share only the coarse sign-word
+      (+i) and remain <em>distinct</em> entries, because dedup keys on the exact value H(0,0,0,1) &#8800;
+      H(0,0,0,2). A jurisdiction firewall keeps the store honest: of 27 statements in the law bank (20 theorem +
+      5 computed + 2 interpretive), only the 25 theorem/computed cross a wire as fact; a learned lexicon entry
+      is <em>computed</em>, never promoted to <em>theorem</em> <span class="tag computed">computed</span>.</p>
+
+    <h3>&#167;5 <em>&nbsp;One mechanism, two faces</em></h3>
     <p>The two faces are the same five-part structure — and the deepest shared piece is not analogy but a
       literal identity: the witness chain is byte-identical in construction across the learner and the
       lexicon.</p>
@@ -771,20 +950,32 @@ details.cp[open] .reveal::before{content:"hide"}
     <p>The bridge between them is one arithmetic object. The companion &#961;(&#966;) = C(x² &#8722; x &#8722; 1)
       of the substrate's first field &#8474;(&#966;), the symmetric matrix R of the return operator (with
       R² = R + I), and the keystone Clifford element are the <strong>same object</strong> — the void law
-      x² = x + 1 — verified equal three independent ways: the integer companion route, the Clifford route,
-      and the live Mahler measure M = &#966; <span class="tag forced">forced</span>. The correspondence
-      itself (residual&#8594;0 = commit, ker = lexicon) is a <span class="tag declared">structural
-      analogy</span> between two verified mechanisms, not a theorem relating them.</p>
-
-    <p class="small">A jurisdiction firewall keeps it honest: of 27 statements in the law bank (20 theorem
-      + 5 computed + 2 interpretive), only the 25 theorem/computed cross a wire as fact; a learned lexicon
-      entry is <em>computed</em>, never promoted to <em>theorem</em>. The layer is one-way disjoint, and its
-      full suite is 121 tests green at the readiness tag <span class="tag computed">computed</span>.</p>
+      x² = x + 1 — verified equal three independent ways: the integer companion route, the Clifford route, and
+      the live Mahler measure M = &#966; <span class="tag forced">forced</span>. The correspondence itself
+      (residual&#8594;0 = commit, ker = lexicon) is a <span class="tag declared">structural analogy</span>
+      between two verified mechanisms, not a theorem relating them. The layer is one-way disjoint, and its full
+      suite is 121 tests green at the readiness tag <span class="tag computed">computed</span>.</p>
 
     <div class="cpwrap">
       <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
 
-      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">From the Sylvester
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">A worked kernel check. Take
+        X = e&#8321; + 2e&#8322;, i.e. mat(X) = <span class="mat c2"><i>2</i><i>1</i><i>1</i><i>&#8722;2</i></span>.
+        Compute &#8466;(X) = RX + XR &#8722; X and confirm X &#8712; ker &#8466;.</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>With mat(R) = <span class="mat c2"><i>0</i><i>1</i><i>1</i><i>1</i></span> and
+          mat(X) = <span class="mat c2"><i>2</i><i>1</i><i>1</i><i>&#8722;2</i></span>:
+          RX = <span class="mat c2"><i>1</i><i>&#8722;2</i><i>3</i><i>&#8722;1</i></span> and
+          XR = <span class="mat c2"><i>1</i><i>3</i><i>&#8722;2</i><i>&#8722;1</i></span>, so
+          RX + XR = <span class="mat c2"><i>2</i><i>1</i><i>1</i><i>&#8722;2</i></span> = X. Hence
+          &#8466;(X) = X &#8722; X = <strong>0</strong>: the two-sided keystone action reproduces X exactly,
+          so e&#8321; + 2e&#8322; is in the kernel — one of its two basis directions. (The other, i, lands the
+          same way.)</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">From the Sylvester
         eigenvalues spec(S) = {2&#966;, 1, 1, 2&#968;}, derive spec(&#8466;) and read off dim ker &#8466;.
         Use &#966; = (1+&#8730;5)/2.</span><span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
@@ -796,7 +987,7 @@ details.cp[open] .reveal::before{content:"hide"}
         </div>
       </details>
 
-      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">E&#8321; and E&#8321;+1
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">E&#8321; and E&#8321;+1
         collapse to one lexicon entry, but i and 2i do not. Explain both, from the commit rule.</span>
         <span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
@@ -808,7 +999,7 @@ details.cp[open] .reveal::before{content:"hide"}
         </div>
       </details>
 
-      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">A design note once claimed
+      <details class="cp"><summary><span class="qn">Q4</span><span class="qtext">A design note once claimed
         N = H(0,&#8722;1,1,0) lay in ker &#8466;. It does not. What went wrong, and which element genuinely
         is in the kernel?</span><span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
@@ -849,12 +1040,20 @@ details.cp[open] .reveal::before{content:"hide"}
 
     <div class="run"><b>97/97</b><i>exact checks passed</i></div>
 
+    <p>Everything so far has left one loose end. The growth rule of Lesson 2 weighs a residual's gain against a
+      seed's cost, <span class="m">&#8214;r&#8214;<sub>G</sub>² &#8805; &#955;&#183;log M(&#952;)</span>, and
+      &#955; looks like a free knob — and a free knob is a free policy. This final lesson removes the freedom in
+      three layers, and the discipline is to keep them apart: the <em>identity</em> &#955; = 2c is forced
+      outright; the scale c cannot be fixed by any symmetry; yet the framework's own gate structure forces a
+      single <em>value</em>, &#955; = &#8730;5.</p>
+
     <h3>&#167;1 <em>&nbsp;The identity &#955; = 2c</em></h3>
-    <p>The growth rule of Lesson 2 — adjoin r iff &#8214;r&#8214;<sub>G</sub>² &#8805; &#955;&#183;log M(&#952;)
-      — contains one scalar &#955;, the <em>exchange rate</em>. Read the gain side as a second-order
-      Kullback–Leibler divergence. Lesson 1 pinned the Fisher metric proportional to G, up to a single
-      positive constant: write &#8497; = G/c. Then, since the score has mean zero and KL vanishes at the
-      matching point, the leading term is the Fisher quadratic form with its structural &#189;:</p>
+    <p>The growth rule contains one scalar &#955;, the <em>exchange rate</em>: how many bits of explained
+      structure are demanded per bit of description cost. Read the gain side as a second-order Kullback–Leibler
+      divergence — the number of nats of code the model saves by adjoining r. Lesson 1 pinned the Fisher metric
+      proportional to G, up to a single positive constant: write &#8497; = G/c. Then, since the score has mean
+      zero and KL vanishes at the matching point, the leading term is the Fisher quadratic form with its
+      structural &#189;:</p>
 
     <div class="eq"><span class="cid">eq:kl2c &#183; eq:balance</span>
       KL(p&#952; &#8214; p<sub>&#952;+r</sub>) = &#189; r&#7488;&#8497;r + O(&#8214;r&#8214;³) =
@@ -924,11 +1123,17 @@ details.cp[open] .reveal::before{content:"hide"}
       C = 1, &nbsp; c = &#8730;5/2, &nbsp; <b>&#955; = 2c = &#8730;5 = &#966; &#8722; &#968;</b>
       <span class="note">Two independent derivations pin the same field, so the value is trustworthy rather
       than aesthetic <span class="tag forced">forced</span> given two constitutive features — and those
-      collapse to one: the seed is <em>the minimal positive-growth companion at the degree that realises a
+      collapse to one: the seed is the <em>minimal positive-growth companion at the degree that realises a
       three-way decision</em>. Keep the three registers apart: &#955; = 2c is forced unconditionally
       (the identity); c is declared (Čencov); &#955; = &#8730;5 is forced <em>given the construction</em>
       (the value).</span>
     </div>
+
+    <p>Because the two constitutive features are not even independent — the ternary decision lives only at
+      degree two, and the minimal positive-growth companion there is exactly R² = R + I — they collapse to a
+      single definition, and below that definition sits no free real parameter, only the gate triple
+      {2, 3, 5}. That triple is itself an invariant of the keystone, not a fourth input: it is read straight
+      off R&#8308; (Checkpoint Q4) <span class="tag forced">forced</span>.</p>
 
     <h3>&#167;5 <em>&nbsp;The flip: one sign, four readings</em></h3>
     <p>The discriminant D = 1 + 4C changes sign once, at C = &#8722;&#188;. This single sign is one event
@@ -996,6 +1201,21 @@ details.cp[open] .reveal::before{content:"hide"}
           eigenvalue to be a fourth root of unity (arguments stay in (&#960;/2)&#8484; because the operations
           only add and double, never take a square root), whereas a Salem number's on-circle conjugate sits
           at an irrational multiple of &#960; — excluded.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q4</span><span class="qtext">A worked exercise. From
+        R² = R + I with R = <span class="mat c2"><i>0</i><i>1</i><i>1</i><i>1</i></span>, compute R&#8308; and
+        read off why the gate triple {2, 3, 5} and the number 7 are invariants of the keystone.</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Iterate the golden law: R² = R + I, R³ = R&#183;R² = R² + R = 2R + I, and R&#8308; = R&#183;R³ =
+          2R² + R = 2(R + I) + R = 3R + 2I. Numerically R&#8308; =
+          <span class="mat c2"><i>2</i><i>3</i><i>3</i><i>5</i></span>, whose entries are the consecutive
+          Fibonacci numbers F&#8323; = 2, F&#8324; = 3, F&#8325; = 5 — exactly the three gate discriminants
+          D &#8712; {2, 3, 5}. Its characteristic polynomial is x² &#8722; 7x + 1 (trace L&#8324; = 2 + 5 = 7,
+          det = 1) — the catalog gap seed, roots &#966;&#8308; and &#966;<sup>&#8722;4</sup>. So the whole
+          gate ladder and the recurring 7 are read off the keystone alone; nothing is imported.</p>
         </div>
       </details>
     </div>

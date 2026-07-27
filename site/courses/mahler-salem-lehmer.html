@@ -403,6 +403,14 @@ details.cp[open] .reveal::before{content:"hide"}
     <p class="small">Reads from <a href="../papers/2026-06-lehmers-box.pdf"><em>Lehmer's Box</em></a> and
       <a href="../papers/2026-06-emission-gap.pdf"><em>The Emission–Gap Theorem</em></a>.</p>
 
+    <p>Everything in this course descends from one number and one refusal. The number is Lehmer's, the
+      smallest Mahler measure above 1 anyone has ever exhibited, unbeaten since 1933; whether measures can
+      creep still closer to 1 is <em>Lehmer's problem</em>, open ever since. The refusal is the corpus's:
+      it declines to attack that problem. Instead it builds a specific machine, proves exactly what the
+      machine <em>cannot make</em>, and shows Lehmer's number is simply not among the machine's outputs —
+      leaving the open problem untouched. This lesson lays down the one definition everything rests on and
+      states the pivot precisely.</p>
+
     <h3>§1 <em>&nbsp;One definition, three values</em></h3>
     <p>For a nonzero <span class="m">p(x) = a<sub>d</sub>∏(x − α<sub>i</sub>) ∈ ℤ[x]</span> the
       <strong>Mahler measure</strong> is the leading coefficient times the product of the root moduli
@@ -424,15 +432,22 @@ details.cp[open] .reveal::before{content:"hide"}
       </tbody>
     </table></div>
 
-    <p>Hold onto the middle row: only <em>one</em> root escapes, so M is that single root, and the
-      escaping root is the golden ratio φ. That polynomial — the <strong>golden seed</strong> — is the
-      keystone the entire construction is built on.</p>
+    <p>The measure has a clean meaning: it is how much a polynomial's roots <em>expand</em>, counting only
+      the ones outside the unit circle and ignoring the rest. Roots on or inside the circle are "free"
+      (factor 1); each root of modulus r &gt; 1 multiplies the measure by r. Hold onto the middle row: only
+      <em>one</em> root escapes, so M is that single root, and the escaping root is the golden ratio φ.
+      That polynomial x² − x − 1 — the <strong>golden seed</strong> — is the keystone the entire
+      construction is built on, and its measure φ will turn out to be the smallest growth the machine can
+      ever produce.</p>
 
     <h3>§2 <em>&nbsp;The floor at 1, completely understood</em></h3>
-    <p>Every factor is ≥ 1, so M ≥ 1 always. <strong>Kronecker (1857)</strong>
-      <span class="tag estab">established</span> settles equality exactly: M(p) = 1 iff every root is 0
-      or a root of unity — i.e. p is a power of x times cyclotomic factors. So M = 1 is the trivial,
-      fully classified locus; every open question lives strictly above 1.</p>
+    <p>Every factor max(1, |α<sub>i</sub>|) is ≥ 1, so M ≥ 1 always — the measure has a hard floor at 1.
+      The question is what sits <em>exactly</em> on that floor, and here the answer is complete and
+      classical. <strong>Kronecker (1857)</strong> <span class="tag estab">established</span> settles
+      equality exactly: M(p) = 1 iff every root is 0 or a root of unity — i.e. p is a power of x times
+      cyclotomic factors. So M = 1 is the trivial, fully classified locus: nothing interesting lives on
+      the floor itself. Every open question lives strictly above 1, and the whole drama is about how
+      <em>close</em> to 1 a measure can get while staying above it.</p>
 
     <h3>§3 <em>&nbsp;Smyth's split, and Lehmer's question</em></h3>
     <p>A polynomial is <strong>reciprocal</strong> if its roots are closed under α ↦ α⁻¹
@@ -474,11 +489,14 @@ details.cp[open] .reveal::before{content:"hide"}
       M(p) &gt; 1 + c(log log n / log n)³, but this decays to 1 with the degree n, so it yields no
       uniform floor. Ninety years, no c.</p>
 
-    <h3>§4 <em>&nbsp;The pivot: build an emitter, prove two walls</em></h3>
-    <p>Here is the move. A growth rule charges a description cost of <span class="m">λ log M(θ)</span> to
-      adjoin an algebraic direction θ; the cost has a positive floor iff M is bounded away from 1 over
-      everything the construction can <em>emit</em>. Instead of bounding all of ℤ[x], build a finitely
-      generated system — seeds plus operators — and prove the closure statement</p>
+    <h3>§4 <em>&nbsp;The pivot: don't solve it, route around it</em></h3>
+    <p>Here is the move the whole corpus descends from. A growth rule charges a description cost of
+      <span class="m">λ log M(θ)</span> to adjoin an algebraic direction θ; that cost stays positive iff M
+      is bounded away from 1 — <em>but only over the directions the construction can actually emit</em>.
+      That last clause is the escape hatch. Bounding M over <em>all</em> of ℤ[x] is Lehmer's problem, ninety
+      years unmoved. Bounding it over one finitely generated system — a fixed set of seeds closed under a
+      fixed set of operators — is a different, tractable question, and the entire strategy is to prove one
+      closure statement about that system:</p>
 
     <div class="eq" style="border-left-color:var(--verdigris)"><span class="cid">the strategy</span>
       <b>no Salem number lies in the emission image.</b>
@@ -489,20 +507,36 @@ details.cp[open] .reveal::before{content:"hide"}
         phrasing is load-bearing.</span>
     </div>
 
-    <p>The next two lessons build the two walls that enforce it: a <strong>height wall</strong> at φ
-      (Lesson 2) and an <strong>angle wall</strong> at the four directions (π/2)ℤ (Lesson 3). Lehmer's
-      number is excluded as an <em>emission</em>, never as a <em>number</em>; the open problem is left
-      exactly where it stood.</p>
+    <p>Why does excluding Salems suffice? Because Smyth already floored the non-reciprocal case at
+      μ<sub>S</sub>, and the <em>only</em> numbers that could occupy the leftover band (1, μ<sub>S</sub>)
+      are reciprocal Salem-type numbers. Knock those out of the emission and the whole band is empty from
+      the machine's point of view — its emitted measures are pushed up to μ<sub>S</sub> at least, realized
+      at φ. The 90-year-old problem is not solved; it is made <em>irrelevant to the machine</em>.</p>
+
+    <h3>§5 <em>&nbsp;Two walls, and the discipline of the sidestep</em></h3>
+    <p>The next two lessons build the two walls that enforce the closure: a <strong>height wall</strong> at
+      φ (Lesson 2), which fences off small measures, and an <strong>angle wall</strong> at the four
+      directions (π/2)ℤ (Lesson 3), which forbids Salem-type on-circle conjugates outright. Together they
+      box every Salem number out of the emission image.</p>
+    <p>What must stay exactly straight is the logical status of the result. Call it <strong>(B)</strong>:
+      "the emission image avoids the Salem band." Lehmer's conjecture <strong>(C)</strong> — that the true
+      infimum is Lehmer's number — would <em>imply</em> (B), so (B) is strictly <em>weaker</em> than the
+      open problem, and far narrower in scope (one algebra, not all of ℤ[x]). Crucially, (B) is proved
+      <em>unconditionally</em>, and it stays true whether Lehmer's problem turns out true or false: if
+      small Salems exist, they still violate a wall and are still not emitted. So (B) neither assumes nor
+      settles Lehmer. Lehmer's number is excluded as an <em>emission</em>, never as a <em>number</em>; the
+      open problem is left exactly where it stood. That is what "sidestepping without resolving" means, and
+      keeping the registers separate is the discipline the whole course runs on.</p>
 
     <div class="cpwrap">
       <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
-      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Compute
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Worked exercise: compute
         M(x² − 3x + 1) by hand, exactly. The roots are (3 ± √5)/2 — both "is it outside?" decisions
         matter.</span><span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
           <p>The roots are φ² and φ⁻², since φ² = (3+√5)/2 ≈ 2.618 and φ⁻² ≈ 0.382. Only φ² escapes the
             circle, so <strong>M = φ² = φ + 1</strong>. (This measure reappears throughout the course as
-            a <em>theorem output</em>.)</p>
+            a <em>theorem output</em> — it is exactly the grow factor of φ ⊗ φ in Lesson 4.)</p>
         </div>
       </details>
       <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Why does the
@@ -514,7 +548,18 @@ details.cp[open] .reveal::before{content:"hide"}
             inversion, which is precisely reciprocity.</p>
         </div>
       </details>
-      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Why does excluding
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Worked exercise: for
+        x³ − x − 1, find M and decide whether it is Pisot or Salem.</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>It has one real root μ<sub>S</sub> = 1.3247… &gt; 1 and a complex-conjugate pair whose modulus
+            is |μ<sub>S</sub>|<sup>−1/2</sup> ≈ 0.869 &lt; 1 (their product with μ<sub>S</sub> is the
+            constant term, ±1). Only the real root escapes, so <strong>M = μ<sub>S</sub></strong>. Since
+            the other two roots are strictly <em>inside</em> the circle, it is a <strong>Pisot</strong>
+            number — the smallest one — and it is non-reciprocal, so Smyth's floor applies to it.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q4</span><span class="qtext">Why does excluding
         Salem numbers from the image give a cost floor, when Smyth already handles non-reciprocals?</span>
         <span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
@@ -549,48 +594,91 @@ details.cp[open] .reveal::before{content:"hide"}
 
     <div class="run"><b>625/625</b><i>quadratics scanned |b|,|c|≤12 · band (1,φ) empty</i></div>
     <p class="small">Reads from <a href="../papers/2026-06-lehmers-box.pdf"><em>Lehmer's Box</em></a>,
-      §"The floor wall."</p>
+      §"The floor wall," and <a href="../papers/2026-06-emission-gap.pdf"><em>The Emission–Gap
+      Theorem</em></a>, §"The Mahler gap."</p>
+
+    <p>Recall the cost the whole construction is trying to keep positive: adjoining a direction θ is
+      charged <span class="m">λ log M(θ)</span> (Lesson 1). That price stays bounded away from zero
+      only if the measures the machine emits stay bounded away from <em>1</em>. So the first thing to
+      build is a <strong>fence on the height axis</strong> — a value the measure cannot slip beneath
+      without hitting the trivial floor M = 1. This lesson erects that fence at φ, and, just as
+      important, is honest about exactly how much of it is forced.</p>
 
     <h3>§1 <em>&nbsp;The base case: an empty strip in degree two</em></h3>
-    <p>The catalog seeds are size-2 and size-4 companion matrices, so the wall must first hold for
-      quadratics. It does, exactly.</p>
+    <p>Every seed in the catalog is a 2×2 or 4×4 companion matrix, and the operators build outward from
+      them by degree-raising. So the fence must first hold at the smallest degree there is. It does, and
+      the statement is sharp: there is a whole open interval of heights that <em>no</em> integer
+      quadratic can occupy.</p>
 
     <div class="eq"><span class="cid">P1-GATE-02/03</span>
       No monic p = x² + bx + c ∈ ℤ[x] has <b>M(p) ∈ (1, φ)</b>.
-      <span class="note">M = 1 on the cyclotomic quadratics; otherwise M ≥ φ, with equality only at
-        discriminant 5 — the seeds x² − x − 1 and x² + x − 1. A scan of all 625 quadratics with
-        |b|,|c| ≤ 12 confirms both the empty interval and the minimizer.</span>
+      <span class="note">M = 1 exactly on the cyclotomic quadratics (Kronecker); otherwise M ≥ φ, with
+        equality <em>only</em> at discriminant 5 — the two golden seeds x² − x − 1 and x² + x − 1. A
+        scan of all 625 quadratics with |b|,|c| ≤ 12 confirms both the empty interval and the unique
+        minimizer.</span>
     </div>
 
-    <p>The proof is a three-case split on c. If c = −1 (hyperbolic reciprocal) the dominant root is
-      (|b|+√(b²+4))/2, smallest at |b|=1 giving exactly φ. If c = 1 the roots are a reciprocal pair:
-      cyclotomic for |b| ≤ 1, reducible at |b| = 2, and ≥ φ² = (3+√5)/2 for |b| ≥ 3. If |c| ≥ 2 the
-      measure is ≥ |c| ≥ 2. In every non-cyclotomic case M ≥ φ. The golden ratio is the
-      <em>smallest Perron number</em> above 1, and here it is the right edge of the minimal gap.</p>
+    <p>Read the claim as a picture. The height axis starts at 1; the interval (1, φ) is a forbidden
+      moat; the first place an integer quadratic is allowed to land above the trivial floor is exactly
+      the golden ratio. Nothing chose φ for its name — it is the smallest height a degree-2 integer
+      polynomial can have while still exceeding 1, and the proof simply walks the three ways a quadratic
+      can arrange its roots.</p>
 
-    <h3>§2 <em>&nbsp;Degree-raising cannot tunnel under the fence</em></h3>
-    <p>The spectral operators — ⊕ (direct sum), ⊗ (tensor / Kronecker), (·)² (squaring), plus minpoly
-      and re-companion Φ — determine the output spectrum from the inputs'. On the Mahler measure they
-      act by three closed laws:</p>
+    <h3>§2 <em>&nbsp;The three cases, worked</em></h3>
+    <p>Write p = x² + bx + c with integer b, c and roots α, α′, so αα′ = c and α + α′ = −b. Assume p is
+      irreducible and non-cyclotomic, so M &gt; 1. Everything is decided by the constant term c.</p>
+    <ul>
+      <li><strong>c = −1 (a real reciprocal pair).</strong> The roots multiply to −1, so one sits
+        outside the circle and one inside; M is the outside one, <span class="m">(|b|+√(b²+4))/2</span>.
+        This grows with |b|, so its minimum is at |b| = 1: <span class="m">(1+√5)/2 = φ</span>, realized
+        by x² − x − 1 and x² + x − 1. This is where φ enters.</li>
+      <li><strong>c = 1 (a unit reciprocal pair).</strong> Now αα′ = 1. For |b| ≤ 1 the pair sits
+        <em>on</em> the circle and p is cyclotomic (M = 1); at |b| = 2 it degenerates to (x ± 1)²
+        (reducible); and for |b| ≥ 3 the dominant root is <span class="m">(|b|+√(b²−4))/2 ≥ (3+√5)/2 =
+        φ²</span>, so M ≥ φ² ≈ 2.618 — already well clear of the moat.</li>
+      <li><strong>|c| ≥ 2 (non-reciprocal).</strong> If the roots are complex they are conjugate of
+        modulus √|c| ≥ √2, so M = |c| ≥ 2; if real, their product has size ≥ 2, so the outside root
+        alone gives M ≥ |c| ≥ 2.</li>
+    </ul>
+    <p>In every non-cyclotomic case M ≥ φ, with equality only at discriminant 5. Take a concrete instance
+      from the middle case: <span class="m">x² − 4x + 1</span> has roots 2 ± √3, dominant root
+      <span class="m">2 + √3 ≈ 3.732</span>, so M = 2 + √3 — comfortably above φ². The moat is genuinely
+      empty; φ is its right bank, and it is the <em>smallest Perron number</em> above 1.</p>
+
+    <h3>§3 <em>&nbsp;Degree-raising cannot tunnel under the fence</em></h3>
+    <p>A base case is not a wall. The operators raise degree, and one must check they cannot manufacture
+      a sub-φ height out of legal inputs. The spectral operators — ⊕ (direct sum), ⊗ (tensor /
+      Kronecker), (·)² (squaring), plus minpoly and the re-companion Φ — fix the output spectrum from
+      the inputs', and on the Mahler measure they act by closed multiplicative laws:</p>
 
     <div class="eq"><span class="cid">M multiplicative</span>
       M(p ⊕ q) = M(p)·M(q),&nbsp;&nbsp; M(θ ↦ θ²) = M(·)²,&nbsp;&nbsp; ⊗ composes
-      <span class="note">The set {1} ∪ [φ, ∞) is closed under multiplication and squaring — the pivotal
-        step being φ·φ = φ² = φ + 1 &gt; φ, the golden relation itself. So by induction on word length
-        from the degree-2 base, every emitted measure stays in {1} ∪ [φ, ∞).</span>
+      <span class="note">M is multiplicative because the roots of a product are the union of the roots,
+        and max(1, |·|) multiplies across a union. The set {1} ∪ [φ, ∞) is closed under multiplication
+        and squaring — the pivotal step being φ·φ = φ² = φ + 1 &gt; φ, the golden relation itself. So by
+        induction on word length from the degree-2 base, every emitted measure stays in {1} ∪ [φ, ∞).</span>
     </div>
 
-    <p>The ⊗ case needs the angle wall (Lesson 3) and the field-signature census (Lesson 7) to forbid a
-      small Salem factor; with those, <strong>M(𝒮) ⊆ {1} ∪ [φ, ∞)</strong>
-      <span class="tag forced">forced</span> for the spectral emission algebra 𝒮, realized at φ. The
-      emission's Mahler spectrum is a discrete sub-semigroup of [φ, ∞) generated by {φ, 2, 3, 5, φ⁴, β²}
-      — <em>limits are not operations</em>, so the construction can never reach the Salem accumulation
-      points of its own Pisot generators.</p>
+    <p>Watch the induction bite once: ⊕-ing the golden seed with itself gives M = φ·φ = φ², and squaring
+      the seed gives M = φ² again — both land back in [φ, ∞), never in the moat. The one case that is not
+      pure arithmetic is ⊗, whose spectrum {λ<sub>i</sub>μ<sub>j</sub>} could in principle harbor a small
+      Salem factor; ruling that out needs the angle wall (Lesson 3) and the field-signature census
+      (Lesson 7). With those in hand, <strong>M(𝒮) ⊆ {1} ∪ [φ, ∞)</strong>
+      <span class="tag forced">forced</span> for the spectral emission algebra 𝒮, realized at φ.</p>
 
-    <h3>§3 <em>&nbsp;How far is the fence really forced?</em></h3>
-    <p>Honesty about scope is the corpus's discipline, so state the strongest <em>unconditional</em>
-      form. The band that carries <em>no</em> plausible tag anywhere in its derivation is
-      (1, μ<sub>S</sub>), not (1, φ):</p>
+    <p>One structural remark keeps the picture honest. 𝒮 is <em>finitely generated</em>: its Mahler
+      spectrum is a discrete sub-semigroup of [φ, ∞) generated by {φ, 2, 3, 5, φ⁴, β²} under
+      multiplication, squaring and composition, with <em>no accumulation at 1</em>. Salem's theorem
+      makes every Salem number a limit of Pisot numbers, and the catalog does contain Pisot generators
+      (φ, φ⁴) — but <em>limits are not operations</em>. The machine can multiply its generators forever
+      and never reach their own Salem limit points. The fence holds not because small Salems are screened
+      out, but because nothing in the algebra ever travels toward them.</p>
+
+    <h3>§4 <em>&nbsp;How far is the fence really forced?</em></h3>
+    <p>Now the discipline. φ is the honest <em>headline</em> — it is the realized minimum and it is forced
+      on quadratics — but the strongest <em>unconditional</em> statement uses a slightly narrower band.
+      The interval that carries <em>no</em> plausible tag anywhere in its derivation is (1, μ<sub>S</sub>),
+      not (1, φ):</p>
 
     <div class="eq" style="border-left-color:var(--ochre)"><span class="cid">narrowest true form</span>
       1 &lt; M(L) &lt; 5/4 &lt; μ<sub>S</sub> &lt; 4/3 &lt; φ
@@ -602,18 +690,34 @@ details.cp[open] .reveal::before{content:"hide"}
         (5/4)³ − 5/4 − 1 &lt; 0, separated by exact rationals.</span>
     </div>
 
+    <p>The chain of inequalities is itself an exact computation. Each &lt; is decided by comparing two
+      rationals or by the sign of an integer polynomial at a rational point — no floating value ever
+      touches a decision. That is why the exclusion of Lehmer's number, which is the whole point, rides
+      entirely on the forced part of the picture and never leans on the wider, softer φ claim.</p>
+
     <div class="cpwrap">
       <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
-      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Why is
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Worked exercise:
+        compute M(x² − 4x + 1) exactly and check it clears the fence. Which case of §2 is it?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Here b = −4, c = 1, so it is the <em>unit reciprocal pair</em> case with |b| = 4 ≥ 3. The
+            roots are (4 ± √12)/2 = 2 ± √3, a reciprocal pair since (2+√3)(2−√3) = 4 − 3 = 1. Only
+            2 + √3 ≈ 3.732 escapes the circle, so <strong>M = 2 + √3</strong>. That exceeds φ² = 2.618,
+            so it sits far above the moat — consistent with the |b| ≥ 3 bound M ≥ φ².</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Why is
         {1} ∪ [φ, ∞) closed under the direct-sum operator ⊕?</span>
         <span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
           <p>⊕ unions root multisets, and Mahler measure is multiplicative over that union:
             M(p ⊕ q) = M(p)M(q). A product of two numbers each in {1} ∪ [φ, ∞) is again ≥ φ (or 1),
-            never landing in the open gap (1, φ).</p>
+            never landing in the open gap (1, φ). The smallest nontrivial product is φ·φ = φ², still
+            above φ.</p>
         </div>
       </details>
-      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">The paper calls φ
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">The paper calls φ
         "derived, not posited." In what sense is φ an <em>output</em> here?</span>
         <span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
@@ -622,7 +726,7 @@ details.cp[open] .reveal::before{content:"hide"}
             φ falls out the far end as the minimal realizable growth — the theorem, not a hypothesis.</p>
         </div>
       </details>
-      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Why does the corpus
+      <details class="cp"><summary><span class="qn">Q4</span><span class="qtext">Why does the corpus
         bother stating the band as (1, μ<sub>S</sub>) when the headline is φ?</span>
         <span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
@@ -660,8 +764,24 @@ details.cp[open] .reveal::before{content:"hide"}
     <p class="small">Reads from <a href="../papers/2026-06-emission-gap.pdf"><em>The Emission–Gap
       Theorem</em></a> and <a href="../papers/2026-06-lehmers-box.pdf"><em>Lehmer's Box</em></a>.</p>
 
-    <h3>§1 <em>&nbsp;Angle confinement to (π/2)ℤ</em></h3>
-    <p>Write arg z for the argument of an eigenvalue. Every catalog seed sits at one of the four cardinal
+    <p>The height wall (Lesson 2) has one weakness: it excludes only the <em>small</em> Salem numbers,
+      those under φ. Salem numbers with M ≥ φ exist in abundance, and the height wall lets them through.
+      This lesson builds a second wall that excludes <em>every</em> Salem number at once, at every degree,
+      no matter how large — because it is not a bound on size at all. It is a bookkeeping charge on the
+      <em>angle</em> of a root, conserved by every operation, that a Salem number can never carry.</p>
+
+    <h3>§1 <em>&nbsp;Two directions of confinement</em></h3>
+    <p>Every complex number z has a modulus |z| (how far from the origin) and an argument arg z (which
+      direction). The height wall watched the modulus. The angle wall watches the argument, and the key
+      observation is startlingly rigid: everything the catalog emits points in one of exactly
+      <em>four</em> compass directions. Write (π/2)ℤ = {0, π/2, π, 3π/2} for those four — the group of
+      quarter-turns, isomorphic to ℤ/4ℤ. A Salem number's on-circle conjugates never point along any of
+      the four; that single mismatch is the whole wall.</p>
+
+    <h3>§2 <em>&nbsp;Angle confinement to the four directions</em></h3>
+    <p>Start with the seeds. Six of the seven are quadratics with <em>real</em> spectra, so their roots
+      point along 0 (positive) or π (negative) — two of the four directions. The interesting seed is the
+      quartic K, and it is worth running by hand because it is the only seed that reaches the other two
       directions.</p>
 
     <div class="eq"><span class="cid">P2-ANG-01</span>
@@ -671,6 +791,19 @@ details.cp[open] .reveal::before{content:"hide"}
         {π/2, 3π/2}. All four directions, all in (π/2)ℤ ≅ ℤ/4ℤ.</span>
     </div>
 
+    <p>Here is the K computation in full. Substitute y = x², turning K into the quadratic
+      <span class="m">y² + 5y − 5 = 0</span>, whose roots are y = (−5 ± 3√5)/2. The upper sign gives
+      y₊ ≈ 0.854, a <em>positive</em> number, so x² = y₊ has two real roots ±K with K ≈ 0.924 — pointing
+      along 0 and π. The lower sign gives y₋ ≈ −5.854, a <em>negative</em> number, so x² = y₋ has two
+      <em>imaginary</em> roots ±iβ with β ≈ 2.4195 — pointing along π/2 and 3π/2. Four roots, four
+      directions, every one a multiple of a quarter-turn. This is why K is the seed that "completes" the
+      four-fold charge (Lesson 7).</p>
+
+    <h3>§3 <em>&nbsp;The charge is conserved by every operator</em></h3>
+    <p>A base fact about the seeds is worthless unless the operators cannot break it. They cannot, and the
+      reason is a one-line group-theory fact: (π/2)ℤ is closed under exactly the arithmetic the operators
+      do to arguments.</p>
+
     <div class="eq"><span class="cid">P2-ANG-02</span>
       ⊗ <b>adds</b> arguments, (·)² <b>doubles</b>, ⊕ <b>unions</b> — all internal to (π/2)ℤ
       <span class="note">The subgroup (π/2)ℤ is closed under addition (⊗: arg λμ = arg λ + arg μ) and
@@ -678,8 +811,14 @@ details.cp[open] .reveal::before{content:"hide"}
         a square root of an eigenvalue. So the four directions are conserved by every spectral operation.</span>
     </div>
 
-    <h3>§2 <em>&nbsp;The two-line exclusion</em></h3>
-    <p>Combine confinement with one classical fact and the exclusion is immediate.</p>
+    <p>The intuition is that the four directions form a clock with four positions, and the operators only
+      ever <em>add</em> positions (tensor), <em>double</em> a position (squaring), or <em>collect</em>
+      positions side by side (direct sum) — all of which land back on one of the four. The one move that
+      would escape is <em>halving</em> a position, which would introduce a 45° direction; but no operator
+      takes a square root of an eigenvalue, so 45° is unreachable. The charge is genuinely conserved.</p>
+
+    <h3>§4 <em>&nbsp;The two-line exclusion</em></h3>
+    <p>Now combine confinement with one classical fact and the exclusion falls out in two lines.</p>
 
     <div class="eq"><span class="cid">P2-ANG-03/04/05</span>
       on-circle emitted eigenvalue ⇒ 4th root of unity;&nbsp;&nbsp; Salem on-circle conjugate ⇒ <b>not</b> a root of unity
@@ -689,10 +828,15 @@ details.cp[open] .reveal::before{content:"hide"}
         sets are disjoint.</span>
     </div>
 
-    <p>Now the closure argument closes. If a Salem β were an eigenvalue of some integer matrix M ∈ 𝒮,
-      then — since M is an integer matrix — <em>all</em> conjugates of β travel with it, including its
-      on-circle conjugates at irrational angle. But every eigenvalue of M lies at a rational angle in
-      (π/2)ℤ. Contradiction. Watch it on Lehmer's polynomial directly:</p>
+    <p>The two lines are: an on-circle emitted eigenvalue has modulus 1 <em>and</em> a quarter-turn angle,
+      so it is one of the four fourth roots of unity {1, i, −1, −i}, which <em>are</em> roots of unity.
+      A Salem number's on-circle conjugate is <em>never</em> a root of unity — if it were, its irreducible
+      minimal polynomial would be a cyclotomic polynomial, making β itself a root of unity, impossible for
+      a real β &gt; 1. The two sets are disjoint. The last hinge is that <strong>conjugates travel
+      together</strong>: an integer matrix has an integer characteristic polynomial, so if a Salem β ever
+      appeared as one eigenvalue, all its ℚ-conjugates would appear too — dragging the forbidden on-circle
+      conjugates into a spectrum that the angle wall says cannot hold them. Watch it on Lehmer's polynomial
+      directly:</p>
 
     <div class="eq"><span class="cid">C5 · gcd</span>
       gcd( L(x), x⁴ − 1 ) = 1
@@ -703,31 +847,48 @@ details.cp[open] .reveal::before{content:"hide"}
 
     <div class="eq" style="border-left-color:var(--verdigris)"><span class="cid">Emission–Gap, Thm main</span>
       <b>No Salem number is emittable in 𝒮.</b> Equivalently M(𝒮) ⊆ {1} ∪ [μ<sub>S</sub>, ∞).
-      <span class="note"><span class="tag forced">forced</span> The result has four equivalent faces:
-        Mahler (the measure gap), entropy (h = log M, by Lind–Schmidt–Ward, so no small positive
-        topological entropy), channel-spectral (no on-circle expanding channel), and metric (no field
-        with a complex place on the circle).</span>
+      <span class="note"><span class="tag forced">forced</span> Therefore Lehmer's number, and by the
+        identical argument every Salem number, is kinematically unreachable — not screened at runtime,
+        structurally impossible to emit.</span>
     </div>
 
-    <p>Therefore Lehmer's number — and by the identical two-line argument <em>every</em> Salem number —
-      is <strong>kinematically unreachable</strong>. Not screened at runtime; structurally impossible to
-      emit. This is why the angle wall is stronger than the height wall: it is size-blind.</p>
+    <p>This is precisely why the angle wall is stronger than the height wall: it never mentions size. A
+      Salem number of measure 5, or 500, is excluded for exactly the same reason as one of measure 1.001
+      — its on-circle conjugates sit at irrational angles, off the four-fold lattice, and no emitted
+      spectrum can hold them.</p>
 
-    <h3>§3 <em>&nbsp;Sealing the doors: circulant and commutator</em></h3>
-    <p>The angle argument covers the <em>spectral</em> operators, whose effect on the spectrum is forced.
-      Two entry-level operators need separate care, and both are relocated to the trace-down flip
+    <h3>§5 <em>&nbsp;Four faces, and the two doors</em></h3>
+    <p>The same exclusion wears four equivalent faces, one per domain the corpus carries: <em>Mahler</em>
+      (the measure gap itself), <em>entropy</em> (h = log M by Lind–Schmidt–Ward, so no small positive
+      topological entropy), <em>channel-spectral</em> (no on-circle expanding channel — Lesson 5), and
+      <em>metric</em> (no generated field with a complex place on the unit circle). They are not four
+      theorems but one, read in four languages; the shared content is the emptiness of the middle.</p>
+
+    <p>Two <em>entry-level</em> operators lie outside the angle argument, because their characteristic
+      polynomials are not fixed by the inputs' spectra. Both are relocated to the trace-down flip
       t = θ + θ⁻¹ (a Salem is exactly a reciprocal factor whose trace-down has one root past +2 and the
-      rest in (−2, 2) — a "flip-straddle," Sturm-decidable over ℚ).</p>
-    <p>The <strong>circulant</strong> is forced with no residual: its eigenvalues lie in a cyclotomic
-      field ℚ(ζ<sub>n</sub>), which is abelian, hence totally real or CM — and a Salem field's signature
-      (2, m−1) is neither. A scan of 400 random integer circulants (1126 irreducible factors) finds zero
-      Salem factors. The <strong>free commutator</strong> is the one door: by Shoda's theorem any
-      traceless matrix is a commutator, so it could in principle carry a foreign Salem. Lesson 7 closes
-      it structurally by identifying the framework's actual commutator as the self-action ad<sub>R</sub>.</p>
+      rest in (−2, 2) — a "flip-straddle," Sturm-decidable over ℚ). The <strong>circulant</strong> is
+      forced with no residual: its eigenvalues lie in a cyclotomic field ℚ(ζ<sub>n</sub>), which is
+      abelian, hence totally real or CM — and a Salem field's signature (2, m−1) is neither. A scan of
+      400 random integer circulants (1126 irreducible factors) finds zero Salem factors. The
+      <strong>free commutator</strong> is the one door: by Shoda's theorem any traceless matrix is a
+      commutator, so it could in principle carry a foreign Salem. Lesson 7 closes it structurally by
+      identifying the framework's actual commutator as the self-action ad<sub>R</sub>.</p>
 
     <div class="cpwrap">
       <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
-      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">In one sentence: why
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Worked exercise: find
+        the four root arguments of K = x⁴ + 5x² − 5, and confirm all lie in (π/2)ℤ.</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Put y = x²: then y² + 5y − 5 = 0, so y = (−5 ± 3√5)/2. The two values are y₊ ≈ 0.854 &gt; 0
+            and y₋ ≈ −5.854 &lt; 0. From y₊ &gt; 0: x = ±√y₊ ≈ ±0.924, real, arguments <strong>0 and
+            π</strong>. From y₋ &lt; 0: x = ±i√|y₋| ≈ ±2.4195 i, imaginary, arguments <strong>π/2 and
+            3π/2</strong>. All four are multiples of a quarter-turn, so arg ∈ (π/2)ℤ. K is the only seed
+            reaching π/2 and 3π/2.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">In one sentence: why
         doesn't the height wall alone exclude Salem numbers?</span>
         <span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
@@ -735,7 +896,7 @@ details.cp[open] .reveal::before{content:"hide"}
             Salems; the angle wall excludes <strong>all</strong> of them, size-blind.</p>
         </div>
       </details>
-      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Where does
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Where does
         "conjugates travel together" enter the proof, and why is it essential?</span>
         <span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
@@ -745,7 +906,7 @@ details.cp[open] .reveal::before{content:"hide"}
             them. Without integrality the single root β could hide.</p>
         </div>
       </details>
-      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Why does the invariant
+      <details class="cp"><summary><span class="qn">Q4</span><span class="qtext">Why does the invariant
         survive squaring but a halving operator would coarsen it?</span>
         <span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
@@ -781,11 +942,21 @@ details.cp[open] .reveal::before{content:"hide"}
     <p class="small">Reads from <a href="../papers/2026-06-generative-emptiness.pdf"><em>The Generative
       Content of a Conserved Emptiness</em></a>.</p>
 
+    <p>The two walls carve out a slot — "on the circle yet expanding" — that no Salem number can occupy.
+      It would be easy to file that as a dead end: a hole, nothing to see. The claim of this lesson is
+      the opposite. A hole enforced by a <em>conserved charge</em> is one of the most productive objects
+      in mathematics: it hands you a grading, an alphabet, a gap, a normal form, and a conservation law
+      for free. The Salem slot is the smallest fully-computable example of that phenomenon, and we read
+      all five gifts off it.</p>
+
     <h3>§1 <em>&nbsp;Two ways to be empty</em></h3>
-    <p>A <em>dynamic</em> void is a barrier the system could cross but pays not to; such voids leak, and
-      the leak is the interesting object. A <em>kinematic</em> void has zero weight in the algebra the
-      operations act on, enforced by a conserved quantity; nothing approaches it, and the enforcing law
-      never fires. The paper's thesis:</p>
+    <p>The distinction that carries the whole lesson: not every empty region is empty for the same reason.
+      A <em>dynamic</em> void is a barrier the system could cross but pays not to — an energy hill, a
+      suppressed spectral line; such voids leak, and the leak is the interesting object. A
+      <em>kinematic</em> void is different: its states carry zero weight in the algebra the operations
+      act on, held out not by a cost but by a quantity every operation preserves. Nothing approaches it,
+      and the enforcing law never has to fire. The paper's thesis is that this second kind of emptiness
+      is secretly three things at once:</p>
 
     <div class="eq" style="border-left-color:var(--verdigris)"><span class="cid">the substrate</span>
       kinematic emptiness ≡ a conserved charge ≡ a superselection rule
@@ -794,9 +965,52 @@ details.cp[open] .reveal::before{content:"hide"}
         normal form, and a conserved current. The Salem slot is the minimal fully-computable instance.</span>
     </div>
 
-    <h3>§2 <em>&nbsp;The five objects</em></h3>
-    <p>The generator is the angle charge of Lesson 3, read as an element of ℤ/4ℤ. Each of the five
-      objects is a theorem with a verification attached.</p>
+    <p>"Superselection" is borrowed from physics — a rule that forbids superposing states of different
+      charge — but the arrow used here is elementary: a conserved charge sorts everything into sectors,
+      and the sectors it leaves empty are not gaps in the story, they are the scaffolding the rest hangs
+      on. What is that charge here? Exactly the four-fold angle charge of Lesson 3, now read as a number
+      in ℤ/4ℤ.</p>
+
+    <h3>§2 <em>&nbsp;The generator: the ℤ/4ℤ angle charge</em></h3>
+    <p>Give each root a charge: 0, 1, 2, or 3, according to which quarter-turn its argument points along
+      (0 → charge 0, π/2 → 1, π → 2, 3π/2 → 3). The angle wall says every emitted root has a charge in
+      ℤ/4ℤ, and the operators act on that charge by the group law:</p>
+
+    <div class="eq"><span class="cid">Object I · the grading</span>
+      ⊗ <b>adds</b> charge, (·)² <b>doubles</b>, ⊕ <b>unions</b> — all inside ℤ/4ℤ
+      <span class="note">Real seeds carry only {0, 2} (positive → 0, negative → 2). The quartic
+        K = x⁴+5x²−5 is the one seed that reaches {1, 3}, on its imaginary axis. So the whole group
+        ℤ/4ℤ is realized, and 𝒮 becomes a ℤ/4ℤ-<em>graded</em> structure.</span>
+    </div>
+
+    <p>This is the generator itself, exhibited. A Salem number's on-circle conjugate points at an
+      <em>irrational</em> angle, so its charge is not in ℤ/4ℤ at all — it lives in the off-charge sector,
+      and no finite word in ⊕, ⊗, (·)² can leave ℤ/4ℤ to reach it. The emptiness of the Salem slot is
+      just the statement that the charge is conserved. The remaining four gifts are read off this grading.</p>
+
+    <h3>§3 <em>&nbsp;The subtle object: the content polynomial x⁴ − 1</em></h3>
+    <p>An order-n charge produces x<sup>n</sup> − 1 as the alphabet of positions a root may occupy
+      <em>on the circle</em>; here n = 4, so the content polynomial is x⁴ − 1 = Φ₁Φ₂Φ₄. But there is a
+      trap, and getting past it is what keeps the grading honestly stated.</p>
+
+    <div class="eq"><span class="cid">Object II · content polynomial</span>
+      x⁴ − 1 = Φ₁Φ₂Φ₄ = (x − 1)(x + 1)(x² + 1)
+      <span class="note">Only ±1 (charges 0, 2) are realized <em>on the circle</em>. The ±i sector
+        (charges 1, 3) is present in the <em>algebra</em> but sits <em>off</em> the circle: the only seed
+        reaching ±π/2 is K, whose imaginary place has modulus β = 2.4195 ≠ 1.</span>
+    </div>
+
+    <p>So the four positions of x⁴ − 1 are where each charge <em>would</em> sit on the circle if K's place
+      were on it — but K's imaginary roots have modulus 2.4195, off the circle. The content polynomial
+      records the charge <em>group</em> (all of ℤ/4ℤ); the smaller x² − 1 would record only its on-circle
+      <em>shadow</em> (just ±1) and undercount the grading by half. Writing x⁴ − 1 is what keeps the
+      claim from either overstating (the circle only shows ℤ/2ℤ) or understating (the algebra genuinely
+      carries ℤ/4ℤ) the structure.</p>
+
+    <h3>§4 <em>&nbsp;The five objects, and the normal form worked</em></h3>
+    <p>The grading (I) and content polynomial (II) join three more: the <strong>gap</strong> (III, the
+      cost floor φ), the graded <strong>normal form</strong> (IV), and a <strong>conserved current</strong>
+      (V, block-diagonal evolution).</p>
 
     <div class="tw"><table class="prose"><caption class="vh">Lesson 4 · the five generated objects</caption>
       <thead><tr><th scope="col">object</th><th scope="col">what the charge produces</th><th scope="col">status</th></tr></thead>
@@ -814,16 +1028,26 @@ details.cp[open] .reveal::before{content:"hide"}
       </tbody>
     </table></div>
 
-    <p>Object II is the subtle one. An order-n charge produces x<sup>n</sup> − 1 as the alphabet of
-      allowed on-circle positions; here n = 4. Yet only ±1 are realized <em>on the circle</em> — the
-      ±i sector (charges 1, 3) is present in the <em>algebra</em> but sits <em>off</em> the circle,
-      because the only seed reaching argument ±π/2 is K, whose imaginary place has modulus
-      β = 2.4195 ≠ 1. So x⁴ − 1 records the charge <em>group</em>; x² − 1 would record only its
-      on-circle <em>shadow</em>. Recording the off-circle half is exactly what keeps the claim from
-      over- or under-stating the grading.</p>
+    <p>Watch the normal form (IV) on the smallest nontrivial object, φ ⊗ φ. The golden seed has spectrum
+      {φ, ψ} with ψ = −1/φ, so the tensor has spectrum {φ·φ, φ·ψ, ψ·φ, ψ·ψ} = {φ², −1, −1, ψ²} — using
+      φψ = −1. Its characteristic polynomial is therefore</p>
 
-    <h3>§3 <em>&nbsp;The minimal chain: φ is derived, not posited</em></h3>
-    <p>The load-bearing consequence. Read in the forced direction, three minima cascade:</p>
+    <div class="eq"><span class="cid">worked · φ ⊗ φ</span>
+      φ ⊗ φ = (x + 1)²·(x² − 3x + 1),&nbsp;&nbsp; charges {0, 2, 2, 0} ⊂ {0, 2}
+      <span class="note">(x − φ²)(x − ψ²) = x² − (φ²+ψ²)x + φ²ψ² = x² − 3x + 1, since φ²+ψ² = 3 and
+        φ²ψ² = 1. The on-circle part (x + 1)² = Φ₂² has M = 1; the grow part x² − 3x + 1 has M = φ²
+        (its dominant root is φ²). Cyclotomic × grow, exactly.</span>
+    </div>
+
+    <p>Everything the normal form claims is visible here: the cyclotomic factor (x + 1)² carries the
+      on-circle charge 2 at measure 1; the grow factor x² − 3x + 1 — the very polynomial you computed in
+      Lesson 1, with M = φ² — carries all the growth off the circle; and the charge stays in the golden
+      sublattice {0, 2}, never touching {1, 3}. A Salem polynomial cannot fit this shape because it is
+      <em>irreducible</em>: it cannot split into cyclotomic × grow, so the grading has no place to put it.</p>
+
+    <h3>§5 <em>&nbsp;The minimal chain: φ is derived, not posited</em></h3>
+    <p>The load-bearing gift is the gap, and read in the forced direction it is a cascade of three minima
+      that ends at the golden ratio:</p>
 
     <div class="eq"><span class="cid">Prop · minimal chain</span>
       degree 2&nbsp;⇒&nbsp;ℤ/4ℤ&nbsp;⇒&nbsp;φ
@@ -843,7 +1067,18 @@ details.cp[open] .reveal::before{content:"hide"}
 
     <div class="cpwrap">
       <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
-      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Why is the content
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Worked exercise: verify
+        φ ⊗ φ = (x + 1)²(x² − 3x + 1) from the spectrum, and read off its charge and normal form.</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Spectrum of φ ⊗ φ is {φ·φ, φ·ψ, ψ·φ, ψ·ψ} = {φ², −1, −1, ψ²} (since φψ = −1). Group the real
+            off-circle pair: (x − φ²)(x − ψ²) = x² − (φ²+ψ²)x + (φψ)² = x² − 3x + 1 (using φ²+ψ² = 3).
+            The two −1 eigenvalues give (x + 1)². So <strong>φ ⊗ φ = (x + 1)²(x² − 3x + 1)</strong>.
+            Charges: φ², ψ² &gt; 0 → 0; the two −1 &lt; 0 → 2; so {0, 2}, inside the golden sublattice.
+            Normal form: cyclotomic (x+1)² at M = 1, times grow x² − 3x + 1 at M = φ².</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Why is the content
         polynomial x⁴ − 1 and not x² − 1, when only ±1 are realized on the circle?</span>
         <span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
@@ -853,7 +1088,7 @@ details.cp[open] .reveal::before{content:"hide"}
             shadow and undercount the grading.</p>
         </div>
       </details>
-      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Why can no emittable
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Why can no emittable
         object be an irreducible Salem polynomial, in the language of the normal form?</span>
         <span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
@@ -863,7 +1098,7 @@ details.cp[open] .reveal::before{content:"hide"}
             and the grading are incompatible.</p>
         </div>
       </details>
-      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">The table spans
+      <details class="cp"><summary><span class="qn">Q4</span><span class="qtext">The table spans
         fermions, QFT, type theory, and this algebra. What exactly is claimed to be shared?</span>
         <span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
@@ -902,12 +1137,25 @@ details.cp[open] .reveal::before{content:"hide"}
     <p class="small">Reads from <a href="../papers/2026-06-salem-slot.pdf"><em>The Occupant of the Salem
       Slot</em></a>.</p>
 
-    <h3>§1 <em>&nbsp;No fourth channel: the trifurcation is downstairs</em></h3>
-    <p>The self-action ad<sub>R</sub> = [R, ·] of the golden seed has spectrum {0, +√5, −√5}: three
-      channels, <strong>captured</strong> (0, M = 1, on-circle), <strong>grow</strong> (+√5, M ≥ φ,
-      expanding), <strong>decay</strong> (−√5). A Salem would be a <em>fourth</em> channel — on-circle
-      like captured, yet expanding like grow. Downstairs, in the trace t = θ + θ⁻¹, that is a flat
-      contradiction:</p>
+    <p>The last three lessons proved a <em>negative</em>: no Salem number is emitted, the slot is empty.
+      But "empty" is unsatisfying — a slot in a working machine is not a hole in the floor; something
+      passes through where the Salem would have been. This lesson gives the slot a positive occupant, by
+      name, and follows it to a surprise: as would-be Salems crowd down toward the golden floor, the
+      thing that actually appears in their place converges to √5 — the very number the self-action uses
+      to define its "grow" channel. The construction's own coordinate fills its own slot.</p>
+
+    <h3>§1 <em>&nbsp;From exclusion to occupation</em></h3>
+    <p>Recall the self-action ad<sub>R</sub> = [R, ·] of the golden seed, whose spectrum is the difference
+      set of R's eigenvalues, {0, +√5, −√5}. Read as decision channels these are
+      <strong>captured</strong> (0, M = 1, on-circle), <strong>grow</strong> (+√5, M ≥ φ, expanding), and
+      <strong>decay</strong> (−√5). A Salem number would want to be a <em>fourth</em> channel — on the
+      circle like captured, yet expanding like grow. There is no such channel, and the reason is not a
+      prohibition but a change of coordinates.</p>
+
+    <h3>§2 <em>&nbsp;No fourth channel: the trifurcation lives downstairs</em></h3>
+    <p>The trick is to stop working "upstairs" with the root x and move "downstairs" to the trace
+      t = θ + θ⁻¹. This map is two-to-one — it identifies θ with θ⁻¹ — and it sorts the whole real line
+      into exactly three regions at the flip points t = ±2:</p>
 
     <div class="eq"><span class="cid">P2-DELTA-02 · three regions</span>
       |θ| = 1 ⇒ t = 2cos ψ ∈ [−2, 2];&nbsp;&nbsp; θ &gt; 1 ⇒ t &gt; 2;&nbsp;&nbsp; the flip cuts ℝ into three
@@ -917,9 +1165,16 @@ details.cp[open] .reveal::before{content:"hide"}
         Salem. Working downstairs, the system never forms the bundle.</span>
     </div>
 
-    <h3>§2 <em>&nbsp;The redirection map</em></h3>
-    <p>The object that occupies the slot is the <strong>trace redirection</strong> τ₀ = β + β⁻¹, the
-      dominant root of the Salem's totally real trace-down T.</p>
+    <p>Downstairs, "on-circle" is the interval (−2, 2) and "expanding" is (2, ∞); they do not overlap, so
+      a fourth channel is a flat contradiction — no real number is in both. Upstairs, the contradiction
+      hides: the two-to-one lift t ↦ x can bundle one grow-trace root together with several
+      captured-trace roots into a single irreducible polynomial, and <em>that bundle is a Salem
+      polynomial</em>. The apparent fourth channel is an artifact of the bundling. Work downstairs, where
+      the system actually lives, and the bundle never forms.</p>
+
+    <h3>§3 <em>&nbsp;The redirection map, worked</em></h3>
+    <p>So what happens to a would-be Salem β? It is sent through the trace map to a single real number, and
+      that number is the occupant of the slot.</p>
 
     <div class="eq"><span class="cid">Thm · occupant</span>
       τ₀ = β + β⁻¹ &gt; 2 &gt; φ,&nbsp;&nbsp; M(T) ≥ τ₀,&nbsp;&nbsp; τ₀ − 2 = (β−1)²/β&nbsp;(exact, AM–GM)
@@ -929,15 +1184,32 @@ details.cp[open] .reveal::before{content:"hide"}
         the flip — the smaller the Salem, the more tightly its image hugs t = 2.</span>
     </div>
 
-    <p>Nothing is destroyed, only re-sorted: each on-circle conjugate e<sup>±iψ</sup> freezes into the
-      captured coordinate 2cos ψ ∈ (−2, 2), losing only orientation (the sign of ψ). Growth goes to τ₀;
-      angle goes to 2cos ψ; the trace-down T records both, one-and-the-rest by the flip. And the
-      redirection carries strictly <em>more</em> growth than the Salem it replaces:
-      log τ₀ &gt; log β.</p>
+    <p>The redirection τ₀ = β + β⁻¹ is the dominant root of β's totally real trace-down T. By AM–GM it
+      exceeds 2, hence exceeds φ, <em>however small β was</em>: a Salem trying to sneak in just above 1 is
+      redirected to a Perron number comfortably in the grow channel. And nothing is destroyed — each
+      on-circle conjugate e<sup>±iψ</sup> merely freezes into its captured coordinate 2cos ψ ∈ (−2, 2),
+      losing only orientation (the sign of ψ). Growth goes to τ₀; angle goes to 2cos ψ; T records both.
+      Concretely, on the corpus's benchmark Salems:</p>
 
-    <h3>§3 <em>&nbsp;The golden limit and its rate</em></h3>
-    <p>Now the loop closes with the self-action. Take Salem numbers climbing to the floor, β<sub>n</sub>
-      → φ (the Salem factors of S<sub>n</sub> = x<sup>n</sup>P − P*, P = x² − x − 1):</p>
+    <div class="tw"><table class="prose"><caption class="vh">Lesson 5 · §3 the redirection on benchmark Salems</caption>
+      <thead><tr><th scope="col">Salem β</th><th scope="col">trace-down T(t)</th><th scope="col">τ₀ = β + β⁻¹</th><th scope="col">M(T)</th></tr></thead>
+      <tbody>
+        <tr><td>Lehmer 1.1762808</td><td>t⁵ + t⁴ − 5t³ − 5t² + 4t + 3</td><td>2.026418</td><td>5.615601</td></tr>
+        <tr><td>β₄ 1.7220838</td><td>t² − t − 3</td><td>2.302776</td><td>3.000000</td></tr>
+        <tr><td>deg-6 1.5061357</td><td>t³ − t² − 3t + 1</td><td>2.170086</td><td>3.214320</td></tr>
+      </tbody>
+    </table></div>
+
+    <p>Read the first row: Lehmer's number, at 1.176, sits <em>below</em> Smyth's μ<sub>S</sub> — the
+      hardest case — yet its redirection τ₀ = 2.026 is safely past the flip, and the trace-down carries
+      M(T) = 5.62 &gt; M(β) = 1.176. The redirection always trades on-circle structure upward into real
+      growth: log τ₀ &gt; log β for every Salem.</p>
+
+    <h3>§4 <em>&nbsp;The branch point and the golden limit</em></h3>
+    <p>The flip t = 2 is not just a boundary; it is a <em>branch point</em> of the two-to-one cover, and
+      the redirection's fine structure lives there. The exact identity τ₀ − 2 = (β−1)²/β says a Salem of
+      height 1 + δ lands only δ² past the flip — the smaller the Salem, the more tightly its image hugs
+      t = 2. Now let a family of Salems climb to the golden floor and watch where the occupant goes:</p>
 
     <div class="eq"><span class="cid">P2-UNIF-01 · redirection at the floor</span>
       β<sub>n</sub> → φ&nbsp;⇒&nbsp; τ₀ = β<sub>n</sub> + β<sub>n</sub>⁻¹ → φ + φ⁻¹ = <b>√5</b> = +√D ∈ spec(ad<sub>R</sub>)
@@ -947,22 +1219,41 @@ details.cp[open] .reveal::before{content:"hide"}
         √5 − τ₀ ∼ (2/√5)·φ<sup>−n</sup>, so consecutive gaps shrink by exactly φ (verified n ≤ 29).</span>
     </div>
 
-    <p>And the map is <em>forced, not chosen</em>. Because the seed's conjugate is the negative
-      reciprocal (φψ = −1), the trace map θ ↦ θ + θ⁻¹ <em>is</em> the operation computing the
-      self-action's grow eigenvalue: φ − ψ = φ + φ⁻¹ = √5. So the coordinate in which a Salem is
-      <em>defined</em> and the map producing spec(ad<sub>R</sub>) are the same map — the system's own.</p>
+    <p>This is the loop closing on itself. The Salem factors of S<sub>n</sub> = x<sup>n</sup>P − P*
+      (P = x² − x − 1) approach φ from below; their redirections approach φ + φ⁻¹ = √5, which is
+      <em>exactly</em> the grow eigenvalue +√D of ad<sub>R</sub>. The number the self-action posits to
+      run its grow channel is the same number the trace map produces at the floor. The rate is clean too:
+      linearly the gap closes with slope φ⁻¹, and along the canonical family the successive gaps shrink by
+      exactly φ each step — a fact verified out to n ≤ 29.</p>
 
-    <h3>§4 <em>&nbsp;The slot rejects filling</em></h3>
-    <p>The dual question — can anything <em>enter</em>? — has a sharp answer. The angle charge A (= 1 iff
-      all root arguments lie in (π/2)ℤ) is a superselection charge: ⊕, ⊗, squaring, the trace lift, and
-      the monodromy of any closed loop all preserve A, while the slot has A = 0. Every entry route —
-      superposition, suspended superposition, non-linear travel, the lift — is checked and turned away;
-      the only route to A = 0 is a limit, which the finitely generated algebra approaches but never
-      attains. The slot is not a void that can be filled but a <em>space that rejects filling</em>.</p>
+    <h3>§5 <em>&nbsp;Forced, not chosen — and the slot rejects filling</em></h3>
+    <p>Why is τ₀ the "right" map rather than one an analyst picked? Because the seed forces it. The golden
+      seed's constant term −1 makes its conjugate the negative reciprocal, ψ = −φ⁻¹, so
+      φ − ψ = φ + φ⁻¹ = √5. The grow eigenvalue of ad<sub>R</sub> (a <em>difference</em>) and the
+      trace-down of β (a <em>sum</em> with its inverse) are literally the same expression. The redirection
+      is the system's native coordinate, not an imported modeling decision.</p>
+
+    <p>One dual question remains: can anything <em>enter</em> the slot from outside? The angle charge A
+      (= 1 iff every root argument lies in (π/2)ℤ) is a superselection charge — ⊕, ⊗, squaring, the trace
+      lift, and the monodromy of any closed loop all preserve it — while the slot has A = 0. Every entry
+      route (superposition, suspended superposition, non-linear travel, the lift) is checked and turned
+      away; the only path to A = 0 is a limit, which the finitely generated algebra approaches but never
+      attains. The slot is not a void that can be filled but a <em>space that rejects filling</em>: entry
+      is impossible by superselection, exit is forced by the trace map, and the exit accumulates at √5.</p>
 
     <div class="cpwrap">
       <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
-      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Why is
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Worked exercise: compute
+        Lehmer's redirection τ₀ from β = 1.1762808, check it clears the flip, and find τ₀ − 2.</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>β⁻¹ = 1/1.1762808 = 0.850137, so τ₀ = β + β⁻¹ = 1.176281 + 0.850137 = <strong>2.026418</strong>,
+            which is &gt; 2 — past the flip, in the grow channel. Check with the exact identity:
+            τ₀ − 2 = (β−1)²/β = (0.176281)²/1.176281 = 0.031075/1.176281 = 0.026418. Matches. Even
+            Lehmer's number, the smallest known Salem, is redirected safely above φ.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Why is
         "on-circle and expanding" impossible downstairs but seemingly possible upstairs?</span>
         <span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
@@ -972,7 +1263,7 @@ details.cp[open] .reveal::before{content:"hide"}
             hidden by the lift.</p>
         </div>
       </details>
-      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Show τ₀ − 2 = (β−1)²/β,
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Show τ₀ − 2 = (β−1)²/β,
         and read off what it says near the floor.</span>
         <span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
@@ -981,7 +1272,7 @@ details.cp[open] .reveal::before{content:"hide"}
             to t = 2.</p>
         </div>
       </details>
-      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Why is it significant
+      <details class="cp"><summary><span class="qn">Q4</span><span class="qtext">Why is it significant
         that the trace map equals the self-action's grow eigenvalue, rather than an analyst's choice?</span>
         <span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
@@ -1019,11 +1310,18 @@ details.cp[open] .reveal::before{content:"hide"}
     <p class="small">Reads from <a href="../papers/2026-06-z5-no-salem-dichotomy.pdf"><em>The ℤ/5ℤ Case
       of the No-Salem Dichotomy</em></a>.</p>
 
+    <p>The angle wall generalizes: a charge group ℤ/nℤ pins every conjugate angle to the n-th roots of
+      unity, and one can ask the no-Salem question modulus by modulus. For the triangle (ℤ/3ℤ) it closes
+      in a line, because 2cos 120° = −1 is a plain integer. The pentagon (ℤ/5ℤ) is the <em>first odd
+      modulus where that line breaks</em> — the relevant cosines go irrational — and following what
+      happens next is a compact lesson in the corpus's whole method: what stays forced, what gets
+      sharpened, and where the honest limit of a finite search actually is.</p>
+
     <h3>§1 <em>&nbsp;Why the pentagon is the hard analogue of the triangle</em></h3>
     <p>A charge group ℤ/nℤ forces every conjugate angle into (2π/n)ℤ. The ℤ/3ℤ proof closes trivially
-      because <span class="m">2cos 120° = −1 ∈ ℤ</span>: the complex pair's factor is integral the
-      instant its modulus is, forcing the search down to x³ − 2 with M = 2. Nothing couples. The
-      pentagon is different:</p>
+      because <span class="m">2cos 120° = −1 ∈ ℤ</span>: a complex pair at ±120° contributes the factor
+      x² − (2cos 120°)ρ x + ρ² = x² + ρx + ρ², which is integral the instant its modulus ρ is, forcing
+      ρ ∈ ℤ and collapsing the search to x³ − 2 with M = 2. Nothing couples. The pentagon is different:</p>
 
     <div class="eq"><span class="cid">Prop · irrational cosines</span>
       2cos 72° = φ − 1,&nbsp;&nbsp; 2cos 144° = −φ&nbsp;&nbsp; — the two roots of x² + x − 1
@@ -1033,7 +1331,16 @@ details.cp[open] .reveal::before{content:"hide"}
         partner, so the √5-parts cancel. That forced coupling is what ℤ/3ℤ never needs.</span>
     </div>
 
-    <h3>§2 <em>&nbsp;Four forced results, one sharpened residual</em></h3>
+    <p>The picture to hold: at the triangle, a lone complex pair can be integral by itself, so the search
+      factors into independent pieces and bottoms out fast. At the pentagon, a lone ±72° pair carries an
+      irrational √5 in its coefficients, and the only way to cancel it is to <em>bind</em> the ±72° pair
+      to its Galois-partner ±144° pair. That forced binding is the new phenomenon — and, as we will see,
+      it cuts both ways: it makes the general odd case genuinely hard, but where it applies it widens the
+      gap far beyond what the dichotomy asks.</p>
+
+    <h3>§2 <em>&nbsp;The forced ledger</em></h3>
+    <p>Specializing the corpus's reciprocal/non-reciprocal case-split to the pentagon lattice yields four
+      forced sub-results and one residual held honestly at <span class="tag computed">computed</span>.</p>
     <div class="tw"><table class="prose"><caption class="vh">Lesson 6 · the ℤ/5ℤ ledger</caption>
       <thead><tr><th scope="col">sub-class</th><th scope="col">measure</th><th scope="col">status</th></tr></thead>
       <tbody>
@@ -1044,22 +1351,51 @@ details.cp[open] .reveal::before{content:"hide"}
         <tr><td><strong>all charge-ℤ/5ℤ</strong> — μ(5)=2</td><td>M ∉ (1, 2)</td><td><span class="tag computed">computed</span> over window</td></tr>
       </tbody>
     </table></div>
+    <p>Two facts already improve on the earlier pass. The forced <em>general</em> floor rises from the
+      realification value 2<sup>1/5</sup> = 1.1487 all the way to Smyth's μ<sub>S</sub> = 1.3247; and the
+      reciprocal class strips to Φ₅<sup>a</sup> times real reciprocal units, whose real part is forced
+      ≥ φ². The two rows that carry the load — and the surprise — are the pure pentagon and the pure
+      power.</p>
 
-    <p>The <strong>pure-pentagon</strong> theorem is the striking one: the degree-four sector, having no
-      real root, is a ±72° pair (modulus s) times a ±144° pair (modulus t), and integrality forces
-      t = σ(s) — the two are ℚ(√5)-conjugate roots of a totally real y² − ky + m. The case analysis
-      bottoms out at φ⁴ ≈ 6.854 (minimizer x⁴ − x³ + 6x² + 4x + 1 at (k, m) = (3, 1)), a
-      <em>wider</em> gap than the dichotomy even asks. The coupling that makes the odd case hard is the
-      very thing that widens the gap.</p>
+    <h3>§3 <em>&nbsp;The pure-pentagon theorem, worked</em></h3>
+    <p>Take a quartic of charge ℤ/5ℤ with <em>no real root</em>. By the parity of the pentagon lattice it
+      must be a ±72° pair of modulus s times a ±144° pair of modulus t, and §1's forced coupling makes
+      s and t the two roots of a totally real integer quadratic y² − ky + m. The measure is then
+      max(1, s)²·max(1, t)², and a short case analysis on (k, m) finds its floor:</p>
 
-    <p>The <strong>pure-power</strong> family x⁵ − m realizes the floor: M = m, attaining
-      <span class="m">μ(5) = 2</span> at x⁵ − 2 — where the real root 2<sup>1/5</sup> is
-      Galois-conjugate to the four complex roots and cannot be split off, so the object is genuinely
-      quintic.</p>
+    <div class="eq"><span class="cid">Thm · pure pentagon</span>
+      minimizer at (k, m) = (3, 1):&nbsp;&nbsp; x⁴ − x³ + 6x² + 4x + 1,&nbsp;&nbsp; M = <b>φ⁴</b> ≈ 6.854
+      <span class="note"><span class="tag forced">forced</span> At (k, m) = (3, 1) the moduli s, t are
+        the roots of y² − 3y + 1 — namely s = φ² ≈ 2.618 (at ±72°) and t = φ⁻² ≈ 0.382 (at ±144°). Then
+        M = max(1, s)²·max(1, t)² = s² = (φ²)² = φ⁴. Every pure pentagon has M ∈ {1} ∪ [φ⁴, ∞).</span>
+    </div>
 
-    <h3>§3 <em>&nbsp;Why μ(5) = 2 stays computed, not forced</em></h3>
-    <p>The general claim — M ∉ (1, 2) for <em>all</em> charge-ℤ/5ℤ objects — holds over the window
-      (quartics |c| ≤ 10, quintics |c| ≤ 4, sextics |c| ≤ 3) but is not promoted.</p>
+    <p>This is the striking part. The dichotomy only asks for M ∉ (1, 2); the pure pentagon delivers a
+      <em>much wider</em> empty gap, all the way up to φ⁴ ≈ 6.854. And it is the very coupling that made
+      the odd case hard — s bound to t = σ(s) as ℚ(√5)-conjugates — that forces the moduli apart and
+      pushes the floor up. The obstruction and the strengthening are the same structural fact.</p>
+
+    <h3>§4 <em>&nbsp;The pure-power family and the realized floor</em></h3>
+    <p>If the pure pentagon floors at φ⁴, why is the realized floor of the whole class only 2? Because a
+      real root re-enters through a different family, x⁵ − m, which the degree-four analysis excluded by
+      hypothesis.</p>
+
+    <div class="eq"><span class="cid">Thm · pure power</span>
+      x⁵ − m has charge ℤ/5ℤ and <b>M = m</b>;&nbsp;&nbsp; μ(5) = 2 realized at x⁵ − 2
+      <span class="note"><span class="tag forced">forced</span> The roots are m<sup>1/5</sup>·e<sup>2πik/5</sup>,
+        k = 0..4, all of modulus m<sup>1/5</sup> &gt; 1, so M = (m<sup>1/5</sup>)⁵ = m. At m = 2 the real
+        root 2<sup>1/5</sup> is Galois-conjugate to the four complex roots and cannot be split off, so
+        x⁵ − 2 is genuinely quintic — it is not a pure pentagon in disguise.</span>
+    </div>
+
+    <p>So x⁵ − 2 realizes the dichotomy floor μ(5) = 2 exactly. The reason the two floors (φ⁴ and 2) can
+      coexist is that they describe <em>different sectors</em>: the pure pentagon lives in the no-real-root
+      quartic sector and floors high; x⁵ − 2 carries a real direction the quartic analysis threw out, and
+      that direction floors lower. The realized minimum over everything is 2, at x⁵ − 2.</p>
+
+    <h3>§5 <em>&nbsp;Why μ(5) = 2 stays computed, not forced</em></h3>
+    <p>The general claim — M ∉ (1, 2) for <em>all</em> charge-ℤ/5ℤ objects — holds over the verification
+      window (quartics |c| ≤ 10, quintics |c| ≤ 4, sextics |c| ≤ 3) but is deliberately not promoted.</p>
 
     <div class="eq" style="border-left-color:var(--ochre)"><span class="cid">the residual</span>
       only survivor: non-reciprocal charge-ℤ/5ℤ with M ∈ [μ<sub>S</sub>, 2) — <b>empty over the window</b>
@@ -1079,7 +1415,19 @@ details.cp[open] .reveal::before{content:"hide"}
 
     <div class="cpwrap">
       <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
-      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Why does the ℤ/3ℤ proof
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Worked exercise: show
+        M(x⁵ − 2) = 2 from the roots, and say why the object is genuinely quintic.</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>The roots are 2<sup>1/5</sup>·e<sup>2πik/5</sup> for k = 0, 1, 2, 3, 4 — one positive real
+            (k = 0) and two conjugate pairs at ±72°, ±144°. Every root has the same modulus
+            2<sup>1/5</sup> ≈ 1.1487 &gt; 1, so all five escape the circle and
+            M = (2<sup>1/5</sup>)⁵ = <strong>2</strong>. It cannot be split into a pure-pentagon quartet
+            because the real root 2<sup>1/5</sup> is Galois-conjugate to the four complex roots (x⁵ − 2
+            is irreducible by Eisenstein at 2), so the whole thing is one degree-5 object.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Why does the ℤ/3ℤ proof
         close by elementary means while ℤ/5ℤ needs a coupling?</span>
         <span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
@@ -1089,7 +1437,7 @@ details.cp[open] .reveal::before{content:"hide"}
             new structural feature.</p>
         </div>
       </details>
-      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">The realification
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">The realification
         handle gives 2<sup>1/5</sup> = 1.1487. Why is pushing it to clear 32 circular?</span>
         <span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
@@ -1099,7 +1447,7 @@ details.cp[open] .reveal::before{content:"hide"}
             ψ⁵ destroys is exactly what would be needed.</p>
         </div>
       </details>
-      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Why is the wider φ⁴ gap
+      <details class="cp"><summary><span class="qn">Q4</span><span class="qtext">Why is the wider φ⁴ gap
         in degree four consistent with the realized floor being only 2?</span>
         <span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
@@ -1137,10 +1485,17 @@ details.cp[open] .reveal::before{content:"hide"}
     <p class="small">Reads from <a href="../papers/2026-07-helix-orthogonal-partner.pdf"><em>The
       Dissolved Helix and Its Orthogonal Partner</em></a>.</p>
 
+    <p>The golden mode drives all the growth in the machine, so a natural question is whether it can
+      <em>bind to a copy of itself</em> — form a closed, self-reinforcing structure. It cannot, and the
+      three reasons why turn out to point at the same missing ingredient: a quarter-turn. This lesson
+      shows where that quarter-turn comes from — a single seed, K, that straddles the discriminant flip
+      and supplies the two directions the golden strand can never reach on its own — and then abstracts
+      the <em>method</em> used to get here into a reusable object, the harness.</p>
+
     <h3>§1 <em>&nbsp;The self-coupling obstruction</em></h3>
-    <p>The golden companion R = [[0,1],[1,1]] satisfies R² = R + I, with self-action spectrum {0, ±√5}
-      and angle charge in the sublattice {0, 2} ⊂ ℤ/4ℤ. Three independent facts converge to say it
-      cannot bind to a copy of itself.</p>
+    <p>Fix the golden companion R = [[0,1],[1,1]], so R² = R + I, with self-action spectrum {0, ±√5} and
+      angle charge in the sublattice {0, 2} ⊂ ℤ/4ℤ. Three independent facts converge on the same verdict:
+      R cannot bind to a copy of itself into a closed structure.</p>
 
     <div class="eq"><span class="cid">Cor · no self-coupling</span>
       [R, R] = 0&nbsp;·&nbsp; {0,2} + {0,2} ≡ {0,2}&nbsp;·&nbsp; M grows, never returns to 1
@@ -1151,16 +1506,35 @@ details.cp[open] .reveal::before{content:"hide"}
         self-operation supplies.</span>
     </div>
 
-    <h3>§2 <em>&nbsp;The flip, and the seed that straddles it</em></h3>
-    <p>For the gate family g<sub>C</sub>(x) = x² + x − C the discriminant D = 1 + 4C controls everything
-      at once — the roots, the field, the trace-form signature, and the channel character:</p>
+    <p>Read the three failures as one deficiency. Binding would need a nonzero commutator, but [R, R] = 0
+      trivially (a thing commutes with itself); it would need to return to the cyclotomic floor M = 1, but
+      the magnitude only climbs φ → φ² → φ⁴; and it would need to reach the charges {1, 3}, but
+      {0, 2} + {0, 2} stays {0, 2}. Every route back to closure passes through the two charges the real
+      axis cannot produce. So the golden strand needs a <em>partner</em> that carries {1, 3} — and there
+      is exactly one.</p>
+
+    <h3>§2 <em>&nbsp;The flip D = 1 + 4C</em></h3>
+    <p>Where do the missing directions live? On the far side of a single sign change. Take the gate family
+      g<sub>C</sub>(x) = x² + x − C, with discriminant D = 1 + 4C. The claim is that this one sign
+      controls the roots, the field, the metric signature, and the channel character all at once — and it
+      is proved by a two-by-two determinant.</p>
 
     <div class="eq"><span class="cid">Thm · the flip D = 1 + 4C</span>
       det G = 1 + 4C = D;&nbsp;&nbsp; D &gt; 0 Riemannian (real growth),&nbsp;&nbsp; D &lt; 0 Lorentzian (rotation)
-      <span class="note"><span class="tag forced">forced</span> The trace-form Gram determinant equals
-        the discriminant: the metric signature <em>is</em> the discriminant sign. The flip is at
-        C = −1/4. The golden strand is the D &gt; 0 face; one seed carries both.</span>
+      <span class="note"><span class="tag forced">forced</span> In the power basis {1, θ} with θ² = C − θ,
+        the trace-form Gram is G = [[2, −1], [−1, 1 + 2C]], so det G = 2(1 + 2C) − 1 = 1 + 4C = D. The
+        metric signature <em>is</em> the discriminant sign; the flip is at C = −1/4.</span>
     </div>
+
+    <p>The computation is short and worth seeing: with θ + θ′ = −1 and θθ′ = −C, the traces are
+      tr(1) = 2, tr(θ) = −1, and tr(θ²) = (θ+θ′)² − 2θθ′ = 1 + 2C, giving the Gram matrix above and
+      det G = 1 + 4C. The leading entry 2 is always positive, so as D crosses zero the form flips from
+      positive-definite (Riemannian, real growth — the golden strand's home, D &gt; 0) to indefinite
+      (Lorentzian, rotation — D &lt; 0). The discriminant and the metric are the same event.</p>
+
+    <h3>§3 <em>&nbsp;The seed that straddles the flip: K</em></h3>
+    <p>Now the partner. The quartic K = x⁴ + 5x² − 5 is the one catalog seed that carries <em>both</em>
+      faces of the flip at once, and running it by hand shows exactly how.</p>
 
     <div class="eq"><span class="cid">test_p1_09_kform</span>
       K(x) = x⁴ + 5x² − 5:&nbsp;&nbsp; real ±K = ±5<sup>1/4</sup>/φ (terrain),&nbsp;&nbsp; imaginary ±iβ (π/2 turn),&nbsp;&nbsp; M(K) = β² = φ²√5 ≈ 5.854
@@ -1170,12 +1544,25 @@ details.cp[open] .reveal::before{content:"hide"}
         rotation.</span>
     </div>
 
-    <p>K is the unique catalog seed realizing all four charges: real roots at {0, 2}, imaginary roots at
-      {1, 3}. Its charge axis {1, 3} is <em>orthogonal</em> to the golden axis {0, 2} — a quarter-turn
-      apart — so {0, 2} ⊔ {1, 3} completes ℤ/4ℤ. (The parity criterion: an even quartic with a negative
-      x²-root places its complex roots on the imaginary axis; the sibling quartics "cons" and "res"
-      generate the same field ℚ(5<sup>1/4</sup>) but are non-even, so their complex roots sit off the
-      charge lattice.)</p>
+    <p>Substitute y = x², so y² + 5y − 5 = 0 with y = (−5 ± 3√5)/2. The positive root y₊ ≈ 0.854 gives
+      the <em>real</em> pair ±K = ±5<sup>1/4</sup>/φ ≈ ±0.924 — this is the <em>terrain</em>, living in
+      the golden field ℚ(5<sup>1/4</sup>) ⊃ ℚ(√5). The negative root y₋ ≈ −5.854 gives the
+      <em>imaginary</em> pair ±iβ with β ≈ 2.4195 — a pure quarter-turn about the origin, the
+      <em>rotation</em>. Its measure is M(K) = β² = φ²√5 ≈ 5.854 (only the two |·| &gt; 1 imaginary roots
+      contribute). So K is the unique seed realizing all four charges: real roots at {0, 2}, imaginary
+      roots at {1, 3}. The charge axis {1, 3} is <em>orthogonal</em> — a quarter-turn — to the golden axis
+      {0, 2}, and {0, 2} ⊔ {1, 3} completes ℤ/4ℤ.</p>
+
+    <p>Why K and not another quartic of the same field? A <strong>parity criterion</strong>: an
+      <em>even</em> quartic (a polynomial in x²) with a negative x²-root places its complex roots on the
+      imaginary axis, charges {1, 3}. K is even; the sibling quartics "cons" and "res" generate the same
+      field ℚ(5<sup>1/4</sup>) but are non-even, so their complex roots carry nonzero real part
+      (φ² and −φ) and land <em>off</em> the (π/2)ℤ charge lattice. Only the even seed reaches the missing
+      directions.</p>
+
+    <h3>§4 <em>&nbsp;Two faces of one flip: closure via the partner</em></h3>
+    <p>Assembling the pieces gives the coupling theorem, and with it the resolution of the opening
+      question.</p>
 
     <div class="eq" style="border-left-color:var(--verdigris)"><span class="cid">Thm · two faces of one flip</span>
       golden strand = D &gt; 0 terrain;&nbsp; K adjoins the D &lt; 0 rotation;&nbsp; only closure is the partner, not a copy
@@ -1184,11 +1571,19 @@ details.cp[open] .reveal::before{content:"hide"}
         substrate. A helix cannot couple to a copy of itself, only to the rotation face of its own flip.</span>
     </div>
 
-    <h3>§3 <em>&nbsp;The transferable object: the harness</em></h3>
-    <p>The helix entered as an external structure carrying a bundle of claims; the exact substrate
-      adjudicated each. That procedure — the <strong>harness</strong> — is what transfers, not the
-      helix. It partitions imported claims into survivors (forced, become internal relations),
-      casualties (refuted — the negation is forced), and residue (posited / open).</p>
+    <p>The interpretive gloss — calling the golden strand a "helix" whose pitch is growth and whose winding
+      is the quarter-turn — is a <span class="tag declared">declared</span> overlay, honestly tagged as
+      such. But the substrate under it is <span class="tag forced">forced</span>: the golden strand
+      occupies the D &gt; 0 terrain face, K adjoins the D &lt; 0 rotation face, and the only way to close
+      the structure is to couple the strand to the <em>partner</em> K, never to a copy of itself. A helix
+      binds to the rotation face of its own flip.</p>
+
+    <h3>§5 <em>&nbsp;The transferable object: the harness</em></h3>
+    <p>Step back from the helix to the <em>method</em>. The helix entered as an external metaphor carrying
+      a bundle of claims; the exact substrate adjudicated each one. That procedure — the
+      <strong>harness</strong> — is the reusable object, not the helix. It partitions imported claims into
+      survivors (forced, becoming internal relations), casualties (refuted — the negation is forced), and
+      residue (posited / open):</p>
 
     <div class="tw"><table class="prose"><caption class="vh">Lesson 7 · the harness partition</caption>
       <thead><tr><th scope="col">imported claim</th><th scope="col">verdict</th></tr></thead>
@@ -1204,11 +1599,24 @@ details.cp[open] .reveal::before{content:"hide"}
     <p>The asymmetry is the substance: a single exact counterexample refutes a universal decisively,
       while a finite search certifies only to <span class="tag computed">computed</span>, never
       <span class="tag forced">forced</span>. A run that refutes nothing has imported nothing testable —
-      so the substrate can adjudicate a <em>restraint</em> but not a bare <em>generator</em>.</p>
+      so the substrate can adjudicate a <em>restraint</em> (a falsifiable constraint) but not a bare
+      <em>generator</em>. That is why "the helix" dissolves without loss: everything true in it became an
+      internal relation, everything false was refuted, and the leftover metaphor is tagged posited.</p>
 
     <div class="cpwrap">
       <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
-      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Give the three
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Worked exercise: from
+        y = x², find the four roots of K = x⁴ + 5x² − 5 and confirm M(K) = φ²√5.</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Set y = x²: y² + 5y − 5 = 0, so y = (−5 ± 3√5)/2, giving y₊ ≈ 0.854 and y₋ ≈ −5.854. From
+            y₊ &gt; 0: two real roots ±√y₊ = ±5<sup>1/4</sup>/φ ≈ ±0.924 (inside the circle). From
+            y₋ &lt; 0: two imaginary roots ±i√|y₋| = ±iβ, β ≈ 2.4195 (outside). Only the imaginary pair
+            has modulus &gt; 1, so <strong>M(K) = β·β = β² = |y₋| = (5+3√5)/2 = φ²√5 ≈ 5.854</strong>.
+            Charges: real {0, 2}, imaginary {1, 3} — all of ℤ/4ℤ.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Give the three
         independent reasons the golden mode cannot couple to a copy of itself.</span>
         <span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
@@ -1217,7 +1625,7 @@ details.cp[open] .reveal::before{content:"hide"}
             Plus the Salem channel is empty — so closure needs an orthogonal partner, not a copy.</p>
         </div>
       </details>
-      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Why is K = x⁴ + 5x² − 5
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Why is K = x⁴ + 5x² − 5
         the seed that completes ℤ/4ℤ, and not the other ℚ(5<sup>1/4</sup>) quartics?</span>
         <span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
@@ -1227,7 +1635,7 @@ details.cp[open] .reveal::before{content:"hide"}
             (π/2)ℤ charge lattice.</p>
         </div>
       </details>
-      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">In the harness, why can
+      <details class="cp"><summary><span class="qn">Q4</span><span class="qtext">In the harness, why can
         a finite exact search refute a universal but never prove one?</span>
         <span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
@@ -1265,9 +1673,18 @@ details.cp[open] .reveal::before{content:"hide"}
     <p class="small">Reads from <a href="../papers/2026-07-pisot-residue.pdf"><em>The Pisot Cross-Shell
       Residue</em></a>; carries the <a href="#ledger">D5 erratum</a>.</p>
 
-    <h3>§1 <em>&nbsp;The ratio object and the scan as a decision</em></h3>
-    <p>For a monic p with roots α<sub>1</sub>, …, α<sub>n</sub>, the <strong>ratio object</strong>
-      records all ordered root ratios:</p>
+    <p>The final lesson climbs one level up. The Pisot numbers were the "clean" side of the story — one
+      root outside the circle, all the rest strictly inside — and the question here is finer: can two
+      distinct conjugates of a Pisot number sit at the same distance from the origin and share a rational
+      angle offset (be "coherent")? For small degree the answer is a clean no, provably. At the quintic
+      two-pair pattern the proof runs out, and the corpus does what it does best: it runs an
+      <em>exhaustive exact census</em>, reports the result honestly — including a filed erratum that
+      corrects one over-claim without disturbing the theorem — and names precisely what stays open.</p>
+
+    <h3>§1 <em>&nbsp;The coherence question and the ratio object</em></h3>
+    <p>Two roots of equal modulus are <strong>coherent</strong> if their ratio is a root of unity; a
+      polynomial with no such coincidence is <strong>relationally inert</strong>. To decide coherence
+      exactly, package all the ratios into one integer polynomial:</p>
 
     <div class="eq"><span class="cid">Prop · ratio object</span>
       Rat<sub>p</sub>(x) = prim Res<sub>y</sub>(p(y), p(xy)) ∈ ℤ[x],&nbsp;&nbsp; deg = n², roots {α<sub>j</sub>/α<sub>i</sub>}
@@ -1277,10 +1694,18 @@ details.cp[open] .reveal::before{content:"hide"}
         complete contact scan is a finite decision procedure entirely in ℤ[x] — no float crosses it.</span>
     </div>
 
-    <h3>§2 <em>&nbsp;The real-pair ν-reduction, and inertness below two shells</em></h3>
-    <p>The lemma that does the work: for a real β and non-real α in a conjugation-closed root set,
-      α ≈ β iff α/ᾱ is a root of unity — and α/ᾱ is itself a root of Rat<sub>p</sub>. So every
-      real×non-real coherence question is decided by the scan of Rat<sub>p</sub> alone.</p>
+    <p>The ratio object turns a question about angles into a divisibility check in ℤ[x]: a coherence at a
+      primitive M-th root of unity leaves a cyclotomic factor Φ<sub>M</sub> in Rat<sub>p</sub>, and the
+      completeness bound 2φ(M)² ≥ M caps how large M can be (for a degree-n polynomial, M ≤ 2n⁴), so only
+      finitely many Φ<sub>M</sub> need testing. "Is this number relationally inert?" becomes "does its
+      ratio object contain any cyclotomic factor beyond the trivial Φ₁?" — a decision made entirely with
+      integers, no floating point anywhere near it.</p>
+
+    <h3>§2 <em>&nbsp;The ν-reduction, and inertness below two shells</em></h3>
+    <p>The lemma that does the real work handles the mixed case — a real conjugate paired with a non-real
+      one. For a real β and non-real α in a conjugation-closed root set, α ≈ β iff α/ᾱ is a root of unity —
+      and α/ᾱ is itself a root of Rat<sub>p</sub>. So every real×non-real coherence question collapses onto
+      the same single scan. That reduction is enough to close every small Pisot number outright:</p>
 
     <div class="eq"><span class="cid">Thm · Pisot inertness ≤ 1 pair</span>
       every Pisot number with ≤ 1 non-real conjugate pair is <b>relationally inert</b>
@@ -1291,11 +1716,29 @@ details.cp[open] .reveal::before{content:"hide"}
         case is the quintic <em>two-pair</em> pattern (θ, λ<sub>1</sub>, λ̄<sub>1</sub>, λ<sub>2</sub>, λ̄<sub>2</sub>).</span>
     </div>
 
-    <h3>§3 <em>&nbsp;The exhaustive quintic execution</em></h3>
-    <p>Over the box of 3125 monic quintics with coefficients in [−2, 2], exact certification (e ≠ 0,
-      ±reciprocal rejection, irreducibility, Sturm pattern, rational-rectangle disk certificates) yields
-      83 Pisot quintics: 0 real-only, 16 mixed (typed by §2), and <strong>67 two-pair</strong>, all on
-      distinct shells. The composed-square instrument C₂ decides each:</p>
+    <p>The engine is <em>modulus pinning</em>: the dominant Pisot root θ &gt; 1 has a modulus attained by
+      no other conjugate (all the rest are inside the unit disk), and a uniquely-attained modulus forbids
+      any root-of-unity ratio between distinct conjugates. With at most one non-real pair, the ν-reduction
+      says the only thing left to check is λ/λ̄, which is not torsion — so there is nothing to decide, and
+      inertness is forced. The <em>first</em> case this argument cannot reach is the quintic with
+      <em>two</em> non-real pairs on distinct shells, where cross-shell products, not single ratios, could
+      in principle be coherent. That is the residue the census attacks.</p>
+
+    <h3>§3 <em>&nbsp;The exhaustive quintic census</em></h3>
+    <p>The strategy is brute exactness: enumerate every monic quintic in a box, certify which are Pisot,
+      and scan the two-pair ones. The funnel is sharp.</p>
+
+    <div class="eq"><span class="cid">census · 3125 → 83 → 67</span>
+      3125 quintics [−2,2]⁵ → certify → <b>83 Pisot</b> (0 real-only, 16 mixed, 67 two-pair)
+      <span class="note"><span class="tag computed">computed</span> Stage-1 rejects, in order: 625 with
+        e = 0, 50 ±reciprocal, 638 reducible, 1318 wrong Sturm pattern, 411 failing a disk certificate —
+        leaving 83. The 16 mixed are already typed inert by §2; the 67 two-pair are the live residue.</span>
+    </div>
+
+    <p>Each two-pair quintic is put through the composed-square instrument. Strip the trivial diagonal
+      factor (x − 1)⁵ from the degree-25 ratio object to get Rat°<sub>p</sub> of degree 20; form
+      C₂(x) = Res<sub>y</sub>(S*(y), y<sup>d</sup>S*(x/y)) of degree d² = 400, whose roots are all
+      products of two ratio-roots; and scan it for cyclotomic factors.</p>
 
     <div class="eq"><span class="cid">Thm · quintic box result</span>
       all 67 two-pair C₂ scans return exactly {Φ₁²⁰} — <b>zero mirrored cross-shell classes</b>
@@ -1305,6 +1748,14 @@ details.cp[open] .reveal::before{content:"hide"}
         no coherence exists. Rat°<sub>p</sub> is squarefree on all 67. Two instances were independently
         re-derived end-to-end in a second engine, in exact agreement.</span>
     </div>
+
+    <p>A scan returning only Φ₁²⁰ (the forced diagonal, one Φ₁ per pairing of a root with its own inverse)
+      and no higher Φ<sub>M</sub> certifies that no product of two unimodular ratio-roots is a root of
+      unity — hence no cross-shell coherence. All 67 come back clean: the residue is empty over the box.</p>
+
+    <h3>§4 <em>&nbsp;The honest D5 erratum</em></h3>
+    <p>The corpus's discipline shows most clearly where it corrects itself. A source note over-stated one
+      structural detail, and the erratum is carried openly:</p>
 
     <div class="eq" style="border-left-color:var(--ochre)"><span class="cid">ERRATA D5 · honest correction</span>
       Rat°<sub>p</sub> is irreducible on <b>66 of 67</b>, not all 67 — the theorem's inertness is untouched
@@ -1316,23 +1767,45 @@ details.cp[open] .reveal::before{content:"hide"}
         as the theorem concludes. The <em>squarefree</em>-on-all-67 claim and Theorem "box" are correct.</span>
     </div>
 
-    <p>The erratum comes with an upgrade that supersedes the old <span class="tag plausible">plausible</span>
-      genericity guess with a <span class="tag forced">forced</span> criterion: for squarefree
-      Rat°<sub>p</sub>, irreducibility over ℚ is exactly <strong>2-transitivity of Gal(p)</strong> on the
-      ordered root pairs. The Galois census of the 67 is S₅ × 65, M₂₀ × 1, D₅ × 1: M₂₀ = AGL(1,5) is
-      sharply 2-transitive (irreducible), while D₅ has two length-10 orbits (the observed split) —
-      reproducing 66/67 with no residue.</p>
+    <p>Crucially, the correction is to a <em>side remark</em>, not the theorem. Inertness needs
+      squarefreeness (true on all 67) and an empty cyclotomic scan (true on all 67), neither of which is
+      irreducibility. And the erratum brings an upgrade: it replaces the old
+      <span class="tag plausible">plausible</span> genericity guess with a
+      <span class="tag forced">forced</span> criterion — for squarefree Rat°<sub>p</sub>, irreducibility
+      over ℚ is exactly <strong>2-transitivity of Gal(p)</strong> on ordered root pairs. The Galois census
+      of the 67 is S₅ × 65, M₂₀ × 1, D₅ × 1: S₅ and M₂₀ = AGL(1,5) act 2-transitively (irreducible),
+      while D₅ has two length-10 orbits (the observed split). That is 66 irreducible, 1 reducible —
+      reproducing the 66/67 exactly, with no residue left to guess at.</p>
 
-    <p>Companion replications reinforce the picture: the degree-12 Salem census (378 twist-classes, tally
-      39/256/46/37, all 37 Salems inert with scan {Φ₁¹²}) and a Pisot-quartic sweep (103/103 scans
-      {Φ₁⁴}). The general <strong>Pisot-inertness conjecture</strong> — every Pisot number is inert —
-      remains <span class="tag open">open</span>; a "no-level-2-pin" result shows transport
-      <em>cannot</em> prove it, so a genuinely new mechanism (heights, multiplicative-relation bounds) is
-      required.</p>
+    <h3>§5 <em>&nbsp;Companion replications, and what stays open</em></h3>
+    <p>The same instrument, run on neighbouring families, keeps returning inert: the degree-12 Salem census
+      (378 twist-classes, tally 39/256/46/37, all 37 Salems inert with scan {Φ₁¹²}) and a Pisot-quartic
+      sweep (103/103 scans {Φ₁⁴}). Every certified object in reach is relationally inert.</p>
+
+    <p>But the general <strong>Pisot-inertness conjecture</strong> — that <em>every</em> Pisot number is
+      inert — stays <span class="tag open">open</span>, and honestly so. A "no-level-2-pin" result shows
+      the transport/pinning machinery that closed the small cases <em>cannot</em> reach the general one:
+      the moduli of Rat°<sub>p</sub> repeat, so no modulus is uniquely attained one level up, and pinning
+      has no purchase. A genuinely new mechanism — heights, or bounds on multiplicative relations among
+      conjugates — is required. The census settles the first live instances; it does not pretend to settle
+      the conjecture.</p>
 
     <div class="cpwrap">
       <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
-      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Why does the dominant
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Worked exercise: for a
+        two-pair Pisot quintic, give deg Rat<sub>p</sub>, deg Rat°<sub>p</sub>, and deg C₂ — and say which
+        scan result certifies inertness.</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Degree n = 5, so <strong>deg Rat<sub>p</sub> = n² = 25</strong>. Stripping the trivial
+            diagonal factor (x − 1)⁵ (one root over each of the 5 roots) leaves
+            <strong>deg Rat°<sub>p</sub> = 20</strong>. The composed square uses all ordered products of
+            its d = 20 roots, so <strong>deg C₂ = d² = 400</strong>. Inertness is certified when the
+            complete cyclotomic scan of C₂ returns exactly {Φ₁²⁰} — only the forced diagonal, no Φ<sub>M</sub>
+            with M ≥ 2, i.e. no product of two unimodular ratio-roots is a root of unity.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Why does the dominant
         Pisot root make everything below two non-real shells inert?</span>
         <span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
@@ -1342,7 +1815,7 @@ details.cp[open] .reveal::before{content:"hide"}
             pair there is nothing left to decide.</p>
         </div>
       </details>
-      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">The D5 erratum breaks
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">The D5 erratum breaks
         "irreducible on all 67." Why is Theorem box still intact?</span>
         <span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>
@@ -1352,7 +1825,7 @@ details.cp[open] .reveal::before{content:"hide"}
             the scan still returns {Φ₁²⁰}. The instance is inert exactly as claimed.</p>
         </div>
       </details>
-      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">What replaced the
+      <details class="cp"><summary><span class="qn">Q4</span><span class="qtext">What replaced the
         plausible genericity guess, and how does it explain 66/67?</span>
         <span class="reveal" aria-hidden="true"></span></summary>
         <div class="ans"><span class="lbl">answer</span>

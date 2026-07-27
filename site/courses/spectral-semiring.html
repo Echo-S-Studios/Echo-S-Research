@@ -410,6 +410,12 @@ details.cp[open] .reveal::before{content:"hide"}
     <div class="run"><b>d1–d7</b><i>exact-arithmetic scripts, over &#8484;, &#8474;(&#8730;5), &#8474;(5<sup>1/4</sup>)</i></div>
 
     <h3>&#167;1 <em>&nbsp;The seed and the keystone</em></h3>
+    <p>Most algebras are handed to you as a list of axioms; this one is handed to you as a single
+      <em>object</em>, and asks only what that object forces. The object is a number in disguise. An algebraic
+      number is a root of a monic integer polynomial, and the cleanest way to <em>carry</em> such a number
+      inside linear algebra is its companion matrix — the integer matrix whose characteristic polynomial is that
+      very polynomial and whose action is "multiply by a root." Encode the golden ratio this way and then simply
+      watch what is unavoidable.</p>
     <p>The golden ratio <span class="m">&#966; = (1+&#8730;5)/2</span> satisfies <span class="m">&#966;² = &#966; + 1</span>.
       Carry that number inside linear algebra as the companion matrix of <span class="m">x² &#8722; x &#8722; 1</span>,
       and the scalar identity becomes a <em>matrix</em> identity — the keystone.</p>
@@ -557,6 +563,25 @@ details.cp[open] .reveal::before{content:"hide"}
           <span class="m">K = x&#8308; + 5x² &#8722; 5</span>, whose imaginary roots supply the quarter-turn.</p>
         </div>
       </details>
+
+      <details class="cp"><summary><span class="qn">Q4</span><span class="qtext">Worked exercise: compute the
+        deviation operator <span class="m">X&#8324; = 2R&#8308; &#8722; L&#8324;I</span> and verify the trace duality
+        <span class="m">&#189;Tr(X<sub>n</sub>²) = 5F<sub>n</sub>² = L<sub>n</sub>² &#8722; 4(&#8722;1)<sup>n</sup></span>
+        end to end at <span class="m">n = 4</span>.</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>From the power law, <span class="m">R&#8308; = 3R + 2I</span> and <span class="m">L&#8324; = Tr(R&#8308;) = 7</span>.
+          So <span class="m">X&#8324; = 2R&#8308; &#8722; 7I = (6R + 4I) &#8722; 7I = 6R &#8722; 3I = 3(2R &#8722; I) = 3H</span> —
+          the coefficient is <span class="m">F&#8324; = 3</span>, exactly as <span class="m">X<sub>n</sub> = F<sub>n</sub>H</span>
+          predicts, and the whole family really does live on the one Cartan axis <span class="m">ℝH</span>. Now use
+          <span class="m">H² = 5I</span>: <span class="m">X&#8324;² = 9H² = 45I</span>, hence
+          <span class="m">&#189;Tr(X&#8324;²) = &#189;·(45 + 45) = 45</span>. Read the same 45 three more ways:
+          <span class="m">5F&#8324;² = 5·9 = 45</span>; <span class="m">L&#8324;² &#8722; 4(&#8722;1)&#8308; = 49 &#8722; 4 = 45</span>;
+          and <span class="m">(&#966;&#8308; &#8722; &#968;&#8308;)² = (F&#8324;&#8730;5)² = (3&#8730;5)² = 45</span>. One number,
+          four coats — length, trace, the Cassini <span class="m">&#177;4</span>, and the squared eigenvalue gap —
+          and no float touches any of them. <span class="tag forced">forced</span></p>
+        </div>
+      </details>
     </div>
 
     <div class="handoff"><span class="lbl">hands on to Lesson 2</span>
@@ -593,6 +618,14 @@ details.cp[open] .reveal::before{content:"hide"}
 
     <div class="run"><b>38/38</b><i>operator suite · exact arithmetic, all green</i></div>
 
+    <p>The companion papers each studied one operator — union <span class="m">&#8853;</span>, coupling
+      <span class="m">&#8855;</span>, squaring — in isolation, and read off one fact apiece:
+      <span class="m">&#8853;</span> multiplies measures, <span class="m">&#8855;</span> adds charge, squaring
+      doubles it. This lesson reads them <em>together</em>, and the list collapses into one named object — a
+      <span class="m">&#955;</span>-ring — with exactly two ways out. The surprise is that those two exits are
+      not new inventions: they are precisely the two invariants the whole corpus is already built on. Nothing is
+      posited here; the structure was there all along, waiting to be seen whole.</p>
+
     <h3>&#167;1 <em>&nbsp;The semiring, earned</em></h3>
     <div class="tw"><table><caption class="vh">Lesson 2 — §1 the three operators, concretely</caption>
       <thead><tr><th scope="col">operator</th><th scope="col">matrix realization</th><th scope="col">effect on spectrum</th></tr></thead>
@@ -607,6 +640,11 @@ details.cp[open] .reveal::before{content:"hide"}
       together with commutativity, associativity, the unit <span class="m">[1]</span>, and the annihilator
       <span class="m">&#8709;</span>. So <span class="m">(&#8853;, &#8855;)</span> make the objects a
       <strong>commutative semiring</strong>. <span class="tag forced">forced</span></p>
+    <p class="small">A semiring is a ring with the subtraction removed — the natural numbers
+      <span class="m">&#8469;</span> under <span class="m">(+, &#215;)</span> are the model. You may union objects
+      and couple them, but there is no operation that "un-emits" one. Together with the measure being always
+      <span class="m">&#8805; 1</span> (next section), this is the first structural hint of the whole subject:
+      magnitude, once made, cannot be destroyed inside the algebra — the floor will be a wall, not a convention.</p>
 
     <h3>&#167;2 <em>&nbsp;Squaring is the diagonal of <span class="m">&#8855;</span></em></h3>
     <p>Squaring is not a fourth primitive. Look at <span class="m">A &#8855; A</span>: its spectrum is
@@ -629,6 +667,16 @@ details.cp[open] .reveal::before{content:"hide"}
       <span class="tag forced">forced</span> at every law.</span>
     </div>
 
+    <p>Here is the picture behind the plethysm. The tensor square <span class="m">A &#8855; A</span> lists
+      <em>all ordered pairs</em> of eigenvalues as products <span class="m">&#955;<sub>i</sub>&#955;<sub>j</sub></span>.
+      Sort them by index: the pairs with <span class="m">i = j</span> are the diagonal, the pairs with
+      <span class="m">i &lt; j</span> the strict upper triangle (the wedge <span class="m">&#923;²</span>), and the
+      symmetric square <span class="m">Sym²</span> is the diagonal plus that triangle. Squaring keeps exactly the
+      diagonal <span class="m">{&#955;<sub>i</sub>²}</span> — no new axiom, just a restriction of an operator you
+      already own. That one observation is what upgrades the operator set from "a semiring with a bonus map" to a
+      genuine <span class="m">&#955;</span>-ring, where the exterior powers and the Adams operations are locked
+      together by Newton's identities.</p>
+
     <h3>&#167;3 <em>&nbsp;Character I — the measure, and where it goes tropical</em></h3>
     <p>The Mahler measure is a clean homomorphism on <span class="m">&#8853;</span>
       (<span class="m">M(A &#8853; B) = M(A)M(B)</span>) and intertwines squaring with squaring
@@ -646,6 +694,15 @@ details.cp[open] .reveal::before{content:"hide"}
       <span class="m">&#177;&#8730;2&#183;&#968;</span> falls <em>inside</em> the unit circle and leaves the
       measure. Whether a cross-term contributes is a fresh boundary decision per pair. <span class="tag forced">forced</span></span>
     </div>
+
+    <p>Read the rule as a picture. An eigenvalue pays into the measure only for the part of its size that pokes
+      <em>outside</em> the unit circle — the amount <span class="m">max(0, log|&#955;|)</span>, zero for anything
+      on or inside. On the tensor the eigenvalues are the products <span class="m">&#945;<sub>i</sub>&#946;<sub>j</sub></span>,
+      so each log-size splits as a <em>sum</em> <span class="m">log|&#945;<sub>i</sub>| + log|&#946;<sub>j</sub>|</span>,
+      and you keep only its positive part, pair by pair. Summing those clipped sums is a
+      <span class="m">(max,+)</span> convolution — the arithmetic of the tropical semiring — and clipping is
+      exactly what the naive product <span class="m">M(A)M(B)</span> cannot do, since it multiplies the whole
+      sizes and never sees a pair fall through the circle.</p>
 
     <p>The image of the additive character is a monoid, <span class="m">&#10216;&#966;, 2, 3, 5, &#946;²&#10217;</span>
       with <span class="m">&#946;² = &#966;²&#8730;5</span>; its <em>least generator is</em>
@@ -731,6 +788,31 @@ details.cp[open] .reveal::before{content:"hide"}
           convenient normalization.</p>
         </div>
       </details>
+
+      <details class="cp"><summary><span class="qn">Q4</span><span class="qtext">Worked exercise: run all three
+        operators on the golden seed <span class="m">A<sub>&#966;</sub> = {&#966;, &#968;}</span> and track both
+        characters <span class="m">(M, &#967;)</span> for each. Why do <span class="m">&#8855;</span> and
+        <span class="m">&#968;²</span> land on the same magnitude but by different rules?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p><em>Union</em> <span class="m">A<sub>&#966;</sub> &#8853; A<sub>&#966;</sub> = {&#966;, &#968;, &#966;, &#968;}</span>:
+          <span class="m">M = &#966;·&#966; = &#966;²</span> (additive, honestly), charge
+          <span class="m">{0,2} &#8746; {0,2} = {0,2}</span>. <em>Coupling</em>
+          <span class="m">A<sub>&#966;</sub> &#8855; A<sub>&#966;</sub> = {&#966;², &#966;&#968;, &#968;&#966;, &#968;²} = {&#966;², &#8722;1, &#8722;1, &#968;²}</span>
+          (using <span class="m">&#966;&#968; = &#8722;1</span>): only <span class="m">&#966;²</span> lies outside the
+          circle, so <span class="m">M = &#966;²</span> — the <em>tropical</em> value, not the naive
+          <span class="m">&#966;²·&#966;² = &#966;&#8308;</span>, because the two <span class="m">&#8722;1</span>'s sit on the
+          circle and <span class="m">&#968;²</span> inside; charge <span class="m">{0,2} + {0,2} &#8801; {0,2}</span>
+          (sumset mod 4). <em>Squaring</em> <span class="m">&#968;²(A<sub>&#966;</sub>) = {&#966;², &#968;²}</span>:
+          <span class="m">M = &#966;² = M(A<sub>&#966;</sub>)²</span>, charge <span class="m">2·{0,2} &#8801; {0}</span>.
+          So <span class="m">&#8855;</span> and <span class="m">&#968;²</span> agree at <span class="m">&#966;²</span>
+          for different reasons — and the tell is the charpoly of the coupling,
+          <span class="m">(x² &#8722; 3x + 1)(x + 1)²</span>: the first factor <em>is</em>
+          <span class="m">&#968;²A<sub>&#966;</sub> = {&#966;², &#968;²}</span>, the diagonal of
+          <span class="m">Sym²</span>, and the double root at <span class="m">&#8722;1</span> is the wedge
+          <span class="m">&#923;²</span> that squaring throws away. <span class="tag forced">forced</span></p>
+        </div>
+      </details>
     </div>
 
     <div class="handoff"><span class="lbl">hands on to Lesson 3</span>
@@ -765,12 +847,23 @@ details.cp[open] .reveal::before{content:"hide"}
 
     <div class="run"><b>A–M</b><i>consolidation ledger · integer-matrix engine, no float decides</i></div>
 
+    <p>The two characters of Lesson 2 were built from different data and never spoke: magnitude reads how far an
+      object sits from the unit circle; charge reads the discrete rotation-class of its conjugates. This lesson
+      turns on whether, at the very bottom of the magnitude axis, they are secretly <em>coupled</em> — does the
+      cheapest object of a given charge always cost the same, or does the charge set the price? The answer is a
+      single parity bit, and it is what finally explains, in arithmetic, the golden gap of Lesson 1.</p>
+
     <h3>&#167;1 <em>&nbsp;Which groups can a charge be?</em></h3>
     <p>An object is <em>charge-admissible</em> if every conjugate has
       <span class="m">&#945;<sup>n</sup> &#8712; &#8477;<sub>&gt;0</sub></span> for some
       <span class="m">n</span> — all conjugate arguments on a finite rational-angle lattice. The least such
       <span class="m">n</span> is the charge group <span class="m">&#8484;/n</span>. Two structural facts
       settle the possibilities:</p>
+    <p class="small">In plain words: an object is charge-admissible when each of its conjugates, raised to some
+      fixed power, becomes a positive real — so every conjugate angle is a rational fraction of a full turn,
+      sitting on a finite clock face with <span class="m">n</span> hours. That number of hours is the charge
+      group <span class="m">&#8484;/n</span>. Salem numbers fail this outright: their unit-circle conjugates land
+      at angles that are irrational multiples of a turn, on no finite clock at all.</p>
     <ul>
       <li><strong>Cyclicity.</strong> Every charge group is a finite subgroup of
         <span class="m">&#8474;/&#8484;</span>, hence <em>cyclic</em>: no
@@ -783,11 +876,32 @@ details.cp[open] .reveal::before{content:"hide"}
     <p>The primary decomposition <span class="m">&#8484;/n &#8773; &#8719; &#8484;/p<sub>i</sub><sup>e<sub>i</sub></sup></span>
       is realized <em>inside the algebra</em>: the Adams operation
       <span class="m">&#968;<sup>n/p<sub>i</sub><sup>e<sub>i</sub></sup></sup></span> is the CRT projector
-      onto the <span class="m">p<sub>i</sub></span>-primary component. Under <span class="m">&#8855;</span>,
-      charge groups combine to <span class="m">&#8484;/lcm</span>, and the composition keeps both charges
-      recoverable <em>iff</em> the orders are coprime. <span class="tag forced">forced</span></p>
+      onto the <span class="m">p<sub>i</sub></span>-primary component — one charge lattice split into its prime
+      pieces by operators the algebra already owns. <span class="tag forced">forced</span></p>
 
-    <h3>&#167;2 <em>&nbsp;The parity-graded floor</em></h3>
+    <h3>&#167;2 <em>&nbsp;Composition — the lcm law, and when it is lossless</em></h3>
+    <p>How do two charged objects combine? Under coupling <span class="m">&#8855;</span> the arguments add, so a
+      root of <span class="m">A</span> at <span class="m">2&#960;a/m</span> and a root of <span class="m">B</span>
+      at <span class="m">2&#960;b/k</span> make a root at <span class="m">2&#960;(a/m + b/k)</span>. The fractions
+      <span class="m">a/m + b/k</span> generate the subgroup <span class="m">&#8484;/lcm(m,k)</span> of the circle,
+      so <strong>charge groups combine to <span class="m">&#8484;/lcm(m,k)</span></strong>. The composition is
+      <em>lossless</em> — both input charges stay independently recoverable from the composite — <strong>iff the
+      orders are coprime</strong>, the Chinese-Remainder case <span class="m">&#8484;/mk &#8773; &#8484;/m &#215; &#8484;/k</span>.
+      When <span class="m">gcd(m,k) &gt; 1</span> the shared part collapses and an allowed pair can be identified
+      with a forbidden composite charge — a leak. <span class="tag forced">forced</span></p>
+
+    <div class="eq"><span class="cid">ledger D · lcm law</span>
+      (x³ &#8722; 2) &nbsp;&#8855;&nbsp; (x&#8308; &#8722; 2) &nbsp;&#8594;&nbsp; charpoly x¹² &#8722; 128,&nbsp;&nbsp;
+      <b>charge group &#8484;/12</b>,&nbsp; M = 128 = 2&#8311;
+      <span class="note">Here <span class="m">gcd(3, 4) = 1</span>, so the groups compose to the <em>full</em>
+      product <span class="m">&#8484;/12 = &#8484;/lcm(3,4)</span> and both charges survive intact. All twelve
+      products have modulus <span class="m">2<sup>7/12</sup> &gt; 1</span>, so the tropical measure of Lesson 2
+      collapses to the plain product <span class="m">(2<sup>7/12</sup>)¹² = 2&#8311;</span> — an all-outside-the-circle
+      case where the naive rule happens to agree. Contrast <span class="m">&#8484;/2 &#8855; &#8484;/4</span>: a
+      shared factor 2 would fold two distinct labels onto one. <span class="tag forced">forced</span></span>
+    </div>
+
+    <h3>&#167;3 <em>&nbsp;The parity-graded floor</em></h3>
     <p>Define <span class="m">&#956;(n)</span> as the least Mahler measure above 1 over objects of charge
       group <span class="m">&#8484;/n</span>. The coupling result:</p>
 
@@ -814,11 +928,14 @@ details.cp[open] .reveal::before{content:"hide"}
       reach <span class="m">&#966;</span> and must pay <span class="m">M = 2</span> via
       <span class="m">x<sup>n</sup> &#8722; 2</span>.</p>
 
-    <h3>&#167;3 <em>&nbsp;The odd gap is the no-Salem closure</em></h3>
+    <h3>&#167;4 <em>&nbsp;The odd gap is the no-Salem closure</em></h3>
     <p>What lives in the band <span class="m">(&#966;, 2)</span> at odd charge? Nothing admissible — and the
       would-be occupants are exactly the objects the algebra excludes. A Salem number carries
       <em>no</em> finite charge group: its unit-circle conjugates are non-cyclotomic, hence at irrational
-      angles. <span class="tag forced">forced</span></p>
+      angles. <span class="tag forced">forced</span> The band is thus empty of admissible measures for a
+      structural reason, not an accident of small search — and the difficulty of <em>proving</em> that at every
+      odd modulus is the whole content of the split between the easy case <span class="m">&#8484;/3</span> and the
+      already-hard <span class="m">&#8484;/5</span> below.</p>
 
     <div class="eq"><span class="cid">ledger F · &#946;&#8324;</span>
       &#946;<sub>4</sub> = x&#8308; &#8722; x³ &#8722; x² &#8722; x + 1,&nbsp;&nbsp; <b>M = 1.72208&#8230; &#8712; (&#966;, 2)</b>,&nbsp; charge group: none
@@ -842,7 +959,7 @@ details.cp[open] .reveal::before{content:"hide"}
       discipline: a finite search may extend a claim to <span class="tag computed">computed</span>, never
       promote it to <span class="tag forced">forced</span>.</p>
 
-    <h3>&#167;4 <em>&nbsp;The one door — where confinement ends</em></h3>
+    <h3>&#167;5 <em>&nbsp;The one door — where confinement ends</em></h3>
     <p>Every result above governs the <em>abelian</em> semiring
       (<span class="m">&#8853;, &#8855;, &#968;<sup>n</sup></span>). The matrix commutator
       <span class="m">[A, B] = AB &#8722; BA</span> is deliberately not a generator — and it is the exact
@@ -905,6 +1022,30 @@ details.cp[open] .reveal::before{content:"hide"}
           algebra.</p>
         </div>
       </details>
+
+      <details class="cp"><summary><span class="qn">Q4</span><span class="qtext">Worked exercise: prove
+        directly that at charge group <span class="m">&#8484;/3</span> nothing lands in <span class="m">(1, 2)</span>,
+        so <span class="m">&#956;(3) = 2</span> — then say why the same argument breaks at
+        <span class="m">&#8484;/5</span>.</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>An irreducible cubic on the <span class="m">&#8484;/3</span> lattice has a real root at argument
+          <span class="m">0</span> and a conjugate pair at <span class="m">&#177;120&#176;</span>. Because
+          <span class="m">2cos120&#176; = &#8722;1</span> is an <em>integer</em>, the complex factor is
+          <span class="m">x² + &#961;x + &#961;²</span> with <span class="m">&#961; &#8712; &#8484;</span>; writing
+          the cubic as <span class="m">(x &#8722; &#945;)(x² + &#961;x + &#961;²)</span>, the coefficient relations
+          force <span class="m">c&#8321; = &#961;·c&#8322;</span>. The only solution with <span class="m">M &lt; 2</span>
+          is <span class="m">&#961; = 0</span> — that is <span class="m">x³ &#8722; 2</span>, at
+          <span class="m">M = 2</span> — so the whole interval <span class="m">(1, 2)</span> is empty and
+          <span class="m">&#956;(3) = 2</span>. <span class="tag forced">forced</span> At
+          <span class="m">&#8484;/5</span> the trick dies: <span class="m">2cos72&#176; = &#966;&#8722;1</span> and
+          <span class="m">2cos144&#176; = &#8722;&#966;</span> are <em>irrational</em> and Galois-coupled, so a
+          <span class="m">72&#176;</span> root drags in its <span class="m">144&#176;</span> partner to restore
+          integrality. The degree-4 sector still closes — at <span class="m">&#966;&#8308; &#8776; 6.854</span>,
+          minimizer <span class="m">x&#8308; &#8722; x³ + 6x² + 4x + 1</span> — but the general residual is Lehmer's
+          problem on the pentagon lattice and stays <span class="tag open">open</span>.</p>
+        </div>
+      </details>
     </div>
 
     <div class="handoff"><span class="lbl">hands on to Lesson 4</span>
@@ -938,6 +1079,13 @@ details.cp[open] .reveal::before{content:"hide"}
     </div>
 
     <div class="run"><b>46/46</b><i>certified Salem instances inert · integer &amp; rational arithmetic only</i></div>
+
+    <p>Charge, as Lesson 3 built it, is read against a fixed reference ray — the positive real axis, the chosen
+      "zero" of angle. But which part of an object's phase is genuinely <em>its own</em>, and which is an
+      artifact of that arbitrary choice? This lesson deletes the reference ray, keeping only the phase
+      <em>differences</em> between conjugates, and asks what survives the deletion. Two things do — and the first
+      of them, the impossibility of an object secretly out of tune with the ray, turns out to be forced by
+      integrality alone, with no ray in sight.</p>
 
     <h3>&#167;1 <em>&nbsp;The pair charge, and the gauge</em></h3>
     <p>Write each conjugate as an oscillator
@@ -973,6 +1121,18 @@ details.cp[open] .reveal::before{content:"hide"}
       offsets. <span class="tag forced">forced</span></span>
     </div>
 
+    <p><strong>Worked, side by side.</strong> Take <span class="m">x³ &#8722; 2</span>: its roots sit at angles
+      <span class="m">{0, &#8531;, &#8532;}</span>, every difference a multiple of <span class="m">&#8531;</span>,
+      so one coherence class with relational group <span class="m">&#8484;/3</span> — and the absolute group is
+      also <span class="m">&#8484;/3</span> (anchor <span class="m">n = m</span>). Now <span class="m">x³ + 2</span>:
+      roots at angles <span class="m">{&#8537;, &#189;, &#8542;}</span>, whose differences <em>still</em> generate
+      <span class="m">&#8531;&#8484;/&#8484;</span> — relational group <span class="m">&#8484;/3</span> again — yet the
+      absolute group is now <span class="m">&#8484;/6</span> (anchor <span class="m">n = 2m</span>). Same relation
+      inside, two different absolute readings: exactly the dichotomy <span class="m">n &#8712; {m, 2m}</span>, and
+      the sign twist <span class="m">x &#8614; &#8722;x</span> (which sends <span class="m">x³ + 2</span> to
+      <span class="m">x³ &#8722; 2</span>) carries one anchor to the other. The reference ray was the only thing
+      that ever distinguished them. <span class="tag forced">forced</span></p>
+
     <p>So the relational theory adds no new objects on the algebra's own domain — its genuine reach is the
       <em>inadmissible</em> sector, where there is no section to fix. Every composition law of Lesson 3
       descends verbatim: the Adams operations multiply relative charges by <span class="m">k</span>, and
@@ -998,11 +1158,39 @@ details.cp[open] .reveal::before{content:"hide"}
       the floor <em>values</em> stay conditional on the emission gap.</span>
     </div>
 
-    <h3>&#167;4 <em>&nbsp;The inadmissible sector — modulus pinning</em></h3>
-    <p>On the sector the absolute theory discards, the relational theory is genuinely finer: every object
-      carries a computable <em>coherence type</em>, decided exactly on equal-modulus shells by a
-      cyclotomic-contact scan with a provable completeness bound (<span class="m">M &#8804; 2(deg P)²</span>).
-      And a general theorem closes the Salem question outright:</p>
+    <h3>&#167;4 <em>&nbsp;Coherence types on the inadmissible sector</em></h3>
+    <p>Rigidity means the relational theory adds nothing on the algebra's own (admissible) objects — its real
+      reach is the sector the absolute theory throws away, where an object has no charge group yet may still
+      carry phase <em>relations</em> between its conjugates. To detect them exactly, form the <em>ratio
+      polynomial</em> <span class="m">Rat<sub>p</sub></span> whose roots are all <span class="m">n²</span> ratios
+      <span class="m">&#945;<sub>j</sub>/&#945;<sub>i</sub></span> of the roots of <span class="m">p</span> — an
+      integer resultant, so no float is involved. Two conjugates share a rational phase difference precisely when
+      their ratio is a root of unity, i.e. when some cyclotomic <span class="m">&#934;<sub>M</sub></span> divides
+      <span class="m">Rat<sub>p</sub></span>.</p>
+
+    <div class="eq"><span class="cid">contact scan · completeness</span>
+      &#934;<sub>M</sub> | Rat<sub>p</sub> &nbsp;&#8658;&nbsp; &#966;(M) &#8804; deg Rat<sub>p</sub> = n²,&nbsp;&nbsp;
+      &#966;(M) &#8805; &#8730;(M/2) &nbsp;&#8658;&nbsp; <b>only M &#8804; 2n&#8308; can occur</b>
+      <span class="note">The scan is <em>complete</em> in one finite pass: because Euler's totient grows at
+      least like <span class="m">&#8730;(M/2)</span>, only finitely many cyclotomics can possibly divide, so
+      testing every <span class="m">M &#8804; 2(deg Rat<sub>p</sub>)²</span> settles all of the infinitely many
+      candidate torsion relations at once, in exact integer arithmetic. That bound is what makes the relational
+      invariant genuinely <em>decidable</em>, not merely computable in principle. <span class="tag forced">forced</span></span>
+    </div>
+
+    <p><strong>A scan, run.</strong> For the minimal Salem quartic
+      <span class="m">&#946;&#8324; = x&#8308; &#8722; x³ &#8722; x² &#8722; x + 1</span>, the ratio polynomial
+      <span class="m">Rat<sub>&#946;4</sub></span> has degree <span class="m">16</span>, and the complete scan
+      (bound <span class="m">M &#8804; 512 = 2·16²</span>) returns only
+      <span class="m">&#934;<sub>1</sub><sup>4</sup></span> — the four tautological diagonal ratios
+      <span class="m">&#945;<sub>i</sub>/&#945;<sub>i</sub> = 1</span> — and nothing else. So
+      <span class="m">&#946;&#8324;</span> carries <em>no</em> off-axis phase relation whatsoever: its only
+      coherence is the positivity-forced real pair <span class="m">{&#964;, 1/&#964;}</span>. It is relationally
+      <em>inert</em>. <span class="tag forced">forced</span></p>
+
+    <h3>&#167;5 <em>&nbsp;Modulus pinning — every Salem number inert</em></h3>
+    <p>The contact scan decides one object at a time. A single general theorem now closes the whole Salem class
+      at once:</p>
 
     <div class="eq" style="border-left-color:var(--ink)"><span class="cid">modulus pinning</span>
       irreducible p, one root modulus attained uniquely &nbsp;&#8658;&nbsp; <b>no two distinct roots differ by a root of unity</b>
@@ -1067,6 +1255,28 @@ details.cp[open] .reveal::before{content:"hide"}
           pair <span class="m">{&#964;, 1/&#964;}</span> — inert off the real axis. Corroborated before the
           proof on 46 certified instances, including a full <span class="m">37/37</span> degree-12 census,
           cross-checked in PARI/GP and sympy with no float in any decision.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q4</span><span class="qtext">Worked exercise: the
+        irreducible quartic <span class="m">x&#8308; + 5x² + 5</span> has absolute charge group
+        <span class="m">&#8484;/4</span>. What is its <em>relational</em> group — and why are the two allowed to
+        differ?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>It is Eisenstein at 5, hence irreducible; its <span class="m">x²</span>-roots
+          <span class="m">(&#8722;5 &#177; &#8730;5)/2</span> are both negative, so all four roots are purely
+          <em>imaginary</em> — angles <span class="m">{&#188;, &#190;}</span>, giving absolute group
+          <span class="m">&#8484;/4</span>. But the phase <em>differences</em> are only
+          <span class="m">{0, &#189;}</span>, so the relational group is <span class="m">&#8484;/2</span>, a proper
+          subgroup. The drop is exactly the anchor ambiguity of rigidity: the absolute <span class="m">n</span>
+          conflates the relational group with the reference-ray offset, and the two can part only at even order
+          (at odd order the anchors are forced to coincide). Its sign-mirror is the Lesson-1 partner
+          <span class="m">K = x&#8308; + 5x² &#8722; 5</span>, which keeps the full <span class="m">&#8484;/4</span>
+          because its measure-bearing pair sits on the <em>real</em> axis at <span class="m">{0, &#189;}</span>
+          instead. The two share an identical shell signature <span class="m">{&#934;<sub>1</sub><sup>4</sup>, &#934;<sub>2</sub><sup>4</sup>}</span>
+          yet split on the finer relational group — <span class="m">M = 5</span> here,
+          <span class="m">M = &#966;²&#8730;5</span> for <span class="m">K</span>. <span class="tag forced">forced</span></p>
         </div>
       </details>
     </div>

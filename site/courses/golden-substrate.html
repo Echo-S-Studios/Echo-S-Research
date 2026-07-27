@@ -428,6 +428,11 @@ details.cp[open] .reveal::before{content:"hide"}
       K-seed x&#8308; + 5x² &#8722; 5, and K&#966; = 5<sup>1/4</sup>, so K generates &#8474;(5<sup>1/4</sup>).
       All of this is decided at the squared level — no fourth root ever crosses a decision boundary.</span>
     </div>
+    <p>In plain terms, the <strong>gap</strong> is the course's unit of shrinkage: &#966;<sup>&#8722;4</sup> &#8776; 0.146,
+      its recurring small number. The complement K² = 1 &#8722; gap &#8776; 0.854 is what survives a gap-sized
+      contraction, and K = &#8730;(1 &#8722; gap) &#8776; 0.924 is no ornament: it returns as the height of rung 2
+      (Lesson&nbsp;2) and as the radius of the helix (Lesson&nbsp;3). The whole course is machined from &#966; and
+      this one small number.</p>
     <p>The companion matrix of the seed is the <strong>keystone</strong>
       R = <span class="mat c2"><i>0</i><i>1</i><i>1</i><i>1</i></span>, and the corpus <em>derives</em>
       rather than posits it: &#966; is the smallest Perron root above 1 of a 2&#215;2 primitive
@@ -446,6 +451,17 @@ details.cp[open] .reveal::before{content:"hide"}
       <span class="note">The <b>flip</b> is the sign change of D at C = &#8722;&#188;: real fixed points
       (terrain face) become complex (rotation face). Height will parametrize the first; angle the second.</span>
     </div>
+    <p>Why iterate at all? Because a gate is meant to be <em>run</em> — feed a number in, read one out, repeat,
+      and see where it settles. Take the golden gate C = 1, so f<sub>1</sub>(x) = 1/(1+x), and turn the crank
+      from x<sub>0</sub> = 1: you get &#189;, then 2/3, then 3/5, 5/8, 8/13, &#8230; — consecutive Fibonacci
+      ratios, the continued-fraction convergents of the golden ratio. They close in on the attracting fixed
+      point u<sub>1</sub> = &#964; = 0.618&#8230;, the root of g<sub>1</sub>(x) = x² + x &#8722; 1. The smallest
+      gate, run by hand, literally writes down &#964; <span class="tag forced">forced</span>.</p>
+    <p>How fast it settles is fixed by the <em>multiplier</em> m<sub>1</sub> = &#8722;C/(1+u<sub>1</sub>)² =
+      &#8722;1/(1+&#964;)² = &#8722;&#966;<sup>&#8722;2</sup> &#8776; &#8722;0.382. Its magnitude is below 1, so
+      the gate contracts; its sign is negative, so the iterates straddle &#964;, alternating below and above
+      (0.5, 0.667, 0.6, 0.625 around 0.618). That fold across the fixed point is the seed of the whole lesson:
+      a real gate can fold (m &lt; 0) or hold (|m| = 1), but it cannot spiral.</p>
 
     <h3>&#167;3 <em>&nbsp;The two multipliers are reciprocals</em></h3>
     <p>Here is the structural fact the rest of the lesson turns on. For every C &#8800; 0 the two
@@ -459,7 +475,9 @@ details.cp[open] .reveal::before{content:"hide"}
     </div>
     <p>Both identities are <span class="tag forced">forced</span> and machine-verified for generic symbolic
       C. Read them together: the two multipliers are reciprocal <em>and</em> their sum is a real number
-      fixed by C alone.</p>
+      fixed by C alone. Reciprocity has teeth: wherever one fixed point attracts (|m| &lt; 1), its partner
+      repels by the exact reciprocal amount (|1/m| &gt; 1) — no gate owns two attractors. That perfect balance
+      is what &#167;4 turns into an impossibility.</p>
 
     <h3>&#167;4 <em>&nbsp;The obstruction: no single real gate is a helix</em></h3>
     <p>A helix would need a fixed point that both <em>rotates</em> and <em>contracts</em> — a multiplier
@@ -472,6 +490,11 @@ details.cp[open] .reveal::before{content:"hide"}
       (pure contraction, on the terrain face) — never both. No real gate level C linearizes to a genuine
       spiral. <span class="tag forced">forced</span></span>
     </div>
+    <p>Picture the multiplier as an arrow of length s at angle &#977;: contraction shortens it (s &lt; 1),
+      rotation tilts it (&#977; &#8800; 0). The law pins m + 1/m to the real axis, and an arrow together with
+      its reciprocal stays real only if the arrow is exactly unit length (all tilt, no shrink) or exactly
+      horizontal (all shrink, no tilt). A spiral wants a short <em>tilted</em> arrow — the one combination the
+      substrate forbids.</p>
     <p>This is the exact content behind the partner paper's slogan that <em>a helix cannot couple to a copy
       of itself</em>. The flip identity <em>is</em> the obstruction.</p>
 
@@ -530,6 +553,23 @@ details.cp[open] .reveal::before{content:"hide"}
           golden field.</p>
         </div>
       </details>
+
+      <details class="cp"><summary><span class="qn">Q4</span><span class="qtext">Worked exercise: run the
+        golden gate f<sub>1</sub>(x) = 1/(1+x) three steps from x<sub>0</sub> = 1. Where is it heading, and how
+        fast?</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Step by step: x<sub>1</sub> = 1/(1+1) = &#189;; x<sub>2</sub> = 1/(1+&#189;) = 2/3;
+          x<sub>3</sub> = 1/(1+2/3) = 3/5. These are ratios of consecutive Fibonacci numbers
+          F<sub>n</sub>/F<sub>n+1</sub> (1/2, 2/3, 3/5, 5/8, &#8230;) — the golden ratio's continued fraction —
+          converging to the attracting fixed point u<sub>1</sub> = &#964; = 0.618&#8230;, the root of
+          x² + x &#8722; 1.</p>
+          <p><em>How fast:</em> near &#964; each error is multiplied by m<sub>1</sub> =
+          &#8722;&#966;<sup>&#8722;2</sup> &#8776; &#8722;0.382 per step, so the distance to &#964; drops to about
+          38% of itself each time (roughly 62% closer), and the minus sign makes the iterates alternate below
+          and above &#964;. Contraction with a sign flip, never a spiral: m<sub>1</sub> is real with
+          |m<sub>1</sub>| &lt; 1 — exactly the terrain face of the flip. <span class="tag forced">forced</span></p>
+        </div>
+      </details>
     </div>
 
     <div class="nextup"><b>next — Lesson 2</b>
@@ -559,7 +599,9 @@ details.cp[open] .reveal::before{content:"hide"}
     <div class="run"><b>89</b><i>independent soft-check &#183; helix_softcheck.py</i></div>
 
     <h3>&#167;1 <em>&nbsp;The golden multiplier ladder</em></h3>
-    <p>Index the gate levels by a golden formula. For n &#8805; 1 set
+    <p>Lesson&nbsp;1 ended at a wall: no single gate is a helix. The way through is not one gate but a whole
+      <em>ladder</em> of them, indexed so the golden ratio runs through the rungs. Index the gate levels by a
+      golden formula. For n &#8805; 1 set
       C<sub>n</sub> = 1/(&#966;<sup>n</sup> &#8722; &#966;<sup>&#8722;n</sup>)². Then the attracting fixed
       point, multiplier, and rapidity all have closed forms — verified as pure rational identities in
       w = &#966;<sup>2n</sup>:</p>
@@ -572,6 +614,11 @@ details.cp[open] .reveal::before{content:"hide"}
       a ladder observable, and &#955;<sub>1</sub> = &#8730;5 is the same forced scalar the learning-geometry
       layer meets from the algebraic side.</span>
     </div>
+    <p>Read m<sub>n</sub> = &#8722;&#966;<sup>&#8722;2n</sup>: the n-th gate contracts by &#966;<sup>&#8722;2n</sup>
+      per step, so the higher the rung the gentler the pull. Take logs and |m<sub>n</sub>| =
+      e<sup>&#8722;2&#961;<sub>n</sub></sup> defines a natural <em>height</em> &#961;<sub>n</sub> = n&#183;log&#966;
+      — the rungs sit evenly spaced, one floor of log&#966; &#8776; 0.481 apart. Even spacing on a log ruler
+      <em>is</em> the ladder, and the golden ratio is its step.</p>
     <p>Trace&#8211;form duality of the keystone <em>is</em> the parity dress of the ladder — Lucas numbers at
       odd rungs, &#8730;5&#183;Fibonacci at even:</p>
     <div class="tw"><table><caption class="vh">Lesson 2 — §1 The golden gate ladder</caption>
@@ -596,6 +643,10 @@ details.cp[open] .reveal::before{content:"hide"}
       the definition of the coordinate — the chart does to every height what the main theorem did to K.
       <span class="tag declared">declared</span>; its consequences are <span class="tag forced">forced</span>.</span>
     </div>
+    <p>In words, D1 throws away the gate's <em>name</em> and keeps only how hard it <em>pulls</em>: the height z
+      is fixed so that 1 &#8722; z² equals the local contraction |m|. At the bottom (z = 0) a gate barely moves
+      anything, |m| = 1; climbing toward the top (z &#8594; 1) the contraction strengthens toward total,
+      |m| &#8594; 0. Height is just co-intensity — how much a gate has already shrunk — read on a ruler.</p>
 
     <h3>&#167;3 <em>&nbsp;Every height is a gate</em></h3>
     <p>Substituting D1 into Lesson&nbsp;1's gate data turns the whole dictionary into functions of height —
@@ -608,6 +659,10 @@ details.cp[open] .reveal::before{content:"hide"}
       (0,1] &#8594; [0,&#8734;): every attracting gate level occurs at exactly one height. Height carries the
       hyperbolic face; angle (Lesson 3) carries the elliptic one.</span>
     </div>
+    <p>This is the quiet punchline of the chart: the ladder was never special. Every height on the ruler carries
+      its own gate, and as z sweeps (0, 1] the level C(z) runs once through every attracting value. The rungs
+      are merely the heights where that value is a <em>golden</em> number; between them the gate field is
+      continuous.</p>
     <p>The rung heights pull back to z<sub>n</sub> = &#8730;(1 &#8722; &#966;<sup>&#8722;2n</sup>), and the two
       low rungs land on named constants <em>exactly</em>: z<sub>1</sub> = &#8730;&#964; is the golden gate
       C = 1, and <strong>z<sub>2</sub> = K</strong> is the K-gate C = 1/5 — K-formation is literally rung&nbsp;2,
@@ -627,6 +682,10 @@ details.cp[open] .reveal::before{content:"hide"}
       nonsquares (integer guards 4&lt;5&lt;9 and 36&lt;45&lt;49). One family, two arithmetic worlds:
       irreducible &#8474;(&#8730;5) rungs versus the split &#8474;-rational lens.</span>
     </div>
+    <p>Here is why the lens earns a name: it is the one simple, rational height in a family whose rungs are all
+      irrational golden numbers, and its rapidity is the clean value log&#8202;2. Yet log&#8202;2 is
+      <em>incommensurable</em> with the golden step log&#966; — so this rational visitor can never land on a
+      golden rung. The next section proves exactly that.</p>
     <p>And the lens sits <em>between</em> the first two rungs, both in height and in rapidity:
       z<sub>1</sub> = &#8730;&#964; &lt; z<sub>c</sub> = &#8730;3/2 &lt; z<sub>2</sub> = K, and
       log&#8202;2 &lt; 2&#8202;log&#966; since &#966;² &#8722; 2 = &#964; &gt; 0.</p>
@@ -680,6 +739,22 @@ details.cp[open] .reveal::before{content:"hide"}
           data live in &#8474;(&#8730;5). Same one-parameter family, two arithmetic worlds.</p>
         </div>
       </details>
+
+      <details class="cp"><summary><span class="qn">Q4</span><span class="qtext">Worked exercise: compute the
+        first four rung rapidities &#961;<sub>n</sub>, then read rung 2 off in full.</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p><em>Rapidities:</em> &#961;<sub>n</sub> = n&#183;log&#966; with log&#966; = 0.4812&#8230;, so
+          &#961;<sub>1</sub> = 0.481, &#961;<sub>2</sub> = 0.962, &#961;<sub>3</sub> = 1.444,
+          &#961;<sub>4</sub> = 1.925 — one floor of log&#966; apart, exactly.</p>
+          <p><em>Rung 2 (the K-gate):</em> since &#966;² &#8722; &#966;<sup>&#8722;2</sup> = &#8730;5
+          (2.618 &#8722; 0.382 = 2.236), the level is C<sub>2</sub> = 1/(&#8730;5)² = <strong>1/5</strong>.
+          Its multiplier magnitude is |m<sub>2</sub>| = &#966;<sup>&#8722;4</sup> = gap &#8776; 0.146; its height
+          is z<sub>2</sub> = &#8730;(1 &#8722; gap) = <strong>K</strong> &#8776; 0.924; its exchange rate is
+          &#955;<sub>2</sub> = &#8730;5&#183;F<sub>4</sub> = 3&#8730;5. Every rung-2 number is a named golden
+          constant — the gap paper's main theorem, read as rung 2. <span class="tag forced">forced</span></p>
+        </div>
+      </details>
     </div>
 
     <div class="nextup"><b>next — Lesson 3</b>
@@ -709,6 +784,10 @@ details.cp[open] .reveal::before{content:"hide"}
     <div class="run"><b>87 + 89</b><i>two independent harnesses agree &#183; whitepaper</i></div>
 
     <h3>&#167;1 <em>&nbsp;The two remaining atoms, and what survives</em></h3>
+    <p>Height gave the substrate its vertical, contracting face. But the flip had a second face: past
+      C = &#8722;&#189; the multipliers are pure rotation, and the K-seed handed us a real quarter-turn (its
+      imaginary pair &#177;i&#946;). The question now is how to <em>wind</em> that quarter-turn up the height
+      axis into one explicit space curve.</p>
     <p>The orthogonal-partner paper dissolves the legacy helix as a load-bearing object; what survives its
       harness is a pair of <span class="tag forced">forced</span> anatomical facts — <em>winding = charge</em>
       &#967; &#8712; &#8484;/4&#8484; (the K-seed's quarter-turn) and <em>pitch = Mahler magnitude</em> in
@@ -722,6 +801,11 @@ details.cp[open] .reveal::before{content:"hide"}
       the quanta themselves are forced corpus data. D3 is the minimal coupling of the two survivors; any other
       constant rate merely rescales the pitch.</span>
     </div>
+    <p>The two declarations do very little, and that is the point. <strong>D2</strong> only picks <em>which</em>
+      of three quanta the substrate already owns — &#960;/2 rather than &#960; (terrain) or 2&#960;/5 (pentagon)
+      — because only &#960;/2 completes the K-seed's full &#8484;/4&#8484; compass. <strong>D3</strong> only sets
+      the gear ratio: one quarter-turn of charge per floor of climb. Nothing else is added; the winding is the
+      least you can declare to make the two survivors turn together.</p>
 
     <h3>&#167;2 <em>&nbsp;The winding law and the compass</em></h3>
     <p>Integrating D3 gives the angle as a function of height, and the rungs land on the compass:</p>
@@ -733,6 +817,10 @@ details.cp[open] .reveal::before{content:"hide"}
       &#952;(K) = 2&#183;(&#960;/2) = &#960; — two quanta up, a half-turn from the apex, and this is
       quantum-independent.</span>
     </div>
+    <p>Concretely, the rungs march around a four-point compass. Rung 1 lands at 90&#176;, rung 2 (= K) at
+      180&#176; — a dead half-turn from the top — rung 3 at 270&#176;, rung 4 back at 360&#176;. Odd rungs
+      (Lucas dress) point N/S, even rungs (Fibonacci dress) point E/W: the parity of the Fibonacci world becomes
+      literal compass geometry.</p>
     <p>A full revolution has an exact entropic price. Since d&#952;/d&#961; is constant,
       &#916;&#952; = 2&#960; &#8660; &#916;&#961; = 4&#8202;log&#966; = log&#8202;&#966;&#8308; = log&#8202;M(A<sub>gap</sub>):
       one turn costs the gap object's Mahler entropy, and per revolution the co-intensity contracts by exactly
@@ -751,6 +839,10 @@ details.cp[open] .reveal::before{content:"hide"}
       cylinder branch is r &#8801; K. The profile is C&#8304; but not C&#185; at the lens — the lens is where the
       climb stops paying radius (a kink of slope K/&#8730;3 against 0).</span>
     </div>
+    <p>Assemble the three ingredients and the curve is fully explicit: z(&#961;) sets the height (D1),
+      &#952;(&#961;) sets the angle (D2+D3), and r(&#961;) sets the distance from the axis (inherited). Below the
+      lens the curve flares outward on a horn; above it the radius locks at K and the curve becomes a true
+      cylinder-helix, climbing forever toward the rim.</p>
     <p>Now the two constructions — the chart's algebra and the inherited geometry — agree without
       adjustment. On the horn, the only nontrivial point where height equals radius is z = K, and under the
       winding it lands at &#952; = &#960;:</p>
@@ -785,6 +877,10 @@ details.cp[open] .reveal::before{content:"hide"}
       always lies in &#177;4<sup>&#8484;</sup>, and 11 does not (4 &lt; 11 &lt; 16), so
       M(res) &#8800; 2<sup>a</sup>&#966;<sup>b</sup> for <em>every</em> integer pair — infinitely many cases
       shut by a single norm computation.</p>
+    <p>Both separations say one thing in two keys: the golden world is not a single undifferentiated field but a
+      lattice of distinct arithmetic addresses, and the helix's landmarks — the two rung heights, the two
+      registry measures — sit at genuinely different addresses. The field norm is the postal code that tells
+      them apart.</p>
 
     <div class="cpwrap">
       <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
@@ -823,6 +919,21 @@ details.cp[open] .reveal::before{content:"hide"}
           computation rules out every integer pair simultaneously.</p>
         </div>
       </details>
+
+      <details class="cp"><summary><span class="qn">Q4</span><span class="qtext">Worked exercise: place rungs
+        1&#8211;4 on the charge compass, then price one full turn.</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p><em>Compass:</em> &#952;(&#961;) = (&#960;/2)&#183;&#961;/log&#966;, and rung n sits at
+          &#961;<sub>n</sub> = n&#183;log&#966;, so &#952;<sub>n</sub> = n&#183;(&#960;/2): rung 1 &#8594; 90&#176;,
+          rung 2 &#8594; 180&#176; (this is K — a half-turn from the apex, at &#915; = (&#8722;K, 0, K)),
+          rung 3 &#8594; 270&#176;, rung 4 &#8594; 360&#176;, the first return to the starting meridian.</p>
+          <p><em>One full turn:</em> &#916;&#952; = 2&#960; means &#916;&#961; = 4&#8202;log&#966; =
+          log&#8202;&#966;&#8308; = log&#8202;M(A<sub>gap</sub>) — the Mahler entropy of the gap object. Over that
+          turn the co-intensity 1 &#8722; z² multiplies by &#966;<sup>&#8722;8</sup> &#8776; 0.0213, so each
+          revolution closes 97.87% of the remaining climb toward the top. <span class="tag computed">computed</span></p>
+        </div>
+      </details>
     </div>
 
     <div class="nextup"><b>next — Lesson 4</b>
@@ -852,7 +963,11 @@ details.cp[open] .reveal::before{content:"hide"}
     <div class="run"><b>91 + 27 + 27 + 62</b><i>four independent harnesses &#183; complex-rung-generator</i></div>
 
     <h3>&#167;1 <em>&nbsp;One number whose orbit is the ladder</em></h3>
-    <p>Package the residual state as W(&#961;) = e<sup>&#8722;&#961;</sup>&#183;e<sup>i&#952;(&#961;)</sup>.
+    <p>Three lessons built four things — a ladder, a chart, a winding, a compass — as if they were separate
+      machinery. They are not: conditional on the three declared atoms, all four are the successive
+      <em>powers of one complex number</em>. Package the residual state as W(&#961;) =
+      e<sup>&#8722;&#961;</sup>&#183;e<sup>i&#952;(&#961;)</sup> — amplitude e<sup>&#8722;&#961;</sup> shrinking,
+      phase &#952; turning.
       Sampled at the rungs it becomes the powers of a single multiplier:</p>
     <div class="eq"><span class="cid">Thm &#183; OZ-A1–A8</span>
       <b>q = i/&#966; = i&#964;</b>,&nbsp;&nbsp; W<sub>n</sub> = q<sup>n</sup> = &#966;<sup>&#8722;n</sup>i<sup>n</sup>,&nbsp;
@@ -863,6 +978,11 @@ details.cp[open] .reveal::before{content:"hide"}
       charge by 90&#176;: the whole discrete ladder is the orbit of one multiplier. i&#8308; = 1 restores
       orientation while &#964;&#8308; contracts by the gap. <span class="tag forced">forced</span> given D1&#8211;D3.</span>
     </div>
+    <p>Unpack q = i&#964;: multiplying by it does two things at once — the factor &#964; = &#966;<sup>&#8722;1</sup>
+      shrinks the residual amplitude by one golden step, and the factor i turns the charge a quarter-turn. One
+      rung is one spin-and-shrink. So the whole discrete ladder is the single orbit q, q², q³, &#8230;, and each
+      earlier lesson is just one coordinate of it read off alone: |q<sup>n</sup>| is the height data,
+      arg&#8202;q<sup>n</sup> is the compass.</p>
     <p>The <em>gap schedule</em> falls straight out of the recurrences W<sub>n+2</sub> = &#8722;&#964;²W<sub>n</sub>
       and W<sub>n+4</sub> = gap&#183;W<sub>n</sub>: the gap first appears as co-intensity after two rungs
       (|W<sub>2</sub>|² = gap, i.e. z<sub>2</sub> = K) and as full complex amplitude after one four-rung
@@ -879,6 +999,10 @@ details.cp[open] .reveal::before{content:"hide"}
       coordinate: cos²&#945; + sin²&#945; = 1 chart-wide <em>is</em> D1. The state angle is the latitude of the
       residual sphere.</span>
     </div>
+    <p>The move is to stop tracking z and &#8730;|m| separately and see them as the two legs of one right
+      triangle: set z = sin&#945; and &#8730;|m| = cos&#945;, and D1's identity cos²&#945; + sin²&#945; = 1 becomes
+      automatic. Every gate quantity is then a single trig function of the one angle &#945; — the whole gate
+      dictionary collapses onto the unit circle, with &#945; the latitude of a point climbing a sphere (&#167;5).</p>
     <p>The two low rungs and the lens read off as clean states — the K-seed's two faces packaged into one
       right triangle:</p>
     <div class="tw"><table><caption class="vh">Lesson 4 — §2 rung and lens states</caption>
@@ -908,6 +1032,10 @@ details.cp[open] .reveal::before{content:"hide"}
       not a coincidence. <b>Distinguish the modes (U) + exchange the modes (A) = quarter-turn (J).</b> Matrix
       witness HN = 5&#8202;<span class="mat c2"><i>0</i><i>&#8722;1</i><i>1</i><i>0</i></span>.</span>
     </div>
+    <p>Why does this matter? In Lesson&nbsp;3 the quarter-turn's i was <em>declared</em> — imported by hand as
+      the winding direction. Here it is <em>built</em>: U tells the two golden modes apart, A swaps them, and
+      doing both in a row is a genuine square root of &#8722;1 living inside the keystone's own algebra. Nothing
+      imaginary is imported; the imaginary unit was in the substrate all along.</p>
     <p>Uniqueness up to the orientation sign — exactly the freedom D2 already names as a convention. So the
       quarter-turn no longer needs importing: Q = &#177;&#964;J is canonical in the substrate itself, and D2's
       remaining <span class="tag declared">declared</span> content shrinks from <em>existence</em> of the
@@ -978,6 +1106,22 @@ details.cp[open] .reveal::before{content:"hide"}
           hence transcendental). A transcendental number cannot equal the algebraic &#964; = &#966;<sup>&#8722;1</sup>
           (root of x²+x&#8722;1). So the two are unequal — not approximately, but as a theorem — and no
           identity was ever available to find.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q4</span><span class="qtext">Worked exercise: put the lens
+        on the state-angle chart and recover its whole gate ledger from one angle.</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>The lens height is z<sub>c</sub> = &#8730;3/2 = sin&#8202;60&#176;, so the state angle is
+          <strong>&#945;<sub>c</sub> = 60&#176;</strong> exactly, with residual amplitude cos&#8202;60&#176; = &#189;.
+          Read the dictionary at &#945; = 60&#176; (cot²60&#176; = 1/3, csc²60&#176; = 4/3):</p>
+          <p>m = &#8722;cos²60&#176; = &#8722;&#188;;&nbsp; u = cot²60&#176; = 1/3;&nbsp;
+          C = cot²60&#176;&#183;csc²60&#176; = (1/3)(4/3) = <strong>4/9</strong>;&nbsp;
+          &#8730;D = 1 + 2cot²60&#176; = 5/3. Every split-gate number of Lesson&nbsp;2 falls out of the single fact
+          &#945; = 60&#176;. (The neighbouring clean state is rung 2: sin&#945;<sub>2</sub> = K,
+          cos&#945;<sub>2</sub> = &#964;², tan&#945;<sub>2</sub> = &#946;.)
+          <span class="tag forced">forced</span> given D1&#8211;D3</p>
         </div>
       </details>
     </div>
