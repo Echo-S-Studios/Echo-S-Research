@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>When Distance Lies — Transport Resistance · Echo S Research</title>
+<style>
+:root{
+  --ink:#16222c;
+  --ink-soft:#40525f;
+  --ink-faint:#5b6b76;
+  --ground:#e3e9ec;
+  --panel:#f5f8f9;
+  --panel-2:#eaeff1;
+  --rule:#c3cfd5;
+  --verdigris:#1c6355;
+  --verdigris-wash:#dceae6;
+  --ochre:#8a5a0d;
+  --ochre-wash:#f2e7d3;
+  --indigo:#33478a;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua","URW Palladio L",Georgia,serif;
+  --mono:ui-monospace,"SF Mono","Cascadia Mono","Roboto Mono",Menlo,Consolas,monospace;
+  --measure:63ch;
+  --head-h:62px;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  background:var(--ground);color:var(--ink);
+  font-family:var(--serif);font-size:17px;line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+}
+
+/* ─────────── header: the spectrum rail ─────────── */
+header{
+  position:fixed;top:0;left:0;right:0;height:var(--head-h);z-index:40;
+  display:flex;align-items:center;gap:14px;padding:0 16px;
+  background:rgba(227,233,236,.93);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--rule);
+}
+.brand{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-faint);white-space:nowrap}
+.brand b{color:var(--ink);font-weight:600}
+.rail{flex:1;display:flex;align-items:center;gap:0;min-width:0}
+.rail .axis{flex:1;display:flex;align-items:center;position:relative;height:26px}
+.rail .axis::before{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:var(--rule)}
+.tick{
+  position:relative;flex:1;display:flex;align-items:center;justify-content:center;
+  background:none;border:0;padding:0;height:26px;cursor:pointer;color:var(--ink-faint);
+  font-family:var(--mono);font-size:10px;letter-spacing:.02em;
+}
+.tick span{
+  position:relative;z-index:1;min-width:18px;height:18px;display:grid;place-items:center;
+  border:1px solid var(--rule);border-radius:2px;background:var(--panel);transition:all .18s
+}
+.tick:hover span{border-color:var(--ink-soft);color:var(--ink)}
+.tick[aria-current="true"] span{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.tick.edge span{border-radius:50%;min-width:10px;height:10px;font-size:0}
+.navbtn{
+  font-family:var(--mono);font-size:15px;line-height:1;
+  background:var(--panel);color:var(--ink);border:1px solid var(--rule);border-radius:3px;
+  width:30px;height:30px;cursor:pointer;display:grid;place-items:center;transition:all .16s
+}
+.navbtn:hover:not(:disabled){background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.navbtn:disabled{opacity:.32;cursor:default}
+:focus-visible{outline:2px solid var(--indigo);outline-offset:2px}
+
+/* ─────────── compact menu for narrow screens ─────────── */
+.menubtn{display:none;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;
+  letter-spacing:.06em;background:var(--panel);color:var(--ink);border:1px solid var(--rule);
+  border-radius:3px;height:34px;padding:0 11px;cursor:pointer;flex:1;justify-content:space-between}
+.menubtn b{font-size:13px;line-height:1}
+.menupanel{position:fixed;top:var(--head-h);left:0;right:0;bottom:0;z-index:39;
+  background:var(--ground);border-top:1px solid var(--rule);overflow-y:auto;padding:6px 0 40px}
+.menupanel[hidden]{display:none}
+.menupanel button{display:flex;width:100%;gap:12px;align-items:baseline;min-height:46px;
+  padding:10px 18px;background:none;border:0;border-bottom:1px solid var(--rule);
+  font-family:var(--serif);font-size:16px;color:var(--ink);text-align:left;cursor:pointer}
+.menupanel button .n{font-family:var(--mono);font-size:11px;color:var(--ink-faint);min-width:22px}
+.menupanel button[aria-current="true"]{background:var(--panel)}
+.menupanel button[aria-current="true"] .n{color:var(--verdigris)}
+
+/* ─────────── deck: horizontal pages ─────────── */
+#deck{
+  position:absolute;top:var(--head-h);bottom:0;left:0;right:0;
+  display:flex;overflow-x:auto;overflow-y:hidden;
+  scroll-snap-type:x mandatory;
+  scrollbar-width:none;
+}
+#deck::-webkit-scrollbar{display:none}
+.page{
+  flex:0 0 100%;height:100%;overflow-y:auto;scroll-snap-align:start;
+  padding:0 24px 96px;-webkit-overflow-scrolling:touch;
+}
+.inner{max-width:var(--measure);margin:0 auto;padding-top:44px}
+
+/* ─────────── type ─────────── */
+.eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.19em;text-transform:uppercase;
+  color:var(--verdigris);margin:0 0 12px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.eyebrow i{font-style:normal;color:var(--ink-faint)}
+h1{font-size:clamp(30px,6vw,44px);line-height:1.08;letter-spacing:-.015em;margin:0 0 10px;font-weight:600}
+h2{font-size:clamp(25px,4.6vw,33px);line-height:1.14;letter-spacing:-.012em;margin:0 0 8px;font-weight:600}
+.dek{font-size:19px;color:var(--ink-soft);line-height:1.45;margin:0 0 26px;font-style:italic}
+h3{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink);margin:34px 0 10px;font-weight:600;
+  padding-bottom:6px;border-bottom:1px solid var(--rule)}
+h3 em{font-style:normal;color:var(--ink-faint);font-weight:400}
+p{margin:0 0 15px}
+a{color:var(--indigo)}
+strong{font-weight:600}
+em{font-style:italic}
+.small{font-size:15px;color:var(--ink-soft)}
+ul,ol{margin:0 0 15px;padding-left:22px}
+li{margin-bottom:7px}
+code,.m{font-family:var(--mono);font-size:.88em;letter-spacing:-.01em}
+.m{white-space:nowrap}
+
+/* ─────────── equation strip ─────────── */
+.eq{
+  position:relative;margin:20px 0;padding:16px 74px 16px 18px;
+  background:var(--panel);border:1px solid var(--rule);border-left:2px solid var(--verdigris);
+  border-radius:2px;font-family:var(--mono);font-size:14.5px;line-height:1.75;
+  overflow-x:auto;
+}
+.eq .cid{
+  position:absolute;top:8px;right:10px;font-size:9.5px;letter-spacing:.12em;
+  color:var(--ink-faint);text-transform:uppercase
+}
+.eq b{font-weight:600;color:var(--verdigris)}
+.eq .note{display:block;margin-top:8px;font-family:var(--serif);font-size:14px;
+  color:var(--ink-soft);line-height:1.5;white-space:normal}
+
+/* matrices */
+.mat{display:inline-grid;gap:0 12px;vertical-align:middle;
+  position:relative;padding:2px 8px;margin:0 2px;font-family:var(--mono);font-size:.94em}
+.mat.c2{grid-template-columns:repeat(2,auto)}
+.mat.c3{grid-template-columns:repeat(3,auto)}
+.mat::before,.mat::after{content:"";position:absolute;top:0;bottom:0;width:4px;
+  border:1px solid var(--ink-soft)}
+.mat::before{left:0;border-right:0}
+.mat::after{right:0;border-left:0}
+.mat i{font-style:normal;text-align:right}
+
+/* ─────────── tables ─────────── */
+.tw{overflow-x:auto;margin:20px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--rule)}
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+th{font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;
+  text-align:left;padding:9px 12px 8px 0;color:var(--ink-faint);font-weight:600;
+  border-bottom:1px solid var(--rule);white-space:nowrap}
+td{padding:9px 12px 9px 0;border-bottom:1px solid var(--panel-2);vertical-align:top;line-height:1.45}
+tr:last-child td{border-bottom:0}
+td:first-child{font-family:var(--mono);font-size:13px;white-space:nowrap;color:var(--ink)}
+table.prose td:first-child{font-family:var(--serif);font-size:14.5px;white-space:normal}
+
+/* ─────────── tags ─────────── */
+.tag{display:inline-block;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;
+  text-transform:uppercase;padding:2px 6px;border-radius:2px;white-space:nowrap;
+  border:1px solid transparent;font-weight:600;vertical-align:2%}
+.tag.forced{background:var(--verdigris);color:#eef6f3}
+.tag.computed{background:var(--verdigris-wash);color:var(--verdigris);border-color:var(--verdigris)}
+.tag.declared{background:var(--ochre-wash);color:var(--ochre);border-color:var(--ochre)}
+.tag.plausible{background:transparent;color:var(--indigo);border:1px solid var(--indigo)}
+.tag.open{background:transparent;color:var(--ochre);border:1px dashed var(--ochre)}
+.tag.estab{background:transparent;color:var(--ink-faint);border:1px solid var(--rule)}
+
+/* ─────────── inherit / hand-on blocks ─────────── */
+.thread{
+  margin:0 0 28px;padding:13px 16px;background:var(--panel-2);border-radius:2px;
+  border:1px solid var(--rule);
+}
+.thread .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--ink-faint);display:block;margin-bottom:7px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{
+  font-family:var(--mono);font-size:11.5px;padding:3px 9px;border-radius:2px;
+  background:var(--panel);border:1px solid var(--rule);color:var(--ink);cursor:pointer;
+  transition:all .16s;text-align:left;line-height:1.35
+}
+.chip:hover{border-color:var(--verdigris);color:var(--verdigris)}
+.chip .n{color:var(--ink-faint);margin-right:5px}
+.chip:hover .n{color:var(--verdigris)}
+.handoff{
+  margin:30px 0 4px;padding:14px 16px;border:1px solid var(--verdigris);
+  background:var(--verdigris-wash);border-radius:2px;font-size:15px
+}
+.handoff .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--verdigris);display:block;margin-bottom:6px;font-weight:600}
+
+/* ─────────── run badge ─────────── */
+.run{
+  display:inline-flex;align-items:baseline;gap:9px;margin:0 0 24px;padding:6px 12px;
+  border:1px solid var(--verdigris);border-radius:2px;background:var(--panel);
+  font-family:var(--mono);font-size:11.5px;color:var(--verdigris)
+}
+.run b{font-size:15px;font-weight:600}
+.run i{font-style:normal;color:var(--ink-faint);letter-spacing:.06em;font-size:10px;
+  text-transform:uppercase}
+
+/* ─────────── checkpoint cards ─────────── */
+.cpwrap{margin:38px 0 0}
+.cphead{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink);border-bottom:1px solid var(--ink);padding-bottom:6px;margin-bottom:14px;
+  display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.cphead i{font-style:normal;color:var(--ink-faint);letter-spacing:.06em;font-size:9.5px}
+details.cp{
+  margin:0 0 10px;background:var(--panel);border:1px solid var(--rule);border-radius:2px;
+  transition:border-color .18s
+}
+details.cp[open]{border-color:var(--verdigris)}
+details.cp summary{
+  list-style:none;cursor:pointer;padding:13px 15px;display:flex;gap:12px;align-items:flex-start;
+  font-size:15.5px;line-height:1.5
+}
+details.cp summary::-webkit-details-marker{display:none}
+details.cp summary::marker{content:""}
+.qn{
+  flex:0 0 auto;font-family:var(--mono);font-size:10px;letter-spacing:.08em;font-weight:600;
+  color:var(--ink-faint);border:1px solid var(--rule);border-radius:2px;padding:2px 5px;margin-top:3px
+}
+details.cp[open] .qn{background:var(--verdigris);color:#eef6f3;border-color:var(--verdigris)}
+.qtext{flex:1}
+.reveal{
+  flex:0 0 auto;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--verdigris);border:1px solid var(--verdigris);border-radius:2px;padding:3px 7px;
+  margin-top:2px;white-space:nowrap;transition:all .16s
+}
+details.cp summary:hover .reveal{background:var(--verdigris);color:#eef6f3}
+details.cp[open] .reveal{background:var(--ink);border-color:var(--ink);color:var(--panel)}
+details.cp[open] .reveal::after{content:""}
+.ans{
+  border-top:1px solid var(--rule);margin:0 15px;padding:14px 0 16px;font-size:15.5px;
+  animation:fade .26s ease-out
+}
+.ans .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--verdigris);display:block;margin-bottom:7px;font-weight:600}
+.ans p:last-child{margin-bottom:0}
+@keyframes fade{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+  #deck{scroll-behavior:auto}
+}
+
+/* ─────────── cover ─────────── */
+.cover .inner{padding-top:6vh;max-width:70ch}
+.cover .rule{height:1px;background:var(--ink);margin:26px 0}
+.mono-list{font-family:var(--mono);font-size:13px;line-height:1.9;color:var(--ink-soft)}
+.mono-list b{color:var(--ink);font-weight:600}
+.mono-list span{color:var(--verdigris)}
+.howto{display:grid;gap:12px;margin:26px 0 0}
+.howto div{padding:12px 15px;background:var(--panel);border:1px solid var(--rule);border-radius:2px;
+  font-size:15px}
+.howto b{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--verdigris);display:block;margin-bottom:4px}
+.gapfig{margin:30px 0;padding:20px 18px 14px;background:var(--panel);border:1px solid var(--rule)}
+.gapline{position:relative;height:38px;margin:0 0 6px}
+.gapline .bar{position:absolute;top:18px;left:0;right:0;height:2px;background:var(--rule)}
+.gapline .seg{position:absolute;top:15px;height:8px;background:var(--verdigris);border-radius:1px}
+.gapline .band{position:absolute;top:6px;height:26px;border:1px dashed var(--ochre);
+  background:repeating-linear-gradient(45deg,transparent,transparent 5px,var(--ochre-wash) 5px,var(--ochre-wash) 10px)}
+.gapline .pt{position:absolute;top:11px;width:2px;height:16px;background:var(--ink)}
+.gapline .lb{position:absolute;top:-2px;font-family:var(--mono);font-size:10px;color:var(--ink-faint);
+  transform:translateX(-50%)}
+.gapcap{font-family:var(--mono);font-size:11px;color:var(--ink-soft);line-height:1.6}
+
+.endnote{margin-top:40px;padding-top:18px;border-top:1px solid var(--rule);
+  font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);letter-spacing:.02em}
+.nextup{margin-top:34px;padding:14px 16px;border:1px dashed var(--rule);border-radius:2px;
+  font-size:15px;color:var(--ink-soft)}
+.nextup b{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink);display:block;margin-bottom:5px}
+
+.vh{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.reveal::before{content:"reveal"}
+details.cp[open] .reveal::before{content:"hide"}
+.notemap td:first-child{color:var(--verdigris);font-weight:600}
+.audit td:last-child{font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);
+  word-break:break-all;white-space:normal;line-height:1.4}
+.srcbox{margin:16px 0;border:1px solid var(--rule);border-radius:2px;background:var(--panel)}
+.srcbox summary{cursor:pointer;padding:11px 14px;font-family:var(--mono);font-size:11px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--verdigris);list-style:none}
+.srcbox summary::-webkit-details-marker{display:none}
+.srcbox pre{margin:0;padding:0 14px 14px;overflow-x:auto;font-family:var(--mono);font-size:10.5px;
+  line-height:1.5;color:var(--ink);white-space:pre;max-height:60vh;overflow-y:auto}
+
+@media print{
+  :root{--head-h:0px}
+  html,body{height:auto;overflow:visible;background:#fff;font-size:11pt}
+  header{display:none}
+  #deck{position:static;display:block;overflow:visible;height:auto}
+  .page{flex:none;height:auto;overflow:visible;padding:0 0 24pt;break-before:page;page-break-before:always}
+  .page:first-child{break-before:auto;page-break-before:auto}
+  .inner{max-width:none;padding-top:0}
+  details.cp{break-inside:avoid;page-break-inside:avoid}
+  details.cp .ans{display:block !important}
+  .srcbox pre{max-height:none;overflow:visible;white-space:pre-wrap;overflow-wrap:anywhere;
+    font-size:7.5pt;line-height:1.35}
+  .srcbox{break-inside:auto;page-break-inside:auto}
+  .menubtn,.menupanel{display:none !important}
+  .reveal,.chip{display:none}
+  .eq,.tw,table,tr{break-inside:avoid;page-break-inside:avoid}
+  h2,h3{break-after:avoid;page-break-after:avoid}
+  a{text-decoration:none;color:inherit}
+}
+
+@media (max-width:640px){
+  body{font-size:16px}
+  .page{padding:0 16px 90px}
+  .inner{padding-top:28px}
+  .brand{display:none}
+  .eq{padding:14px 14px 14px 14px;font-size:13px}
+  .eq .cid{position:static;display:block;margin-bottom:6px;text-align:left}
+  .rail{display:none}
+  .menubtn{display:flex}
+  .dek{font-size:17px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand"><b>Transport Resistance</b> · When Distance Lies</div>
+  <button class="navbtn" id="prev" aria-label="Previous page">&#8592;</button>
+  <nav class="rail" aria-label="Lesson navigation"><div class="axis" id="axis"></div></nav>
+  <button class="menubtn" id="menubtn" aria-expanded="false" aria-controls="menupanel"
+          aria-label="Lesson menu"><span id="menulabel">1 / 15</span> <b>&#9776;</b></button>
+  <button class="navbtn" id="next" aria-label="Next page">&#8594;</button>
+</header>
+<nav class="menupanel" id="menupanel" aria-label="Lessons" hidden></nav>
+
+<main id="deck">
+
+<!-- ══════════════════════════ COVER ══════════════════════════ -->
+<section id="cover" class="page cover" data-title="Cover">
+  <div class="inner">
+    <p class="eyebrow">Transport Resistance <i>· a course in five lessons</i></p>
+    <h1 tabindex="-1" data-pagehead>When Distance Lies</h1>
+    <p class="dek">The mixed-boundary torsion problem, its exact laws and sharp bounds — and the proof
+      that distance to a supply surface gives <em>no</em> lower bound on transport burden, so what an
+      interior point must pay is set by demand routed through each cross-section, never by how far it
+      sits.</p>
+
+    <div class="rule"></div>
+
+    <p>This booklet is built from two forced papers of the Echo S Research archive, and it follows
+      their protocol, which is half the subject:</p>
+
+    <p class="mono-list">
+      <b>1.</b> read the PDE &nbsp;<span>&#8594;</span>&nbsp;
+      <b>2.</b> prove the exact law &nbsp;<span>&#8594;</span>&nbsp;
+      <b>3.</b> machine-check every identity in exact arithmetic &nbsp;<span>&#8594;</span>&nbsp;
+      <b>4.</b> teach only what passed
+    </p>
+
+    <p>Every <em>load-bearing</em> claim carries a tag naming how strongly it is held —
+      <span class="tag forced">forced</span> proved,
+      <span class="tag computed">computed</span> exact over stated data,
+      <span class="tag declared">declared</span> a principled modelling choice,
+      <span class="tag plausible">plausible</span> evidence short of proof,
+      <span class="tag open">open</span> unresolved,
+      <span class="tag estab">established</span> imported from the literature. The tags are not
+      decoration: the whole point of the second paper is that a beautiful surrogate stays
+      <span class="tag declared">declared</span> until it passes a gatekeeper against the
+      <span class="tag forced">forced</span> field.</p>
+
+    <div class="gapfig">
+      <div class="gapline">
+        <div class="bar"></div>
+        <div class="seg" style="left:2%;right:5%"></div>
+        <div class="pt" style="left:2%"></div><div class="lb" style="left:2%">inf = 0</div>
+        <div class="pt" style="left:86%"></div><div class="lb" style="left:86%;color:#1c6355">423/2890</div>
+        <div class="pt" style="left:95%"></div><div class="lb" style="left:95%;color:#8a5a0d">1/(2n)</div>
+      </div>
+      <p class="gapcap">The thesis in one figure (n = 3). The conjectured floor
+        <b>P&#8342;&#8339;&#8339;&#8341;u&#8341;&#8734; / (qR&#178;) &#8805; 1/(2n)</b> is <b>false</b>.
+        On tapered horns the coefficient fills the whole interval (0, 1/(2n)) — verdigris — with
+        infimum <b>0</b>, never attained. The straight cone k = 2 sits exactly at 1/(2n); every
+        k &gt; 2 drops strictly below it, the exact rational witness <b>423/2890 &lt; 1/6</b> among them.</p>
+    </div>
+
+    <div class="howto">
+      <div><b>Move sideways</b>Swipe, use the arrow keys, or the buttons above. The rail is the table of
+        contents — tap any number to jump.</div>
+      <div><b>Read downwards</b>Each lesson scrolls vertically. A "carries forward" strip at the top says
+        what it inherits; a "next" box at the foot says where it hands on.</div>
+      <div><b>Answer the checkpoints</b>Every lesson ends with questions. Try them first; the cards open
+        to the worked answer.</div>
+    </div>
+
+    <p style="margin-top:26px"><a href="../learn.html">&#8592; The course</a> &nbsp;&#183;&nbsp;
+      <a href="../index.html">The archive</a></p>
+
+    <p class="endnote">Five lessons &#183; two papers &#183; 28 + eight machine checks &#183; one thesis
+      &nbsp;&#183;&nbsp; <a href="#ledger">claim ledger</a></p>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LESSON 1 ══════════════════════════ -->
+<section id="l1" class="page" data-title="1 · The Torsion Problem">
+  <div class="inner">
+    <p class="eyebrow">Lesson 01 <i>· the exact laws</i></p>
+    <h2 tabindex="-1" data-pagehead>The Torsion Problem, and the Exact 1-D Law</h2>
+    <p class="dek">One PDE stands in for "how hard is it to maintain an interior point against demand."
+      Before any bound, fix the object exactly — and solve it on the line, where everything is
+      explicit.</p>
+
+    <div class="run"><b>28/28</b><i>exact checks · p2-softcheck</i></div>
+
+    <h3>&#167;1 <em>&nbsp;The mixed-boundary problem</em></h3>
+    <p>Let &#937; &#8834; &#8477;&#8319; be a bounded connected Lipschitz domain whose boundary splits
+      into a <strong>supply portion</strong> &#931; (relatively open, positive surface measure) and the
+      <strong>reflecting remainder</strong> &#915;. A measurable symmetric coefficient tensor 𝒜 is
+      <em>uniformly elliptic</em>, P<sub>min</sub>I &#8804; 𝒜 &#8804; P<sub>max</sub>I a.e. The
+      <strong>torsion function</strong> u is the unique member of
+      V = {&#966; &#8712; H&#185;(&#937;) : tr &#966; = 0 on &#931;} solving</p>
+
+    <div class="eq"><span class="cid">def · weak form</span>
+      B[u,&#966;] := &#8747;<sub>&#937;</sub> &#8711;&#966; · <b>𝒜&#8711;u</b> dz = &#8747;<sub>&#937;</sub> q &#966; dz &nbsp; for all &#966; &#8712; V
+      <span class="note">This weak identity encodes two boundary conditions at once: u = 0 on the
+      supply &#931; (Dirichlet), and the natural no-flux condition 𝒜&#8711;u·&#957; = 0 on the
+      reflecting &#915; (Neumann). Here q &gt; 0 is a constant volumetric demand.</span>
+    </div>
+
+    <p>Existence and uniqueness are Lax&#8211;Milgram: the Poincar&#233; inequality on V, plus coercivity
+      from uniform ellipticity. Crucially, <strong>P<sub>min</sub> enters only through
+      well-posedness</strong> — no estimate in the whole theory depends on it. That is what
+      "<em>ratio-free</em>" means below: a constant depends on P<sub>max</sub> alone, never on the
+      ellipticity ratio P<sub>max</sub>/P<sub>min</sub>, the volume, or any regularity modulus.</p>
+
+    <div class="eq" style="border-left-color:var(--verdigris)"><span class="cid">positivity</span>
+      u &#8805; 0 a.e., and u &#8802; 0
+      <span class="note">Test the weak form with the truncation u&#8315; = max(&#8722;u,0), whose trace
+      still vanishes on &#931;; the energy is &#8804; 0 and &#8805; 0 at once, so u&#8315; &#8801; 0. The
+      maintenance cost is never negative and never trivial. <span class="tag forced">forced</span></span>
+    </div>
+
+    <h3>&#167;2 <em>&nbsp;What we are bounding: the distance conjecture</em></h3>
+    <p>Read u(x) as the accumulated cost of maintaining the point x against demand under constrained
+      transport; &#8741;u&#8741;<sub>&#8734;</sub> is the worst-case burden. The tempting guess is that
+      this is controlled from below by <em>distance to the supply</em>. Write d<sub>E</sub> for
+      Euclidean distance to &#931;, d<sub>&#937;</sub> for the shortest path <em>inside</em> &#937;, and
+      d<sub>𝒜</sub> for the operator-intrinsic distance; with R<sub>&#8226;</sub> =
+      sup<sub>&#937;</sub> d<sub>&#8226;</sub>(·,&#931;), the <strong>distance conjecture P2</strong>
+      asserted, in three nested strengths,</p>
+
+    <div class="eq"><span class="cid">P2-E &#8656; P2-G &#8656; P2-A</span>
+      &#8741;u&#8741;<sub>&#8734;</sub> &#8805; q R<sub>E</sub>&#178; / (2n P<sub>max</sub>) &nbsp;&#8656;&nbsp; &#8741;u&#8741;<sub>&#8734;</sub> &#8805; q R<sub>&#937;</sub>&#178; / (2n P<sub>max</sub>) &nbsp;&#8656;&nbsp; &#8741;u&#8741;<sub>&#8734;</sub> &#8805; q R<sub>𝒜</sub>&#178; / (2n)
+      <span class="note">Since d<sub>E</sub> &#8804; d<sub>&#937;</sub> &#8804; &#8730;P<sub>max</sub> d<sub>𝒜</sub>, the variants nest: P2-A &#8658; P2-G &#8658; P2-E. Lessons 1&#8211;2 prove what
+      <em>does</em> hold; Lesson 3 shows all three are <em>false</em>.</span>
+    </div>
+
+    <h3>&#167;3 <em>&nbsp;The one-dimensional law, exactly</em></h3>
+    <p>On the line the problem is an ODE with a Dirichlet end and a reflecting end, and it solves in
+      closed form. Let 0 &lt; P<sub>min</sub> &#8804; A(x) &#8804; P<sub>max</sub> be measurable on
+      (0,L), q &gt; 0:</p>
+
+    <div class="eq"><span class="cid">Thm · exact 1-D law</span>
+      &#8722;(A u&#8242;)&#8242; = q,&nbsp; u(0) = 0,&nbsp; (A u&#8242;)(L) = 0 &nbsp;&nbsp;&#10233;&nbsp;&nbsp; <b>u(x) = q &#8747;&#8320;&#739; (L &#8722; s)/A(s) ds</b>
+      <span class="note">Read off the flux directly: A(x)u&#8242;(x) = q(L &#8722; x), which is absolutely
+      continuous, vanishes at the reflecting end x = L, and has derivative &#8722;q. Uniqueness: any
+      difference v has (Av&#8242;)&#8242; = 0, so Av&#8242; is constant, and the far-end condition forces
+      it to 0.</span>
+    </div>
+
+    <p>Because u&#8242; = q(L &#8722; x)/A &#8805; 0, u is nondecreasing, and since A &#8804; P<sub>max</sub> with L &#8722; s &#8805; x &#8722; s on [0,x],</p>
+
+    <div class="eq"><span class="cid">far-end bound · equality</span>
+      u(x) &#8805; q x&#178; / (2 P<sub>max</sub>),&nbsp;&nbsp; &#8741;u&#8741;<sub>&#8734;</sub> = u(L) = q &#8747;&#8320;&#7524; (L&#8722;s)/A(s) ds &#8805; <b>q L&#178; / (2 P<sub>max</sub>)</b>
+      <span class="note">Equality in the far-end bound holds <em>if and only if</em> A = P<sub>max</sub>
+      a.e.: the integrand (L&#8722;s)(1/A &#8722; 1/P<sub>max</sub>) is nonnegative and L &#8722; s &gt; 0,
+      so it can only vanish where A already saturates. <span class="tag forced">forced</span></span>
+    </div>
+
+    <p>Here &#931; = {0} and d(x,&#931;) = x, so the bound reads u &#8805; q·d(·,&#931;)&#178;/(2P<sub>max</sub>) — the conjectured constant 2n <em>at n = 1</em>. So in one dimension the distance
+      conjecture is simply <strong>true</strong>, and sharp. The trouble starts when "distance" stops
+      being the only thing that varies.</p>
+
+    <div class="eq" style="border-left-color:var(--ochre)"><span class="cid">the fork ahead</span>
+      <span class="note" style="margin:0;font-size:15px">Theorem 1 is the <b>conductivity-graded</b>
+      balance: a sink of q per unit <em>length</em>, with conductivity A(x) varying. There is a second,
+      different one-dimensional balance — a sink of q per unit <em>volume</em> in a tube of varying
+      cross-section — and it is the mechanism of Lesson 3. The conjecture above extrapolated the first
+      balance and quietly assumed it was the only one. It is not.</span>
+    </div>
+
+    <div class="cpwrap">
+      <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">In the 1-D law, why
+        does the reflecting condition sit at the <em>far</em> end x = L, and where does the factor
+        (L &#8722; s) come from?</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>The flux A u&#8242; must carry off <em>all</em> the demand deposited between a point and
+          the reflecting wall. Integrating &#8722;(Au&#8242;)&#8242; = q from x to L with
+          (Au&#8242;)(L) = 0 gives A(x)u&#8242;(x) = q(L &#8722; x): the flux at x equals the total sink
+          q·(L &#8722; x) downstream of it. Dividing by A and integrating from 0 (where u = 0) gives the
+          law. The reflecting end is what makes the flux "pile up" toward the supply.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">A material has A(x)
+        dip well below P<sub>max</sub> on part of (0,L). Does &#8741;u&#8741;<sub>&#8734;</sub> go up or
+        down relative to the uniform P<sub>max</sub> case, and is the far-end bound still valid?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Up. Smaller A means larger 1/A in u(L) = q&#8747;(L&#8722;s)/A ds, so the burden
+          <em>increases</em>. The bound &#8741;u&#8741;<sub>&#8734;</sub> &#8805; qL&#178;/(2P<sub>max</sub>)
+          stays valid — it is a floor set by the <em>largest</em> the conductivity is ever allowed to
+          be — and it is met with equality only when A never dips at all.</p>
+        </div>
+      </details>
+    </div>
+
+    <p class="small"><b>Verify it.</b> The 1-D flux law and its bounds are among the horn paper's 28
+      exact-arithmetic checks (companion <code>p2-softcheck.py</code>, exit 0); no numeral here is
+      asserted un-run.</p>
+
+    <div class="nextup"><b>next</b> <a href="#l2">Lesson 2 · Interior bounds</a> — the line was easy
+      because everything was explicit. In n dimensions we get lower bounds two ways: a ratio-free
+      <em>mean</em> bound on any ball, and a sharp <em>pointwise</em> bound under a star condition, with
+      the same constant 2n.</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LESSON 2 ══════════════════════════ -->
+<section id="l2" class="page" data-title="2 · Interior Bounds">
+  <div class="inner">
+    <p class="eyebrow">Lesson 02 <i>· interior bounds</i></p>
+    <h2 tabindex="-1" data-pagehead>Interior Bounds: the Ball Mean and the Star</h2>
+    <p class="dek">Two lower bounds survive in every dimension — one that asks nothing of the
+      coefficient, one that is pointwise-sharp under a single geometric condition. Both land on the
+      constant 2n.</p>
+
+    <div class="thread"><span class="lbl">carries forward</span>
+      <div class="chips">
+        <button class="chip" data-goto="1"><span class="n">L1</span>the torsion function u, u &#8805; 0</button>
+        <button class="chip" data-goto="1"><span class="n">L1</span>the conjectured constant 2n</button>
+        <button class="chip" data-goto="1"><span class="n">L1</span>ratio-free: P<sub>max</sub> only</button>
+      </div>
+    </div>
+
+    <div class="run"><b>exit 0</b><i>p2-softcheck · ball &amp; star</i></div>
+
+    <h3>&#167;1 <em>&nbsp;Comparison, then the ball mean</em></h3>
+    <p>Two one-line lemmas do the work. First, <strong>same-operator domain comparison</strong>: if
+      &#969; &#8838; &#937; and w is the <em>full-Dirichlet</em> torsion of &#969; for the same 𝒜 and
+      q, then u &#8805; w a.e. on &#969; <span class="tag forced">forced</span> — shrinking the domain to
+      full-Dirichlet only lowers the solution. Second, <strong>torsional-rigidity
+      anti-monotonicity</strong>: a <em>larger</em> coefficient gives a <em>smaller</em> integral,
+      &#8747;<sub>&#969;</sub> w &#8805; &#8747;<sub>&#969;</sub> w&#8242; when 𝒜 &#8804; 𝒜&#8242;
+      <span class="tag forced">forced</span>, from the Dirichlet-energy variational principle. Together
+      they compare any u against the explicit constant-coefficient ball solution.</p>
+
+    <div class="eq"><span class="cid">Thm · ball mean bound</span>
+      for every ball B<sub>r</sub>(x&#8320;) &#8838; &#937;:&nbsp; (1/|B<sub>r</sub>|) &#8747;<sub>B<sub>r</sub></sub> u &#8805; <b>q r&#178; / (n(n+2) P<sub>max</sub>)</b>,&nbsp; hence &#8741;u&#8741;<sub>&#8734;</sub> &#8805; q r&#178; / (n(n+2) P<sub>max</sub>)
+      <span class="note">The ball's own solution for P<sub>max</sub>I is
+      w(z) = q(r&#178; &#8722; |z&#8722;x&#8320;|&#178;)/(2n P<sub>max</sub>); its radial mean of
+      r&#178; &#8722; |z&#8722;x&#8320;|&#178; is exactly 2r&#178;/(n+2). Multiply by q/(2nP<sub>max</sub>):
+      the mean is q r&#178;/(n(n+2)P<sub>max</sub>), and the sup dominates the mean. At <b>n = 3 the
+      constant n(n+2) is 15</b>.</span>
+    </div>
+
+    <p>Only B &#8838; &#937; is used — the ball may touch &#8706;&#937;, even &#931; — and 𝒜 may be
+      <em>any</em> measurable uniformly elliptic tensor. Taking r = the inradius gives
+      &#8741;u&#8741;<sub>&#8734;</sub> &#8805; q r<sub>in</sub>(&#937;)&#178;/(n(n+2)P<sub>max</sub>), a
+      bound attained by the ball about the deepest interior point. This is ratio-free and
+      <em>mean-form</em>; it is not pointwise. For a pointwise-sharp bound we pay one hypothesis.</p>
+
+    <h3>&#167;2 <em>&nbsp;The star-shaped theorem</em></h3>
+    <p>Now let 𝒜 be a <em>constant</em> symmetric positive-definite tensor with 𝒜 &#8804; P<sub>max</sub>I.
+      Fix x&#8320; and set the quadratic form f(z) = (z &#8722; x&#8320;)&#7488;𝒜&#8315;&#185;(z &#8722; x&#8320;).
+      Two identities make it a perfect test field:</p>
+
+    <div class="eq"><span class="cid">Prop · two identities</span>
+      𝒜&#8711;f = 2(z &#8722; x&#8320;),&nbsp; &#8711;·(𝒜&#8711;f) = 2n,&nbsp; f(z) &#8805; |z &#8722; x&#8320;|&#178; / P<sub>max</sub>
+      <span class="note">The divergence is a constant 2n — the same 2n as the conjecture. The last
+      inequality is an eigenvalue computation: in an 𝒜-eigenbasis,
+      f &#8722; |z&#8722;x&#8320;|&#178;/P<sub>max</sub> = &#8721;&#7522; w&#7522;&#178;(P<sub>max</sub> &#8722; &#955;&#7522;)/(&#955;&#7522;P<sub>max</sub>) &#8805; 0.</span>
+    </div>
+
+    <p>The theorem needs the axis point to "see" the reflecting wall from the inside — the
+      <strong>star condition</strong>:</p>
+
+    <div class="eq"><span class="cid">Thm · star-shaped lower bound</span>
+      if (z &#8722; x&#8320;)·&#957;(z) &#8805; 0 for a.e. z &#8712; &#915;, then&nbsp; <b>u(x&#8320;) &#8805; (q/2n) inf<sub>z&#8712;&#931;</sub> (z&#8722;x&#8320;)&#7488;𝒜&#8315;&#185;(z&#8722;x&#8320;) &#8805; q d<sub>E</sub>(x&#8320;,&#931;)&#178; / (2n P<sub>max</sub>)</b>
+      <span class="note">Set w = u + (q/2n)f. Gauss&#8211;Green turns the star condition into
+      B[w,&#966;] &#8805; 0 for &#966; &#8805; 0; a Stampacchia truncation at the minimum supply value
+      forces w &#8805; (q/2n)inf<sub>&#931;</sub>f, and f(x&#8320;) = 0 delivers u(x&#8320;). The constant
+      2n <em>cannot be improved</em>, and it is ratio-free. Any <b>convex</b> &#937; meets the star
+      condition at every point. <span class="tag forced">forced</span></span>
+    </div>
+
+    <p>Sharpness is exhibited, not asserted: equality holds on the ball (&#931; = &#8706;B), on
+      <strong>central reflection sectors</strong> (wedges cut by hyperplanes through x&#8320;, where the
+      star condition holds with equality on every flat cut), and on <strong>ellipsoids</strong>
+      {f &lt; r&#178;} where u = (q/2n)(r&#178; &#8722; f) exactly. The anisotropic ellipsoid case attains
+      the sharper first inequality, the one with 𝒜&#8315;&#185; still inside.</p>
+
+    <h3>&#167;3 <em>&nbsp;Distance to the full boundary always works</em></h3>
+    <p>One corollary needs <em>no</em> star condition at all, only constant 𝒜, and it is the fact
+      Lesson 3 will contrast against:</p>
+
+    <div class="eq" style="border-left-color:var(--verdigris)"><span class="cid">Cor · full-boundary bound</span>
+      for constant 𝒜 &#8804; P<sub>max</sub>I and any &#931;/&#915; split:&nbsp; u(x&#8320;) &#8805; q·dist(x&#8320;, &#8706;&#937;)&#178; / (2n P<sub>max</sub>)
+      <span class="note">Drop the largest ball B &#8838; &#937; about x&#8320; and apply the star
+      theorem to (B, &#931; = &#8706;B): the star condition is vacuous there. Distance to the
+      <em>whole</em> boundary controls u unconditionally. <span class="tag forced">forced</span></span>
+    </div>
+
+    <p>So two distances behave very differently. Distance to <strong>&#8706;&#937;</strong> bounds u
+      <em>always</em> (constant coefficients). Distance to the <strong>supply &#931;</strong> bounds u
+      <em>under the star condition</em> — a sharp <em>sufficient</em> hypothesis. The next lesson removes
+      it and watches the second bound fail without limit, while the first stays true.</p>
+
+    <div class="cpwrap">
+      <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">The mean bound carries
+        the constant n(n+2) = 15 (at n = 3) but the star bound carries 2n = 6. Why is the smaller
+        constant on the <em>stronger</em> (pointwise) statement not a contradiction?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>They bound different quantities. n(n+2) governs the <em>average</em> of u over a ball and
+          asks nothing of the coefficient beyond ellipticity; 2n governs the <em>peak</em> value
+          u(x&#8320;) but only under the star condition and for constant 𝒜. A larger denominator on a
+          weaker (mean, assumption-free) claim is exactly what you expect — the average is smaller than
+          the peak, so it accepts a looser floor.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Why does the corollary
+        about dist(x&#8320;, &#8706;&#937;) escape the star condition entirely?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Because on the inscribed ball the supply <em>is</em> the whole boundary (&#931; = &#8706;B)
+          and &#915; is empty, so the star condition "(z&#8722;x&#8320;)·&#957; &#8805; 0 on &#915;" is a
+          condition on the empty set — vacuously true. The reflecting wall is what can violate the star
+          condition; with no reflecting wall there is nothing to check.</p>
+        </div>
+      </details>
+    </div>
+
+    <p class="small"><b>Verify it.</b> The ball-mean constant 2r&#178;/(n+2) &#8594; n(n+2), the
+      identities 𝒜&#8711;f = 2(z&#8722;x&#8320;) and &#8711;·(𝒜&#8711;f) = 2n, and the equality
+      evaluations are checked exactly in the horn paper's <code>p2-softcheck.py</code> (exit 0).</p>
+
+    <div class="nextup"><b>next</b> <a href="#l3">Lesson 3 · When distance lies</a> — remove the star
+      condition on a tapered horn and the supply-distance bound fails by an unbounded factor, with an
+      exact rational witness 423/2890 &lt; 1/6.</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LESSON 3 ══════════════════════════ -->
+<section id="l3" class="page" data-title="3 · When Distance Lies">
+  <div class="inner">
+    <p class="eyebrow">Lesson 03 <i>· closure of the distance conjecture</i></p>
+    <h2 tabindex="-1" data-pagehead>When Distance Lies: the Tapered Horns</h2>
+    <p class="dek">A family of narrowing horns, each solved in closed form, drives the supply-distance
+      coefficient to zero. All three metric forms of the conjecture are false — and the straight cone
+      marks the exact transition.</p>
+
+    <div class="thread"><span class="lbl">carries forward</span>
+      <div class="chips">
+        <button class="chip" data-goto="2"><span class="n">L2</span>star condition &#8658; supply-distance bound</button>
+        <button class="chip" data-goto="2"><span class="n">L2</span>dist(·,&#8706;&#937;) bound, unconditional</button>
+        <button class="chip" data-goto="1"><span class="n">L1</span>the two 1-D balances</button>
+      </div>
+    </div>
+
+    <div class="run"><b>exit 0</b><i>p2-softcheck · 28 checks</i></div>
+
+    <h3>&#167;1 <em>&nbsp;A horn, and a field that solves it</em></h3>
+    <p>Fix a power profile g(x) = &#949; h (x/h)<sup>k/2</sup> and build the truncated horn</p>
+
+    <div class="eq"><span class="cid">def · truncated horn</span>
+      &#937;<sub>k,&#949;,&#948;</sub> = { (x,y) &#8712; (&#948;h, h) &#215; &#8477;<sup>n&#8722;1</sup> : |y| &lt; g(x) },&nbsp; &#931; = {h} &#215; {|y| &lt; &#949;h},&nbsp; 𝒜 = P·I
+      <span class="note">The supply &#931; is the flat wide mouth at x = h. The reflecting &#915; is the
+      tapering lateral wall |y| = g(x) plus the small end-face F<sub>&#948;</sub> at x = &#948;h. It is a
+      bounded Lipschitz domain, so all of Lesson 1's theory applies. Write &#961; = |y|.</span>
+    </div>
+
+    <p>The engine is an explicit <strong>comparison field</strong> — not the torsion function, but a
+      smooth quadratic tuned so that its flux through the lateral wall vanishes <em>exactly</em>:</p>
+
+    <div class="eq"><span class="cid">Prop · exact field, zero wall flux</span>
+      v(x,y) = a(h&#178; &#8722; x&#178;) &#8722; b|y|&#178;,&nbsp; a = q / (P(2 + k(n&#8722;1))),&nbsp; b = ak/2
+      <span class="note">Then &#8722;P&#916;v = q identically; &#8706;<sub>&#957;</sub>v = 0 at every
+      point of the lateral wall (the choice b = ak/2 is exactly what cancels it, using
+      x g&#8242; = (k/2)g); and v peaks at the tip, sup v = v(&#948;h,0) = a h&#178;(1 &#8722; &#948;&#178;),
+      while on the mouth v|<sub>&#931;</sub> = &#8722;b|y|&#178; &#8712; [&#8722;b(&#949;h)&#178;, 0].
+      <span class="tag forced">forced</span></span>
+    </div>
+
+    <p>A Stampacchia truncation against the reflecting wall converts the vanishing wall flux into a
+      genuine one-sided bound on the <em>true</em> torsion function:</p>
+
+    <div class="eq"><span class="cid">Thm · comparison</span>
+      0 &#8804; u &#8804; v + b(&#949;h)&#178; a.e.,&nbsp; hence&nbsp; &#8741;u&#8741;<sub>&#8734;</sub> &#8804; a h&#178;(1 &#8722; &#948;&#178;) + b(&#949;h)&#178;
+      <span class="note">The demand only leaves through the mouth; the reflecting wall carries no flux
+      for v, so v (nudged up by the mouth's depth b(&#949;h)&#178;) sits above u everywhere.
+      <span class="tag forced">forced</span></span>
+    </div>
+
+    <h3>&#167;2 <em>&nbsp;The distances are honest — and the bound still fails</em></h3>
+    <p>On the horn the geometry is transparent: for z = (x,y), every metric to the mouth is just the
+      axial gap, d<sub>E</sub>(z,&#931;) = d<sub>&#937;</sub>(z,&#931;) = h &#8722; x, and
+      d<sub>𝒜</sub> = (h&#8722;x)/&#8730;P, so R<sub>E</sub> = R<sub>&#937;</sub> = &#8730;P R<sub>𝒜</sub> = h(1 &#8722; &#948;). The three conjecture variants <em>coincide</em> here — they must stand or fall
+      together. Dividing the comparison bound by qR&#178;/P:</p>
+
+    <div class="eq"><span class="cid">Thm · falsification (all three metrics)</span>
+      P<sub>max</sub>&#8741;u&#8741;<sub>&#8734;</sub> / (qR&#178;) &#8804; &#946;(k,&#949;,&#948;,n) := ( 1 &#8722; &#948;&#178; + (k/2)&#949;&#178; ) / ( (2 + k(n&#8722;1))(1 &#8722; &#948;)&#178; )
+      <span class="note">As (&#949;,&#948;) &#8594; (0,0), &#946; &#8594; 1/(2 + k(n&#8722;1)), which is
+      <b>&lt; 1/(2n) exactly when k &gt; 2</b> — since 2n &lt; 2 + k(n&#8722;1) &#8660; k &gt; 2. Every
+      super-conical horn therefore breaks all three forms P2-E, P2-G, P2-A at once.
+      <span class="tag forced">forced</span></span>
+    </div>
+
+    <div class="eq" style="border-left-color:var(--verdigris)"><span class="cid">Cor · an exact rational witness (n = 3, k = 4)</span>
+      &#948; = 3/20, &#949; = 1/5:&nbsp; P<sub>max</sub>&#8741;u&#8741;<sub>&#8734;</sub>/(qR&#178;) &#8804; (1 &#8722; 9/400 + 2/25) / (10·(17/20)&#178;) = (423/400)/(2890/400) = <b>423/2890 &lt; 1/6</b>
+      <span class="note">A bounded Lipschitz domain, constant scalar coefficient, flat Dirichlet mouth —
+      every hypothesis of the conjecture holds, and the coefficient lands 12.2% below the conjectured
+      sharp 1/(2n) = 1/6, with the exact gap 1/6 &#8722; 423/2890 = 88/4335. Not a limit, not an
+      approximation: one explicit domain. <span class="tag computed">computed</span></span>
+    </div>
+
+    <p>And the failure has no floor. Taking &#949;&#178; = 1/k, &#948; = 1/k and letting k &#8594; &#8734;
+      sends &#946; &#8594; 0:</p>
+
+    <div class="eq"><span class="cid">Cor · the infimum is zero</span>
+      inf { P<sub>max</sub>&#8741;u&#8741;<sub>&#8734;</sub> / (qR&#178;) } = 0,&nbsp; over all admissible (&#937;, &#931;, 𝒜, q), in each of the three metrics — and it is not attained
+      <span class="note">Strictly positive for every fixed datum (positivity, Lesson 1), yet with
+      infimum 0. No constant c &gt; 0 can appear in any bound
+      &#8741;u&#8741;<sub>&#8734;</sub> &#8805; c·qR&#178;/P<sub>max</sub>.
+      <span class="tag forced">forced</span></span>
+    </div>
+
+    <h3>&#167;3 <em>&nbsp;The cone is the exact transition</em></h3>
+    <p>Why k = 2? Along the axis point x&#8320; = (x<sub>&#8727;</sub>, 0), the star integrand on the
+      wall is (1 &#8722; k/2)g(x) + x<sub>&#8727;</sub>g&#8242;(x). For k &#8804; 2 both terms are
+      &#8805; 0, so the star condition holds and Lesson 2 applies verbatim; for k &gt; 2 it goes negative
+      once the horn is long enough, and the star hypothesis is genuinely lost. This is a clean
+      dichotomy:</p>
+
+    <div class="tw"><table class="prose"><caption class="vh">Lesson 3 · the horn dichotomy at k = 2</caption>
+      <thead><tr><th scope="col">regime</th><th scope="col">star condition</th><th scope="col">supply-distance bound</th></tr></thead>
+      <tbody>
+        <tr><td>Sub-conical, k &lt; 2</td><td>holds at every axis point</td><td>&#8741;u&#8741;<sub>&#8734;</sub> &#8805; qR&#178;/(2n P<sub>max</sub>) — the conjectured constant <span class="tag forced">forced</span></td></tr>
+        <tr><td><strong>Cone, k = 2</strong></td><td>holds, with equality on the wall</td><td>pinched: 1/(2n) &#8804; P<sub>max</sub>&#8741;u&#8741;<sub>&#8734;</sub>/(qR&#178;) &#8594; 1/(2n) as (&#949;,&#948;)&#8594;0 <span class="tag forced">forced</span></td></tr>
+        <tr><td>Super-conical, k &gt; 2</td><td>fails at every interior point</td><td>coefficient drops strictly below 1/(2n), infimum 0 <span class="tag forced">forced</span></td></tr>
+      </tbody>
+    </table></div>
+
+    <p>So within the power-law family, k = 2 is the razor's edge: the straight cone sits <em>exactly</em>
+      at the conjectured constant 1/(2n) in every dimension. The star condition — a sharp
+      <em>sufficient</em> hypothesis — governs everything up to the cone; beyond it, its loss is
+      accompanied by unbounded failure. (Necessity of the star condition across <em>all</em> geometries
+      is not claimed.)</p>
+
+    <h3>&#167;4 <em>&nbsp;The mechanism: it was the wrong 1-D balance</em></h3>
+    <p>The conjecture extrapolated Lesson 1's conductivity-graded balance (sink per length). The horns
+      realize the <em>other</em> one — sink per unit <strong>volume</strong> in a tube of cross-section
+      𝔄(s) = &#954;<sub>n&#8722;1</sub> g(s)<sup>n&#8722;1</sup> — and the comparison field's tip value
+      reproduces that graded integral identically:</p>
+
+    <div class="eq"><span class="cid">the graded-resistance identity</span>
+      (q/P) &#8747;&#8320;&#7524; V(s)/𝔄(s) ds = (q/P) &#8747;&#8320;&#7524; s / (1 + k(n&#8722;1)/2) ds = q h&#178; / (P(2 + k(n&#8722;1))) = v(0,0)
+      <span class="note">The conjectured functional q d(·,&#931;)&#178;/(2n P<sub>max</sub>) kept the
+      distance but <em>threw away the volume grading</em> V/𝔄, with V(s) = &#8747;&#8320;&#738; 𝔄. The
+      horns are exactly the geometries on which the two functionals separate without bound — distance
+      overcharging for length the narrowing tube never has to serve.</span>
+    </div>
+
+    <div class="eq" style="border-left-color:var(--ochre)"><span class="cid">honest caveat · the untruncated cusp</span>
+      <span class="note" style="margin:0;font-size:15px">A sharper cusp version (&#948; = 0) pushes the
+      same bound to P<sub>max</sub>&#8741;u&#8741;<sub>&#8734;</sub>/(qR&#178;) &#8804; (1 + (k/2)&#949;&#178;)/(2 + k(n&#8722;1)), below 1/(2n) when &#949;&#178; &lt; (n&#8722;1)(k&#8722;2)/(nk). It is
+      <em>logically auxiliary</em>: every closure statement above rests on the <b>truncated</b> Lipschitz
+      family. The cusp uses a nonstandard boundary realization at the tip and is flagged in the paper for
+      independent functional-analytic review — so the headline never leans on it.</span>
+    </div>
+
+    <div class="cpwrap">
+      <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Lesson 2 said
+        dist(x&#8320;,&#8706;&#937;) bounds u <em>unconditionally</em>. Doesn't the horn, where u is
+        tiny, contradict that?</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>No — the two bounds measure different distances. On a horn, dist(z, &#8706;&#937;) &#8804;
+          g(x) &#8804; &#949;h: the nearest boundary is the <em>lateral wall</em>, which is very close. So
+          the unconditional bound only asserts u &#8819; q(&#949;h)&#178;/(2nP<sub>max</sub>), a tiny
+          amount, fully consistent with the small true value. What fails is the bound using distance to
+          the far-away <em>supply</em> &#931;. The horn separates "distance to any boundary" from
+          "distance to the supply."</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">If the wall is made
+        Dirichlet (supply) instead of reflecting, does the falsification survive?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>No, and that is the point. A reflecting wall is what forces demand to travel the length of
+          the horn to the mouth. Make the wall Dirichlet and it joins &#931;; every interior point is
+          then within O(&#949;h) of supply, all distances to supply collapse, and no conflict can arise.
+          The closure of the conjecture <em>requires</em> the wall to reflect.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Why does the exact
+        witness 423/2890 matter more than the infimum-zero statement?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>The infimum-zero corollary is a limit — a sceptic can ask whether any single legitimate
+          domain really violates the bound. 423/2890 is that domain: n = 3, k = 4, &#948; = 3/20,
+          &#949; = 1/5, one bounded Lipschitz horn with a flat Dirichlet mouth, coefficient a certified
+          12.2% under 1/6, checked in exact rational arithmetic. It converts an asymptotic story into a
+          finished counterexample.</p>
+        </div>
+      </details>
+    </div>
+
+    <p class="small"><b>Verify it.</b> The horn solution and wall-flux identities, the coefficient
+      &#946; and its windows, the instance 423/2890 &lt; 1/6, the star deficit, and the cone
+      marginality 1/(2+k(n&#8722;1))|<sub>k=2</sub> = 1/(2n) are among the horn paper's <b>28 independent
+      exact checks</b> (<code>p2-softcheck.py</code>, exit 0). Finite-volume corroboration exists but is
+      deliberately excluded — the paper carries forced material only.</p>
+
+    <div class="nextup"><b>next</b> <a href="#l4">Lesson 4 · Accumulated transport resistance</a> — if
+      distance overcharges, what is the right cheap scalar? Burden tracks demand routed through each
+      cross-section — and two tube integrals must never be multiplied by demand twice.</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LESSON 4 ══════════════════════════ -->
+<section id="l4" class="page" data-title="4 · Accumulated Resistance">
+  <div class="inner">
+    <p class="eyebrow">Lesson 04 <i>· accumulated transport resistance</i></p>
+    <h2 tabindex="-1" data-pagehead>Accumulated Transport Resistance</h2>
+    <p class="dek">The corrected scalar is not distance but demand routed through each cross-section.
+      Naming it precisely means keeping two tube integrals apart — and refusing to call any cheap
+      surrogate the truth until it passes a gate.</p>
+
+    <div class="thread"><span class="lbl">carries forward</span>
+      <div class="chips">
+        <button class="chip" data-goto="3"><span class="n">L3</span>distance overcharges on horns</button>
+        <button class="chip" data-goto="3"><span class="n">L3</span>the comparison field v, upper bound</button>
+        <button class="chip" data-goto="3"><span class="n">L3</span>the graded integral V/𝔄</button>
+      </div>
+    </div>
+
+    <div class="run"><b>exit 0</b><i>surrogate_contest · &#916;C = q&#8477;</i></div>
+
+    <h3>&#167;1 <em>&nbsp;The thesis, and the direction of the horn result</em></h3>
+    <p>The horn paper's lesson is easy to misread. It is <em>not</em> "narrowing raises resistance." It
+      is that a distance-only readout <strong>over</strong>estimates: as a horn narrows the true burden
+      <em>shrinks</em>, while distance keeps charging for the length. The corrected statement, which this
+      paper is built around:</p>
+
+    <div class="eq" style="border-left-color:var(--verdigris)"><span class="cid">the thesis</span>
+      <span class="note" style="margin:0;font-size:15px">Transport burden depends on how much maintenance
+      demand must pass through each available transport cross-section — <b>Q<sub>&#8595;</sub>(s)/(P(s)𝔄(s))</b> — not on distance or narrowness in isolation.</span>
+    </div>
+
+    <p>The comparison field v of Lesson 3 is recalled, not reproved: it solves &#8722;P&#916;v = q with
+      exactly zero lateral-wall flux, giving the rigorous upper bound
+      0 &#8804; u &#8804; v + b(&#949;h)&#178;. Its apex obeys the graded identity, and reading that
+      identity in <em>k</em> is the whole picture:</p>
+
+    <div class="eq"><span class="cid">the tube quantity shrinks; the failure factor grows</span>
+      (q/P) &#8747;&#8320;&#7524; V(s)/𝔄(s) ds = q h&#178; / (P(2 + k(n&#8722;1)))&nbsp; — &nbsp;<b>0.167 (k=2) &#8594; 0.045 (k=10)</b>
+      <span class="note">The tube quantity <em>decreases</em> monotonically in the taper exponent k (at
+      n = 3, from 1/6 to 1/22). The object that <em>grows</em> without bound is not the burden but the
+      distance-only failure factor qR&#178;/&#8741;u&#8741;<sub>&#8734;</sub>, climbing from about <b>6 to
+      about 22</b> across the same range. Narrowing lowers burden and raises the distance error
+      together.</span>
+    </div>
+
+    <p class="small">Whether the true apex u(0) <em>equals</em> this graded integral, rather than merely
+      being bounded by it, is <span class="tag open">open</span>. The exact, path-free, general-domain
+      object is instead the Green representation
+      u(x) = &#8747;<sub>&#937;</sub> G(x,y) q(y) dy, valid wherever the mixed Green function exists
+      <span class="tag forced">forced</span> (a.e. x; pointwise under Phase-A regularity).</p>
+
+    <h3>&#167;2 <em>&nbsp;Two tube objects, not multiplied by demand twice</em></h3>
+    <p>A unit ambiguity haunted earlier drafts. There are two genuinely different one-dimensional tube
+      integrals, and only one already contains demand.</p>
+
+    <div class="eq"><span class="cid">geometric resistance vs predicted drop</span>
+      𝓡<sub>geom</sub> = &#8747; V(s)/(P(s)𝔄(s)) ds&nbsp;&nbsp;(<span class="tag declared">declared</span>, geometry only)<br>
+      &#916;C<sub>tube</sub> = &#8747; Q<sub>&#8595;</sub>(s)/(P(s)𝔄(s)) ds,&nbsp; Q<sub>&#8595;</sub>(s) = &#8747;<sub>downstream of s</sub> q&nbsp;&nbsp;(<span class="tag declared">declared</span>, already carries demand)
+      <span class="note">Q<sub>&#8595;</sub>(s) is the demand still to be served beyond cross-section s.
+      So &#916;C<sub>tube</sub> already <em>is</em> a predicted concentration drop; 𝓡<sub>geom</sub> is
+      pure geometry. They coincide only under uniform demand, where Q<sub>&#8595;</sub>(s) = q V(s).</span>
+    </div>
+
+    <div class="eq" style="border-left-color:var(--verdigris)"><span class="cid">the unit split, in one line</span>
+      &#916;C<sub>tube</sub> = q · 𝓡<sub>geom</sub>&nbsp;&nbsp;(uniform q only)
+      <span class="note">This is the entire content of the split: multiplying the demand-weighted
+      &#916;C<sub>tube</sub> by a <em>further</em> factor of q would double-count the load. Keeping the
+      volume-weighted 𝓡<sub>geom</sub> and the demand-weighted &#916;C<sub>tube</sub> as distinct named
+      objects removes the ambiguity at the source. <span class="tag forced">forced</span> under uniform
+      demand.</span>
+    </div>
+
+    <p>A canonical normalized burden 𝓡<sub>G</sub>(x) = u(x)/Q<sup>&#8727;</sup> is meaningful only once
+      the normalization Q<sup>&#8727;</sup> is <em>preregistered</em>
+      <span class="tag declared">declared</span>; for uniform demand the clean choice is
+      Q<sup>&#8727;</sup> = q, giving 𝓡<sub>G</sub> = u/q. A specimen-specific Q<sup>&#8727;</sup> chosen
+      after the fact would wreck any cross-specimen comparison.</p>
+
+    <h3>&#167;3 <em>&nbsp;Three tiers, and a gatekeeper</em></h3>
+    <p>The exact field u is the ground truth but needs a full PDE solve — precisely what a cheap
+      predictor is meant to avoid. So the program lives on three tiers, and the whole scientific question
+      is whether the bottom can be made to track the top:</p>
+
+    <div class="tw"><table class="prose"><caption class="vh">Lesson 4 · the three tiers</caption>
+      <thead><tr><th scope="col">tier</th><th scope="col">object</th><th scope="col">deployable?</th></tr></thead>
+      <tbody>
+        <tr><td>ground truth</td><td>exact torsion field u</td><td>no — needs the full solve</td></tr>
+        <tr><td>diagnostic</td><td>flux-tube reduction of the true current J = &#8722;P&#8711;u</td><td>no — still needs u</td></tr>
+        <tr><td>surrogate</td><td>geometry-only 𝓡<sub>ATR</sub>, from the segmented geometry alone</td><td>yes — the candidate</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="eq" style="border-left-color:var(--ochre)"><span class="cid">the gatekeeper</span>
+      <span class="note" style="margin:0;font-size:15px">Solving the PDE on the actual geometry and
+      checking that a constructed 𝓡<sub>ATR</sub> tracks the exact u is <b>the gate every biological
+      claim must pass</b>, not a downstream nicety. Until that tracking is shown across synthetic
+      geometries with known u, the honest register is "we are testing a computational surrogate inspired
+      by the exact horn functional" — never "we have transported the horn theorem into tissue."</span>
+    </div>
+
+    <p>The caution is earned by the flux geometry. Because &#8711;·J = q, the current is <em>not</em>
+      divergence-free: throughput varies along a tube, equal-throughput tubes need not stay equal, a
+      global tiling can fail, and the streamlines run from the interior <em>toward</em> &#931;. Any
+      reduction of the field to flux tubes is an extra modelling move, not something the theorem
+      forces.</p>
+
+    <p>One cheap candidate is <strong>eikonal descent</strong> — minimum-cost paths to &#931;,
+      |&#8711;T| = 1/P. These are not flux lines, and the gap is measurable and <em>regime-dependent</em>:</p>
+
+    <div class="tw"><table class="prose"><caption class="vh">Lesson 4 · eikonal vs true-flux angular error</caption>
+      <thead><tr><th scope="col">measurement</th><th scope="col">value</th></tr></thead>
+      <tbody>
+        <tr><td>global: eikonal descent vs true current &#8722;&#8711;u</td><td>eikonal 0&#176; (demand-blind) vs true 10.6&#176; toward the demand mass</td></tr>
+        <tr><td>taper corridor (benign)</td><td>median 1.8&#176;, 90th percentile 5.4&#176;</td></tr>
+        <tr><td>bottleneck corridor (heavy tail)</td><td>median 3.0&#176;, 90th percentile 21.2&#176; — a 3.95&#215; larger tail, at the neck</td></tr>
+        <tr><td>re-entrant corner past a sharp neck</td><td>flux-reversal pocket, ~3.9% of |J|; eikonal ~178&#176; wrong</td></tr>
+      </tbody>
+    </table></div>
+
+    <p>The moral is sharp: the regime where an eikonal ATR would be <em>used to detect</em> a dangerous
+      bottleneck is exactly the regime where it is <em>least reliable</em> (about 20,000 corridor cells
+      per regime were measured). So it is admitted to the contest only with its corridor error and
+      corner-reversal share reported per geometry, and may never be adopted for bottleneck prediction on
+      the strength of taper accuracy.</p>
+
+    <div class="cpwrap">
+      <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Why is
+        &#916;C<sub>tube</sub> = q·𝓡<sub>geom</sub> flagged "uniform q only"? What breaks otherwise?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>𝓡<sub>geom</sub> weights each cross-section by the <em>upstream volume</em> V(s);
+          &#916;C<sub>tube</sub> weights it by the <em>downstream demand</em> Q<sub>&#8595;</sub>(s). Those
+          agree only when demand is uniform, Q<sub>&#8595;</sub>(s) = qV(s). With demand concentrated
+          somewhere, Q<sub>&#8595;</sub> &#8800; qV and the two integrals genuinely differ; writing
+          &#916;C<sub>tube</sub> = q𝓡<sub>geom</sub> then multiplies the already-demand-weighted drop by
+          demand a second time — a double count.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Both the true field u
+        and the flux-tube diagnostic sit above the deployable surrogate. If the diagnostic is not cheap
+        either, why keep it in the ladder?</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>It is the reference with <em>no</em> path-reduction error by construction — it is what an
+          ideal reduction of the true current would retain. A cheap surrogate is scored against it (and
+          against u) to separate "the surrogate is a bad predictor" from "path-reduction itself loses the
+          signal." Without the diagnostic tier you cannot tell which of the two failed.</p>
+        </div>
+      </details>
+    </div>
+
+    <p class="small"><b>Verify it.</b> The uniform-demand reduction &#916;C<sub>tube</sub> = q𝓡<sub>geom</sub>
+      (no double-count), the graded shrink 0.167 &#8594; 0.045 against the failure factor 6 &#8594; 22,
+      and the 10.6&#176; eikonal/flux gap are checks C5, C4, and C1 of the ATR harness
+      <code>surrogate_contest.py</code> (exit 0).</p>
+
+    <div class="nextup"><b>next</b> <a href="#l5">Lesson 5 · Two regimes &amp; the contest</a> — the ratio
+      that separates tapers from bottlenecks, an ablation ladder that names which ingredient carries the
+      signal, and why a 0.995 correlation is not enough.</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LESSON 5 ══════════════════════════ -->
+<section id="l5" class="page" data-title="5 · The Surrogate Contest">
+  <div class="inner">
+    <p class="eyebrow">Lesson 05 <i>· the Phase-A contest</i></p>
+    <h2 tabindex="-1" data-pagehead>Two Regimes, and the Surrogate Contest</h2>
+    <p class="dek">One ratio splits the world into tapers and bottlenecks. A gated contest then asks
+      which cheap summary tracks the exact burden — and answers it before a single biological claim is
+      licensed.</p>
+
+    <div class="thread"><span class="lbl">carries forward</span>
+      <div class="chips">
+        <button class="chip" data-goto="4"><span class="n">L4</span>burden ~ Q<sub>&#8595;</sub>(s)/(P𝔄)</button>
+        <button class="chip" data-goto="4"><span class="n">L4</span>three tiers + the gatekeeper</button>
+        <button class="chip" data-goto="4"><span class="n">L4</span>eikonal error is regime-dependent</button>
+      </div>
+    </div>
+
+    <div class="run"><b>C1&#8211;C8</b><i>surrogate_contest · exit 0</i></div>
+
+    <h3>&#167;1 <em>&nbsp;Two regimes, one ratio</em></h3>
+    <p>The corrected mathematics is a genuine dichotomy, and both halves are numerically real. The
+      organizing quantity is the <strong>local ratio</strong> Q<sub>&#8595;</sub>(s)/(P(s)𝔄(s)) — demand
+      routed through each cross-section:</p>
+
+    <div class="tw"><table class="prose"><caption class="vh">Lesson 5 · the two regimes</caption>
+      <thead><tr><th scope="col">regime</th><th scope="col">mechanism</th><th scope="col">effect</th></tr></thead>
+      <tbody>
+        <tr><td>Volume-graded taper</td><td>downstream demand falls with cross-section fast enough</td><td>burden falls <em>below</em> the distance prediction, &#961;<sub>u</sub> &#8810; 1; horns, tube quantity 0.167 &#8594; 0.045</td></tr>
+        <tr><td>Demand-loaded bottleneck</td><td>a narrow section still serves large downstream demand</td><td>burden <em>exceeds</em> a matched-distance reference, &#961;<sub>u</sub> &gt; 1; a matched-Krogh bottleneck attains &#961;<sub>u</sub> = 1.83</td></tr>
+      </tbody>
+    </table></div>
+
+    <p>A narrow section is cheap when little demand lies beyond it; a modest bottleneck is severe when it
+      must serve a large downstream region. The existence of the &#961;<sub>u</sub> &gt; 1 regime is not
+      hypothetical — a bottleneck matched to its Krogh reference on maximum distance, total demand, and
+      volume reaches <strong>&#961;<sub>u</sub> = 1.83</strong> <span class="tag forced">forced</span>.
+      Its achievable magnitude, and whether a closed-form bottleneck family exists, are the sharpest
+      <span class="tag open">open</span> targets.</p>
+
+    <p>Two amplification ratios are kept strictly apart, because one word spanning both would mislead:
+      the <strong>true-field</strong> &#961;<sub>u</sub> = &#8741;u&#8741;<sub>&#8734;</sub>/u<sub>Krogh</sub>,
+      and the <strong>surrogate</strong> &#961;&#770;<sub>ATR</sub> = 𝓡<sup>surr</sup><sub>ATR</sub>/𝓡<sup>surr</sup><sub>ATR,Krogh</sub>. Phase A asks precisely whether &#961;&#770; predicts
+      &#961;<sub>u</sub>.</p>
+
+    <h3>&#167;2 <em>&nbsp;The ablation ladder names the mechanism</em></h3>
+    <p>Reporting only a surrogate's final score would hide <em>which</em> ingredient produced it. So every
+      surrogate is run up a fixed ladder that adds one information source at a time — Euclidean distance,
+      then geodesic, then restriction (cross-section), then instead demand, then the full
+      restriction&#215;demand product integrated along the path, then the exact PDE burden u as ceiling.
+      On a 16-geometry family (8 tapers, 8 bottlenecks), all matched on maximum distance, the
+      decomposition is stark:</p>
+
+    <div class="tw"><table><caption class="vh">Lesson 5 · ablation correlations with the true burden u</caption>
+      <thead><tr><th scope="col">rung, at matched distance</th><th scope="col">corr with u</th></tr></thead>
+      <tbody>
+        <tr><td>Euclidean distance (blind — held fixed)</td><td>0.00</td></tr>
+        <tr><td>cross-sectional restriction alone</td><td>&#8722;0.85 (inversely aligned)</td></tr>
+        <tr><td>downstream demand alone</td><td>+0.23 (weak)</td></tr>
+        <tr><td><strong>restriction &#215; demand, path-integrated</strong></td><td><strong>+0.92</strong></td></tr>
+      </tbody>
+    </table></div>
+
+    <p>The predictive gain is neither geometry nor demand in isolation but their <strong>interaction</strong>
+      — a concrete, pre-biological instance of the thesis that burden tracks
+      Q<sub>&#8595;</sub>(s)/(P𝔄(s)) <span class="tag forced">forced</span>. The ladder is genuinely
+      decidable: the largest adjacent-rung collinearity is |corr| = 0.369, far below the &#8776;0.98 that
+      would signal redundant rungs, so each rung carries independent information.</p>
+
+    <h3>&#167;3 <em>&nbsp;Comparing models, and why correlation is not enough</em></h3>
+    <p>The eventual biological test (Phase C) is organized around four models, and the comparison
+      discipline is the point:</p>
+
+    <div class="eq"><span class="cid">four models</span>
+      M&#8320;: outcome ~ distance&nbsp;&#183;&nbsp; M&#8321;: + demand + diffusivity + volume + covariates&nbsp;&#183;&nbsp; M&#8322;: M&#8321; + 𝓡<sup>surr</sup><sub>ATR</sub>&nbsp;&#183;&nbsp; M&#8323;: M&#8321; + 𝓡<sub>G</sub> (exact-u)
+      <span class="note">M&#8321; vs M&#8322; and M&#8321; vs M&#8323; are nested — likelihood-ratio
+      tests, grouped-CV &#916;R&#178;, AIC/BIC. But M&#8322; vs M&#8323; pits a surrogate against the
+      exact burden and is <em>generally non-nested</em>: grouped cross-validation or Vuong-type tests,
+      <b>never</b> a likelihood ratio. "Surrogate parity" is declared only when M&#8322; falls within a
+      preregistered tolerance of M&#8323; (e.g. &#916;R&#178;<sub>CV</sub> &#8804; 0.02).</span>
+    </div>
+
+    <p>This separates failure modes a single test would confound: if M&#8323; &gt; M&#8321; but
+      M&#8322; &#8815; M&#8321;, burden matters and the surrogate failed; if neither beats M&#8321;,
+      modelled burden adds nothing there; if M&#8322; &#8776; M&#8323; &gt; M&#8321;, burden matters
+      <em>and</em> the surrogate captures it — the target.</p>
+
+    <div class="eq" style="border-left-color:var(--ochre)"><span class="cid">why a high correlation cannot be the test</span>
+      <span class="note" style="margin:0;font-size:15px">A surrogate with Pearson correlation <b>0.995</b>
+      against u nonetheless <b>reverses the ordering of 20 matched-distance pairs</b>. So the acceptance
+      package is not a correlation but the full set — cross-validated R&#178;, median relative error,
+      Spearman, calibration slope and intercept, out-of-sample behaviour under severe bottlenecks, and
+      above all <em>pairwise-ordering preservation at matched distance</em>. The surrogate must beat
+      maximum distance on geometries built so the two disagree.</span>
+    </div>
+
+    <h3>&#167;4 <em>&nbsp;What it means, with free-energy demoted</em></h3>
+    <p>The empirical content stands with the free-energy principle <em>discarded</em>: FEP is at most an
+      optional interface language, it does not generate the transport functional, and the explanatory
+      arrow stays physical — geometry sets the PDE burden 𝓡<sub>G</sub> = u/Q<sup>&#8727;</sup>, which
+      sets maintenance feasibility. What survives, and is measurable, is a reading of u as an
+      <strong>accessibility-cost potential</strong>, with 𝓡<sub>ATR</sub> its pathwise accumulation:
+      𝓡<sub>ATR</sub> rising is accessibility falling.</p>
+
+    <div class="eq" style="border-left-color:var(--verdigris)"><span class="cid">the principle that survives</span>
+      <span class="note" style="margin:0;font-size:15px">Form does not respond to raw distance. It
+      responds to the <b>accumulated difficulty of maintaining relation across its own geometry</b>.
+      Unlike the FEP bridge, this asserts no upstream awareness or optimization — only a measurable
+      middle layer from relational geometry to biological architecture.
+      <span class="tag declared">declared</span></span>
+    </div>
+
+    <div class="cpwrap">
+      <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">A surrogate scores
+        Pearson 0.995 against the true burden. Your collaborator wants to ship it. What is the one-line
+        objection, and the fix?</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Objection: 0.995 correlation still <em>inverted 20 matched-distance pairs</em> in a direct
+          construction — and pair ordering at matched distance is exactly the comparison the whole
+          program exists to get right. Fix: score on the full package (CV R&#178;, median relative error,
+          Spearman, calibration slope/intercept, and matched-pair ordering) on geometries constructed so
+          distance and ATR disagree, not on a convenient sample where distance already works.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Why must M&#8322; vs
+        M&#8323; not be compared by a likelihood-ratio test?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Because a likelihood-ratio test requires <em>nested</em> models — one a special case of the
+          other. M&#8322; (M&#8321; + the surrogate) and M&#8323; (M&#8321; + the exact-u summary) are two
+          different additions to M&#8321;, generally non-nested. They must be compared out-of-sample:
+          grouped cross-validation, information criteria, or Vuong-type tests. "Parity" is then a
+          preregistered tolerance, not a judgment call.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Why is the
+        lacuno-canalicular network of bone named as the strongest test <em>and</em> explicitly forbidden
+        as the first one?</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Its restricted cross-section departs most sharply from Krogh distance, so it is where
+          distance and ATR most disagree — the strongest discriminator. For exactly that reason it must
+          not be first: an LCN result means something only after the surrogate has passed the gatekeeper
+          on synthetic horns and branching networks where the true u is known. Spheroids
+          (&#961;<sub>u</sub> &#8776; 1) are the principled near-Krogh negative control; muscle, where
+          facilitated transport can negate diffusion distance, is a stress test both ATR and Krogh may
+          fail.</p>
+        </div>
+      </details>
+    </div>
+
+    <p class="small"><b>Verify it.</b> All eight ATR check families pass in
+      <code>surrogate_contest.py</code> (exit 0): the 10.6&#176; eikonal/flux gap (C1); a matched
+      bottleneck raising &#8741;u&#8741;<sub>&#8734;</sub> 1.66&#215;, tracked by the exact tube reduction
+      1.63&#215; and missed by geodesic distance at 1.6% (C2); the 0.995-correlation surrogate inverting
+      20 pairs (C3); 0.167 &#8594; 0.045 against 6 &#8594; 22 (C4); &#916;C<sub>tube</sub> = q𝓡<sub>geom</sub> (C5); &#961;<sub>u</sub> = 1.83 (C6); the decidable ladder, |corr| = 0.369, gain
+      0.00 / &#8722;0.85 / +0.23 / +0.92 (C7); and the regime-dependent eikonal error 5.4&#176; vs
+      21.2&#176; with the corner-reversal pocket (C8).</p>
+
+    <div class="nextup"><b>next</b> <a href="#ledger">The ledger</a> — every claim in the module, sorted
+      into forced, declared, and open, with both papers linked.</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LEDGER ══════════════════════════ -->
+<section id="ledger" class="page" data-title="Ledger">
+  <div class="inner">
+    <p class="eyebrow">Closing <i>· what the two papers forced</i></p>
+    <h2 tabindex="-1" data-pagehead>The Ledger</h2>
+    <p class="dek">Two papers, one thesis: distance lies, and burden is demand through each
+      cross-section. Here is every load-bearing claim, sorted by how strongly it is held.</p>
+
+    <h3>&#167;1 <em>&nbsp;Forced — proved, and machine-checked</em></h3>
+    <div class="tw"><table class="prose"><caption class="vh">Ledger — forced claims</caption>
+      <thead><tr><th scope="col">claim</th><th scope="col">where</th></tr></thead>
+      <tbody>
+        <tr><td>The exact 1-D law u(x) = q&#8747;&#8320;&#739;(L&#8722;s)/A(s)ds; far-end bound qL&#178;/(2P<sub>max</sub>), equality iff A &#8801; P<sub>max</sub></td><td>L1 <span class="tag forced">forced</span></td></tr>
+        <tr><td>Ball mean bound, ratio-free, constant n(n+2) — 15 at n = 3</td><td>L2 <span class="tag forced">forced</span></td></tr>
+        <tr><td>Star-shaped pointwise bound u(x&#8320;) &#8805; q d<sub>E</sub>(x&#8320;,&#931;)&#178;/(2n P<sub>max</sub>); constant 2n sharp (ball, sectors, ellipsoids)</td><td>L2 <span class="tag forced">forced</span></td></tr>
+        <tr><td>Full-boundary bound u(x&#8320;) &#8805; q·dist(x&#8320;,&#8706;&#937;)&#178;/(2n P<sub>max</sub>), unconditional for constant 𝒜</td><td>L2 <span class="tag forced">forced</span></td></tr>
+        <tr><td>Horn comparison field solves &#8722;P&#916;v = q with exactly zero wall flux; upper bound 0 &#8804; u &#8804; v + b(&#949;h)&#178;</td><td>L3 · L4 <span class="tag forced">forced</span></td></tr>
+        <tr><td>All three metric forms of the distance conjecture are false; the coefficient's infimum over admissible data is 0</td><td>L3 <span class="tag forced">forced</span></td></tr>
+        <tr><td>Exact rational witness 423/2890 &lt; 1/6 (n=3, k=4, &#948;=3/20, &#949;=1/5), 12.2% under the conjectured constant</td><td>L3 <span class="tag computed">computed</span></td></tr>
+        <tr><td>The straight cone k = 2 is the exact transition: sub-conical holds at 1/(2n), super-conical fails</td><td>L3 <span class="tag forced">forced</span></td></tr>
+        <tr><td>Uniform-demand reduction &#916;C<sub>tube</sub> = q·𝓡<sub>geom</sub>, no double-count</td><td>L4 <span class="tag forced">forced</span></td></tr>
+        <tr><td>A demand-loaded bottleneck exceeds its matched Krogh reference, &#961;<sub>u</sub> = 1.83 &gt; 1</td><td>L5 <span class="tag forced">forced</span></td></tr>
+        <tr><td>On a matched-distance family the gain is the restriction&#215;demand interaction (corrs 0.00 / &#8722;0.85 / +0.23 / +0.92)</td><td>L5 <span class="tag forced">forced</span></td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>&#167;2 <em>&nbsp;Declared — sound modelling choices, not theorems</em></h3>
+    <div class="tw"><table class="prose"><caption class="vh">Ledger — declared choices</caption>
+      <thead><tr><th scope="col">choice</th><th scope="col">note</th></tr></thead>
+      <tbody>
+        <tr><td>The distinct objects 𝓡<sub>geom</sub> (volume-weighted) and &#916;C<sub>tube</sub> (demand-weighted)</td><td>the unit split <span class="tag declared">declared</span></td></tr>
+        <tr><td>Normalized burden 𝓡<sub>G</sub> = u/Q<sup>&#8727;</sup>; maintenance number &#928;<sub>maint</sub> = &#916;C<sub>tube</sub>/(C<sub>&#931;</sub>&#8722;C<sub>crit</sub>)</td><td>needs a preregistered Q<sup>&#8727;</sup> <span class="tag declared">declared</span></td></tr>
+        <tr><td>Flux-tube, eikonal, skeleton and geometry-only surrogates; area- vs demand-proportional branch splits</td><td>competing primary models <span class="tag declared">declared</span></td></tr>
+        <tr><td>Amplifications &#961;<sub>u</sub> (true-field) and &#961;&#770;<sub>ATR</sub> (surrogate); the accessibility-cost reading of u</td><td>kept strictly apart <span class="tag declared">declared</span></td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>&#167;3 <em>&nbsp;Open — unresolved, and named as such</em></h3>
+    <ul>
+      <li><strong>Apex equality</strong> <span class="tag open">open</span> — whether the true horn apex
+        u(0) <em>equals</em> the graded tube integral, or is only bounded by it.</li>
+      <li><strong>Bottleneck magnitude</strong> <span class="tag open">open</span> — how large
+        &#961;<sub>u</sub> &gt; 1 can be, and whether a closed-form bottleneck family exists.</li>
+      <li><strong>A preferred surrogate</strong> <span class="tag open">open</span> — whether a uniquely
+        best general-domain surrogate exists, and whether ATR beats distance plus conventional covariates
+        on real biology.</li>
+      <li><strong>Persistence &amp; FEP</strong> <span class="tag open">open</span> — whether a universal
+        persistence envelope exists; any free-energy-principle derivation (deliberately demoted, not
+        used).</li>
+      <li><strong>The untruncated cusp</strong> <span class="tag open">open</span> — the &#948; = 0
+        realization uses a nonstandard tip boundary condition, flagged for independent
+        functional-analytic review; the closure never leans on it.</li>
+    </ul>
+
+    <h3>&#167;4 <em>&nbsp;The papers</em></h3>
+    <div class="tw"><table class="prose"><caption class="vh">Ledger — the two papers</caption>
+      <thead><tr><th scope="col">paper</th><th scope="col">what it forces</th><th scope="col">read</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Forced Mechanics of the Mixed-Boundary Torsion Problem</strong></td><td>the exact laws, the sharp star bound, the closure of the distance conjecture; 28 exact checks (p2-softcheck)</td><td><a href="../papers/2026-07-torsion-forced-mechanics.pdf">PDF</a> &#183; <a href="https://github.com/Echo-S-Studios/Echo-S-Research/tree/main/papers/2026-07-torsion-forced-mechanics" target="_blank" rel="noopener">source</a></td></tr>
+        <tr><td><strong>Accumulated Transport Resistance</strong></td><td>demand through each cross-section; the two regimes, the Phase-A contest and gatekeeper; eight check families (surrogate_contest)</td><td><a href="../papers/2026-07-accumulated-transport-resistance.pdf">PDF</a> &#183; <a href="https://github.com/Echo-S-Studios/Echo-S-Research/tree/main/papers/2026-07-accumulated-transport-resistance" target="_blank" rel="noopener">source</a></td></tr>
+      </tbody>
+    </table></div>
+
+    <p class="endnote">A display erratum — the k = 10 tube value is 1/22 = 0.045 — is logged in
+      <a href="https://github.com/Echo-S-Studios/Echo-S-Research/blob/main/ERRATA.md" target="_blank" rel="noopener">ERRATA.md</a> (F1). &nbsp;&#183;&nbsp;
+      <a href="../learn.html">&#8592; The course</a> &#183; <a href="../index.html">The archive</a></p>
+  </div>
+</section>
+
+</main>
+
+<script>
+(function(){
+  var deck  = document.getElementById('deck');
+  var pages = Array.prototype.slice.call(deck.querySelectorAll('.page'));
+  var axis  = document.getElementById('axis');
+  var prev  = document.getElementById('prev');
+  var next  = document.getElementById('next');
+  var mbtn  = document.getElementById('menubtn');
+  var mlab  = document.getElementById('menulabel');
+  var mpan  = document.getElementById('menupanel');
+  var current = 0, jumping = false, jumpTimer = null, raf = null;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var hasInert = ('inert' in HTMLElement.prototype);
+  var hasScrollEnd = ('onscrollend' in window);
+  var FOCUSABLE = 'a[href],button,summary,input,select,textarea,[tabindex]';
+
+  /* the rail is one tab stop: a tablist with roving tabindex and automatic activation */
+  /* a plain group with roving focus: no tab roles without real tabpanels */
+  axis.setAttribute('role', 'group');
+  axis.setAttribute('aria-label', 'Lessons');
+  pages.forEach(function(pg, i){
+    var b = document.createElement('button');
+    b.className = 'tick' + ((i === 0 || i === pages.length - 1) ? ' edge' : '');
+    b.type = 'button';
+    b.setAttribute('tabindex', '-1');
+    var label = pg.getAttribute('data-title') || ('Page ' + (i + 1));
+    b.setAttribute('aria-label', label);
+    b.title = label;
+    var s = document.createElement('span');
+    s.textContent = (i === 0 || i === pages.length - 1) ? '' : String(i);
+    b.appendChild(s);
+    b.addEventListener('click', function(){ go(i); });
+    axis.appendChild(b);
+
+    var m = document.createElement('button');
+    m.type = 'button';
+    m.innerHTML = '<span class="n">' + ((i === 0 || i === pages.length - 1) ? '&#183;' : i) +
+                  '</span><span>' + label.replace(/^\d+\s*·\s*/, '') + '</span>';
+    m.addEventListener('click', function(){ closeMenu(); go(i); });
+    mpan.appendChild(m);
+  });
+  var ticks = Array.prototype.slice.call(axis.querySelectorAll('.tick'));
+  var mitems = Array.prototype.slice.call(mpan.querySelectorAll('button'));
+
+  function setActive(i){
+    pages.forEach(function(pg, j){
+      var off = (j !== i);
+      if (hasInert){
+        pg.inert = off;
+      } else {
+        pg.setAttribute('aria-hidden', off ? 'true' : 'false');
+        Array.prototype.forEach.call(pg.querySelectorAll(FOCUSABLE), function(el){
+          if (off){
+            if (!el.hasAttribute('data-ti')) el.setAttribute('data-ti', el.getAttribute('tabindex') || '');
+            el.setAttribute('tabindex', '-1');
+          } else if (el.hasAttribute('data-ti')){
+            var t = el.getAttribute('data-ti');
+            if (t === '') el.removeAttribute('tabindex'); else el.setAttribute('tabindex', t);
+            el.removeAttribute('data-ti');
+          }
+        });
+      }
+    });
+  }
+
+  function mark(i){
+    current = i;
+    ticks.forEach(function(t, j){
+      var on = (j === i);
+      t.setAttribute('aria-current', on ? 'true' : 'false');
+      t.setAttribute('tabindex', on ? '0' : '-1');   /* roving: one stop, not fifteen */
+    });
+    mitems.forEach(function(m, j){ m.setAttribute('aria-current', j === i ? 'true' : 'false'); });
+    if (mlab) mlab.textContent = (i + 1) + ' / ' + pages.length;
+    prev.disabled = (i === 0);
+    next.disabled = (i === pages.length - 1);
+    setActive(i);
+  }
+
+  /* arrival detection: scrollend where available, a bounded poll otherwise */
+  function settle(expected){
+    var done = function(){
+      jumping = false;
+      deck.removeEventListener('scrollend', done);
+      clearTimeout(jumpTimer);
+    };
+    if (hasScrollEnd){
+      deck.addEventListener('scrollend', done, { once: true });
+      jumpTimer = setTimeout(done, 1200);                       /* safety net only */
+    } else {
+      var t0 = Date.now();
+      (function poll(){
+        if (Math.abs(deck.scrollLeft - expected) < 2 || Date.now() - t0 > 1200){ done(); return; }
+        jumpTimer = setTimeout(poll, 40);
+      })();
+    }
+  }
+
+  function go(i, opts){
+    opts = opts || {};
+    i = Math.max(0, Math.min(pages.length - 1, i));
+    var behavior = (reduce.matches || Math.abs(i - current) > 1) ? 'auto' : 'smooth';
+    var target = i * deck.clientWidth;
+    jumping = true;
+    clearTimeout(jumpTimer);
+    mark(i);
+    deck.scrollTo({ left: target, behavior: behavior });
+    settle(target);
+    if (opts.history !== false){
+      try { history.pushState({ p: i }, '', '#' + pages[i].id); } catch (e) {}
+    }
+    if (opts.focus !== false){
+      var head = pages[i].querySelector('[data-pagehead]');
+      if (head) { try { head.focus({ preventScroll: true }); } catch (e) { head.focus(); } }
+    }
+  }
+
+  deck.addEventListener('scroll', function(){
+    if (jumping || raf) return;
+    raf = requestAnimationFrame(function(){
+      raf = null;
+      var i = Math.round(deck.scrollLeft / (deck.clientWidth || 1));
+      if (i !== current && i >= 0 && i < pages.length){
+        mark(i);
+        try { history.replaceState({ p: i }, '', '#' + pages[i].id); } catch (e) {}
+      }
+    });
+  });
+
+  prev.addEventListener('click', function(){ go(current - 1); });
+  next.addEventListener('click', function(){ go(current + 1); });
+
+  /* the rail handles its own arrows (automatic activation); the document handles the rest */
+  axis.addEventListener('keydown', function(e){
+    var k = e.key, i = null;
+    if (k === 'ArrowRight' || k === 'ArrowDown') i = current + 1;
+    else if (k === 'ArrowLeft' || k === 'ArrowUp') i = current - 1;
+    else if (k === 'Home') i = 0;
+    else if (k === 'End') i = pages.length - 1;
+    else return;
+    e.preventDefault(); e.stopPropagation();
+    i = Math.max(0, Math.min(pages.length - 1, i));
+    go(i, { focus: false });
+    ticks[i].focus();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var t = e.target;
+    /* never steal Left/Right from a control or a horizontally scrollable region */
+    if (t && t.closest && t.closest('button, a, summary, input, select, textarea, [contenteditable], .srcbox, .eq, .tw')) return;
+    if (t && t.isContentEditable) return;
+    if (axis.contains(t)) return;
+    /* Escape must be tested BEFORE the menu early-return, or it can never fire */
+    if (e.key === 'Escape' && mpan && !mpan.hidden){ e.preventDefault(); closeMenu(); mbtn.focus(); return; }
+    if (mpan && !mpan.hidden) return;
+    if (e.key === 'ArrowRight'){ e.preventDefault(); go(current + 1); }
+    else if (e.key === 'ArrowLeft'){ e.preventDefault(); go(current - 1); }
+  });
+
+  function openMenu(){
+    mpan.hidden = false;
+    mbtn.setAttribute('aria-expanded', 'true');
+    if (hasInert){ deck.inert = true; prev.inert = true; next.inert = true; }
+    mitems[current].focus();
+  }
+  function closeMenu(){
+    mpan.hidden = true;
+    mbtn.setAttribute('aria-expanded', 'false');
+    if (hasInert){ deck.inert = false; prev.inert = false; next.inert = false; setActive(current); }
+  }
+  /* focus stays inside the open menu */
+  mpan.addEventListener('keydown', function(e){
+    if (e.key !== 'Tab') return;
+    var f = mitems.concat([mbtn]);
+    var i = f.indexOf(document.activeElement);
+    if (i < 0) return;
+    e.preventDefault();
+    f[(i + (e.shiftKey ? -1 : 1) + f.length) % f.length].focus();
+  });
+  if (mbtn){
+    mbtn.addEventListener('click', function(){ mpan.hidden ? openMenu() : closeMenu(); });
+  }
+
+  document.addEventListener('click', function(e){
+    var el = e.target && e.target.closest ? e.target.closest('[data-goto]') : null;
+    if (!el) return;
+    go(parseInt(el.getAttribute('data-goto'), 10));
+  });
+  document.addEventListener('click', function(e){
+    var a = e.target && e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if (!a) return;
+    var i = pages.map(function(p){ return p.id; }).indexOf(a.getAttribute('href').slice(1));
+    if (i >= 0){ e.preventDefault(); go(i); }
+  });
+
+  window.addEventListener('popstate', function(e){
+    var i = (e.state && typeof e.state.p === 'number')
+      ? e.state.p
+      : pages.map(function(p){ return p.id; }).indexOf((location.hash || '').slice(1));
+    if (i >= 0) go(i, { history: false });
+  });
+
+  var rt = null;
+  window.addEventListener('resize', function(){
+    clearTimeout(rt);
+    rt = setTimeout(function(){ deck.scrollLeft = current * deck.clientWidth; }, 120);
+  });
+
+  var restore = [];
+  window.addEventListener('beforeprint', function(){
+    restore = [];
+    Array.prototype.forEach.call(document.querySelectorAll('details'), function(d){
+      restore.push([d, d.open]); d.open = true;
+    });
+    if (hasInert) pages.forEach(function(p){ p.inert = false; });
+  });
+  window.addEventListener('afterprint', function(){
+    restore.forEach(function(pair){ pair[0].open = pair[1]; });
+    setActive(current);
+  });
+
+  var start = pages.map(function(p){ return p.id; }).indexOf((location.hash || '').slice(1));
+  if (start < 0) start = 0;
+  mark(start);
+  requestAnimationFrame(function(){ deck.scrollLeft = start * deck.clientWidth; });
+  try { history.replaceState({ p: start }, '', '#' + pages[start].id); } catch (e) {}
+})();
+</script>
+</body>
+</html>

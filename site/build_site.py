@@ -210,9 +210,33 @@ def build_course(papers: list) -> None:
         group = sorted(by_series.get(series, []), key=lambda p: (p["date"], p["shortname"]))
         frag = "\n".join(render_course_paper(p) for p in group)
         learn = learn.replace(f"<!--@PAPERS:{slug}@-->", frag)
+
+    # Per-module lesson booklets: serve site/courses/<slug>.html (skipping _templates) and
+    # link each from its module. Repo-aware — a module's "take the course" link appears only
+    # if its booklet exists; the lesson count is read from the booklet's data-title pages.
+    courses_dir = SITE / "courses"
+    booklets = ({f.stem: f.read_text(encoding="utf-8")
+                 for f in sorted(courses_dir.glob("*.html")) if not f.name.startswith("_")}
+                if courses_dir.is_dir() else {})
+    if booklets:
+        (OUT / "courses").mkdir(exist_ok=True)
+        for slug, text in booklets.items():
+            (OUT / "courses" / f"{slug}.html").write_text(text, encoding="utf-8")
+    for slug in SERIES_SLUG.values():
+        if slug in booklets:
+            titles = re.findall(r'data-title="([^"]*)"', booklets[slug])
+            n = sum(1 for t in titles if t.strip().lower() not in ("cover", "ledger"))
+            link = (f'<a class="tocourse" href="courses/{slug}.html">'
+                    f'Take the full lesson course · {n} lessons →</a>')
+        else:
+            link = ""
+        learn = learn.replace(f"<!--@COURSELINK:{slug}@-->", link)
+
     learn = (learn.replace("@COUNT@", str(len(papers)))
                   .replace("@UPDATED@", date.today().isoformat()))
     (OUT / "learn.html").write_text(learn, encoding="utf-8")
+    if booklets:
+        print(f"  course booklets served: {len(booklets)} ({', '.join(sorted(booklets))})")
 
 
 def main() -> None:

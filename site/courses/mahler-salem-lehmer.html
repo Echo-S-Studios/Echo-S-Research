@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Two Walls — Mahler, Salem &amp; Lehmer · Echo S Research</title>
+<style>
+:root{
+  --ink:#16222c;
+  --ink-soft:#40525f;
+  --ink-faint:#5b6b76;
+  --ground:#e3e9ec;
+  --panel:#f5f8f9;
+  --panel-2:#eaeff1;
+  --rule:#c3cfd5;
+  --verdigris:#1c6355;
+  --verdigris-wash:#dceae6;
+  --ochre:#8a5a0d;
+  --ochre-wash:#f2e7d3;
+  --indigo:#33478a;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua","URW Palladio L",Georgia,serif;
+  --mono:ui-monospace,"SF Mono","Cascadia Mono","Roboto Mono",Menlo,Consolas,monospace;
+  --measure:63ch;
+  --head-h:62px;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  background:var(--ground);color:var(--ink);
+  font-family:var(--serif);font-size:17px;line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+}
+
+/* ─────────── header: the spectrum rail ─────────── */
+header{
+  position:fixed;top:0;left:0;right:0;height:var(--head-h);z-index:40;
+  display:flex;align-items:center;gap:14px;padding:0 16px;
+  background:rgba(227,233,236,.93);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--rule);
+}
+.brand{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-faint);white-space:nowrap}
+.brand b{color:var(--ink);font-weight:600}
+.rail{flex:1;display:flex;align-items:center;gap:0;min-width:0}
+.rail .axis{flex:1;display:flex;align-items:center;position:relative;height:26px}
+.rail .axis::before{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:var(--rule)}
+.tick{
+  position:relative;flex:1;display:flex;align-items:center;justify-content:center;
+  background:none;border:0;padding:0;height:26px;cursor:pointer;color:var(--ink-faint);
+  font-family:var(--mono);font-size:10px;letter-spacing:.02em;
+}
+.tick span{
+  position:relative;z-index:1;min-width:18px;height:18px;display:grid;place-items:center;
+  border:1px solid var(--rule);border-radius:2px;background:var(--panel);transition:all .18s
+}
+.tick:hover span{border-color:var(--ink-soft);color:var(--ink)}
+.tick[aria-current="true"] span{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.tick.edge span{border-radius:50%;min-width:10px;height:10px;font-size:0}
+.navbtn{
+  font-family:var(--mono);font-size:15px;line-height:1;
+  background:var(--panel);color:var(--ink);border:1px solid var(--rule);border-radius:3px;
+  width:30px;height:30px;cursor:pointer;display:grid;place-items:center;transition:all .16s
+}
+.navbtn:hover:not(:disabled){background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.navbtn:disabled{opacity:.32;cursor:default}
+:focus-visible{outline:2px solid var(--indigo);outline-offset:2px}
+
+/* ─────────── compact menu for narrow screens ─────────── */
+.menubtn{display:none;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;
+  letter-spacing:.06em;background:var(--panel);color:var(--ink);border:1px solid var(--rule);
+  border-radius:3px;height:34px;padding:0 11px;cursor:pointer;flex:1;justify-content:space-between}
+.menubtn b{font-size:13px;line-height:1}
+.menupanel{position:fixed;top:var(--head-h);left:0;right:0;bottom:0;z-index:39;
+  background:var(--ground);border-top:1px solid var(--rule);overflow-y:auto;padding:6px 0 40px}
+.menupanel[hidden]{display:none}
+.menupanel button{display:flex;width:100%;gap:12px;align-items:baseline;min-height:46px;
+  padding:10px 18px;background:none;border:0;border-bottom:1px solid var(--rule);
+  font-family:var(--serif);font-size:16px;color:var(--ink);text-align:left;cursor:pointer}
+.menupanel button .n{font-family:var(--mono);font-size:11px;color:var(--ink-faint);min-width:22px}
+.menupanel button[aria-current="true"]{background:var(--panel)}
+.menupanel button[aria-current="true"] .n{color:var(--verdigris)}
+
+/* ─────────── deck: horizontal pages ─────────── */
+#deck{
+  position:absolute;top:var(--head-h);bottom:0;left:0;right:0;
+  display:flex;overflow-x:auto;overflow-y:hidden;
+  scroll-snap-type:x mandatory;
+  scrollbar-width:none;
+}
+#deck::-webkit-scrollbar{display:none}
+.page{
+  flex:0 0 100%;height:100%;overflow-y:auto;scroll-snap-align:start;
+  padding:0 24px 96px;-webkit-overflow-scrolling:touch;
+}
+.inner{max-width:var(--measure);margin:0 auto;padding-top:44px}
+
+/* ─────────── type ─────────── */
+.eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.19em;text-transform:uppercase;
+  color:var(--verdigris);margin:0 0 12px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.eyebrow i{font-style:normal;color:var(--ink-faint)}
+h1{font-size:clamp(30px,6vw,44px);line-height:1.08;letter-spacing:-.015em;margin:0 0 10px;font-weight:600}
+h2{font-size:clamp(25px,4.6vw,33px);line-height:1.14;letter-spacing:-.012em;margin:0 0 8px;font-weight:600}
+.dek{font-size:19px;color:var(--ink-soft);line-height:1.45;margin:0 0 26px;font-style:italic}
+h3{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink);margin:34px 0 10px;font-weight:600;
+  padding-bottom:6px;border-bottom:1px solid var(--rule)}
+h3 em{font-style:normal;color:var(--ink-faint);font-weight:400}
+p{margin:0 0 15px}
+a{color:var(--indigo)}
+strong{font-weight:600}
+em{font-style:italic}
+.small{font-size:15px;color:var(--ink-soft)}
+ul,ol{margin:0 0 15px;padding-left:22px}
+li{margin-bottom:7px}
+code,.m{font-family:var(--mono);font-size:.88em;letter-spacing:-.01em}
+.m{white-space:nowrap}
+
+/* ─────────── equation strip ─────────── */
+.eq{
+  position:relative;margin:20px 0;padding:16px 74px 16px 18px;
+  background:var(--panel);border:1px solid var(--rule);border-left:2px solid var(--verdigris);
+  border-radius:2px;font-family:var(--mono);font-size:14.5px;line-height:1.75;
+  overflow-x:auto;
+}
+.eq .cid{
+  position:absolute;top:8px;right:10px;font-size:9.5px;letter-spacing:.12em;
+  color:var(--ink-faint);text-transform:uppercase
+}
+.eq b{font-weight:600;color:var(--verdigris)}
+.eq .note{display:block;margin-top:8px;font-family:var(--serif);font-size:14px;
+  color:var(--ink-soft);line-height:1.5;white-space:normal}
+
+/* matrices */
+.mat{display:inline-grid;gap:0 12px;vertical-align:middle;
+  position:relative;padding:2px 8px;margin:0 2px;font-family:var(--mono);font-size:.94em}
+.mat.c2{grid-template-columns:repeat(2,auto)}
+.mat.c3{grid-template-columns:repeat(3,auto)}
+.mat::before,.mat::after{content:"";position:absolute;top:0;bottom:0;width:4px;
+  border:1px solid var(--ink-soft)}
+.mat::before{left:0;border-right:0}
+.mat::after{right:0;border-left:0}
+.mat i{font-style:normal;text-align:right}
+
+/* ─────────── tables ─────────── */
+.tw{overflow-x:auto;margin:20px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--rule)}
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+th{font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;
+  text-align:left;padding:9px 12px 8px 0;color:var(--ink-faint);font-weight:600;
+  border-bottom:1px solid var(--rule);white-space:nowrap}
+td{padding:9px 12px 9px 0;border-bottom:1px solid var(--panel-2);vertical-align:top;line-height:1.45}
+tr:last-child td{border-bottom:0}
+td:first-child{font-family:var(--mono);font-size:13px;white-space:nowrap;color:var(--ink)}
+table.prose td:first-child{font-family:var(--serif);font-size:14.5px;white-space:normal}
+
+/* ─────────── tags ─────────── */
+.tag{display:inline-block;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;
+  text-transform:uppercase;padding:2px 6px;border-radius:2px;white-space:nowrap;
+  border:1px solid transparent;font-weight:600;vertical-align:2%}
+.tag.forced{background:var(--verdigris);color:#eef6f3}
+.tag.computed{background:var(--verdigris-wash);color:var(--verdigris);border-color:var(--verdigris)}
+.tag.declared{background:var(--ochre-wash);color:var(--ochre);border-color:var(--ochre)}
+.tag.plausible{background:transparent;color:var(--indigo);border:1px solid var(--indigo)}
+.tag.open{background:transparent;color:var(--ochre);border:1px dashed var(--ochre)}
+.tag.estab{background:transparent;color:var(--ink-faint);border:1px solid var(--rule)}
+
+/* ─────────── inherit / hand-on blocks ─────────── */
+.thread{
+  margin:0 0 28px;padding:13px 16px;background:var(--panel-2);border-radius:2px;
+  border:1px solid var(--rule);
+}
+.thread .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--ink-faint);display:block;margin-bottom:7px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{
+  font-family:var(--mono);font-size:11.5px;padding:3px 9px;border-radius:2px;
+  background:var(--panel);border:1px solid var(--rule);color:var(--ink);cursor:pointer;
+  transition:all .16s;text-align:left;line-height:1.35
+}
+.chip:hover{border-color:var(--verdigris);color:var(--verdigris)}
+.chip .n{color:var(--ink-faint);margin-right:5px}
+.chip:hover .n{color:var(--verdigris)}
+.handoff{
+  margin:30px 0 4px;padding:14px 16px;border:1px solid var(--verdigris);
+  background:var(--verdigris-wash);border-radius:2px;font-size:15px
+}
+.handoff .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--verdigris);display:block;margin-bottom:6px;font-weight:600}
+
+/* ─────────── run badge ─────────── */
+.run{
+  display:inline-flex;align-items:baseline;gap:9px;margin:0 0 24px;padding:6px 12px;
+  border:1px solid var(--verdigris);border-radius:2px;background:var(--panel);
+  font-family:var(--mono);font-size:11.5px;color:var(--verdigris)
+}
+.run b{font-size:15px;font-weight:600}
+.run i{font-style:normal;color:var(--ink-faint);letter-spacing:.06em;font-size:10px;
+  text-transform:uppercase}
+
+/* ─────────── checkpoint cards ─────────── */
+.cpwrap{margin:38px 0 0}
+.cphead{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink);border-bottom:1px solid var(--ink);padding-bottom:6px;margin-bottom:14px;
+  display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.cphead i{font-style:normal;color:var(--ink-faint);letter-spacing:.06em;font-size:9.5px}
+details.cp{
+  margin:0 0 10px;background:var(--panel);border:1px solid var(--rule);border-radius:2px;
+  transition:border-color .18s
+}
+details.cp[open]{border-color:var(--verdigris)}
+details.cp summary{
+  list-style:none;cursor:pointer;padding:13px 15px;display:flex;gap:12px;align-items:flex-start;
+  font-size:15.5px;line-height:1.5
+}
+details.cp summary::-webkit-details-marker{display:none}
+details.cp summary::marker{content:""}
+.qn{
+  flex:0 0 auto;font-family:var(--mono);font-size:10px;letter-spacing:.08em;font-weight:600;
+  color:var(--ink-faint);border:1px solid var(--rule);border-radius:2px;padding:2px 5px;margin-top:3px
+}
+details.cp[open] .qn{background:var(--verdigris);color:#eef6f3;border-color:var(--verdigris)}
+.qtext{flex:1}
+.reveal{
+  flex:0 0 auto;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--verdigris);border:1px solid var(--verdigris);border-radius:2px;padding:3px 7px;
+  margin-top:2px;white-space:nowrap;transition:all .16s
+}
+details.cp summary:hover .reveal{background:var(--verdigris);color:#eef6f3}
+details.cp[open] .reveal{background:var(--ink);border-color:var(--ink);color:var(--panel)}
+details.cp[open] .reveal::after{content:""}
+.ans{
+  border-top:1px solid var(--rule);margin:0 15px;padding:14px 0 16px;font-size:15.5px;
+  animation:fade .26s ease-out
+}
+.ans .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--verdigris);display:block;margin-bottom:7px;font-weight:600}
+.ans p:last-child{margin-bottom:0}
+@keyframes fade{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+  #deck{scroll-behavior:auto}
+}
+
+/* ─────────── cover ─────────── */
+.cover .inner{padding-top:6vh;max-width:70ch}
+.cover .rule{height:1px;background:var(--ink);margin:26px 0}
+.mono-list{font-family:var(--mono);font-size:13px;line-height:1.9;color:var(--ink-soft)}
+.mono-list b{color:var(--ink);font-weight:600}
+.mono-list span{color:var(--verdigris)}
+.howto{display:grid;gap:12px;margin:26px 0 0}
+.howto div{padding:12px 15px;background:var(--panel);border:1px solid var(--rule);border-radius:2px;
+  font-size:15px}
+.howto b{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--verdigris);display:block;margin-bottom:4px}
+.gapfig{margin:30px 0;padding:20px 18px 14px;background:var(--panel);border:1px solid var(--rule)}
+.gapline{position:relative;height:38px;margin:0 0 6px}
+.gapline .bar{position:absolute;top:18px;left:0;right:0;height:2px;background:var(--rule)}
+.gapline .seg{position:absolute;top:15px;height:8px;background:var(--verdigris);border-radius:1px}
+.gapline .band{position:absolute;top:6px;height:26px;border:1px dashed var(--ochre);
+  background:repeating-linear-gradient(45deg,transparent,transparent 5px,var(--ochre-wash) 5px,var(--ochre-wash) 10px)}
+.gapline .pt{position:absolute;top:11px;width:2px;height:16px;background:var(--ink)}
+.gapline .lb{position:absolute;top:-2px;font-family:var(--mono);font-size:10px;color:var(--ink-faint);
+  transform:translateX(-50%)}
+.gapcap{font-family:var(--mono);font-size:11px;color:var(--ink-soft);line-height:1.6}
+
+.endnote{margin-top:40px;padding-top:18px;border-top:1px solid var(--rule);
+  font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);letter-spacing:.02em}
+.nextup{margin-top:34px;padding:14px 16px;border:1px dashed var(--rule);border-radius:2px;
+  font-size:15px;color:var(--ink-soft)}
+.nextup b{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink);display:block;margin-bottom:5px}
+
+.vh{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.reveal::before{content:"reveal"}
+details.cp[open] .reveal::before{content:"hide"}
+.notemap td:first-child{color:var(--verdigris);font-weight:600}
+.audit td:last-child{font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);
+  word-break:break-all;white-space:normal;line-height:1.4}
+.srcbox{margin:16px 0;border:1px solid var(--rule);border-radius:2px;background:var(--panel)}
+.srcbox summary{cursor:pointer;padding:11px 14px;font-family:var(--mono);font-size:11px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--verdigris);list-style:none}
+.srcbox summary::-webkit-details-marker{display:none}
+.srcbox pre{margin:0;padding:0 14px 14px;overflow-x:auto;font-family:var(--mono);font-size:10.5px;
+  line-height:1.5;color:var(--ink);white-space:pre;max-height:60vh;overflow-y:auto}
+
+@media print{
+  :root{--head-h:0px}
+  html,body{height:auto;overflow:visible;background:#fff;font-size:11pt}
+  header{display:none}
+  #deck{position:static;display:block;overflow:visible;height:auto}
+  .page{flex:none;height:auto;overflow:visible;padding:0 0 24pt;break-before:page;page-break-before:always}
+  .page:first-child{break-before:auto;page-break-before:auto}
+  .inner{max-width:none;padding-top:0}
+  details.cp{break-inside:avoid;page-break-inside:avoid}
+  details.cp .ans{display:block !important}
+  .srcbox pre{max-height:none;overflow:visible;white-space:pre-wrap;overflow-wrap:anywhere;
+    font-size:7.5pt;line-height:1.35}
+  .srcbox{break-inside:auto;page-break-inside:auto}
+  .menubtn,.menupanel{display:none !important}
+  .reveal,.chip{display:none}
+  .eq,.tw,table,tr{break-inside:avoid;page-break-inside:avoid}
+  h2,h3{break-after:avoid;page-break-after:avoid}
+  a{text-decoration:none;color:inherit}
+}
+
+@media (max-width:640px){
+  body{font-size:16px}
+  .page{padding:0 16px 90px}
+  .inner{padding-top:28px}
+  .brand{display:none}
+  .eq{padding:14px 14px 14px 14px;font-size:13px}
+  .eq .cid{position:static;display:block;margin-bottom:6px;text-align:left}
+  .rail{display:none}
+  .menubtn{display:flex}
+  .dek{font-size:17px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand"><b>The Two Walls</b> · Mahler, Salem &amp; Lehmer</div>
+  <button class="navbtn" id="prev" aria-label="Previous page">&#8592;</button>
+  <nav class="rail" aria-label="Lesson navigation"><div class="axis" id="axis"></div></nav>
+  <button class="menubtn" id="menubtn" aria-expanded="false" aria-controls="menupanel"
+          aria-label="Lesson menu"><span id="menulabel">1 / 15</span> <b>&#9776;</b></button>
+  <button class="navbtn" id="next" aria-label="Next page">&#8594;</button>
+</header>
+<nav class="menupanel" id="menupanel" aria-label="Lessons" hidden></nav>
+
+<main id="deck">
+
+<!-- ══════════════════════════ COVER ══════════════════════════ -->
+<section id="cover" class="page cover" data-title="Cover">
+  <div class="inner">
+    <p class="eyebrow">A course in eight lessons <i>· built from the corpus's own papers</i></p>
+    <h1 tabindex="-1" data-pagehead>The Two Walls</h1>
+    <p class="dek">Mahler, Salem &amp; Lehmer. Two walls — a golden height floor and a four-direction
+      angle lattice — box every Salem number out of what one construction can emit, sidestepping
+      Lehmer's ninety-year-old problem without pretending to resolve it.</p>
+
+    <div class="rule"></div>
+
+    <p>Lehmer's problem asks whether the Mahler measure of an integer polynomial can crowd arbitrarily
+      close to 1 from above. It is open since 1933. This course does <em>not</em> attack it. It teaches
+      the corpus's move instead: stop bounding <em>all</em> integer polynomials, build a finitely
+      generated <strong>emission algebra</strong>, and prove exactly what that machine <em>cannot make</em>.
+      The seven source papers below are its anatomy — the walls, the empty slot the walls create, what
+      that emptiness generates, who is turned away at the door, and how far the same census reaches.</p>
+
+    <p>Every <em>load-bearing</em> claim carries a tag naming how strongly it is held —
+      <span class="tag forced">forced</span> proved in the exact structure,
+      <span class="tag computed">computed</span> exhaustive over a stated finite range,
+      <span class="tag declared">declared</span> a principled or interpretive choice,
+      <span class="tag plausible">plausible</span> evidence short of proof,
+      <span class="tag open">open</span> unresolved,
+      <span class="tag estab">established</span> imported from the literature. The tags are not
+      decoration — they are the mathematics. No approximation crosses a decision boundary anywhere in
+      the corpus: every equality, divisibility, and inequality is settled over ℚ, ℚ(√5), or ℚ(5<sup>1/4</sup>).</p>
+
+    <div class="gapfig">
+      <div class="gapline">
+        <div class="bar"></div>
+        <div class="pt" style="left:4%"></div><div class="lb" style="left:4%">M=1</div>
+        <div class="band" style="left:4%;width:42%"></div>
+        <div class="lb" style="left:20%;color:#9a6410">empty band</div>
+        <div class="pt" style="left:26%"></div><div class="lb" style="left:26%">μ<sub>S</sub></div>
+        <div class="pt" style="left:46%"></div><div class="lb" style="left:46%">φ</div>
+        <div class="seg" style="left:46%;right:0"></div>
+        <div class="lb" style="left:72%;color:#1c6355">realized</div>
+      </div>
+      <p class="gapcap">The thesis in one figure. Emitted Mahler measures lie in {1} ∪ [φ, ∞). The
+        hatched band is empty: Smyth forces μ<sub>S</sub> = 1.3247… off the reciprocal locus, the angle
+        wall removes every Salem number kinematically, and φ = 1.618… is the smallest measure the
+        machine realizes. Lehmer's number sits at 1.176 — inside the band, and never emitted.</p>
+    </div>
+
+    <div class="howto">
+      <div><b>Move sideways</b>Swipe, use the arrow keys, or the buttons above. The rail is the table of
+        contents — tap any number to jump.</div>
+      <div><b>Read downwards</b>Each lesson scrolls vertically. A <em>carries-forward</em> block at the
+        top says what it inherits; a <em>next</em> block at the bottom says where it hands on.</div>
+      <div><b>Answer the checkpoints</b>Every lesson ends with questions. Try them before revealing the
+        worked answer.</div>
+    </div>
+
+    <p class="endnote">Eight lessons · seven papers · one open problem left exactly where it stood
+      &nbsp;·&nbsp; <a href="../learn.html">← The course</a> · <a href="../index.html">The archive</a>
+      &nbsp;·&nbsp; <a href="#ledger">claim ledger</a></p>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LESSON 1 ══════════════════════════ -->
+<section id="lesson-1" class="page" data-title="1 · The Measure &amp; Lehmer">
+  <div class="inner">
+    <p class="eyebrow">Lesson 01 <i>· Mahler, Salem &amp; Lehmer</i></p>
+    <h2 tabindex="-1" data-pagehead>The Measure, and Lehmer's Problem</h2>
+    <p class="dek">One definition, one floor that is completely understood, one open problem — and then
+      the pivot the whole corpus descends from: don't solve it, route around it.</p>
+
+    <div class="run"><b>exact</b><i>Sturm-decided over ℚ · no float crosses a decision</i></div>
+    <p class="small">Reads from <a href="../papers/2026-06-lehmers-box.pdf"><em>Lehmer's Box</em></a> and
+      <a href="../papers/2026-06-emission-gap.pdf"><em>The Emission–Gap Theorem</em></a>.</p>
+
+    <h3>§1 <em>&nbsp;One definition, three values</em></h3>
+    <p>For a nonzero <span class="m">p(x) = a<sub>d</sub>∏(x − α<sub>i</sub>) ∈ ℤ[x]</span> the
+      <strong>Mahler measure</strong> is the leading coefficient times the product of the root moduli
+      that escape the unit circle:</p>
+
+    <div class="eq"><span class="cid">def · Jensen</span>
+      <b>M(p)</b> = |a<sub>d</sub>| ∏<sub>i</sub> max(1, |α<sub>i</sub>|)
+      = exp( ∫₀¹ log |p(e<sup>2πiθ</sup>)| dθ )
+      <span class="note">The two forms agree by Jensen's formula. Only roots strictly outside the
+        circle contribute; everything on or inside costs a factor of exactly 1.</span>
+    </div>
+
+    <div class="tw"><table><caption class="vh">Lesson 1 · §1 One definition, three values</caption>
+      <thead><tr><th scope="col">polynomial</th><th scope="col">root picture</th><th scope="col">M</th></tr></thead>
+      <tbody>
+        <tr><td>x² + x + 1</td><td>both roots <em>on</em> the circle (cyclotomic)</td><td>1</td></tr>
+        <tr><td>x² − x − 1</td><td>φ ≈ 1.618 outside, −1/φ inside</td><td>φ = (1+√5)/2</td></tr>
+        <tr><td>x² − 2</td><td>±√2, both outside</td><td>2</td></tr>
+      </tbody>
+    </table></div>
+
+    <p>Hold onto the middle row: only <em>one</em> root escapes, so M is that single root, and the
+      escaping root is the golden ratio φ. That polynomial — the <strong>golden seed</strong> — is the
+      keystone the entire construction is built on.</p>
+
+    <h3>§2 <em>&nbsp;The floor at 1, completely understood</em></h3>
+    <p>Every factor is ≥ 1, so M ≥ 1 always. <strong>Kronecker (1857)</strong>
+      <span class="tag estab">established</span> settles equality exactly: M(p) = 1 iff every root is 0
+      or a root of unity — i.e. p is a power of x times cyclotomic factors. So M = 1 is the trivial,
+      fully classified locus; every open question lives strictly above 1.</p>
+
+    <h3>§3 <em>&nbsp;Smyth's split, and Lehmer's question</em></h3>
+    <p>A polynomial is <strong>reciprocal</strong> if its roots are closed under α ↦ α⁻¹
+      (i.e. x<sup>deg p</sup> p(1/x) = p(x)). The whole difficulty concentrates on one side of this
+      split. <strong>Smyth (1971)</strong> <span class="tag estab">established</span>: every
+      <em>non-reciprocal</em> monic integer p with M &gt; 1 satisfies</p>
+
+    <div class="eq"><span class="cid">Smyth 1971</span>
+      M(p) ≥ <b>μ<sub>S</sub></b> = 1.3247179572…&nbsp;&nbsp;(the plastic number, root of x³ − x − 1)
+      <span class="note">μ<sub>S</sub> is the smallest Pisot number. Smyth closes the non-reciprocal
+        side outright — the trivial and the non-reciprocal cases are both settled. Everything hard is
+        reciprocal.</span>
+    </div>
+
+    <p><strong>Lehmer (1933)</strong> <span class="tag open">open</span> asks the reciprocal question:
+      is there a constant c &gt; 1 with M(p) ≥ c whenever M(p) &gt; 1? Or can measures crowd down onto 1?
+      His record-holder is unbeaten after ninety years. Rather than quote its properties we derive them
+      by the house method — the exact fold the papers use everywhere:</p>
+
+    <div class="eq"><span class="cid">C2 · reciprocal fold</span>
+      L(x) = x¹⁰ + x⁹ − x⁷ − x⁶ − x⁵ − x⁴ − x³ + x + 1,&nbsp;&nbsp;M(L) = 1.1762808182…
+      <span class="note">Reciprocity is an identity: x¹⁰L(1/x) = L(x). Because L is reciprocal of even
+        degree, the substitution t = z + 1/z folds it to the degree-5 trace-down
+        Q(t) = t⁵ + t⁴ − 5t³ − 5t² + 4t + 3. On |z|=1 we have t = 2cos ψ ∈ [−2, 2]; a Sturm count over ℚ
+        gives Q five real roots — <b>4 inside (−2, 2), 1 in (2, ∞)</b>. Unfolding: 8 conjugates on the
+        circle, one real pair (β, 1/β). Exactly one root outside, so M(L) = β.</span>
+    </div>
+
+    <p>With an independent irreducibility check, L is a <strong>Salem polynomial</strong>: irreducible,
+      reciprocal, one root β &gt; 1, one root 1/β, all others <em>on</em> the circle. A
+      <strong>Salem number</strong> is such a β — a real algebraic integer &gt; 1 whose conjugates lie
+      in the closed unit disk with at least one on it, minimal polynomial reciprocal of even degree
+      2m ≥ 4. Contrast a <strong>Pisot number</strong>: one root outside, all others strictly
+      <em>inside</em>. Lehmer's number is the smallest known Salem number, and it sits at 1.176 —
+      strictly below Smyth's μ<sub>S</sub>. The canonical example and the canonical obstruction are the
+      same object.</p>
+
+    <p class="small">Dobrowolski (1979) <span class="tag estab">established</span> gives
+      M(p) &gt; 1 + c(log log n / log n)³, but this decays to 1 with the degree n, so it yields no
+      uniform floor. Ninety years, no c.</p>
+
+    <h3>§4 <em>&nbsp;The pivot: build an emitter, prove two walls</em></h3>
+    <p>Here is the move. A growth rule charges a description cost of <span class="m">λ log M(θ)</span> to
+      adjoin an algebraic direction θ; the cost has a positive floor iff M is bounded away from 1 over
+      everything the construction can <em>emit</em>. Instead of bounding all of ℤ[x], build a finitely
+      generated system — seeds plus operators — and prove the closure statement</p>
+
+    <div class="eq" style="border-left-color:var(--verdigris)"><span class="cid">the strategy</span>
+      <b>no Salem number lies in the emission image.</b>
+      <span class="note">With Smyth, this alone forces the cost floor: everything in the band (1, μ<sub>S</sub>)
+        is a reciprocal Salem-type number, so excluding Salems empties the band. This is a closure
+        property of one specific algebra — <em>not</em> a universal height bound — so it never touches
+        Lehmer's problem. The papers call it "sidestepping Lehmer without resolving it," and that
+        phrasing is load-bearing.</span>
+    </div>
+
+    <p>The next two lessons build the two walls that enforce it: a <strong>height wall</strong> at φ
+      (Lesson 2) and an <strong>angle wall</strong> at the four directions (π/2)ℤ (Lesson 3). Lehmer's
+      number is excluded as an <em>emission</em>, never as a <em>number</em>; the open problem is left
+      exactly where it stood.</p>
+
+    <div class="cpwrap">
+      <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Compute
+        M(x² − 3x + 1) by hand, exactly. The roots are (3 ± √5)/2 — both "is it outside?" decisions
+        matter.</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>The roots are φ² and φ⁻², since φ² = (3+√5)/2 ≈ 2.618 and φ⁻² ≈ 0.382. Only φ² escapes the
+            circle, so <strong>M = φ² = φ + 1</strong>. (This measure reappears throughout the course as
+            a <em>theorem output</em>.)</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Why does the
+        trace-substitution t = z + 1/z require reciprocity before it is even well-defined?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Because t = z + 1/z identifies z with 1/z. The fold is injective only on root
+            <em>pairs</em> {z, 1/z} — and those pairs exist only if the root set is closed under
+            inversion, which is precisely reciprocity.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Why does excluding
+        Salem numbers from the image give a cost floor, when Smyth already handles non-reciprocals?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Smyth floors the non-reciprocal case at μ<sub>S</sub>. The only measures that can live in
+            the band (1, μ<sub>S</sub>) are reciprocal Salem-type numbers. Remove those from the image
+            and the band is empty — so the infimum of emittable M &gt; 1 is ≥ μ<sub>S</sub> &gt; 1.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="nextup"><b>next · Lesson 2</b>The first wall. The band (1, φ) is empty for integer
+      quadratics — proved, then shown stable under the operators, so no emitted measure ever tunnels
+      under φ.</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LESSON 2 ══════════════════════════ -->
+<section id="lesson-2" class="page" data-title="2 · The Height Wall">
+  <div class="inner">
+    <p class="eyebrow">Lesson 02 <i>· Mahler, Salem &amp; Lehmer</i></p>
+    <h2 tabindex="-1" data-pagehead>The Height Wall — the Golden Floor</h2>
+    <p class="dek">The first wall is a fence on the height axis: the open strip (1, φ) is empty, and the
+      operators cannot tunnel under it. Where φ comes from, and how far the fence is really forced.</p>
+
+    <div class="thread"><span class="lbl">carries forward</span>
+      <div class="chips">
+        <button class="chip" data-goto="1"><span class="n">L1</span>the golden seed x² − x − 1</button>
+        <button class="chip" data-goto="1"><span class="n">L1</span>Smyth's μ<sub>S</sub></button>
+        <button class="chip" data-goto="1"><span class="n">L1</span>Salem = reciprocal, on-circle</button>
+      </div>
+    </div>
+
+    <div class="run"><b>625/625</b><i>quadratics scanned |b|,|c|≤12 · band (1,φ) empty</i></div>
+    <p class="small">Reads from <a href="../papers/2026-06-lehmers-box.pdf"><em>Lehmer's Box</em></a>,
+      §"The floor wall."</p>
+
+    <h3>§1 <em>&nbsp;The base case: an empty strip in degree two</em></h3>
+    <p>The catalog seeds are size-2 and size-4 companion matrices, so the wall must first hold for
+      quadratics. It does, exactly.</p>
+
+    <div class="eq"><span class="cid">P1-GATE-02/03</span>
+      No monic p = x² + bx + c ∈ ℤ[x] has <b>M(p) ∈ (1, φ)</b>.
+      <span class="note">M = 1 on the cyclotomic quadratics; otherwise M ≥ φ, with equality only at
+        discriminant 5 — the seeds x² − x − 1 and x² + x − 1. A scan of all 625 quadratics with
+        |b|,|c| ≤ 12 confirms both the empty interval and the minimizer.</span>
+    </div>
+
+    <p>The proof is a three-case split on c. If c = −1 (hyperbolic reciprocal) the dominant root is
+      (|b|+√(b²+4))/2, smallest at |b|=1 giving exactly φ. If c = 1 the roots are a reciprocal pair:
+      cyclotomic for |b| ≤ 1, reducible at |b| = 2, and ≥ φ² = (3+√5)/2 for |b| ≥ 3. If |c| ≥ 2 the
+      measure is ≥ |c| ≥ 2. In every non-cyclotomic case M ≥ φ. The golden ratio is the
+      <em>smallest Perron number</em> above 1, and here it is the right edge of the minimal gap.</p>
+
+    <h3>§2 <em>&nbsp;Degree-raising cannot tunnel under the fence</em></h3>
+    <p>The spectral operators — ⊕ (direct sum), ⊗ (tensor / Kronecker), (·)² (squaring), plus minpoly
+      and re-companion Φ — determine the output spectrum from the inputs'. On the Mahler measure they
+      act by three closed laws:</p>
+
+    <div class="eq"><span class="cid">M multiplicative</span>
+      M(p ⊕ q) = M(p)·M(q),&nbsp;&nbsp; M(θ ↦ θ²) = M(·)²,&nbsp;&nbsp; ⊗ composes
+      <span class="note">The set {1} ∪ [φ, ∞) is closed under multiplication and squaring — the pivotal
+        step being φ·φ = φ² = φ + 1 &gt; φ, the golden relation itself. So by induction on word length
+        from the degree-2 base, every emitted measure stays in {1} ∪ [φ, ∞).</span>
+    </div>
+
+    <p>The ⊗ case needs the angle wall (Lesson 3) and the field-signature census (Lesson 7) to forbid a
+      small Salem factor; with those, <strong>M(𝒮) ⊆ {1} ∪ [φ, ∞)</strong>
+      <span class="tag forced">forced</span> for the spectral emission algebra 𝒮, realized at φ. The
+      emission's Mahler spectrum is a discrete sub-semigroup of [φ, ∞) generated by {φ, 2, 3, 5, φ⁴, β²}
+      — <em>limits are not operations</em>, so the construction can never reach the Salem accumulation
+      points of its own Pisot generators.</p>
+
+    <h3>§3 <em>&nbsp;How far is the fence really forced?</em></h3>
+    <p>Honesty about scope is the corpus's discipline, so state the strongest <em>unconditional</em>
+      form. The band that carries <em>no</em> plausible tag anywhere in its derivation is
+      (1, μ<sub>S</sub>), not (1, φ):</p>
+
+    <div class="eq" style="border-left-color:var(--ochre)"><span class="cid">narrowest true form</span>
+      1 &lt; M(L) &lt; 5/4 &lt; μ<sub>S</sub> &lt; 4/3 &lt; φ
+      <span class="note">Smyth is unconditional off the reciprocal locus; the angle wall removes Salems
+        kinematically; so (1, μ<sub>S</sub>) is empty with only forced ingredients. φ is forced on
+        quadratics and realized as the minimum, and is the honest headline — but the width from
+        μ<sub>S</sub> to φ buys reach, not the conclusion. Lehmer's number 1.176 sits strictly inside
+        (1, μ<sub>S</sub>), so its exclusion touches no plausible tag: L(5/4) &gt; 0 while
+        (5/4)³ − 5/4 − 1 &lt; 0, separated by exact rationals.</span>
+    </div>
+
+    <div class="cpwrap">
+      <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Why is
+        {1} ∪ [φ, ∞) closed under the direct-sum operator ⊕?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>⊕ unions root multisets, and Mahler measure is multiplicative over that union:
+            M(p ⊕ q) = M(p)M(q). A product of two numbers each in {1} ∪ [φ, ∞) is again ≥ φ (or 1),
+            never landing in the open gap (1, φ).</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">The paper calls φ
+        "derived, not posited." In what sense is φ an <em>output</em> here?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Nothing puts φ in by hand. Degree two is fixed by the decision structure (Lesson 4); the
+            smallest non-cyclotomic integer-quadratic measure is then forced to be φ, at discriminant 5.
+            φ falls out the far end as the minimal realizable growth — the theorem, not a hypothesis.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Why does the corpus
+        bother stating the band as (1, μ<sub>S</sub>) when the headline is φ?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Because (1, μ<sub>S</sub>) is empty using only forced ingredients (Smyth + the angle wall),
+            whereas the full φ floor on every sector still leans on a plausible tag off the real sector.
+            Lehmer's number lies inside (1, μ<sub>S</sub>) anyway, so the exclusion — the actual point —
+            rides entirely on the forced part.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="nextup"><b>next · Lesson 3</b>The second wall. Every emitted root's argument is confined
+      to four directions; a Salem number's on-circle conjugates refuse all four, so no Salem is
+      emittable — size-blind.</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LESSON 3 ══════════════════════════ -->
+<section id="lesson-3" class="page" data-title="3 · The Angle Wall">
+  <div class="inner">
+    <p class="eyebrow">Lesson 03 <i>· Mahler, Salem &amp; Lehmer</i></p>
+    <h2 tabindex="-1" data-pagehead>The Angle Wall — No Salem Is Emitted</h2>
+    <p class="dek">The height wall excludes only <em>small</em> Salems. The angle wall excludes
+      <em>all</em> of them at once, at every degree, by a conserved four-fold charge.</p>
+
+    <div class="thread"><span class="lbl">carries forward</span>
+      <div class="chips">
+        <button class="chip" data-goto="2"><span class="n">L2</span>the empty strip (1, φ)</button>
+        <button class="chip" data-goto="1"><span class="n">L1</span>Salem on-circle conjugates</button>
+        <button class="chip" data-goto="2"><span class="n">L2</span>the spectral operators ⊕ ⊗ (·)²</button>
+      </div>
+    </div>
+
+    <div class="run"><b>400 · 1126 · 0</b><i>random circulants · irreducible factors · Salem factors</i></div>
+    <p class="small">Reads from <a href="../papers/2026-06-emission-gap.pdf"><em>The Emission–Gap
+      Theorem</em></a> and <a href="../papers/2026-06-lehmers-box.pdf"><em>Lehmer's Box</em></a>.</p>
+
+    <h3>§1 <em>&nbsp;Angle confinement to (π/2)ℤ</em></h3>
+    <p>Write arg z for the argument of an eigenvalue. Every catalog seed sits at one of the four cardinal
+      directions.</p>
+
+    <div class="eq"><span class="cid">P2-ANG-01</span>
+      every catalog eigenvalue has <b>arg ∈ (π/2)ℤ = {0, π/2, π, 3π/2}</b>
+      <span class="note">The six quadratic seeds have real spectra (arg 0 or π). The quartic
+        K = x⁴ + 5x² − 5 solves x² = (−5 ± 3√5)/2: a real pair ±K at {0, π} and an imaginary pair ±iβ at
+        {π/2, 3π/2}. All four directions, all in (π/2)ℤ ≅ ℤ/4ℤ.</span>
+    </div>
+
+    <div class="eq"><span class="cid">P2-ANG-02</span>
+      ⊗ <b>adds</b> arguments, (·)² <b>doubles</b>, ⊕ <b>unions</b> — all internal to (π/2)ℤ
+      <span class="note">The subgroup (π/2)ℤ is closed under addition (⊗: arg λμ = arg λ + arg μ) and
+        under doubling (squaring: arg λ² = 2 arg λ), but <em>not</em> under halving — no operator takes
+        a square root of an eigenvalue. So the four directions are conserved by every spectral operation.</span>
+    </div>
+
+    <h3>§2 <em>&nbsp;The two-line exclusion</em></h3>
+    <p>Combine confinement with one classical fact and the exclusion is immediate.</p>
+
+    <div class="eq"><span class="cid">P2-ANG-03/04/05</span>
+      on-circle emitted eigenvalue ⇒ 4th root of unity;&nbsp;&nbsp; Salem on-circle conjugate ⇒ <b>not</b> a root of unity
+      <span class="note">An on-circle point with argument in (π/2)ℤ is one of {1, i, −1, −i}. But a
+        Salem number's on-circle conjugate is never a root of unity — else its irreducible minimal
+        polynomial would be cyclotomic and β itself a root of unity, contradicting β &gt; 1. The two
+        sets are disjoint.</span>
+    </div>
+
+    <p>Now the closure argument closes. If a Salem β were an eigenvalue of some integer matrix M ∈ 𝒮,
+      then — since M is an integer matrix — <em>all</em> conjugates of β travel with it, including its
+      on-circle conjugates at irrational angle. But every eigenvalue of M lies at a rational angle in
+      (π/2)ℤ. Contradiction. Watch it on Lehmer's polynomial directly:</p>
+
+    <div class="eq"><span class="cid">C5 · gcd</span>
+      gcd( L(x), x⁴ − 1 ) = 1
+      <span class="note">Not one of L's ten roots is a fourth root of unity; its eight on-circle
+        conjugates sit at ≈ 62.8°, 107.0°, 137.3°, … — none a multiple of 90°. If β ever appeared as an
+        emitted eigenvalue, all ten conjugates would come along, eight of them violating the wall.</span>
+    </div>
+
+    <div class="eq" style="border-left-color:var(--verdigris)"><span class="cid">Emission–Gap, Thm main</span>
+      <b>No Salem number is emittable in 𝒮.</b> Equivalently M(𝒮) ⊆ {1} ∪ [μ<sub>S</sub>, ∞).
+      <span class="note"><span class="tag forced">forced</span> The result has four equivalent faces:
+        Mahler (the measure gap), entropy (h = log M, by Lind–Schmidt–Ward, so no small positive
+        topological entropy), channel-spectral (no on-circle expanding channel), and metric (no field
+        with a complex place on the circle).</span>
+    </div>
+
+    <p>Therefore Lehmer's number — and by the identical two-line argument <em>every</em> Salem number —
+      is <strong>kinematically unreachable</strong>. Not screened at runtime; structurally impossible to
+      emit. This is why the angle wall is stronger than the height wall: it is size-blind.</p>
+
+    <h3>§3 <em>&nbsp;Sealing the doors: circulant and commutator</em></h3>
+    <p>The angle argument covers the <em>spectral</em> operators, whose effect on the spectrum is forced.
+      Two entry-level operators need separate care, and both are relocated to the trace-down flip
+      t = θ + θ⁻¹ (a Salem is exactly a reciprocal factor whose trace-down has one root past +2 and the
+      rest in (−2, 2) — a "flip-straddle," Sturm-decidable over ℚ).</p>
+    <p>The <strong>circulant</strong> is forced with no residual: its eigenvalues lie in a cyclotomic
+      field ℚ(ζ<sub>n</sub>), which is abelian, hence totally real or CM — and a Salem field's signature
+      (2, m−1) is neither. A scan of 400 random integer circulants (1126 irreducible factors) finds zero
+      Salem factors. The <strong>free commutator</strong> is the one door: by Shoda's theorem any
+      traceless matrix is a commutator, so it could in principle carry a foreign Salem. Lesson 7 closes
+      it structurally by identifying the framework's actual commutator as the self-action ad<sub>R</sub>.</p>
+
+    <div class="cpwrap">
+      <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">In one sentence: why
+        doesn't the height wall alone exclude Salem numbers?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Salem numbers with M ≥ φ exist in abundance, so the height wall excludes only <em>small</em>
+            Salems; the angle wall excludes <strong>all</strong> of them, size-blind.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Where does
+        "conjugates travel together" enter the proof, and why is it essential?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>An integer matrix has an integer characteristic polynomial, so if one eigenvalue is a root
+            of an irreducible m<sub>β</sub>, all its ℚ-conjugates are eigenvalues too. That forces the
+            Salem's forbidden on-circle conjugates into the spectrum — where the angle wall then forbids
+            them. Without integrality the single root β could hide.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Why does the invariant
+        survive squaring but a halving operator would coarsen it?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>(π/2)ℤ absorbs doubling: 2·(π/2)ℤ ⊆ (π/2)ℤ. Halving would generate (π/4)ℤ, (π/8)ℤ, … —
+            still rational angles (so the exclusion would persist), but the clean closed form
+            {0, π/2, π, 3π/2} would break. The construction contains no halving operator.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="nextup"><b>next · Lesson 4</b>The slot the two walls carve out is empty — and a
+      conserved emptiness is not inert. It generates five objects, and φ is one of them.</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LESSON 4 ══════════════════════════ -->
+<section id="lesson-4" class="page" data-title="4 · The Conserved Emptiness">
+  <div class="inner">
+    <p class="eyebrow">Lesson 04 <i>· Mahler, Salem &amp; Lehmer</i></p>
+    <h2 tabindex="-1" data-pagehead>The Conserved Emptiness That Generates</h2>
+    <p class="dek">The Salem slot is empty not by accident but by a conserved charge — and a conserved
+      charge is a generator. On this one instance it produces five canonical objects, φ among them.</p>
+
+    <div class="thread"><span class="lbl">carries forward</span>
+      <div class="chips">
+        <button class="chip" data-goto="3"><span class="n">L3</span>angle charge (π/2)ℤ ≅ ℤ/4ℤ</button>
+        <button class="chip" data-goto="3"><span class="n">L3</span>no Salem emitted</button>
+        <button class="chip" data-goto="2"><span class="n">L2</span>the floor φ</button>
+      </div>
+    </div>
+
+    <div class="run"><b>ℤ/4ℤ</b><i>closed under + , ×2, ∪ · charge conserved by every operator</i></div>
+    <p class="small">Reads from <a href="../papers/2026-06-generative-emptiness.pdf"><em>The Generative
+      Content of a Conserved Emptiness</em></a>.</p>
+
+    <h3>§1 <em>&nbsp;Two ways to be empty</em></h3>
+    <p>A <em>dynamic</em> void is a barrier the system could cross but pays not to; such voids leak, and
+      the leak is the interesting object. A <em>kinematic</em> void has zero weight in the algebra the
+      operations act on, enforced by a conserved quantity; nothing approaches it, and the enforcing law
+      never fires. The paper's thesis:</p>
+
+    <div class="eq" style="border-left-color:var(--verdigris)"><span class="cid">the substrate</span>
+      kinematic emptiness ≡ a conserved charge ≡ a superselection rule
+      <span class="note"><span class="tag declared">declared</span> And the rightmost object is
+        <em>productive</em>: a superselection charge furnishes a grading, a content polynomial, a gap, a
+        normal form, and a conserved current. The Salem slot is the minimal fully-computable instance.</span>
+    </div>
+
+    <h3>§2 <em>&nbsp;The five objects</em></h3>
+    <p>The generator is the angle charge of Lesson 3, read as an element of ℤ/4ℤ. Each of the five
+      objects is a theorem with a verification attached.</p>
+
+    <div class="tw"><table class="prose"><caption class="vh">Lesson 4 · the five generated objects</caption>
+      <thead><tr><th scope="col">object</th><th scope="col">what the charge produces</th><th scope="col">status</th></tr></thead>
+      <tbody>
+        <tr><td>I · grading</td><td>ℤ/4ℤ charge; ⊗ adds, (·)² doubles, ⊕ unions. Real seeds carry {0, 2};
+          K = x⁴+5x²−5 carries {0, 1, 2, 3}</td><td><span class="tag computed">computed</span></td></tr>
+        <tr><td>II · content polynomial</td><td>x⁴ − 1 = Φ₁Φ₂Φ₄ governs all on-circle structure; the
+          full group is in the charge, only ℤ/2ℤ = {±1} on the circle</td><td><span class="tag computed">computed</span></td></tr>
+        <tr><td>III · the gap</td><td>the cost floor: M(𝒮) = {1} ∪ [φ, ∞); the emptied band (1, φ) is
+          the height image of the off-charge sector</td><td><span class="tag forced">forced</span></td></tr>
+        <tr><td>IV · normal form</td><td>every object factors as cyclotomic (on-circle, M=1) × grow
+          (off-circle, M ≥ φ); irreducibility and the grading are incompatible</td><td><span class="tag computed">computed</span></td></tr>
+        <tr><td>V · conserved current</td><td>evolution is block-diagonal in the grading; growth is clean,
+          radial, floor-respecting</td><td><span class="tag forced">forced</span></td></tr>
+      </tbody>
+    </table></div>
+
+    <p>Object II is the subtle one. An order-n charge produces x<sup>n</sup> − 1 as the alphabet of
+      allowed on-circle positions; here n = 4. Yet only ±1 are realized <em>on the circle</em> — the
+      ±i sector (charges 1, 3) is present in the <em>algebra</em> but sits <em>off</em> the circle,
+      because the only seed reaching argument ±π/2 is K, whose imaginary place has modulus
+      β = 2.4195 ≠ 1. So x⁴ − 1 records the charge <em>group</em>; x² − 1 would record only its
+      on-circle <em>shadow</em>. Recording the off-circle half is exactly what keeps the claim from
+      over- or under-stating the grading.</p>
+
+    <h3>§3 <em>&nbsp;The minimal chain: φ is derived, not posited</em></h3>
+    <p>The load-bearing consequence. Read in the forced direction, three minima cascade:</p>
+
+    <div class="eq"><span class="cid">Prop · minimal chain</span>
+      degree 2&nbsp;⇒&nbsp;ℤ/4ℤ&nbsp;⇒&nbsp;φ
+      <span class="note"><span class="tag forced">forced</span> Ternary growth decisions force degree
+        two (# channels = d² − d + 1 = 3 iff d = 2). Order four is the coarsest charge carrying a fourth
+        direction distinct from the three real channels. φ is then the smallest non-cyclotomic quadratic
+        measure — forced out the far end. The golden ratio was not chosen for being golden; degree-two
+        decisions were chosen, and φ is what they produce.</span>
+    </div>
+
+    <p>The pattern beneath — kinematic emptiness ≡ conserved charge ≡ superselection — is
+      <span class="tag declared">declared</span> domain-universal (Pauli exclusion, charge
+      superselection, and type preservation share the skeleton), but the five objects are local to this
+      number theory. The table is read <em>down each column</em>, never causally across rows: nothing
+      here claims the angle charge explains Pauli exclusion. Same skeleton, different content; no output
+      is exported across domains.</p>
+
+    <div class="cpwrap">
+      <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Why is the content
+        polynomial x⁴ − 1 and not x² − 1, when only ±1 are realized on the circle?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>The charge group is genuinely ℤ/4ℤ: the seed K carries charges 1 and 3 on the imaginary
+            axis, but its place has modulus β ≠ 1, so the ±i sector lives in the algebra, off the
+            circle. x⁴ − 1 records the whole charge group; x² − 1 would record only its on-circle
+            shadow and undercount the grading.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Why can no emittable
+        object be an irreducible Salem polynomial, in the language of the normal form?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>The grading forces every emittable object into a reducible, charge-sorted shape:
+            cyclotomic (on-circle roots of unity) × grow (off-circle). A Salem polynomial is
+            <em>irreducible</em> with on-circle conjugates at <em>irrational</em> angle. Irreducibility
+            and the grading are incompatible.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">The table spans
+        fermions, QFT, type theory, and this algebra. What exactly is claimed to be shared?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Only the <em>skeleton</em>: a conserved charge makes a sector kinematically empty, and the
+            emptiness organizes the realized complement. Each row's output is its own — shell structure
+            is a fact about antisymmetric fermions, x⁴ − 1 is a fact about the angle charge — and no
+            row's output explains another's.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="nextup"><b>next · Lesson 5</b>An empty slot is not an object. So what <em>is</em> present
+      where a Salem would sit? The trace redirection carries it to a totally real Perron number, and its
+      limit is √5.</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LESSON 5 ══════════════════════════ -->
+<section id="lesson-5" class="page" data-title="5 · The Occupant">
+  <div class="inner">
+    <p class="eyebrow">Lesson 05 <i>· Mahler, Salem &amp; Lehmer</i></p>
+    <h2 tabindex="-1" data-pagehead>The Occupant of the Salem Slot</h2>
+    <p class="dek">There is no fourth channel because the trifurcation lives downstairs, in the trace. A
+      would-be Salem is redirected to a totally real Perron number — and at the golden floor its image
+      is √5.</p>
+
+    <div class="thread"><span class="lbl">carries forward</span>
+      <div class="chips">
+        <button class="chip" data-goto="3"><span class="n">L3</span>the trace-down flip t = θ + θ⁻¹</button>
+        <button class="chip" data-goto="4"><span class="n">L4</span>the empty Salem slot</button>
+        <button class="chip" data-goto="1"><span class="n">L1</span>Lehmer's number, M(L)=1.176</button>
+      </div>
+    </div>
+
+    <div class="run"><b>n ≤ 29</b><i>golden family verified · consecutive gap ratio → φ</i></div>
+    <p class="small">Reads from <a href="../papers/2026-06-salem-slot.pdf"><em>The Occupant of the Salem
+      Slot</em></a>.</p>
+
+    <h3>§1 <em>&nbsp;No fourth channel: the trifurcation is downstairs</em></h3>
+    <p>The self-action ad<sub>R</sub> = [R, ·] of the golden seed has spectrum {0, +√5, −√5}: three
+      channels, <strong>captured</strong> (0, M = 1, on-circle), <strong>grow</strong> (+√5, M ≥ φ,
+      expanding), <strong>decay</strong> (−√5). A Salem would be a <em>fourth</em> channel — on-circle
+      like captured, yet expanding like grow. Downstairs, in the trace t = θ + θ⁻¹, that is a flat
+      contradiction:</p>
+
+    <div class="eq"><span class="cid">P2-DELTA-02 · three regions</span>
+      |θ| = 1 ⇒ t = 2cos ψ ∈ [−2, 2];&nbsp;&nbsp; θ &gt; 1 ⇒ t &gt; 2;&nbsp;&nbsp; the flip cuts ℝ into three
+      <span class="note">"On-circle and expanding" would need |t| &lt; 2 and t &gt; 2 at once — no real t
+        qualifies. The fourth channel is an <em>upstairs</em> artifact of the two-to-one lift t ↦ x,
+        which bundles one grow-trace root with several captured-trace roots into a single irreducible
+        Salem. Working downstairs, the system never forms the bundle.</span>
+    </div>
+
+    <h3>§2 <em>&nbsp;The redirection map</em></h3>
+    <p>The object that occupies the slot is the <strong>trace redirection</strong> τ₀ = β + β⁻¹, the
+      dominant root of the Salem's totally real trace-down T.</p>
+
+    <div class="eq"><span class="cid">Thm · occupant</span>
+      τ₀ = β + β⁻¹ &gt; 2 &gt; φ,&nbsp;&nbsp; M(T) ≥ τ₀,&nbsp;&nbsp; τ₀ − 2 = (β−1)²/β&nbsp;(exact, AM–GM)
+      <span class="note"><span class="tag forced">forced</span> Whatever tiny value M(β) = β had, its
+        redirection lands strictly in <strong>grow</strong>, above φ, regardless. The flip is a
+        <em>branch point</em>: β − 1 ∼ √(t − 2), so a Salem of height 1 + δ is redirected only δ² past
+        the flip — the smaller the Salem, the more tightly its image hugs t = 2.</span>
+    </div>
+
+    <p>Nothing is destroyed, only re-sorted: each on-circle conjugate e<sup>±iψ</sup> freezes into the
+      captured coordinate 2cos ψ ∈ (−2, 2), losing only orientation (the sign of ψ). Growth goes to τ₀;
+      angle goes to 2cos ψ; the trace-down T records both, one-and-the-rest by the flip. And the
+      redirection carries strictly <em>more</em> growth than the Salem it replaces:
+      log τ₀ &gt; log β.</p>
+
+    <h3>§3 <em>&nbsp;The golden limit and its rate</em></h3>
+    <p>Now the loop closes with the self-action. Take Salem numbers climbing to the floor, β<sub>n</sub>
+      → φ (the Salem factors of S<sub>n</sub> = x<sup>n</sup>P − P*, P = x² − x − 1):</p>
+
+    <div class="eq"><span class="cid">P2-UNIF-01 · redirection at the floor</span>
+      β<sub>n</sub> → φ&nbsp;⇒&nbsp; τ₀ = β<sub>n</sub> + β<sub>n</sub>⁻¹ → φ + φ⁻¹ = <b>√5</b> = +√D ∈ spec(ad<sub>R</sub>)
+      <span class="note"><span class="tag forced">forced</span> The slot at the golden floor is filled
+        by √5, the grow generator of ad<sub>R</sub>. The approach is linear with slope
+        τ'(φ) = 1 − φ⁻² = φ⁻¹, and geometric along the canonical family:
+        √5 − τ₀ ∼ (2/√5)·φ<sup>−n</sup>, so consecutive gaps shrink by exactly φ (verified n ≤ 29).</span>
+    </div>
+
+    <p>And the map is <em>forced, not chosen</em>. Because the seed's conjugate is the negative
+      reciprocal (φψ = −1), the trace map θ ↦ θ + θ⁻¹ <em>is</em> the operation computing the
+      self-action's grow eigenvalue: φ − ψ = φ + φ⁻¹ = √5. So the coordinate in which a Salem is
+      <em>defined</em> and the map producing spec(ad<sub>R</sub>) are the same map — the system's own.</p>
+
+    <h3>§4 <em>&nbsp;The slot rejects filling</em></h3>
+    <p>The dual question — can anything <em>enter</em>? — has a sharp answer. The angle charge A (= 1 iff
+      all root arguments lie in (π/2)ℤ) is a superselection charge: ⊕, ⊗, squaring, the trace lift, and
+      the monodromy of any closed loop all preserve A, while the slot has A = 0. Every entry route —
+      superposition, suspended superposition, non-linear travel, the lift — is checked and turned away;
+      the only route to A = 0 is a limit, which the finitely generated algebra approaches but never
+      attains. The slot is not a void that can be filled but a <em>space that rejects filling</em>.</p>
+
+    <div class="cpwrap">
+      <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Why is
+        "on-circle and expanding" impossible downstairs but seemingly possible upstairs?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Downstairs, on-circle means t ∈ [−2, 2] and expanding means t &gt; 2 — disjoint. Upstairs,
+            the two-to-one lift t ↦ x bundles one grow-trace root with several captured-trace roots into
+            a single irreducible polynomial; that bundle <em>is</em> a Salem. The contradiction is only
+            hidden by the lift.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Show τ₀ − 2 = (β−1)²/β,
+        and read off what it says near the floor.</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>β + β⁻¹ − 2 = (β² − 2β + 1)/β = (β − 1)²/β. So a Salem of height β = 1 + δ is redirected to
+            τ₀ = 2 + δ²/(1+δ) = 2 + δ² + O(δ³): only δ² past the flip. The smallest Salems land closest
+            to t = 2.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Why is it significant
+        that the trace map equals the self-action's grow eigenvalue, rather than an analyst's choice?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Because the seed's constant term forces φψ = −1, i.e. ψ = −φ⁻¹, so φ − ψ = φ + φ⁻¹. The
+            grow eigenvalue of ad<sub>R</sub> and the trace-down of the dominant root are literally the
+            same expression √5. The redirection is the system's native coordinate, not an imported
+            modeling decision.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="nextup"><b>next · Lesson 6</b>The elementary exclusion proof used that 2cos 120° = −1 is
+      rational. At the pentagon that breaks: 2cos 72° is irrational, and the case bends rather than
+      falls.</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LESSON 6 ══════════════════════════ -->
+<section id="lesson-6" class="page" data-title="6 · The Pentagon (ℤ/5ℤ)">
+  <div class="inner">
+    <p class="eyebrow">Lesson 06 <i>· Mahler, Salem &amp; Lehmer</i></p>
+    <h2 tabindex="-1" data-pagehead>The Pentagon: the ℤ/5ℤ Case</h2>
+    <p class="dek">The first odd modulus where the elementary trick fails. The pentagon couples two
+      irrational cosines in ℚ(√5) — widening the degree-four gap, and re-exposing the reciprocal core.</p>
+
+    <div class="thread"><span class="lbl">carries forward</span>
+      <div class="chips">
+        <button class="chip" data-goto="2"><span class="n">L2</span>the golden floor {1}∪[φ,∞)</button>
+        <button class="chip" data-goto="1"><span class="n">L1</span>Smyth's μ<sub>S</sub></button>
+        <button class="chip" data-goto="4"><span class="n">L4</span>the angle charge ℤ/nℤ</button>
+      </div>
+    </div>
+
+    <div class="run"><b>0</b><i>charge-ℤ/5ℤ objects with M ∈ (1, 2) over the window · realized floor 2</i></div>
+    <p class="small">Reads from <a href="../papers/2026-06-z5-no-salem-dichotomy.pdf"><em>The ℤ/5ℤ Case
+      of the No-Salem Dichotomy</em></a>.</p>
+
+    <h3>§1 <em>&nbsp;Why the pentagon is the hard analogue of the triangle</em></h3>
+    <p>A charge group ℤ/nℤ forces every conjugate angle into (2π/n)ℤ. The ℤ/3ℤ proof closes trivially
+      because <span class="m">2cos 120° = −1 ∈ ℤ</span>: the complex pair's factor is integral the
+      instant its modulus is, forcing the search down to x³ − 2 with M = 2. Nothing couples. The
+      pentagon is different:</p>
+
+    <div class="eq"><span class="cid">Prop · irrational cosines</span>
+      2cos 72° = φ − 1,&nbsp;&nbsp; 2cos 144° = −φ&nbsp;&nbsp; — the two roots of x² + x − 1
+      <span class="note"><span class="tag forced">forced</span> Both are irrational and
+        Galois-conjugate over ℚ under √5 ↦ −√5. A single ±72° pair has an irrational linear
+        coefficient; integrality is repaired <em>only</em> by importing the ±144° pair as its Galois
+        partner, so the √5-parts cancel. That forced coupling is what ℤ/3ℤ never needs.</span>
+    </div>
+
+    <h3>§2 <em>&nbsp;Four forced results, one sharpened residual</em></h3>
+    <div class="tw"><table class="prose"><caption class="vh">Lesson 6 · the ℤ/5ℤ ledger</caption>
+      <thead><tr><th scope="col">sub-class</th><th scope="col">measure</th><th scope="col">status</th></tr></thead>
+      <tbody>
+        <tr><td>non-reciprocal (general)</td><td>M ≥ μ<sub>S</sub> = 1.3247</td><td><span class="tag forced">forced</span> (Smyth)</td></tr>
+        <tr><td>reciprocal (general)</td><td>Φ₅<sup>a</sup> × real units, real part M ≥ φ²</td><td><span class="tag forced">forced</span> / <span class="tag computed">computed</span> window</td></tr>
+        <tr><td>degree-4 "pure pentagon"</td><td>M ∈ {1} ∪ [φ⁴, ∞), φ⁴ ≈ 6.854</td><td><span class="tag forced">forced</span></td></tr>
+        <tr><td>pure-power x⁵ − m</td><td>M = m ∈ {1} ∪ [2, ∞)</td><td><span class="tag forced">forced</span></td></tr>
+        <tr><td><strong>all charge-ℤ/5ℤ</strong> — μ(5)=2</td><td>M ∉ (1, 2)</td><td><span class="tag computed">computed</span> over window</td></tr>
+      </tbody>
+    </table></div>
+
+    <p>The <strong>pure-pentagon</strong> theorem is the striking one: the degree-four sector, having no
+      real root, is a ±72° pair (modulus s) times a ±144° pair (modulus t), and integrality forces
+      t = σ(s) — the two are ℚ(√5)-conjugate roots of a totally real y² − ky + m. The case analysis
+      bottoms out at φ⁴ ≈ 6.854 (minimizer x⁴ − x³ + 6x² + 4x + 1 at (k, m) = (3, 1)), a
+      <em>wider</em> gap than the dichotomy even asks. The coupling that makes the odd case hard is the
+      very thing that widens the gap.</p>
+
+    <p>The <strong>pure-power</strong> family x⁵ − m realizes the floor: M = m, attaining
+      <span class="m">μ(5) = 2</span> at x⁵ − 2 — where the real root 2<sup>1/5</sup> is
+      Galois-conjugate to the four complex roots and cannot be split off, so the object is genuinely
+      quintic.</p>
+
+    <h3>§3 <em>&nbsp;Why μ(5) = 2 stays computed, not forced</em></h3>
+    <p>The general claim — M ∉ (1, 2) for <em>all</em> charge-ℤ/5ℤ objects — holds over the window
+      (quartics |c| ≤ 10, quintics |c| ≤ 4, sextics |c| ≤ 3) but is not promoted.</p>
+
+    <div class="eq" style="border-left-color:var(--ochre)"><span class="cid">the residual</span>
+      only survivor: non-reciprocal charge-ℤ/5ℤ with M ∈ [μ<sub>S</sub>, 2) — <b>empty over the window</b>
+      <span class="note"><span class="tag open">open</span> Three handles and none reaches 2:
+        <em>realification</em> ψ⁵ gives only 2<sup>1/5</sup> = 1.1487 (and asking the fifth power to
+        clear 32 is the original claim restated); <em>Smyth</em> gives μ<sub>S</sub> = 1.3247, better
+        but still below 2; <em>classification</em> closes degree 4 and x⁵ − m but not general quintics.
+        The residual is the reciprocal/Salem core of Lehmer's problem wearing a pentagon —
+        Schur–Siegel–Smyth trace-problem territory.</span>
+    </div>
+
+    <p>By the method's <strong>asymmetry rule</strong>, a finite search may demote a universal or extend
+      it to <span class="tag computed">computed</span> over a stated range, but may <em>never</em>
+      promote it to <span class="tag forced">forced</span> — only an attached structural proof does.
+      Naming the missing trace-problem lemma is the honest result. The dichotomy did not fall at the
+      pentagon; it bent.</p>
+
+    <div class="cpwrap">
+      <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Why does the ℤ/3ℤ proof
+        close by elementary means while ℤ/5ℤ needs a coupling?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>2cos 120° = −1 is rational, so a ℤ/3ℤ complex pair is integral as soon as its modulus is —
+            nothing couples. At ℤ/5ℤ, 2cos 72° = φ − 1 is irrational; integrality is only restored by
+            adjoining the Galois-partner ±144° pair so the √5-parts cancel. That forced coupling is the
+            new structural feature.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">The realification
+        handle gives 2<sup>1/5</sup> = 1.1487. Why is pushing it to clear 32 circular?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>ψ⁵ raises roots to the fifth power, so M(ψ⁵O) = M(O)⁵ and the totally-positive (1, 2) gap
+            yields only M(O) ≥ 2<sup>1/5</sup>. Asking ψ⁵O to clear 32 instead of 2 is asking
+            M(O) ≥ 2 — the very statement to be proved. The fifth power is unavoidable and the coupling
+            ψ⁵ destroys is exactly what would be needed.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Why is the wider φ⁴ gap
+        in degree four consistent with the realized floor being only 2?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>The φ⁴ gap is for the <em>pure</em> pentagon — quartics with no real root. The floor 2 is
+            realized by x⁵ − 2, which has a real root Galois-conjugate to the complex ones and so cannot
+            be split into a pure-pentagon quartet. Different sectors, different floors; the real
+            direction is what the degree-four analysis excluded.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="nextup"><b>next · Lesson 7</b>The golden mode cannot bind to a copy of itself. Closure
+      needs an orthogonal partner — the quartic K — which supplies the missing charges {1, 3} and a
+      quarter-turn.</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LESSON 7 ══════════════════════════ -->
+<section id="lesson-7" class="page" data-title="7 · The Orthogonal Partner">
+  <div class="inner">
+    <p class="eyebrow">Lesson 07 <i>· Mahler, Salem &amp; Lehmer</i></p>
+    <h2 tabindex="-1" data-pagehead>The Dissolved Helix &amp; Its Orthogonal Partner</h2>
+    <p class="dek">The golden strand cannot couple to a copy of itself. The only closure is the quartic
+      K, which straddles the discriminant flip — terrain on one face, a π/2 rotation on the other.</p>
+
+    <div class="thread"><span class="lbl">carries forward</span>
+      <div class="chips">
+        <button class="chip" data-goto="4"><span class="n">L4</span>the charge {0,2} vs {1,3}</button>
+        <button class="chip" data-goto="5"><span class="n">L5</span>spec(ad<sub>R</sub>) = {0, ±√5}</button>
+        <button class="chip" data-goto="3"><span class="n">L3</span>the seed K = x⁴+5x²−5</button>
+      </div>
+    </div>
+
+    <div class="run"><b>10/10 · 7/7</b><i>companion-polytope hull certificates pass</i></div>
+    <p class="small">Reads from <a href="../papers/2026-07-helix-orthogonal-partner.pdf"><em>The
+      Dissolved Helix and Its Orthogonal Partner</em></a>.</p>
+
+    <h3>§1 <em>&nbsp;The self-coupling obstruction</em></h3>
+    <p>The golden companion R = [[0,1],[1,1]] satisfies R² = R + I, with self-action spectrum {0, ±√5}
+      and angle charge in the sublattice {0, 2} ⊂ ℤ/4ℤ. Three independent facts converge to say it
+      cannot bind to a copy of itself.</p>
+
+    <div class="eq"><span class="cid">Cor · no self-coupling</span>
+      [R, R] = 0&nbsp;·&nbsp; {0,2} + {0,2} ≡ {0,2}&nbsp;·&nbsp; M grows, never returns to 1
+      <span class="note"><span class="tag forced">forced</span> The generative grade [R, R] vanishes
+        identically (Cayley–Hamilton). Self-composition keeps the charge in {0, 2} and never reaches
+        {1, 3}. The magnitude climbs φ → φ² → φ⁴ → … , never back to the cyclotomic floor. And the
+        Salem channel is empty (Lesson 5). Closure requires the orthogonal charges {1, 3}, which no
+        self-operation supplies.</span>
+    </div>
+
+    <h3>§2 <em>&nbsp;The flip, and the seed that straddles it</em></h3>
+    <p>For the gate family g<sub>C</sub>(x) = x² + x − C the discriminant D = 1 + 4C controls everything
+      at once — the roots, the field, the trace-form signature, and the channel character:</p>
+
+    <div class="eq"><span class="cid">Thm · the flip D = 1 + 4C</span>
+      det G = 1 + 4C = D;&nbsp;&nbsp; D &gt; 0 Riemannian (real growth),&nbsp;&nbsp; D &lt; 0 Lorentzian (rotation)
+      <span class="note"><span class="tag forced">forced</span> The trace-form Gram determinant equals
+        the discriminant: the metric signature <em>is</em> the discriminant sign. The flip is at
+        C = −1/4. The golden strand is the D &gt; 0 face; one seed carries both.</span>
+    </div>
+
+    <div class="eq"><span class="cid">test_p1_09_kform</span>
+      K(x) = x⁴ + 5x² − 5:&nbsp;&nbsp; real ±K = ±5<sup>1/4</sup>/φ (terrain),&nbsp;&nbsp; imaginary ±iβ (π/2 turn),&nbsp;&nbsp; M(K) = β² = φ²√5 ≈ 5.854
+      <span class="note"><span class="tag forced">forced</span> Writing y = x², the quadratic y² + 5y − 5
+        has roots straddling zero: y₊ ≈ 0.854 &gt; 0 gives the real pair, y₋ ≈ −5.854 &lt; 0 gives the
+        imaginary pair. φ generates the terrain (the √5-field); the quarter-turn i supplies the
+        rotation.</span>
+    </div>
+
+    <p>K is the unique catalog seed realizing all four charges: real roots at {0, 2}, imaginary roots at
+      {1, 3}. Its charge axis {1, 3} is <em>orthogonal</em> to the golden axis {0, 2} — a quarter-turn
+      apart — so {0, 2} ⊔ {1, 3} completes ℤ/4ℤ. (The parity criterion: an even quartic with a negative
+      x²-root places its complex roots on the imaginary axis; the sibling quartics "cons" and "res"
+      generate the same field ℚ(5<sup>1/4</sup>) but are non-even, so their complex roots sit off the
+      charge lattice.)</p>
+
+    <div class="eq" style="border-left-color:var(--verdigris)"><span class="cid">Thm · two faces of one flip</span>
+      golden strand = D &gt; 0 terrain;&nbsp; K adjoins the D &lt; 0 rotation;&nbsp; only closure is the partner, not a copy
+      <span class="note"><span class="tag forced">forced</span> algebraic content; the "helix" reading
+        is <span class="tag declared">declared</span> (posited) — an interpretive overlay on a forced
+        substrate. A helix cannot couple to a copy of itself, only to the rotation face of its own flip.</span>
+    </div>
+
+    <h3>§3 <em>&nbsp;The transferable object: the harness</em></h3>
+    <p>The helix entered as an external structure carrying a bundle of claims; the exact substrate
+      adjudicated each. That procedure — the <strong>harness</strong> — is what transfers, not the
+      helix. It partitions imported claims into survivors (forced, become internal relations),
+      casualties (refuted — the negation is forced), and residue (posited / open).</p>
+
+    <div class="tw"><table class="prose"><caption class="vh">Lesson 7 · the harness partition</caption>
+      <thead><tr><th scope="col">imported claim</th><th scope="col">verdict</th></tr></thead>
+      <tbody>
+        <tr><td>screw generator = R, R² = R + I; coupling rate = spec(ad<sub>R</sub>)</td><td><span class="tag forced">forced</span> survives</td></tr>
+        <tr><td>terrain/rotation = two faces of D = 1 + 4C; closure via partner K</td><td><span class="tag forced">forced</span> survives</td></tr>
+        <tr><td>a helix couples to a copy of itself</td><td><em>refuted</em> — [R,R]=0, empty slot</td></tr>
+        <tr><td>the φ⁻⁴ ≈ 0.146 cutoff; the algebra is <em>founded on</em> the helix</td><td><em>refuted</em> — superseded</td></tr>
+        <tr><td>⊗ = "intertwine", ⊕ = "stack"; helix as a <em>reading</em> of the flip</td><td><span class="tag declared">posited</span> residue</td></tr>
+      </tbody>
+    </table></div>
+
+    <p>The asymmetry is the substance: a single exact counterexample refutes a universal decisively,
+      while a finite search certifies only to <span class="tag computed">computed</span>, never
+      <span class="tag forced">forced</span>. A run that refutes nothing has imported nothing testable —
+      so the substrate can adjudicate a <em>restraint</em> but not a bare <em>generator</em>.</p>
+
+    <div class="cpwrap">
+      <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Give the three
+        independent reasons the golden mode cannot couple to a copy of itself.</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>(1) The generative grade [R, R] = 0 identically. (2) The charge stays in the sublattice
+            {0, 2} and never reaches {1, 3}. (3) The magnitude grows away from the closure locus M = 1.
+            Plus the Salem channel is empty — so closure needs an orthogonal partner, not a copy.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Why is K = x⁴ + 5x² − 5
+        the seed that completes ℤ/4ℤ, and not the other ℚ(5<sup>1/4</sup>) quartics?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>K is <em>even</em> (a polynomial in x²) with a negative x²-root, so its complex roots are
+            <em>purely imaginary</em> — argument ±π/2, charges {1, 3}. The sibling quartics generate the
+            same field but are non-even, so their complex roots carry nonzero real part and land off the
+            (π/2)ℤ charge lattice.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">In the harness, why can
+        a finite exact search refute a universal but never prove one?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>A single exact witness x with ¬γ(x) certifies ¬γ — decisive from one instance. But no
+            finite set of instances entails ∀x γ(x); the sound tag on a passed range is
+            <span class="tag computed">computed</span>, and promotion to
+            <span class="tag forced">forced</span> requires a proof over the whole domain.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="nextup"><b>next · Lesson 8</b>One level up. A reduction lemma forces inertness for Pisot
+      numbers with ≤ 1 non-real pair; the first open case is the quintic two-pair pattern — and an
+      exhaustive census settles it.</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LESSON 8 ══════════════════════════ -->
+<section id="lesson-8" class="page" data-title="8 · The Pisot Residue">
+  <div class="inner">
+    <p class="eyebrow">Lesson 08 <i>· Mahler, Salem &amp; Lehmer</i></p>
+    <h2 tabindex="-1" data-pagehead>The Pisot Cross-Shell Residue</h2>
+    <p class="dek">A ν-reduction lemma forces relational inertness up to one non-real pair; then an
+      exhaustive census of 3125 quintics executes the first open case — with an honest erratum attached.</p>
+
+    <div class="thread"><span class="lbl">carries forward</span>
+      <div class="chips">
+        <button class="chip" data-goto="1"><span class="n">L1</span>Pisot vs Salem numbers</button>
+        <button class="chip" data-goto="5"><span class="n">L5</span>the trace redirection</button>
+        <button class="chip" data-goto="3"><span class="n">L3</span>the no-Salem exclusion</button>
+      </div>
+    </div>
+
+    <div class="run"><b>3125 → 67 → 0</b><i>quintics · two-pair Pisot · mirrored cross-shell classes</i></div>
+    <p class="small">Reads from <a href="../papers/2026-07-pisot-residue.pdf"><em>The Pisot Cross-Shell
+      Residue</em></a>; carries the <a href="#ledger">D5 erratum</a>.</p>
+
+    <h3>§1 <em>&nbsp;The ratio object and the scan as a decision</em></h3>
+    <p>For a monic p with roots α<sub>1</sub>, …, α<sub>n</sub>, the <strong>ratio object</strong>
+      records all ordered root ratios:</p>
+
+    <div class="eq"><span class="cid">Prop · ratio object</span>
+      Rat<sub>p</sub>(x) = prim Res<sub>y</sub>(p(y), p(xy)) ∈ ℤ[x],&nbsp;&nbsp; deg = n², roots {α<sub>j</sub>/α<sub>i</sub>}
+      <span class="note"><span class="tag forced">forced</span> Two roots of equal modulus are
+        <em>coherent</em> iff their ratio is a root of unity, and a primitive M-th root of unity forces
+        Φ<sub>M</sub> | Rat<sub>p</sub> (Gauss). Since Φ<sub>M</sub> | P forces M ≤ 2(deg P)², the
+        complete contact scan is a finite decision procedure entirely in ℤ[x] — no float crosses it.</span>
+    </div>
+
+    <h3>§2 <em>&nbsp;The real-pair ν-reduction, and inertness below two shells</em></h3>
+    <p>The lemma that does the work: for a real β and non-real α in a conjugation-closed root set,
+      α ≈ β iff α/ᾱ is a root of unity — and α/ᾱ is itself a root of Rat<sub>p</sub>. So every
+      real×non-real coherence question is decided by the scan of Rat<sub>p</sub> alone.</p>
+
+    <div class="eq"><span class="cid">Thm · Pisot inertness ≤ 1 pair</span>
+      every Pisot number with ≤ 1 non-real conjugate pair is <b>relationally inert</b>
+      <span class="note"><span class="tag forced">forced</span> The dominant root θ &gt; 1 pins its
+        modulus (all others lie in the open unit disk), so modulus pinning excludes every torsion ratio
+        between distinct conjugates; λ/λ̄ is not torsion, so no real×non-real pair is coherent. This
+        covers every Pisot of degree ≤ 4 and every quintic of "mixed" pattern. The first genuinely open
+        case is the quintic <em>two-pair</em> pattern (θ, λ<sub>1</sub>, λ̄<sub>1</sub>, λ<sub>2</sub>, λ̄<sub>2</sub>).</span>
+    </div>
+
+    <h3>§3 <em>&nbsp;The exhaustive quintic execution</em></h3>
+    <p>Over the box of 3125 monic quintics with coefficients in [−2, 2], exact certification (e ≠ 0,
+      ±reciprocal rejection, irreducibility, Sturm pattern, rational-rectangle disk certificates) yields
+      83 Pisot quintics: 0 real-only, 16 mixed (typed by §2), and <strong>67 two-pair</strong>, all on
+      distinct shells. The composed-square instrument C₂ decides each:</p>
+
+    <div class="eq"><span class="cid">Thm · quintic box result</span>
+      all 67 two-pair C₂ scans return exactly {Φ₁²⁰} — <b>zero mirrored cross-shell classes</b>
+      <span class="note"><span class="tag forced">forced</span> per instance, <span class="tag computed">computed</span>
+        over the box. C₂(x) = Res<sub>y</sub>(S*(y), y<sup>d</sup>S*(x/y)) has degree d² = 400; the scan
+        returning only Φ₁²⁰ certifies that no product of two unimodular Rat°-roots is a root of unity, so
+        no coherence exists. Rat°<sub>p</sub> is squarefree on all 67. Two instances were independently
+        re-derived end-to-end in a second engine, in exact agreement.</span>
+    </div>
+
+    <div class="eq" style="border-left-color:var(--ochre)"><span class="cid">ERRATA D5 · honest correction</span>
+      Rat°<sub>p</sub> is irreducible on <b>66 of 67</b>, not all 67 — the theorem's inertness is untouched
+      <span class="note">The source note claimed Rat°<sub>p</sub> "irreducible of degree 20 on all 67";
+        a filed erratum corrects this to 66/67. The lone exception is p = x⁵ − x³ − 2x² − 2x − 1 with
+        Gal(p) = D₅, whose Rat°<sub>p</sub> splits into two self-reciprocal degree-10 factors. But both
+        factors carry 2 unimodular roots, so S* = Rat°<sub>p</sub> is still the full degree-20 product,
+        deg C₂ = 400, and the scan still returns {Φ₁²⁰}: the D₅ instance is relationally inert exactly
+        as the theorem concludes. The <em>squarefree</em>-on-all-67 claim and Theorem "box" are correct.</span>
+    </div>
+
+    <p>The erratum comes with an upgrade that supersedes the old <span class="tag plausible">plausible</span>
+      genericity guess with a <span class="tag forced">forced</span> criterion: for squarefree
+      Rat°<sub>p</sub>, irreducibility over ℚ is exactly <strong>2-transitivity of Gal(p)</strong> on the
+      ordered root pairs. The Galois census of the 67 is S₅ × 65, M₂₀ × 1, D₅ × 1: M₂₀ = AGL(1,5) is
+      sharply 2-transitive (irreducible), while D₅ has two length-10 orbits (the observed split) —
+      reproducing 66/67 with no residue.</p>
+
+    <p>Companion replications reinforce the picture: the degree-12 Salem census (378 twist-classes, tally
+      39/256/46/37, all 37 Salems inert with scan {Φ₁¹²}) and a Pisot-quartic sweep (103/103 scans
+      {Φ₁⁴}). The general <strong>Pisot-inertness conjecture</strong> — every Pisot number is inert —
+      remains <span class="tag open">open</span>; a "no-level-2-pin" result shows transport
+      <em>cannot</em> prove it, so a genuinely new mechanism (heights, multiplicative-relation bounds) is
+      required.</p>
+
+    <div class="cpwrap">
+      <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Why does the dominant
+        Pisot root make everything below two non-real shells inert?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>θ &gt; 1 has a uniquely attained modulus (all other conjugates are inside the unit disk), so
+            modulus pinning forbids any root-of-unity ratio between distinct conjugates. Then λ/λ̄ is not
+            torsion, and by the ν-reduction lemma no real×non-real pair is coherent — with ≤ 1 non-real
+            pair there is nothing left to decide.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">The D5 erratum breaks
+        "irreducible on all 67." Why is Theorem box still intact?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>The theorem asserts squarefreeness (67/67, correct) and inertness, not irreducibility. For
+            the D₅ exception, Rat°<sub>p</sub> splits into two self-reciprocal degree-10 factors, but
+            both carry 2 unimodular roots, so S* is still the whole degree-20 product, deg C₂ = 400, and
+            the scan still returns {Φ₁²⁰}. The instance is inert exactly as claimed.</p>
+        </div>
+      </details>
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">What replaced the
+        plausible genericity guess, and how does it explain 66/67?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>A forced criterion: for squarefree Rat°<sub>p</sub>, irreducibility ⇔ Gal(p) acts
+            2-transitively on ordered root pairs. The census is S₅ × 65 and M₂₀ × 1 (both 2-transitive ⇒
+            irreducible) plus D₅ × 1 (two length-10 orbits ⇒ the split). That is 66 irreducible, 1
+            reducible — exactly the observed 66/67.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="nextup"><b>next · The Ledger</b>What eight lessons produced: the forced walls, the
+      generated objects, the computed censuses, and the open problems left standing — with every source
+      paper linked.</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LEDGER ══════════════════════════ -->
+<section id="ledger" class="page" data-title="Ledger">
+  <div class="inner">
+    <p class="eyebrow">Closing <i>· what eight lessons produced</i></p>
+    <h2 tabindex="-1" data-pagehead>The Ledger</h2>
+    <p class="dek">The whole course is one confinement seen from many sides. Here is what is forced, what
+      is computed over a range, what is a principled choice, and what is left open — each keyed to its
+      paper.</p>
+
+    <h3>§1 <em>&nbsp;The claim ledger</em></h3>
+    <div class="tw"><table class="prose"><caption class="vh">Ledger — §1 load-bearing claims</caption>
+      <thead><tr><th scope="col">claim</th><th scope="col">status</th><th scope="col">lesson</th></tr></thead>
+      <tbody>
+        <tr><td>Empty quadratic strip (1, φ); minimizer φ at discriminant 5</td><td><span class="tag forced">forced</span></td><td>2</td></tr>
+        <tr><td>Spectral operators preserve {1} ∪ [φ, ∞); M(𝒮) realized at φ</td><td><span class="tag forced">forced</span></td><td>2</td></tr>
+        <tr><td>Catalog arguments in (π/2)ℤ, conserved by ⊕, ⊗, (·)²</td><td><span class="tag forced">forced</span></td><td>3</td></tr>
+        <tr><td><strong>No Salem number is emitted</strong>; M(𝒮) ⊆ {1} ∪ [μ<sub>S</sub>, ∞)</td><td><span class="tag forced">forced</span></td><td>3</td></tr>
+        <tr><td>Circulant forced (cyclotomic/CM); commutator is the one door</td><td><span class="tag forced">forced</span></td><td>3, 7</td></tr>
+        <tr><td>Angle charge ℤ/4ℤ generates x⁴−1, the floor φ, the graded normal form</td><td><span class="tag computed">computed</span></td><td>4</td></tr>
+        <tr><td>Minimal chain degree 2 ⇒ ℤ/4ℤ ⇒ φ; φ derived, not posited</td><td><span class="tag forced">forced</span></td><td>4</td></tr>
+        <tr><td>Trace redirection τ₀ = β + β⁻¹ &gt; 2 &gt; φ; slot rejects filling</td><td><span class="tag forced">forced</span></td><td>5</td></tr>
+        <tr><td>β<sub>n</sub> → φ ⇒ τ₀ → √5 ∈ spec(ad<sub>R</sub>); slope φ⁻¹, ratio → φ</td><td><span class="tag forced">forced</span> / <span class="tag computed">computed</span></td><td>5</td></tr>
+        <tr><td>Signature lattice of K = ℚ(√2,√3,5<sup>1/4</sup>): Salem only at degree 4, β₄ &gt; φ</td><td><span class="tag forced">forced</span></td><td>3, 7</td></tr>
+        <tr><td>Pentagon: non-recip M ≥ μ<sub>S</sub>; degree-4 M ≥ φ⁴; x⁵−m gives μ(5)=2</td><td><span class="tag forced">forced</span></td><td>6</td></tr>
+        <tr><td>General μ(5) = 2 (M ∉ (1, 2) for all charge-ℤ/5ℤ)</td><td><span class="tag computed">computed</span></td><td>6</td></tr>
+        <tr><td>Helix reading over the forced substrate; the harness partition</td><td><span class="tag declared">declared</span></td><td>7</td></tr>
+        <tr><td>Pisot inertness ≤ 1 non-real pair; 67/67 quintic census inert</td><td><span class="tag forced">forced</span> / <span class="tag computed">computed</span></td><td>8</td></tr>
+        <tr><td>Rat°<sub>p</sub> irreducible 66/67 (D5 erratum); 2-transitivity criterion</td><td><span class="tag forced">forced</span></td><td>8</td></tr>
+        <tr><td>Kronecker M=1 iff cyclotomic; Smyth non-recip M ≥ μ<sub>S</sub></td><td><span class="tag estab">established</span></td><td>1</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>§2 <em>&nbsp;The D5 erratum, in full</em></h3>
+    <p>The one in-lineage correction this course carries, stated honestly per the errata register. The
+      pisot-residue note's §"Decision (stage 2)" claimed Rat°<sub>p</sub> was "squarefree and in fact
+      irreducible of degree 20 on <em>all</em> 67." The squarefree-on-all-67 claim and Theorem "box" are
+      correct; the irreducibility claim is off by one. Rat°<sub>p</sub> is irreducible on
+      <strong>66 of 67</strong>, the sole exception</p>
+    <div class="eq"><span class="cid">ERRATA.md · D5</span>
+      p = x⁵ − x³ − 2x² − 2x − 1,&nbsp;&nbsp; Gal(p) = D₅,&nbsp;&nbsp; Rat°<sub>p</sub> = two self-reciprocal degree-10 factors
+      <span class="note">Certified by exact re-multiplication and independently reproduced (sympy: order
+        10, discriminant 2209 = 47² so Gal ⊆ A₅, p irreducible over ℚ). Both degree-10 factors carry 2
+        unimodular roots, so S* = Rat°<sub>p</sub> stays the full degree-20 product, deg C₂ = 400, and
+        the cyclotomic scan still returns {Φ₁²⁰}: the D₅ instance is relationally inert. The theorem's
+        conclusion is untouched.</span>
+    </div>
+
+    <h3>§3 <em>&nbsp;What is still open</em></h3>
+    <ul>
+      <li><strong>Lehmer's problem</strong> <span class="tag open">open</span> — untouched throughout,
+        and deliberately so. The corpus routes around it; it does not move it.</li>
+      <li><strong>The free-commutator door</strong> <span class="tag open">open</span> — the framework's
+        own commutator is closed structurally (the self-action), but no single uniform theorem covers
+        <em>every</em> free commutator at unbounded size.</li>
+      <li><strong>μ(5) = 2 in general</strong> <span class="tag open">open</span> — the residual is the
+        reciprocal/Salem core wearing a pentagon; promotion needs the Schur–Siegel–Smyth trace-problem
+        lemma, named not hidden.</li>
+      <li><strong>The (1, φ) gap off the real sector</strong> <span class="tag open">open</span> — φ is
+        forced on quadratics and the totally real sector; the sector whose measure rides on purely
+        imaginary conjugates keeps a plausible tag.</li>
+      <li><strong>General Pisot inertness</strong> <span class="tag open">open</span> — transport is
+        proved insufficient, so a genuinely new mechanism is required.</li>
+    </ul>
+
+    <h3>§4 <em>&nbsp;The seven source papers</em></h3>
+    <div class="tw"><table class="prose"><caption class="vh">Ledger — §4 source papers</caption>
+      <thead><tr><th scope="col">paper</th><th scope="col">what it contributes</th><th scope="col">PDF</th></tr></thead>
+      <tbody>
+        <tr><td>The Emission–Gap Theorem</td><td>no Salem in the spectral image; angle confinement; cost floor log μ<sub>S</sub>, realized log φ</td><td><a href="../papers/2026-06-emission-gap.pdf">PDF</a></td></tr>
+        <tr><td>Lehmer's Box</td><td>the two walls as one box; the sidestep stated precisely; the door and the lock</td><td><a href="../papers/2026-06-lehmers-box.pdf">PDF</a></td></tr>
+        <tr><td>The Generative Content of a Conserved Emptiness</td><td>the ℤ/4ℤ charge; five objects; φ derived from the decision arity</td><td><a href="../papers/2026-06-generative-emptiness.pdf">PDF</a></td></tr>
+        <tr><td>The Occupant of the Salem Slot</td><td>trace redirection β ↦ τ₀; the √5 limit at the floor and its rate</td><td><a href="../papers/2026-06-salem-slot.pdf">PDF</a></td></tr>
+        <tr><td>The ℤ/5ℤ Case of the No-Salem Dichotomy</td><td>the pentagon; Smyth sharpens the floor; why μ(5)=2 stays computed</td><td><a href="../papers/2026-06-z5-no-salem-dichotomy.pdf">PDF</a></td></tr>
+        <tr><td>The Dissolved Helix and Its Orthogonal Partner</td><td>no self-coupling; the quartic K completes ℤ/4ℤ; the harness</td><td><a href="../papers/2026-07-helix-orthogonal-partner.pdf">PDF</a></td></tr>
+        <tr><td>The Pisot Cross-Shell Residue</td><td>the ν-reduction lemma; the 3125-quintic census; the D5 erratum</td><td><a href="../papers/2026-07-pisot-residue.pdf">PDF</a></td></tr>
+      </tbody>
+    </table></div>
+    <p class="small">Companion design reference: <a href="../papers/2026-07-exact-arithmetic.html"><em>Exact
+      Arithmetic — a thirteen-lesson course</em></a>, whose Lesson 1 "The Two Walls" overlaps this
+      course. Full LaTeX sources are on GitHub under
+      <a href="https://github.com/Echo-S-Studios/Echo-S-Research/tree/main/papers">Echo-S-Research/papers</a>;
+      the verification scripts live in the repository's <code>code/</code> and <code>tests/</code> trees.</p>
+
+    <p class="endnote">Return to <a href="../learn.html">← The course</a> ·
+      <a href="../index.html">The archive</a>. Every non-asymptotic claim above is machine-verified in
+      exact arithmetic; no float crosses a decision boundary.</p>
+  </div>
+</section>
+
+</main>
+
+<script>
+(function(){
+  var deck  = document.getElementById('deck');
+  var pages = Array.prototype.slice.call(deck.querySelectorAll('.page'));
+  var axis  = document.getElementById('axis');
+  var prev  = document.getElementById('prev');
+  var next  = document.getElementById('next');
+  var mbtn  = document.getElementById('menubtn');
+  var mlab  = document.getElementById('menulabel');
+  var mpan  = document.getElementById('menupanel');
+  var current = 0, jumping = false, jumpTimer = null, raf = null;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var hasInert = ('inert' in HTMLElement.prototype);
+  var hasScrollEnd = ('onscrollend' in window);
+  var FOCUSABLE = 'a[href],button,summary,input,select,textarea,[tabindex]';
+
+  /* the rail is one tab stop: a tablist with roving tabindex and automatic activation */
+  /* a plain group with roving focus: no tab roles without real tabpanels */
+  axis.setAttribute('role', 'group');
+  axis.setAttribute('aria-label', 'Lessons');
+  pages.forEach(function(pg, i){
+    var b = document.createElement('button');
+    b.className = 'tick' + ((i === 0 || i === pages.length - 1) ? ' edge' : '');
+    b.type = 'button';
+    b.setAttribute('tabindex', '-1');
+    var label = pg.getAttribute('data-title') || ('Page ' + (i + 1));
+    b.setAttribute('aria-label', label);
+    b.title = label;
+    var s = document.createElement('span');
+    s.textContent = (i === 0 || i === pages.length - 1) ? '' : String(i);
+    b.appendChild(s);
+    b.addEventListener('click', function(){ go(i); });
+    axis.appendChild(b);
+
+    var m = document.createElement('button');
+    m.type = 'button';
+    m.innerHTML = '<span class="n">' + ((i === 0 || i === pages.length - 1) ? '&#183;' : i) +
+                  '</span><span>' + label.replace(/^\d+\s*·\s*/, '') + '</span>';
+    m.addEventListener('click', function(){ closeMenu(); go(i); });
+    mpan.appendChild(m);
+  });
+  var ticks = Array.prototype.slice.call(axis.querySelectorAll('.tick'));
+  var mitems = Array.prototype.slice.call(mpan.querySelectorAll('button'));
+
+  function setActive(i){
+    pages.forEach(function(pg, j){
+      var off = (j !== i);
+      if (hasInert){
+        pg.inert = off;
+      } else {
+        pg.setAttribute('aria-hidden', off ? 'true' : 'false');
+        Array.prototype.forEach.call(pg.querySelectorAll(FOCUSABLE), function(el){
+          if (off){
+            if (!el.hasAttribute('data-ti')) el.setAttribute('data-ti', el.getAttribute('tabindex') || '');
+            el.setAttribute('tabindex', '-1');
+          } else if (el.hasAttribute('data-ti')){
+            var t = el.getAttribute('data-ti');
+            if (t === '') el.removeAttribute('tabindex'); else el.setAttribute('tabindex', t);
+            el.removeAttribute('data-ti');
+          }
+        });
+      }
+    });
+  }
+
+  function mark(i){
+    current = i;
+    ticks.forEach(function(t, j){
+      var on = (j === i);
+      t.setAttribute('aria-current', on ? 'true' : 'false');
+      t.setAttribute('tabindex', on ? '0' : '-1');   /* roving: one stop, not fifteen */
+    });
+    mitems.forEach(function(m, j){ m.setAttribute('aria-current', j === i ? 'true' : 'false'); });
+    if (mlab) mlab.textContent = (i + 1) + ' / ' + pages.length;
+    prev.disabled = (i === 0);
+    next.disabled = (i === pages.length - 1);
+    setActive(i);
+  }
+
+  /* arrival detection: scrollend where available, a bounded poll otherwise */
+  function settle(expected){
+    var done = function(){
+      jumping = false;
+      deck.removeEventListener('scrollend', done);
+      clearTimeout(jumpTimer);
+    };
+    if (hasScrollEnd){
+      deck.addEventListener('scrollend', done, { once: true });
+      jumpTimer = setTimeout(done, 1200);                       /* safety net only */
+    } else {
+      var t0 = Date.now();
+      (function poll(){
+        if (Math.abs(deck.scrollLeft - expected) < 2 || Date.now() - t0 > 1200){ done(); return; }
+        jumpTimer = setTimeout(poll, 40);
+      })();
+    }
+  }
+
+  function go(i, opts){
+    opts = opts || {};
+    i = Math.max(0, Math.min(pages.length - 1, i));
+    var behavior = (reduce.matches || Math.abs(i - current) > 1) ? 'auto' : 'smooth';
+    var target = i * deck.clientWidth;
+    jumping = true;
+    clearTimeout(jumpTimer);
+    mark(i);
+    deck.scrollTo({ left: target, behavior: behavior });
+    settle(target);
+    if (opts.history !== false){
+      try { history.pushState({ p: i }, '', '#' + pages[i].id); } catch (e) {}
+    }
+    if (opts.focus !== false){
+      var head = pages[i].querySelector('[data-pagehead]');
+      if (head) { try { head.focus({ preventScroll: true }); } catch (e) { head.focus(); } }
+    }
+  }
+
+  deck.addEventListener('scroll', function(){
+    if (jumping || raf) return;
+    raf = requestAnimationFrame(function(){
+      raf = null;
+      var i = Math.round(deck.scrollLeft / (deck.clientWidth || 1));
+      if (i !== current && i >= 0 && i < pages.length){
+        mark(i);
+        try { history.replaceState({ p: i }, '', '#' + pages[i].id); } catch (e) {}
+      }
+    });
+  });
+
+  prev.addEventListener('click', function(){ go(current - 1); });
+  next.addEventListener('click', function(){ go(current + 1); });
+
+  /* the rail handles its own arrows (automatic activation); the document handles the rest */
+  axis.addEventListener('keydown', function(e){
+    var k = e.key, i = null;
+    if (k === 'ArrowRight' || k === 'ArrowDown') i = current + 1;
+    else if (k === 'ArrowLeft' || k === 'ArrowUp') i = current - 1;
+    else if (k === 'Home') i = 0;
+    else if (k === 'End') i = pages.length - 1;
+    else return;
+    e.preventDefault(); e.stopPropagation();
+    i = Math.max(0, Math.min(pages.length - 1, i));
+    go(i, { focus: false });
+    ticks[i].focus();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var t = e.target;
+    /* never steal Left/Right from a control or a horizontally scrollable region */
+    if (t && t.closest && t.closest('button, a, summary, input, select, textarea, [contenteditable], .srcbox, .eq, .tw')) return;
+    if (t && t.isContentEditable) return;
+    if (axis.contains(t)) return;
+    /* Escape must be tested BEFORE the menu early-return, or it can never fire */
+    if (e.key === 'Escape' && mpan && !mpan.hidden){ e.preventDefault(); closeMenu(); mbtn.focus(); return; }
+    if (mpan && !mpan.hidden) return;
+    if (e.key === 'ArrowRight'){ e.preventDefault(); go(current + 1); }
+    else if (e.key === 'ArrowLeft'){ e.preventDefault(); go(current - 1); }
+  });
+
+  function openMenu(){
+    mpan.hidden = false;
+    mbtn.setAttribute('aria-expanded', 'true');
+    if (hasInert){ deck.inert = true; prev.inert = true; next.inert = true; }
+    mitems[current].focus();
+  }
+  function closeMenu(){
+    mpan.hidden = true;
+    mbtn.setAttribute('aria-expanded', 'false');
+    if (hasInert){ deck.inert = false; prev.inert = false; next.inert = false; setActive(current); }
+  }
+  /* focus stays inside the open menu */
+  mpan.addEventListener('keydown', function(e){
+    if (e.key !== 'Tab') return;
+    var f = mitems.concat([mbtn]);
+    var i = f.indexOf(document.activeElement);
+    if (i < 0) return;
+    e.preventDefault();
+    f[(i + (e.shiftKey ? -1 : 1) + f.length) % f.length].focus();
+  });
+  if (mbtn){
+    mbtn.addEventListener('click', function(){ mpan.hidden ? openMenu() : closeMenu(); });
+  }
+
+  document.addEventListener('click', function(e){
+    var el = e.target && e.target.closest ? e.target.closest('[data-goto]') : null;
+    if (!el) return;
+    go(parseInt(el.getAttribute('data-goto'), 10));
+  });
+  document.addEventListener('click', function(e){
+    var a = e.target && e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if (!a) return;
+    var i = pages.map(function(p){ return p.id; }).indexOf(a.getAttribute('href').slice(1));
+    if (i >= 0){ e.preventDefault(); go(i); }
+  });
+
+  window.addEventListener('popstate', function(e){
+    var i = (e.state && typeof e.state.p === 'number')
+      ? e.state.p
+      : pages.map(function(p){ return p.id; }).indexOf((location.hash || '').slice(1));
+    if (i >= 0) go(i, { history: false });
+  });
+
+  var rt = null;
+  window.addEventListener('resize', function(){
+    clearTimeout(rt);
+    rt = setTimeout(function(){ deck.scrollLeft = current * deck.clientWidth; }, 120);
+  });
+
+  var restore = [];
+  window.addEventListener('beforeprint', function(){
+    restore = [];
+    Array.prototype.forEach.call(document.querySelectorAll('details'), function(d){
+      restore.push([d, d.open]); d.open = true;
+    });
+    if (hasInert) pages.forEach(function(p){ p.inert = false; });
+  });
+  window.addEventListener('afterprint', function(){
+    restore.forEach(function(pair){ pair[0].open = pair[1]; });
+    setActive(current);
+  });
+
+  var start = pages.map(function(p){ return p.id; }).indexOf((location.hash || '').slice(1));
+  if (start < 0) start = 0;
+  mark(start);
+  requestAnimationFrame(function(){ deck.scrollLeft = start * deck.clientWidth; });
+  try { history.replaceState({ p: start }, '', '#' + pages[start].id); } catch (e) {}
+})();
+</script>
+</body>
+</html>

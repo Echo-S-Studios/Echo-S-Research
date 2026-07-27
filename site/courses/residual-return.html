@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Number Fields as Learning Geometry — Residual Return · Echo S Research</title>
+<style>
+:root{
+  --ink:#16222c;
+  --ink-soft:#40525f;
+  --ink-faint:#5b6b76;
+  --ground:#e3e9ec;
+  --panel:#f5f8f9;
+  --panel-2:#eaeff1;
+  --rule:#c3cfd5;
+  --verdigris:#1c6355;
+  --verdigris-wash:#dceae6;
+  --ochre:#8a5a0d;
+  --ochre-wash:#f2e7d3;
+  --indigo:#33478a;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua","URW Palladio L",Georgia,serif;
+  --mono:ui-monospace,"SF Mono","Cascadia Mono","Roboto Mono",Menlo,Consolas,monospace;
+  --measure:63ch;
+  --head-h:62px;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  background:var(--ground);color:var(--ink);
+  font-family:var(--serif);font-size:17px;line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+}
+
+/* ─────────── header: the spectrum rail ─────────── */
+header{
+  position:fixed;top:0;left:0;right:0;height:var(--head-h);z-index:40;
+  display:flex;align-items:center;gap:14px;padding:0 16px;
+  background:rgba(227,233,236,.93);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--rule);
+}
+.brand{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-faint);white-space:nowrap}
+.brand b{color:var(--ink);font-weight:600}
+.rail{flex:1;display:flex;align-items:center;gap:0;min-width:0}
+.rail .axis{flex:1;display:flex;align-items:center;position:relative;height:26px}
+.rail .axis::before{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:var(--rule)}
+.tick{
+  position:relative;flex:1;display:flex;align-items:center;justify-content:center;
+  background:none;border:0;padding:0;height:26px;cursor:pointer;color:var(--ink-faint);
+  font-family:var(--mono);font-size:10px;letter-spacing:.02em;
+}
+.tick span{
+  position:relative;z-index:1;min-width:18px;height:18px;display:grid;place-items:center;
+  border:1px solid var(--rule);border-radius:2px;background:var(--panel);transition:all .18s
+}
+.tick:hover span{border-color:var(--ink-soft);color:var(--ink)}
+.tick[aria-current="true"] span{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.tick.edge span{border-radius:50%;min-width:10px;height:10px;font-size:0}
+.navbtn{
+  font-family:var(--mono);font-size:15px;line-height:1;
+  background:var(--panel);color:var(--ink);border:1px solid var(--rule);border-radius:3px;
+  width:30px;height:30px;cursor:pointer;display:grid;place-items:center;transition:all .16s
+}
+.navbtn:hover:not(:disabled){background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.navbtn:disabled{opacity:.32;cursor:default}
+:focus-visible{outline:2px solid var(--indigo);outline-offset:2px}
+
+/* ─────────── compact menu for narrow screens ─────────── */
+.menubtn{display:none;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;
+  letter-spacing:.06em;background:var(--panel);color:var(--ink);border:1px solid var(--rule);
+  border-radius:3px;height:34px;padding:0 11px;cursor:pointer;flex:1;justify-content:space-between}
+.menubtn b{font-size:13px;line-height:1}
+.menupanel{position:fixed;top:var(--head-h);left:0;right:0;bottom:0;z-index:39;
+  background:var(--ground);border-top:1px solid var(--rule);overflow-y:auto;padding:6px 0 40px}
+.menupanel[hidden]{display:none}
+.menupanel button{display:flex;width:100%;gap:12px;align-items:baseline;min-height:46px;
+  padding:10px 18px;background:none;border:0;border-bottom:1px solid var(--rule);
+  font-family:var(--serif);font-size:16px;color:var(--ink);text-align:left;cursor:pointer}
+.menupanel button .n{font-family:var(--mono);font-size:11px;color:var(--ink-faint);min-width:22px}
+.menupanel button[aria-current="true"]{background:var(--panel)}
+.menupanel button[aria-current="true"] .n{color:var(--verdigris)}
+
+/* ─────────── deck: horizontal pages ─────────── */
+#deck{
+  position:absolute;top:var(--head-h);bottom:0;left:0;right:0;
+  display:flex;overflow-x:auto;overflow-y:hidden;
+  scroll-snap-type:x mandatory;
+  scrollbar-width:none;
+}
+#deck::-webkit-scrollbar{display:none}
+.page{
+  flex:0 0 100%;height:100%;overflow-y:auto;scroll-snap-align:start;
+  padding:0 24px 96px;-webkit-overflow-scrolling:touch;
+}
+.inner{max-width:var(--measure);margin:0 auto;padding-top:44px}
+
+/* ─────────── type ─────────── */
+.eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.19em;text-transform:uppercase;
+  color:var(--verdigris);margin:0 0 12px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.eyebrow i{font-style:normal;color:var(--ink-faint)}
+h1{font-size:clamp(30px,6vw,44px);line-height:1.08;letter-spacing:-.015em;margin:0 0 10px;font-weight:600}
+h2{font-size:clamp(25px,4.6vw,33px);line-height:1.14;letter-spacing:-.012em;margin:0 0 8px;font-weight:600}
+.dek{font-size:19px;color:var(--ink-soft);line-height:1.45;margin:0 0 26px;font-style:italic}
+h3{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink);margin:34px 0 10px;font-weight:600;
+  padding-bottom:6px;border-bottom:1px solid var(--rule)}
+h3 em{font-style:normal;color:var(--ink-faint);font-weight:400}
+p{margin:0 0 15px}
+a{color:var(--indigo)}
+strong{font-weight:600}
+em{font-style:italic}
+.small{font-size:15px;color:var(--ink-soft)}
+ul,ol{margin:0 0 15px;padding-left:22px}
+li{margin-bottom:7px}
+code,.m{font-family:var(--mono);font-size:.88em;letter-spacing:-.01em}
+.m{white-space:nowrap}
+
+/* ─────────── equation strip ─────────── */
+.eq{
+  position:relative;margin:20px 0;padding:16px 74px 16px 18px;
+  background:var(--panel);border:1px solid var(--rule);border-left:2px solid var(--verdigris);
+  border-radius:2px;font-family:var(--mono);font-size:14.5px;line-height:1.75;
+  overflow-x:auto;
+}
+.eq .cid{
+  position:absolute;top:8px;right:10px;font-size:9.5px;letter-spacing:.12em;
+  color:var(--ink-faint);text-transform:uppercase
+}
+.eq b{font-weight:600;color:var(--verdigris)}
+.eq .note{display:block;margin-top:8px;font-family:var(--serif);font-size:14px;
+  color:var(--ink-soft);line-height:1.5;white-space:normal}
+
+/* matrices */
+.mat{display:inline-grid;gap:0 12px;vertical-align:middle;
+  position:relative;padding:2px 8px;margin:0 2px;font-family:var(--mono);font-size:.94em}
+.mat.c2{grid-template-columns:repeat(2,auto)}
+.mat.c3{grid-template-columns:repeat(3,auto)}
+.mat::before,.mat::after{content:"";position:absolute;top:0;bottom:0;width:4px;
+  border:1px solid var(--ink-soft)}
+.mat::before{left:0;border-right:0}
+.mat::after{right:0;border-left:0}
+.mat i{font-style:normal;text-align:right}
+
+/* ─────────── tables ─────────── */
+.tw{overflow-x:auto;margin:20px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--rule)}
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+th{font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;
+  text-align:left;padding:9px 12px 8px 0;color:var(--ink-faint);font-weight:600;
+  border-bottom:1px solid var(--rule);white-space:nowrap}
+td{padding:9px 12px 9px 0;border-bottom:1px solid var(--panel-2);vertical-align:top;line-height:1.45}
+tr:last-child td{border-bottom:0}
+td:first-child{font-family:var(--mono);font-size:13px;white-space:nowrap;color:var(--ink)}
+table.prose td:first-child{font-family:var(--serif);font-size:14.5px;white-space:normal}
+
+/* ─────────── tags ─────────── */
+.tag{display:inline-block;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;
+  text-transform:uppercase;padding:2px 6px;border-radius:2px;white-space:nowrap;
+  border:1px solid transparent;font-weight:600;vertical-align:2%}
+.tag.forced{background:var(--verdigris);color:#eef6f3}
+.tag.computed{background:var(--verdigris-wash);color:var(--verdigris);border-color:var(--verdigris)}
+.tag.declared{background:var(--ochre-wash);color:var(--ochre);border-color:var(--ochre)}
+.tag.plausible{background:transparent;color:var(--indigo);border:1px solid var(--indigo)}
+.tag.open{background:transparent;color:var(--ochre);border:1px dashed var(--ochre)}
+.tag.estab{background:transparent;color:var(--ink-faint);border:1px solid var(--rule)}
+
+/* ─────────── inherit / hand-on blocks ─────────── */
+.thread{
+  margin:0 0 28px;padding:13px 16px;background:var(--panel-2);border-radius:2px;
+  border:1px solid var(--rule);
+}
+.thread .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--ink-faint);display:block;margin-bottom:7px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{
+  font-family:var(--mono);font-size:11.5px;padding:3px 9px;border-radius:2px;
+  background:var(--panel);border:1px solid var(--rule);color:var(--ink);cursor:pointer;
+  transition:all .16s;text-align:left;line-height:1.35
+}
+.chip:hover{border-color:var(--verdigris);color:var(--verdigris)}
+.chip .n{color:var(--ink-faint);margin-right:5px}
+.chip:hover .n{color:var(--verdigris)}
+.handoff{
+  margin:30px 0 4px;padding:14px 16px;border:1px solid var(--verdigris);
+  background:var(--verdigris-wash);border-radius:2px;font-size:15px
+}
+.handoff .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--verdigris);display:block;margin-bottom:6px;font-weight:600}
+
+/* ─────────── run badge ─────────── */
+.run{
+  display:inline-flex;align-items:baseline;gap:9px;margin:0 0 24px;padding:6px 12px;
+  border:1px solid var(--verdigris);border-radius:2px;background:var(--panel);
+  font-family:var(--mono);font-size:11.5px;color:var(--verdigris)
+}
+.run b{font-size:15px;font-weight:600}
+.run i{font-style:normal;color:var(--ink-faint);letter-spacing:.06em;font-size:10px;
+  text-transform:uppercase}
+
+/* ─────────── checkpoint cards ─────────── */
+.cpwrap{margin:38px 0 0}
+.cphead{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink);border-bottom:1px solid var(--ink);padding-bottom:6px;margin-bottom:14px;
+  display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.cphead i{font-style:normal;color:var(--ink-faint);letter-spacing:.06em;font-size:9.5px}
+details.cp{
+  margin:0 0 10px;background:var(--panel);border:1px solid var(--rule);border-radius:2px;
+  transition:border-color .18s
+}
+details.cp[open]{border-color:var(--verdigris)}
+details.cp summary{
+  list-style:none;cursor:pointer;padding:13px 15px;display:flex;gap:12px;align-items:flex-start;
+  font-size:15.5px;line-height:1.5
+}
+details.cp summary::-webkit-details-marker{display:none}
+details.cp summary::marker{content:""}
+.qn{
+  flex:0 0 auto;font-family:var(--mono);font-size:10px;letter-spacing:.08em;font-weight:600;
+  color:var(--ink-faint);border:1px solid var(--rule);border-radius:2px;padding:2px 5px;margin-top:3px
+}
+details.cp[open] .qn{background:var(--verdigris);color:#eef6f3;border-color:var(--verdigris)}
+.qtext{flex:1}
+.reveal{
+  flex:0 0 auto;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--verdigris);border:1px solid var(--verdigris);border-radius:2px;padding:3px 7px;
+  margin-top:2px;white-space:nowrap;transition:all .16s
+}
+details.cp summary:hover .reveal{background:var(--verdigris);color:#eef6f3}
+details.cp[open] .reveal{background:var(--ink);border-color:var(--ink);color:var(--panel)}
+details.cp[open] .reveal::after{content:""}
+.ans{
+  border-top:1px solid var(--rule);margin:0 15px;padding:14px 0 16px;font-size:15.5px;
+  animation:fade .26s ease-out
+}
+.ans .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--verdigris);display:block;margin-bottom:7px;font-weight:600}
+.ans p:last-child{margin-bottom:0}
+@keyframes fade{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+  #deck{scroll-behavior:auto}
+}
+
+/* ─────────── cover ─────────── */
+.cover .inner{padding-top:6vh;max-width:70ch}
+.cover .rule{height:1px;background:var(--ink);margin:26px 0}
+.mono-list{font-family:var(--mono);font-size:13px;line-height:1.9;color:var(--ink-soft)}
+.mono-list b{color:var(--ink);font-weight:600}
+.mono-list span{color:var(--verdigris)}
+.howto{display:grid;gap:12px;margin:26px 0 0}
+.howto div{padding:12px 15px;background:var(--panel);border:1px solid var(--rule);border-radius:2px;
+  font-size:15px}
+.howto b{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--verdigris);display:block;margin-bottom:4px}
+.gapfig{margin:30px 0;padding:20px 18px 14px;background:var(--panel);border:1px solid var(--rule)}
+.gapline{position:relative;height:38px;margin:0 0 6px}
+.gapline .bar{position:absolute;top:18px;left:0;right:0;height:2px;background:var(--rule)}
+.gapline .seg{position:absolute;top:15px;height:8px;background:var(--verdigris);border-radius:1px}
+.gapline .band{position:absolute;top:6px;height:26px;border:1px dashed var(--ochre);
+  background:repeating-linear-gradient(45deg,transparent,transparent 5px,var(--ochre-wash) 5px,var(--ochre-wash) 10px)}
+.gapline .pt{position:absolute;top:11px;width:2px;height:16px;background:var(--ink)}
+.gapline .lb{position:absolute;top:-2px;font-family:var(--mono);font-size:10px;color:var(--ink-faint);
+  transform:translateX(-50%)}
+.gapcap{font-family:var(--mono);font-size:11px;color:var(--ink-soft);line-height:1.6}
+
+.endnote{margin-top:40px;padding-top:18px;border-top:1px solid var(--rule);
+  font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);letter-spacing:.02em}
+.nextup{margin-top:34px;padding:14px 16px;border:1px dashed var(--rule);border-radius:2px;
+  font-size:15px;color:var(--ink-soft)}
+.nextup b{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink);display:block;margin-bottom:5px}
+
+.vh{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.reveal::before{content:"reveal"}
+details.cp[open] .reveal::before{content:"hide"}
+.notemap td:first-child{color:var(--verdigris);font-weight:600}
+.audit td:last-child{font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);
+  word-break:break-all;white-space:normal;line-height:1.4}
+.srcbox{margin:16px 0;border:1px solid var(--rule);border-radius:2px;background:var(--panel)}
+.srcbox summary{cursor:pointer;padding:11px 14px;font-family:var(--mono);font-size:11px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--verdigris);list-style:none}
+.srcbox summary::-webkit-details-marker{display:none}
+.srcbox pre{margin:0;padding:0 14px 14px;overflow-x:auto;font-family:var(--mono);font-size:10.5px;
+  line-height:1.5;color:var(--ink);white-space:pre;max-height:60vh;overflow-y:auto}
+
+@media print{
+  :root{--head-h:0px}
+  html,body{height:auto;overflow:visible;background:#fff;font-size:11pt}
+  header{display:none}
+  #deck{position:static;display:block;overflow:visible;height:auto}
+  .page{flex:none;height:auto;overflow:visible;padding:0 0 24pt;break-before:page;page-break-before:always}
+  .page:first-child{break-before:auto;page-break-before:auto}
+  .inner{max-width:none;padding-top:0}
+  details.cp{break-inside:avoid;page-break-inside:avoid}
+  details.cp .ans{display:block !important}
+  .srcbox pre{max-height:none;overflow:visible;white-space:pre-wrap;overflow-wrap:anywhere;
+    font-size:7.5pt;line-height:1.35}
+  .srcbox{break-inside:auto;page-break-inside:auto}
+  .menubtn,.menupanel{display:none !important}
+  .reveal,.chip{display:none}
+  .eq,.tw,table,tr{break-inside:avoid;page-break-inside:avoid}
+  h2,h3{break-after:avoid;page-break-after:avoid}
+  a{text-decoration:none;color:inherit}
+}
+
+@media (max-width:640px){
+  body{font-size:16px}
+  .page{padding:0 16px 90px}
+  .inner{padding-top:28px}
+  .brand{display:none}
+  .eq{padding:14px 14px 14px 14px;font-size:13px}
+  .eq .cid{position:static;display:block;margin-bottom:6px;text-align:left}
+  .rail{display:none}
+  .menubtn{display:flex}
+  .dek{font-size:17px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand"><b>Residual Return</b> · Learning Geometry</div>
+  <button class="navbtn" id="prev" aria-label="Previous page">&#8592;</button>
+  <nav class="rail" aria-label="Lesson navigation"><div class="axis" id="axis"></div></nav>
+  <button class="menubtn" id="menubtn" aria-expanded="false" aria-controls="menupanel"
+          aria-label="Lesson menu"><span id="menulabel">1 / 15</span> <b>&#9776;</b></button>
+  <button class="navbtn" id="next" aria-label="Next page">&#8594;</button>
+</header>
+<nav class="menupanel" id="menupanel" aria-label="Lessons" hidden></nav>
+
+<main id="deck">
+
+<!-- ═══════════════════════════ COVER ═══════════════════════════ -->
+<section id="cover" class="page cover" data-title="Cover">
+  <div class="inner">
+    <p class="eyebrow">A course in four lessons <i>· three papers, one geometry</i></p>
+    <h1 tabindex="-1" data-pagehead>Number Fields as Learning Geometry</h1>
+    <p class="dek">One number field, read three ways and glued by a single exact rational metric — then
+      made to learn, to speak, and to price what it learns. Residual return is the mechanism common to
+      all three.</p>
+
+    <div class="rule"></div>
+
+    <p>This booklet threads the <strong>Residual Return</strong> series — three papers — into one path.
+      The protocol is half the subject, and it is the corpus's throughout:</p>
+
+    <p class="mono-list">
+      <b>1.</b> read the paper's source &nbsp;<span>&#8594;</span>&nbsp;
+      <b>2.</b> run the exact-arithmetic check &nbsp;<span>&#8594;</span>&nbsp;
+      <b>3.</b> teach only what passed
+    </p>
+
+    <p>The thesis is a single sentence the papers state outright: <em>residual&#8202;&#8594;&#8202;0 is the
+      universal learned signal.</em> A field <strong>learns</strong> by driving its trace-form residual
+      <span class="m">r = x &#8722; Px</span> to zero; a matrix algebra <strong>speaks</strong> by driving
+      the return operator <span class="m">&#8466;(X) = RX + XR &#8722; X</span> to zero; and one scalar
+      <span class="m">&#955;</span> prices how much explained structure a growth step must earn against
+      what it costs. Every <em>load-bearing</em> claim below carries a tag naming how strongly it is held —
+      <span class="tag forced">forced</span> proved or exact-verified,
+      <span class="tag computed">computed</span> exhaustive over a stated range,
+      <span class="tag declared">declared</span> a principled invariance-free choice,
+      <span class="tag open">open</span> unresolved,
+      <span class="tag estab">established</span> imported from the literature. The tags are not decoration;
+      they are the mathematics — the difference between a gauge choice and a gauge-invariant statement, and
+      a summary may be shorter than its source but never stronger.</p>
+
+    <div class="gapfig">
+      <div class="gapline">
+        <div class="bar"></div>
+        <div class="pt" style="left:4%"></div><div class="lb" style="left:4%">M=1</div>
+        <div class="band" style="left:4%;width:34%"></div>
+        <div class="lb" style="left:21%;color:#9a6410">empty</div>
+        <div class="pt" style="left:38%"></div><div class="lb" style="left:38%">&#966;</div>
+        <div class="seg" style="left:38%;right:0"></div>
+        <div class="lb" style="left:70%;color:#1c6355">realized</div>
+      </div>
+      <p class="gapcap">The cost floor in one figure. A growth step costs
+        <b>&#955;&#183;log M(&#952;)</b>, and on the framework's <em>emission image</em> — the seeds and
+        operations closed into one algebra — the Mahler measure lands in {1} &#8746; [&#966;, &#8734;):
+        the band (1, &#966;) is <b>empty</b> because no Salem number is emitted
+        <span class="tag forced">forced</span>. So the floor is &#955;&#183;log &#966; &gt; 0, uniform at
+        every size. Lesson 4 closes it; general Lehmer stays <span class="tag open">open</span> and is not
+        needed.</p>
+    </div>
+
+    <div class="howto">
+      <div><b>Move sideways</b>Swipe, or use the arrow keys, or the buttons above. The rail is the table
+        of contents — tap any number to jump.</div>
+      <div><b>Read downwards</b>Each lesson scrolls vertically. The thread block at the top says what it
+        inherits; the hand-off at the bottom says what it passes on.</div>
+      <div><b>Answer the checkpoints</b>Every lesson ends with three questions. Try them first; the cards
+        open to a worked answer.</div>
+    </div>
+
+    <p class="endnote">Four lessons &#183; three papers &#183; 207 exact checks, all passing &#183; one course
+      &nbsp;&#183;&nbsp; <a href="../learn.html">&#8592; The course</a> &#183;
+      <a href="../index.html">The archive</a> &#183; <a href="#ledger">audit manifest</a></p>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LESSON 1 ══════════════════════════ -->
+<section id="lesson-1" class="page" data-title="1 · The Trace Form">
+  <div class="inner">
+    <p class="eyebrow">Lesson 01 <i>· The Vector Substrate</i></p>
+    <h2 tabindex="-1" data-pagehead>One Field, Three Faces</h2>
+    <p class="dek">A number field &#8474;(&#952;) is a vector space, a matrix algebra, and a Euclidean
+      lattice at once — and a single exact rational matrix G is the metric of all three.</p>
+
+    <div class="run"><b>33/33</b><i>exact checks passed</i></div>
+
+    <h3>&#167;1 <em>&nbsp;Three coordinate systems, one object</em></h3>
+    <p>Let <span class="m">&#8474;(&#952;)</span> be a number field of degree
+      <span class="m">n = [&#8474;(&#952;):&#8474;]</span>, with <span class="m">&#952;</span> a root of an
+      irreducible monic <span class="m">m&#952; &#8712; &#8484;[x]</span>. It admits three classical
+      descriptions that are <em>not</em> three analogies but one object in three coordinate systems:</p>
+    <ul>
+      <li>a <strong>&#8474;-vector space</strong> of dimension n, basis {1, &#952;, &#8230;, &#952;<sup>n&#8722;1</sup>};</li>
+      <li>a commutative <strong>matrix algebra</strong> in M<sub>n</sub>(&#8474;) — the <em>regular
+        representation</em> &#961;, under which multiplication by &#952; is the companion matrix
+        C(m&#952;);</li>
+      <li>a full-rank <strong>Euclidean lattice</strong> in &#8477;<sup>n</sup> via the Minkowski
+        embedding &#963; = (&#963;&#8321;, &#8230;, &#963;<sub>n</sub>) of the n archimedean places.</li>
+    </ul>
+
+    <div class="eq"><span class="cid">eq:traceform</span>
+      T(x, y) = Tr<sub>K/&#8474;</sub>(xy) = &#8721;&#7522; &#963;&#7522;(x)&#183;&#963;&#7522;(y)
+      <span class="note">The <b>trace form</b>: one rational bilinear form. Membership in the field
+      becomes decidable by exact rational arithmetic under it.</span>
+    </div>
+
+    <h3>&#167;2 <em>&nbsp;The gluing matrix G = M&#7488;M</em></h3>
+    <p>In a basis {&#969;&#7522;}, the matrix <span class="m">G&#7522;&#11388; = Tr(&#969;&#7522;&#969;&#11388;)</span>
+      is the bridge: it is simultaneously the Gram matrix of the algebra's pairing and the Gram matrix of
+      the embedded lattice, because each embedding is a ring homomorphism.</p>
+
+    <div class="eq"><span class="cid">Thm 2.13</span>
+      G = M&#7488;M, &nbsp; det G = d<sub>K</sub> &nbsp;(integral basis), &nbsp;
+      signature (r&#8321;+r&#8322;, r&#8322;) &#8212; <b>positive definite iff totally real</b>
+      <span class="note">M is the embedding matrix M<sub>ki</sub> = &#963;<sub>k</sub>(&#969;&#7522;). The
+      determinant of the trace form <em>is</em> the field discriminant on an integral basis; its Jeffreys
+      volume &#8730;|d<sub>K</sub>| identifies the discriminant with an information volume
+      <span class="tag forced">forced</span>. When complex places enter (r&#8322; &gt; 0) the
+      positive-definite companion is the Hermitian form G&#8322; = M*M, det = |d<sub>K</sub>|.</span>
+    </div>
+
+    <p>The running example is the golden field. In <span class="m">&#8474;(&#8730;5)</span> with basis
+      {1, &#966;} (&#966; = (1+&#8730;5)/2, the root of x² &#8722; x &#8722; 1):</p>
+
+    <div class="eq"><span class="cid">test_trace_form</span>
+      G = <span class="mat c2"><i>2</i><i>1</i><i>1</i><i>3</i></span>,
+      &nbsp; det G = 5 = d<sub>&#8474;(&#8730;5)</sub>, &nbsp; sign(det G) = (&#8722;1)<sup>r&#8322;</sup>
+      <span class="note">Read straight off three traces: Tr(1) = 2, Tr(&#966;) = 1 (since
+      &#966; + &#968; = 1), and Tr(&#966;²) = Tr(&#966; + 1) = 3. &#8484;[&#966;] <em>is</em> the maximal
+      order, so det G is exactly the discriminant, and the sign of the determinant is the definiteness
+      flag — a fact Lesson 4 will read as the sign of a discriminant.</span>
+    </div>
+
+    <h3>&#167;3 <em>&nbsp;The spectral bridge</em></h3>
+    <p>The regular representation is diagonalised by the Minkowski embedding, so its spectrum <em>is</em>
+      the set of Galois conjugates. Hence the Mahler measure — the product of root moduli that escape the
+      unit circle — is a <strong>spectral invariant of the companion matrix</strong>: M(&#952;) =
+      &#8719;<sub>|&#955;|&gt;1</sub> |&#955;| over the eigenvalues &#955; of &#961;(&#952;)
+      <span class="tag forced">forced</span>. The same rational matrix that carries the metric carries the
+      height. This single identification is why the geometry of Lessons 1–3 and the cost of Lesson 4 are
+      one object.</p>
+
+    <h3>&#167;4 <em>&nbsp;Capture is a vanishing residual</em></h3>
+    <p>Fix a <em>forced basis</em>: a full-rank <span class="m">B &#8712; &#8474;<sup>n&#215;m</sup></span>
+      whose columns are coordinate vectors of algebraic integers, spanning col(B). Provided
+      B&#7488;GB is invertible, define the trace-form projector and residual:</p>
+
+    <div class="eq"><span class="cid">eq:projector &#183; eq:capture</span>
+      P = B(B&#7488;GB)&#8315;&#185;B&#7488;G, &nbsp;&nbsp; r(x) = x &#8722; Px<br>
+      x &#8712; col(B) &nbsp;&#8660;&nbsp; r(x) = <b>0</b> &nbsp;&#8660;&nbsp;
+      &#8214;r(x)&#8214;<sub>G</sub>² = r&#7488;Gr = 0
+      <span class="note">P² = P and B&#7488;G&#183;r = 0 (the residual is G-orthogonal to the dictionary):
+      pure novelty, carrying no component already explained. The capture criterion is
+      <span class="tag forced">forced</span> — the last equivalence needs G positive definite, i.e. a
+      totally real field. "Understanding" is, in this framework, <em>exactly</em> a zero residual: the
+      predicate is forced, but reading it as "learned" is a <span class="tag declared">declared</span>
+      naming choice, and it is an equation either way, never a threshold.</span>
+    </div>
+
+    <p>Watch it decide, entirely in &#8474;. Take the forced basis
+      <span class="m">B = (0, 1)&#7488;</span> — the line &#8474;&#966; — so B&#7488;GB = 3 and
+      P = &#8531;<span class="mat c2"><i>0</i><i>0</i><i>1</i><i>3</i></span>. The element
+      <span class="m">2&#966; = (0, 2)&#7488;</span> has P(2&#966;) = 2&#966;, residual 0:
+      <strong>captured</strong>. The element <span class="m">&#8730;5 = 2&#966; &#8722; 1 = (&#8722;1, 2)&#7488;</span>
+      projects to (0, &#8531;)&#7488;, so r = (&#8722;1, &#8531;)&#7488; &#8800; 0 with
+      &#8214;r&#8214;<sub>G</sub>² = 5/3 &gt; 0: <strong>off-axis novelty</strong>. Every quantity is an
+      exact rational.</p>
+
+    <div class="eq" style="border-left-color:var(--ochre)"><span class="cid">the discipline</span>
+      <span class="note" style="margin:0;font-size:15px"><b>Decide over &#8474;/&#8484;, measure over
+      &#8477;.</b> The number &#8214;r&#8214;<sub>G</sub> is read only as a real <em>magnitude</em> ("how
+      far off"). A float never crosses a decision boundary anywhere in the construction — the same discipline
+      that makes the height gate of Lesson 2 immune to rounding noise.</span>
+    </div>
+
+    <div class="cpwrap">
+      <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
+
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Build the golden Gram from
+        scratch. Using Tr(1) = 2, Tr(&#966;) = 1, and &#966;² = &#966; + 1, fill in the four entries of G
+        on the basis {1, &#966;} and confirm det G = 5.</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>G&#8321;&#8321; = Tr(1&#183;1) = 2; G&#8321;&#8322; = G&#8322;&#8321; = Tr(&#966;) = 1;
+          G&#8322;&#8322; = Tr(&#966;²) = Tr(&#966; + 1) = Tr(&#966;) + Tr(1) = 1 + 2 = 3. So
+          G = <span class="mat c2"><i>2</i><i>1</i><i>1</i><i>3</i></span> and det G = 2&#183;3 &#8722; 1 = 5,
+          which is d<sub>&#8474;(&#8730;5)</sub> because {1, &#966;} is an integral basis.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Why is the equivalence
+        &#8214;r&#8214;<sub>G</sub>² = 0 &#8660; r = 0 guaranteed only on a <em>totally real</em> field,
+        and what replaces G when it fails?</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>The forward direction needs G <strong>positive definite</strong>, which holds iff r&#8322; = 0
+          (totally real). With a complex place the signature is (r&#8321;+r&#8322;, r&#8322;) — indefinite —
+          and a nonzero r can satisfy r&#7488;Gr = 0, so the norm-zero test would report a false capture.
+          The fix the paper prescribes is the Hermitian companion <strong>G&#8322; = M*M</strong>, which is
+          positive definite with det = |d<sub>K</sub>|; the whole projector/residual calculus runs verbatim
+          over it. (Lesson 4 shows this is the same event as the sign flip of a discriminant.)</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">The residual is G-orthogonal
+        to col(B). In one sentence, why does that make it exactly the object to be learned?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Because B&#7488;G&#183;r = 0 means r pairs to zero, under the trace, against the entire current
+          dictionary — it is the part of x <em>invisible</em> to the model in the trace pairing, so
+          capturing it is exactly adjoining the missing direction and nothing already known.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="handoff"><span class="lbl">hands on to Lesson 2</span>
+      A projector that decides capture over &#8474;, a residual that is pure novelty, and a spectral
+      reading of the Mahler measure — waiting for the loop that drives the residual to zero, and the height
+      that keeps the growth finite.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LESSON 2 ══════════════════════════ -->
+<section id="lesson-2" class="page" data-title="2 · Residual &amp; Growth">
+  <div class="inner">
+    <p class="eyebrow">Lesson 02 <i>· Residual Return</i></p>
+    <h2 tabindex="-1" data-pagehead>Residual as Loss, Height as Capacity</h2>
+    <p class="dek">The residual is the error signal; learning drives it to zero by growing the basis — and
+      arithmetic height keeps that growth provably finite, with a nonzero cost floor.</p>
+
+    <div class="thread"><span class="lbl">carries forward</span>
+      <div class="chips">
+        <button class="chip" data-goto="1"><span class="n">L1</span>projector P, residual r = x &#8722; Px</button>
+        <button class="chip" data-goto="1"><span class="n">L1</span>capture &#8660; r = 0</button>
+        <button class="chip" data-goto="1"><span class="n">L1</span>M(&#952;) as a spectral invariant</button>
+      </div>
+    </div>
+
+    <div class="run"><b>56/56</b><i>exact checks passed</i></div>
+
+    <h3>&#167;1 <em>&nbsp;The residual is the loss</em></h3>
+    <p>In place of a differentiable loss minimised by gradient descent, the framework uses the exact
+      residual as its error signal. The Pythagorean decomposition splits each observation, and learning
+      drives the residual to zero by enlarging col(B):</p>
+
+    <div class="eq"><span class="cid">eq:pythagoras</span>
+      &#8214;x&#8214;<sub>G</sub>² = &#8214;Px&#8214;<sub>G</sub>² + &#8214;r(x)&#8214;<sub>G</sub>²
+      <span class="note">Immediate from G-orthogonality of Px and r. The streaming <em>learner</em> makes
+      this a loop: residual is loss, capture is r&#8202;&#8594;&#8202;0, and growth is a gated
+      <b>propose-for-confirm</b> protocol whose sole basis mutator (<code>confirm</code>) appends a
+      SHA-256 witness chain. Every decision is over &#8474;; a float raises <code>TypeError</code> before it
+      touches the decision core <span class="tag forced">forced</span>.</span>
+    </div>
+
+    <h3>&#167;2 <em>&nbsp;Growth: basis enlargement, and the compositum</em></h3>
+    <p>The learner's ambient field never changes silently — a deliberate invariant. When a
+      <em>persistent</em> off-field residual appears, a new field is mathematically a new learner. The
+      coordinates-to-minimal-polynomial bridge computes the seed exactly:
+      <span class="m">m&#945;</span> is the largest invariant factor of xI &#8722; &#961;(&#945;), read off
+      the Smith normal form <span class="tag forced">forced</span>. Two construction modes, one decision:</p>
+    <ul>
+      <li><strong>Disjoint:</strong> W = K &#8855; L with Kronecker Gram
+        <span class="m">G<sub>W</sub> = G<sub>K</sub> &#8855; G<sub>L</sub></span> — and
+        <code>confirm()</code> ships a literal <code>assert gram == kron(...)</code>, a proposition
+        running as a runtime self-check <span class="tag forced">forced</span>.</li>
+      <li><strong>Non-disjoint:</strong> the <em>true</em> compositum of smaller degree, built by factoring
+        the candidate's minimal polynomial over K. This <strong>resolves the open problem the substrate
+        paper flagged</strong> (its O4) in the bounded-degree case, with a machine-verified degree-4
+        witness &#8474;(&#8730;2)(&#8730;2+&#8730;3) = &#8474;(&#8730;2, &#8730;3)
+        <span class="tag computed">computed</span>.</li>
+    </ul>
+
+    <h3>&#167;3 <em>&nbsp;The height gate: Northcott, decided in &#8484;</em></h3>
+    <p>Unbounded growth would defeat an exact finite model. Capacity is bounded by arithmetic height,
+      which makes the admissible seed set provably finite.</p>
+
+    <div class="eq"><span class="cid">Thm 5.2 &#183; Prop 5.5</span>
+      M(&#952;) = height(&#952;)<sup>deg &#952;</sup>, &nbsp; M(p)² &#8804; &#8721;&#7522; c&#7522;²
+      &#8712; &#8484; &nbsp;(Landau)<br>
+      admissible &#8660; deg(m) &#8804; D<sub>max</sub> &nbsp;<b>and</b>&nbsp; ch(m) &#8804; H<sub>max</sub>
+      <span class="note">Landau's inequality bounds the (float) Mahler measure by an exact integer;
+      Northcott's theorem makes finitely many algebraic integers of bounded degree and height
+      <span class="tag estab">established</span>. So the gate is decided <em>entirely in &#8484;</em> from
+      (degree, coefficient-height) — the Mahler value never enters
+      <span class="tag forced">forced</span>. The gate <code>capacity_decision</code> returns
+      GROW / STOP / REJECT.</span>
+    </div>
+
+    <p class="small"><em>The float never crosses the gate.</em> The exact value M(&#8730;7) = 7 is returned
+      by a root finder as 7.000000000000001 — strictly above 7. A naive test "M &#8804; 7" would reject
+      &#8730;7 on rounding noise; the integer gate, reading only (deg, ch), cannot. This is Lesson 1's
+      discipline cashed in at a decision boundary.</p>
+
+    <h3>&#167;4 <em>&nbsp;The cost floor: Smyth, and the reciprocal core</em></h3>
+    <p>Frame growth as information gained versus spent: gain = &#8214;r&#8214;<sub>G</sub>², cost =
+      &#955;&#183;log M(&#952;), where log M is the seed's topological entropy (its intrinsic description
+      length). Then how cheap can a genuine seed be?</p>
+
+    <div class="eq"><span class="cid">thm:smythfloor</span>
+      non-reciprocal, non-cyclotomic &nbsp;&#8658;&nbsp; M(p) &#8805; &#956;&#8347; = 1.3247179&#8230;
+      <span class="note">Smyth's theorem: &#956;&#8347; is the plastic number, the real root of
+      x&#179; &#8722; x &#8722; 1, and the smallest Mahler measure of a non-reciprocal algebraic integer
+      <span class="tag estab">established</span>. Hence the cost of any non-reciprocal genuine seed is at
+      least &#955;&#183;log &#956;&#8347; &gt; 0 <span class="tag forced">forced</span>. The worked seeds
+      &#966; (x² &#8722; x &#8722; 1), 2&#8730;6 (x² &#8722; 24), &#8730;7 (x² &#8722; 7) are all
+      non-reciprocal, so their floors are unconditional.</span>
+    </div>
+
+    <p>The reciprocal case is the unsolved core. Every known Mahler measure in (1, &#956;&#8347;) comes
+      from a <em>reciprocal</em> integer, and Salem numbers and units arise naturally as seeds; for them
+      there is <strong>no proven uniform positive floor</strong> — only Dobrowolski's degree-dependent
+      bound, which tends to 1, or Lehmer's conjectural &#956;<sub>L</sub> = 1.17628&#8230;
+      <span class="tag open">open</span>. Lesson 4 closes exactly this gap on the framework's <em>own</em>
+      emission image, without touching general Lehmer.</p>
+
+    <div class="cpwrap">
+      <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
+
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">The worked episode runs in
+        K = &#8474;(&#8730;2+&#8730;3), forced basis {1, &#952;}. The stream carries
+        2&#8730;6 = &#952;² &#8722; 5, G-orthogonal to the basis. Compute the gain
+        &#8214;r&#8214;<sub>G</sub>², and say where the seed's coefficient-height 24 comes from.</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Since the trace is basis-independent,
+          &#8214;r&#8214;<sub>G</sub>² = Tr((2&#8730;6)²) = Tr(24) = 4&#183;24 = <strong>96</strong> (the
+          degree is 4). The residual <em>is</em> 2&#8730;6 exactly. Its multiplication matrix satisfies
+          M&#945;² = 24I, so its minimal polynomial is x² &#8722; 24, with coefficient-height
+          <strong>24</strong> — the seed is derived, not quoted, and its height is what the Northcott gate
+          reads.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Why does raising a basis
+        column by a nonzero rational scale leave P — hence every residual and every capture verdict —
+        unchanged?</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Under B &#8614; BD for invertible diagonal D, the factors of D cancel through
+          (D&#7488;B&#7488;GBD)&#8315;&#185;, so P = B(B&#7488;GB)&#8315;&#185;B&#7488;G depends only on the
+          column <strong>span</strong>. Scaling is invisible to the projector — which is what makes
+          denominator-clearing "re-homing" safe after a field grows.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Which of the corpus's
+        worked seeds carry an <em>unconditional</em> cost floor, and which class of seed leaves the floor
+        open?</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>The non-reciprocal seeds — &#966; (x² &#8722; x &#8722; 1), 2&#8730;6 (x² &#8722; 24),
+          &#8730;7 (x² &#8722; 7) — have root sets not closed under &#945; &#8614; &#945;&#8315;&#185;, so
+          Smyth gives them the unconditional floor &#955;&#183;log &#956;&#8347;. The
+          <strong>reciprocal</strong> seeds (Salem numbers, units) leave the <em>general</em> positive-floor
+          claim open; that is Lehmer's problem, and Lesson 4 resolves it only on the emission image.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="handoff"><span class="lbl">hands on to Lesson 3</span>
+      An engine that learns by return-to-zero, and a golden seed x² &#8722; x &#8722; 1 sitting at the
+      cheapest quadratic cost — which turns out to be the keystone of a second face, where the same
+      mechanism becomes a language.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LESSON 3 ══════════════════════════ -->
+<section id="lesson-3" class="page" data-title="3 · The Return Operator">
+  <div class="inner">
+    <p class="eyebrow">Lesson 03 <i>· Residual Return</i></p>
+    <h2 tabindex="-1" data-pagehead>&#8466;(X) = RX + XR &#8722; X</h2>
+    <p class="dek">The same residual&#8202;&#8594;&#8202;0 mechanism becomes a language over the Clifford
+      algebra Cl(2,0) &#8773; M&#8322;(&#8477;), where the kernel of one operator is the lexicon.</p>
+
+    <div class="thread"><span class="lbl">carries forward</span>
+      <div class="chips">
+        <button class="chip" data-goto="2"><span class="n">L2</span>capture &#8660; residual &#8594; 0</button>
+        <button class="chip" data-goto="1"><span class="n">L1</span>&#961;(&#966;) = C(x²&#8722;x&#8722;1)</button>
+        <button class="chip" data-goto="2"><span class="n">L2</span>the SHA-256 witness chain</button>
+      </div>
+    </div>
+
+    <div class="run"><b>21/21</b><i>exact checks passed</i></div>
+
+    <h3>&#167;1 <em>&nbsp;The exact carrier</em></h3>
+    <p>The language layer lives in a separate, strictly one-way module — it reads the number-field engine
+      only through a bridge and is never imported back. Its carrier is
+      <span class="m">Cl(2,0) &#8773; M&#8322;(&#8477;)</span>, realised exactly over &#8474; (no float in
+      any decision). A <em>holding</em> is <span class="m">X = a + b&#8202;e&#8321; + c&#8202;e&#8322; + d&#8202;i</span>
+      with a, b, c, d &#8712; &#8474;, where e&#8321;² = e&#8322;² = 1, i = e&#8321;e&#8322;, i² = &#8722;1,
+      and mat(X) = <span class="mat c2"><i>a+c</i><i>b&#8722;d</i><i>b+d</i><i>a&#8722;c</i></span>.</p>
+
+    <h3>&#167;2 <em>&nbsp;The &#966;-keystone return operator</em></h3>
+    <p>The keystone is <span class="m">R = &#189; + e&#8321; &#8722; &#189;e&#8322;</span>, i.e.
+      mat(R) = <span class="mat c2"><i>0</i><i>1</i><i>1</i><i>1</i></span> — the companion matrix of
+      x² &#8722; x &#8722; 1. It satisfies the golden law <span class="m">R² = R + I</span>, and mat(R) is
+      symmetric. The <strong>return operator</strong> is the Sylvester self-action:</p>
+
+    <div class="eq"><span class="cid">eq:Lop</span>
+      &#8466;(X) = RX + XR &#8722; X
+      <span class="note">Computed by the exact geometric product and cross-checked against an independent
+      matrix-route oracle, ruling out a single-route bug. R itself is <em>not</em> in the kernel
+      (&#8466;(R) = 5/2 + e&#8321; &#8722; &#189;e&#8322; &#8800; 0)
+      <span class="tag forced">forced</span>.</span>
+    </div>
+
+    <h3>&#167;3 <em>&nbsp;The kernel is the lexicon</em></h3>
+    <p>The payoff is an exact, hand-rolled rational nullspace — not a floating SVD:</p>
+
+    <div class="eq"><span class="cid">thm:kernel</span>
+      ker &#8466; = span{ e&#8321; + 2e&#8322;, &nbsp; i } &nbsp; (<b>exactly 2-dimensional</b>)<br>
+      &#8466; = S &#8722; id, &nbsp; spec(S) = {2&#966;, 1, 1, 2&#968;} &nbsp;&#8658;&nbsp;
+      spec(&#8466;) = {&#8730;5, 0, 0, &#8722;&#8730;5}
+      <span class="note">The Sylvester eigenvalue argument confirms the dimension: S(X) = RX + XR has
+      eigenvalues &#955;<sub>a</sub> + &#955;<sub>b</sub> over the eigenvalues {&#966;, &#968;} of R (with
+      &#966; + &#968; = 1). Subtracting the identity sends the two middle eigenvalues 1 to 0, so
+      &#8466; has eigenvalue 0 with multiplicity 2 <span class="tag forced">forced</span>. Note the
+      spectrum {&#8730;5, 0, 0, &#8722;&#8730;5} — it will reappear in Lesson 4 as the golden-gate
+      trifurcation.</span>
+    </div>
+
+    <p>Calling that kernel the <strong>&#966;-slack, the lexicon</strong> is the source's own reading: the
+      dimension is proved <span class="tag forced">forced</span>, the interpretation is named
+      <span class="tag declared">declared</span>. The <em>commit</em> is the exact idempotent projector onto
+      ker &#8466; (a value-pinned matrix, not merely some P² = P), and a learned dictionary value is exactly
+      a committed residue. Tokens with the <em>same</em> exact residue merge to one entry; distinct residues
+      stay distinct <span class="tag forced">forced</span>. So E&#8321; and E&#8321;+1 merge — the constant
+      1 is orthogonal to the slack — while i and 2i share the coarse sign-word (+i) yet remain
+      <em>distinct</em> entries, because dedup keys on the exact value, not the word.</p>
+
+    <h3>&#167;4 <em>&nbsp;One mechanism, two faces</em></h3>
+    <p>The two faces are the same five-part structure — and the deepest shared piece is not analogy but a
+      literal identity: the witness chain is byte-identical in construction across the learner and the
+      lexicon.</p>
+
+    <div class="tw"><table><caption class="vh">Lesson 3 — the residual-return correspondence</caption>
+      <thead><tr><th scope="col">role</th><th scope="col">learning (field K)</th><th scope="col">language (Cl(2,0))</th></tr></thead>
+      <tbody>
+        <tr><td>loss / residual</td><td>r = x &#8722; Px (trace form G)</td><td>&#8466;(X) = RX + XR &#8722; X</td></tr>
+        <tr><td>captured &#8660;</td><td>&#8214;r&#8214;<sub>G</sub>² = 0 (exact, over &#8474;)</td><td>&#8466;(X) = 0 (exact, over &#8474;)</td></tr>
+        <tr><td>landing space</td><td>col(B) &#8838; K</td><td>ker &#8466; = span{e&#8321;+2e&#8322;, i}</td></tr>
+        <tr><td>model state</td><td>forced basis B (growing)</td><td>lexicon &#8838; ker &#8466; (growing)</td></tr>
+        <tr><td>sole mutator</td><td><em>confirm</em> (adjoin seed)</td><td><em>commit</em> / lexicon <em>add</em></td></tr>
+        <tr><td>witness</td><td>SHA-256 chain</td><td><em>the same</em> SHA-256 chain</td></tr>
+      </tbody>
+    </table></div>
+
+    <p>The bridge between them is one arithmetic object. The companion &#961;(&#966;) = C(x² &#8722; x &#8722; 1)
+      of the substrate's first field &#8474;(&#966;), the symmetric matrix R of the return operator (with
+      R² = R + I), and the keystone Clifford element are the <strong>same object</strong> — the void law
+      x² = x + 1 — verified equal three independent ways: the integer companion route, the Clifford route,
+      and the live Mahler measure M = &#966; <span class="tag forced">forced</span>. The correspondence
+      itself (residual&#8594;0 = commit, ker = lexicon) is a <span class="tag declared">structural
+      analogy</span> between two verified mechanisms, not a theorem relating them.</p>
+
+    <p class="small">A jurisdiction firewall keeps it honest: of 27 statements in the law bank (20 theorem
+      + 5 computed + 2 interpretive), only the 25 theorem/computed cross a wire as fact; a learned lexicon
+      entry is <em>computed</em>, never promoted to <em>theorem</em>. The layer is one-way disjoint, and its
+      full suite is 121 tests green at the readiness tag <span class="tag computed">computed</span>.</p>
+
+    <div class="cpwrap">
+      <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
+
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">From the Sylvester
+        eigenvalues spec(S) = {2&#966;, 1, 1, 2&#968;}, derive spec(&#8466;) and read off dim ker &#8466;.
+        Use &#966; = (1+&#8730;5)/2.</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>&#8466; = S &#8722; id subtracts 1 from each: {2&#966; &#8722; 1, 0, 0, 2&#968; &#8722; 1}.
+          Since 2&#966; &#8722; 1 = &#8730;5 and 2&#968; &#8722; 1 = &#8722;&#8730;5, the spectrum is
+          <strong>{&#8730;5, 0, 0, &#8722;&#8730;5}</strong>. The eigenvalue 0 has multiplicity 2, so
+          <strong>dim ker &#8466; = 2</strong> — the two middle eigenvalues 1 of S are exactly what the
+          &#8722;X term annihilates.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">E&#8321; and E&#8321;+1
+        collapse to one lexicon entry, but i and 2i do not. Explain both, from the commit rule.</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>The constant 1 is orthogonal to the &#966;-slack, so commit(E&#8321;+1) = commit(E&#8321;):
+          they return to the <em>same exact residue</em> and merge — generalisation is collapse to a shared
+          residue. But i and 2i have <em>distinct</em> exact committed values H(0,0,0,1) &#8800; H(0,0,0,2);
+          they share only the coarse sign-word (+i), and dedup keys on the exact value, not the word. Five
+          such tokens produce four entries.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">A design note once claimed
+        N = H(0,&#8722;1,1,0) lay in ker &#8466;. It does not. What went wrong, and which element genuinely
+        is in the kernel?</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>The slip transcribed the four <em>matrix</em> entries of
+          <span class="mat c2"><i>0</i><i>&#8722;1</i><i>1</i><i>0</i></span> straight into holding
+          coordinates instead of through the isomorphism; in fact
+          &#8466;(H(0,&#8722;1,1,0)) = H(&#8722;3,0,0,0) &#8800; 0. The correct image of that matrix is
+          cl<span class="mat c2"><i>0</i><i>&#8722;1</i><i>1</i><i>0</i></span> = i = H(0,0,0,1), which
+          <em>is</em> in the kernel. The disproof is itself a machine-checked test — even negative claims are
+          pinned by computation.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="handoff"><span class="lbl">hands on to Lesson 4</span>
+      A spectrum {&#8730;5, 0, 0, &#8722;&#8730;5} that priced nothing yet — until one scalar &#955; couples
+      the residual's gain to the seed's cost, and the golden gate turns that spectrum into an exchange rate.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LESSON 4 ══════════════════════════ -->
+<section id="lesson-4" class="page" data-title="4 · The Exchange Rate">
+  <div class="inner">
+    <p class="eyebrow">Lesson 04 <i>· &#955; = 2c</i></p>
+    <h2 tabindex="-1" data-pagehead>The Exchange Rate &#955; = 2c, and the Golden Gate</h2>
+    <p class="dek">One scalar prices information gained against description length paid. Stated at its true
+      strength: &#955; = 2c is forced unconditionally, c is a declared scale Čencov forbids invariance from
+      fixing, and the golden gate forces the value &#955; = &#8730;5.</p>
+
+    <div class="thread"><span class="lbl">carries forward</span>
+      <div class="chips">
+        <button class="chip" data-goto="2"><span class="n">L2</span>cost = &#955;&#183;log M(&#952;)</button>
+        <button class="chip" data-goto="1"><span class="n">L1</span>G as the Fisher metric</button>
+        <button class="chip" data-goto="3"><span class="n">L3</span>spectrum {&#8730;5,0,0,&#8722;&#8730;5}</button>
+      </div>
+    </div>
+
+    <div class="run"><b>97/97</b><i>exact checks passed</i></div>
+
+    <h3>&#167;1 <em>&nbsp;The identity &#955; = 2c</em></h3>
+    <p>The growth rule of Lesson 2 — adjoin r iff &#8214;r&#8214;<sub>G</sub>² &#8805; &#955;&#183;log M(&#952;)
+      — contains one scalar &#955;, the <em>exchange rate</em>. Read the gain side as a second-order
+      Kullback–Leibler divergence. Lesson 1 pinned the Fisher metric proportional to G, up to a single
+      positive constant: write &#8497; = G/c. Then, since the score has mean zero and KL vanishes at the
+      matching point, the leading term is the Fisher quadratic form with its structural &#189;:</p>
+
+    <div class="eq"><span class="cid">eq:kl2c &#183; eq:balance</span>
+      KL(p&#952; &#8214; p<sub>&#952;+r</sub>) = &#189; r&#7488;&#8497;r + O(&#8214;r&#8214;³) =
+      (1/2c)&#8214;r&#8214;<sub>G</sub>²<br>
+      KL &#8805; log M &nbsp;&#8660;&nbsp; (1/2c)&#8214;r&#8214;<sub>G</sub>² &#8805; log M
+      &nbsp;&#8660;&nbsp; &#8214;r&#8214;<sub>G</sub>² &#8805; <b>2c</b>&#183;log M
+      <span class="note">The two-part MDL balance — adjoin iff bits explained &#8805; bits cost — reads off
+      the coefficient directly.</span>
+    </div>
+
+    <div class="eq" style="border-left-color:var(--ink)"><span class="cid">thm:lambda2c</span>
+      <b>&#955; = 2c</b> &nbsp;<span class="tag forced">forced</span>
+      <span class="note">The factor 2 is the inverted &#189; of the quadratic KL term and carries
+      <em>no</em> freedom; the entire residual freedom of the threshold is the single positive scale c.
+      The variance reading names what c is: writing the gain as a Gaussian negentropy of precision
+      &#963;, one has &#963; = 1/(2c) = 1/&#955;, so freezing c is asserting a noise level — a modeling
+      claim, not a derivation.</span>
+    </div>
+
+    <h3>&#167;2 <em>&nbsp;Čencov: why invariance cannot fix c</em></h3>
+    <p><strong>Čencov's theorem</strong> <span class="tag estab">established</span>: up to a positive
+      multiplicative constant, the Fisher metric is the <em>unique</em> metric invariant under Markov
+      morphisms (sufficient statistics). Consequently c = &#955;/2 <strong>cannot</strong> be fixed by any
+      invariance requirement — hence c is a <span class="tag declared">declared</span> positive scale. The
+      claim is precise and no larger: Čencov forbids an <em>invariance</em> argument from selecting c; he
+      does not forbid an <em>external structural constraint</em>. Three named canonicalizations recur, each
+      declared — Jeffreys volume-matching (c = 1), degree-invariant significance (c = n), and the
+      <em>frame-shift</em> value c = &#8730;(1+4C)/(2C) read off the gate ladder below.</p>
+
+    <h3>&#167;3 <em>&nbsp;The gate ladder and the trifurcation</em></h3>
+    <p>The framework's gates are the squarefree levels of one quadratic family
+      <span class="m">x² + x = C</span>, discriminant <span class="m">D = 1 + 4C</span>, with companion
+      R<sub>C</sub> = <span class="mat c2"><i>0</i><i>C</i><i>1</i><i>&#8722;1</i></span> and eigenvalue gap
+      &#8730;D. The three squarefree radicands D &#8712; {2, 3, 5} give the seeds &#8730;2, &#8730;3,
+      &#8730;5 over &#8474;(&#8730;2), &#8474;(&#8730;3), &#8474;(&#8730;5).</p>
+
+    <div class="eq"><span class="cid">prop:trifurcation</span>
+      spec( ad<sub>R<sub>C</sub></sub> ) = { &#8722;&#8730;D, &nbsp; 0, &nbsp; +&#8730;D },
+      &nbsp; 0-eigenspace = span{I, R<sub>C</sub>}<br>
+      at the golden gate C = 1: &nbsp; { &#8722;&#8730;5, &nbsp; 0, &nbsp; +&#8730;5 }
+      <span class="note">The Lie self-action ad<sub>R<sub>C</sub></sub>(X) = [R<sub>C</sub>, X] on
+      M&#8322;(&#8474;) has this spectrum with 0 of multiplicity two <span class="tag forced">forced</span>.
+      The decision <em>is</em> the channel: +&#8730;D = GROW, 0 = CAPTURED (the centralizer, never
+      removable), &#8722;&#8730;D = STOP. And the self-action radius is a Mahler measure:
+      &#8730;D = &#8730;M(x² &#8722; D), so <b>the gate is priced in Mahler measure</b>. This is exactly
+      Lesson 3's return-operator spectrum {&#8730;5, 0, 0, &#8722;&#8730;5} — the language kernel and the
+      growth decision are one object.</span>
+    </div>
+
+    <h3>&#167;4 <em>&nbsp;The gate is forced: &#955; = &#8730;5</em></h3>
+    <p>The frame-shift equation 2cC = &#8730;(1+4C) pins c once a gate is chosen; at C = 1,
+      <span class="m">c = &#8730;5/2</span> and <span class="m">&#955; = 2c = &#8730;5 = &#966; &#8722; &#968;</span>.
+      Which gate? Two derivations from <em>disjoint</em> premises converge on the golden one:</p>
+    <ul>
+      <li><strong>Statics.</strong> The decision is ternary, and the number of signed channels of a
+        degree-d self-action is d² &#8722; d + 1, equal to three <em>iff</em> d = 2 — the 0-channel is the
+        centralizer and cannot be removed. Within degree two, the cost-minimal irreducible quadratic is
+        golden: the minimum Mahler measure exceeding 1 is &#966;, attained only by x² &#8722; x &#8722; 1
+        and x² + x &#8722; 1, both of discriminant 5 <span class="tag forced">forced</span>.</li>
+      <li><strong>Dynamics.</strong> The engine is degree-raising; its only reducing maps are firewalls
+        (many-to-one, no inverse). The golden gate &#8474;(&#8730;5) is the terminal firewall image of the
+        golden tower, and among the seed companions <em>only</em> the golden one satisfies the
+        self-reproducing R² = R + I <span class="tag forced">forced</span>.</li>
+    </ul>
+
+    <div class="eq" style="border-left-color:var(--ink)"><span class="cid">thm:gateforced</span>
+      C = 1, &nbsp; c = &#8730;5/2, &nbsp; <b>&#955; = 2c = &#8730;5 = &#966; &#8722; &#968;</b>
+      <span class="note">Two independent derivations pin the same field, so the value is trustworthy rather
+      than aesthetic <span class="tag forced">forced</span> given two constitutive features — and those
+      collapse to one: the seed is <em>the minimal positive-growth companion at the degree that realises a
+      three-way decision</em>. Keep the three registers apart: &#955; = 2c is forced unconditionally
+      (the identity); c is declared (Čencov); &#955; = &#8730;5 is forced <em>given the construction</em>
+      (the value).</span>
+    </div>
+
+    <h3>&#167;5 <em>&nbsp;The flip: one sign, four readings</em></h3>
+    <p>The discriminant D = 1 + 4C changes sign once, at C = &#8722;&#188;. This single sign is one event
+      seen four ways: it inverts the eigenvalues (real &#8596; complex), the field (totally real &#8596;
+      complex place), the trace-form signature, and the channel character (growth/decay &#8596; rotation).
+      The signature reading is an exact determinant:</p>
+
+    <div class="eq"><span class="cid">prop:detG</span>
+      gap basis {1, &#8730;D}: &nbsp; G = <span class="mat c2"><i>2</i><i>0</i><i>0</i><i>2D</i></span>,
+      &nbsp; <b>det G = 4D</b>
+      <span class="note">Positive definite (Riemannian) iff D &gt; 0; indefinite of signature (1,1)
+      (Lorentzian) iff D &lt; 0; degenerate at D = 0 <span class="tag forced">forced</span>. The metric's
+      signature is the discriminant's sign — the same event as Lesson 1's totally-real requirement for
+      capture. A <b>gate</b> acts on a free parameter and pins a value; a <b>flip</b> acts on a forced
+      invariant and inverts a regime. They co-locate at D = 0.</span>
+    </div>
+
+    <h3>&#167;6 <em>&nbsp;The floor closed: no Salem is emitted</em></h3>
+    <p>Lesson 2 left the reciprocal-seed floor open. It closes on the framework's own image, by derivation
+      from objects already in hand. The seeds and operations form a finitely generated <strong>emission
+      algebra</strong>; because the seeds are integer companions, conjugates travel together. Every catalog
+      argument lies in (&#960;/2)&#8484;, and the operations preserve it — &#8855; adds arguments, squaring
+      doubles them, and <em>no operation takes a square root</em>. So any on-circle emitted eigenvalue is
+      forced to be a fourth root of unity. A Salem number has an on-circle conjugate at an
+      <em>irrational</em> angle — never a fourth root of unity — so no Salem number is emitted, and the cost
+      floor is <span class="m">&#955;&#183;log &#966; &gt; 0</span>, forced and uniform at every size
+      <span class="tag forced">forced</span> (on the emission image; general Lehmer stays
+      <span class="tag open">open</span> and is not needed). The Salem regime is exactly the missing fourth
+      channel: on-circle magnitude (the marginal of CAPTURED) yet expanding (the positive entropy of GROW) —
+      a combination the ternary trifurcation has no slot for.</p>
+
+    <div class="cpwrap">
+      <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
+
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Evaluate the frame-shift c
+        and &#955; at the parabolic point C = &#8722;&#188;. Interpret each via the gate-vs-flip
+        distinction.</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>c(&#8722;&#188;) = &#8730;0 / (2&#183;(&#8722;&#188;)) = 0, so &#955; = 0. The <em>gate</em>
+          reading: the pinned value is the collapsed spectral gap — information exchanges at rate zero. The
+          <em>flip</em> reading: D = 0 <em>is</em> the crossing itself, where real growth gives way to
+          rotation. One number carrying both events, exactly where they co-locate.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Smyth's plastic number
+        &#956;&#8347; = 1.3247 is smaller than &#966;. Why doesn't it undercut the golden gate as the
+        cost-minimal seed?</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Because &#956;&#8347; is degree <strong>three</strong> (root of x&#179; &#8722; x &#8722; 1). A
+          cubic seed gives a degree-three self-action with 3² &#8722; 3 + 1 = 7 channels, not the ternary
+          GROW/CAPTURED/STOP decision. The ternary lock forces degree two, and the gate is the Mahler
+          minimum <em>within</em> the forced degree — &#966; at discriminant 5 — not a minimum over all
+          degrees.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">A Salem number sits on the
+        unit circle yet is expanding. Name the two channels it tries to occupy at once, and the exact reason
+        the emission algebra forbids it.</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>On-circle magnitude is the marginal of <strong>CAPTURED</strong>; positive entropy
+          (log M &gt; 0) is the growth of <strong>GROW</strong>. That pairing is the fourth regime the
+          ternary trifurcation has no slot for. Concretely, angle confinement forces every on-circle emitted
+          eigenvalue to be a fourth root of unity (arguments stay in (&#960;/2)&#8484; because the operations
+          only add and double, never take a square root), whereas a Salem number's on-circle conjugate sits
+          at an irrational multiple of &#960; — excluded.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="handoff"><span class="lbl">hands on to the ledger</span>
+      One identity forced, one scale declared, one value forced by the construction, and a floor closed on
+      the emission image — set against the one problem left deliberately untouched.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LEDGER ══════════════════════════ -->
+<section id="ledger" class="page" data-title="Ledger">
+  <div class="inner">
+    <p class="eyebrow">Closing <i>· what three papers forced</i></p>
+    <h2 tabindex="-1" data-pagehead>The Ledger</h2>
+    <p class="dek">The whole point of the tag system is that a claim's strength travels with it. Here is
+      the module's ledger — what is forced, what is declared, what stays open.</p>
+
+    <h3>&#167;1 <em>&nbsp;The claim ledger</em></h3>
+    <div class="tw"><table class="prose"><caption class="vh">Ledger — the claims and their tags</caption>
+      <thead><tr><th scope="col">claim</th><th scope="col">status</th></tr></thead>
+      <tbody>
+        <tr><td>G = M&#7488;M, det G = d<sub>K</sub> on an integral basis; discriminant = information volume</td>
+          <td><span class="tag forced">forced</span> / <span class="tag estab">established</span></td></tr>
+        <tr><td>capture: x &#8712; col(B) &#8660; r = 0 &#8660; &#8214;r&#8214;<sub>G</sub>² = 0 (totally real)</td>
+          <td><span class="tag forced">forced</span></td></tr>
+        <tr><td>Mahler-measure admissibility gate decided entirely in &#8484; (deg, ch)</td>
+          <td><span class="tag forced">forced</span></td></tr>
+        <tr><td>disjoint compositum Gram G<sub>K</sub> &#8855; G<sub>L</sub></td>
+          <td><span class="tag forced">forced</span></td></tr>
+        <tr><td>non-disjoint compositum (bounded degree) &#8212; resolves the substrate's O4</td>
+          <td><span class="tag computed">computed</span></td></tr>
+        <tr><td>cost floor &#955;&#183;log &#956;&#8347; for non-reciprocal seeds (Smyth)</td>
+          <td><span class="tag forced">forced</span> / <span class="tag estab">established</span></td></tr>
+        <tr><td>ker &#8466; = 2-dim &#966;-slack; its interpretation as the lexicon</td>
+          <td><span class="tag forced">forced</span> dim / <span class="tag declared">declared</span> name</td></tr>
+        <tr><td>keystone x² &#8722; x &#8722; 1 is one object three ways (companion / Clifford / M = &#966;)</td>
+          <td><span class="tag forced">forced</span></td></tr>
+        <tr><td>the identity &#955; = 2c (factor 2 structural, freedom is c alone)</td>
+          <td><span class="tag forced">forced</span></td></tr>
+        <tr><td>the conformal scale c &#8212; no invariance can fix it (Čencov)</td>
+          <td><span class="tag declared">declared</span></td></tr>
+        <tr><td>the value &#955; = &#8730;5 at the golden gate C = 1 (two convergent derivations)</td>
+          <td><span class="tag forced">forced</span> given the construction</td></tr>
+        <tr><td>the flip: det G = 4D, signature = sign of the discriminant</td>
+          <td><span class="tag forced">forced</span></td></tr>
+        <tr><td>the emission image emits no Salem number; floor &#955;&#183;log &#966; &gt; 0, uniform</td>
+          <td><span class="tag forced">forced</span> on the image</td></tr>
+        <tr><td>a general uniform floor for reciprocal seeds (Lehmer's problem)</td>
+          <td><span class="tag open">open</span></td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>&#167;2 <em>&nbsp;What is still open</em></h3>
+    <ul>
+      <li><strong>Lehmer's problem</strong> <span class="tag open">open</span> — the general reciprocal
+        floor, untouched throughout and deliberately so; the emission-algebra closure sidesteps it without
+        resolving it.</li>
+      <li><strong>The conformal scale c</strong> <span class="tag declared">declared</span> — irreducible
+        by invariance (Čencov). Shipped decisions are c-invariant across the band c &#8712; [1, n], becoming
+        c-sensitive only inside a stated cost interval.</li>
+      <li><strong>The choice of statistical model</strong> <span class="tag declared">declared</span> — the
+        Gaussian location family versus the maximum-entropy family on the conjugates.</li>
+      <li><strong>The complex-place capture guard</strong> — capture's norm test needs total reality; on a
+        complex place the positive-definite Hermitian form M*M is prescribed. A hardening note, low
+        exposure, since every shipped ambient field is totally real.</li>
+    </ul>
+
+    <h3>&#167;3 <em>&nbsp;The evidence</em></h3>
+    <div class="run"><b>207/207</b><i>exact checks passed</i></div>
+    <p class="small">Run on this machine at authoring time:
+      <code>pytest tests/2026-06-vector-substrate tests/2026-06-residual-return-learning
+      tests/2026-06-lambda-2c</code> &#8212; <strong>63 + 72 + 72 = 207</strong> exact-arithmetic checks,
+      all passing in 4.34s. Each lesson's badge is the honest sum of the specific test files it teaches
+      (Lesson 1: trace form, regular representation, projector, information geometry = 33; Lesson 2:
+      capacity, threshold, invariant factors, compositum, learner, cross-field = 56; Lesson 3: language,
+      keystone/unify = 21; Lesson 4: exchange rate, capacity-Fisher, and all nine
+      &#955;-2c files = 97). The discipline underneath every number: decide over &#8474;/&#8484;, measure
+      over &#8477;; symbolic equality where possible; the float displays but never decides.</p>
+    <p class="small">Verify it yourself against the source trees on GitHub:
+      <a href="https://github.com/Echo-S-Studios/Echo-S-Research/tree/main/tests/2026-06-vector-substrate" target="_blank" rel="noopener">tests/2026-06-vector-substrate</a>,
+      <a href="https://github.com/Echo-S-Studios/Echo-S-Research/tree/main/tests/2026-06-residual-return-learning" target="_blank" rel="noopener">tests/2026-06-residual-return-learning</a>,
+      <a href="https://github.com/Echo-S-Studios/Echo-S-Research/tree/main/tests/2026-06-lambda-2c" target="_blank" rel="noopener">tests/2026-06-lambda-2c</a>.</p>
+
+    <h3>&#167;4 <em>&nbsp;The papers</em></h3>
+    <div class="tw"><table class="prose notemap"><caption class="vh">Ledger — the module's papers</caption>
+      <thead><tr><th scope="col">paper</th><th scope="col">what it builds</th><th scope="col">read</th></tr></thead>
+      <tbody>
+        <tr><td>The Vector Substrate</td>
+          <td>the number field as an exact learning geometry; trace form, projector, capture, height gate
+            (Lessons 1–2)</td>
+          <td><a href="../papers/2026-06-vector-substrate.pdf">PDF</a> &#183;
+            <a href="https://github.com/Echo-S-Studios/Echo-S-Research/tree/main/papers/2026-06-vector-substrate" target="_blank" rel="noopener">source</a></td></tr>
+        <tr><td>Residual Return: Learning Dynamics and Language</td>
+          <td>the streaming learner, cross-field growth, and the return operator &#8466; over Cl(2,0)
+            (Lessons 2–3)</td>
+          <td><a href="../papers/2026-06-residual-return-learning.pdf">PDF</a> &#183;
+            <a href="https://github.com/Echo-S-Studios/Echo-S-Research/tree/main/papers/2026-06-residual-return-learning" target="_blank" rel="noopener">source</a></td></tr>
+        <tr><td>The Exchange Rate &#955; = 2c</td>
+          <td>the conformal identity, its gate, its flip, and the emission-algebra floor (Lesson 4)</td>
+          <td><a href="../papers/2026-06-lambda-2c.pdf">PDF</a> &#183;
+            <a href="https://github.com/Echo-S-Studios/Echo-S-Research/tree/main/papers/2026-06-lambda-2c" target="_blank" rel="noopener">source</a></td></tr>
+      </tbody>
+    </table></div>
+
+    <p class="nextup"><b>The deep track</b>For the whole corpus threaded end to end, the
+      <a href="../papers/2026-07-exact-arithmetic.html">Exact Arithmetic</a> booklet retraces all of this —
+      and much more — in thirteen lessons, each pinned to a fail-first check.</p>
+
+    <p class="endnote">Residual Return &#183; Module 3 of the archive &#183; three papers, 207 exact checks
+      &nbsp;&#183;&nbsp; <a href="../learn.html">&#8592; The course</a> &#183;
+      <a href="../index.html">The archive</a></p>
+  </div>
+</section>
+
+</main>
+
+<script>
+(function(){
+  var deck  = document.getElementById('deck');
+  var pages = Array.prototype.slice.call(deck.querySelectorAll('.page'));
+  var axis  = document.getElementById('axis');
+  var prev  = document.getElementById('prev');
+  var next  = document.getElementById('next');
+  var mbtn  = document.getElementById('menubtn');
+  var mlab  = document.getElementById('menulabel');
+  var mpan  = document.getElementById('menupanel');
+  var current = 0, jumping = false, jumpTimer = null, raf = null;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var hasInert = ('inert' in HTMLElement.prototype);
+  var hasScrollEnd = ('onscrollend' in window);
+  var FOCUSABLE = 'a[href],button,summary,input,select,textarea,[tabindex]';
+
+  /* the rail is one tab stop: a tablist with roving tabindex and automatic activation */
+  /* a plain group with roving focus: no tab roles without real tabpanels */
+  axis.setAttribute('role', 'group');
+  axis.setAttribute('aria-label', 'Lessons');
+  pages.forEach(function(pg, i){
+    var b = document.createElement('button');
+    b.className = 'tick' + ((i === 0 || i === pages.length - 1) ? ' edge' : '');
+    b.type = 'button';
+    b.setAttribute('tabindex', '-1');
+    var label = pg.getAttribute('data-title') || ('Page ' + (i + 1));
+    b.setAttribute('aria-label', label);
+    b.title = label;
+    var s = document.createElement('span');
+    s.textContent = (i === 0 || i === pages.length - 1) ? '' : String(i);
+    b.appendChild(s);
+    b.addEventListener('click', function(){ go(i); });
+    axis.appendChild(b);
+
+    var m = document.createElement('button');
+    m.type = 'button';
+    m.innerHTML = '<span class="n">' + ((i === 0 || i === pages.length - 1) ? '&#183;' : i) +
+                  '</span><span>' + label.replace(/^\d+\s*·\s*/, '') + '</span>';
+    m.addEventListener('click', function(){ closeMenu(); go(i); });
+    mpan.appendChild(m);
+  });
+  var ticks = Array.prototype.slice.call(axis.querySelectorAll('.tick'));
+  var mitems = Array.prototype.slice.call(mpan.querySelectorAll('button'));
+
+  function setActive(i){
+    pages.forEach(function(pg, j){
+      var off = (j !== i);
+      if (hasInert){
+        pg.inert = off;
+      } else {
+        pg.setAttribute('aria-hidden', off ? 'true' : 'false');
+        Array.prototype.forEach.call(pg.querySelectorAll(FOCUSABLE), function(el){
+          if (off){
+            if (!el.hasAttribute('data-ti')) el.setAttribute('data-ti', el.getAttribute('tabindex') || '');
+            el.setAttribute('tabindex', '-1');
+          } else if (el.hasAttribute('data-ti')){
+            var t = el.getAttribute('data-ti');
+            if (t === '') el.removeAttribute('tabindex'); else el.setAttribute('tabindex', t);
+            el.removeAttribute('data-ti');
+          }
+        });
+      }
+    });
+  }
+
+  function mark(i){
+    current = i;
+    ticks.forEach(function(t, j){
+      var on = (j === i);
+      t.setAttribute('aria-current', on ? 'true' : 'false');
+      t.setAttribute('tabindex', on ? '0' : '-1');   /* roving: one stop, not fifteen */
+    });
+    mitems.forEach(function(m, j){ m.setAttribute('aria-current', j === i ? 'true' : 'false'); });
+    if (mlab) mlab.textContent = (i + 1) + ' / ' + pages.length;
+    prev.disabled = (i === 0);
+    next.disabled = (i === pages.length - 1);
+    setActive(i);
+  }
+
+  /* arrival detection: scrollend where available, a bounded poll otherwise */
+  function settle(expected){
+    var done = function(){
+      jumping = false;
+      deck.removeEventListener('scrollend', done);
+      clearTimeout(jumpTimer);
+    };
+    if (hasScrollEnd){
+      deck.addEventListener('scrollend', done, { once: true });
+      jumpTimer = setTimeout(done, 1200);                       /* safety net only */
+    } else {
+      var t0 = Date.now();
+      (function poll(){
+        if (Math.abs(deck.scrollLeft - expected) < 2 || Date.now() - t0 > 1200){ done(); return; }
+        jumpTimer = setTimeout(poll, 40);
+      })();
+    }
+  }
+
+  function go(i, opts){
+    opts = opts || {};
+    i = Math.max(0, Math.min(pages.length - 1, i));
+    var behavior = (reduce.matches || Math.abs(i - current) > 1) ? 'auto' : 'smooth';
+    var target = i * deck.clientWidth;
+    jumping = true;
+    clearTimeout(jumpTimer);
+    mark(i);
+    deck.scrollTo({ left: target, behavior: behavior });
+    settle(target);
+    if (opts.history !== false){
+      try { history.pushState({ p: i }, '', '#' + pages[i].id); } catch (e) {}
+    }
+    if (opts.focus !== false){
+      var head = pages[i].querySelector('[data-pagehead]');
+      if (head) { try { head.focus({ preventScroll: true }); } catch (e) { head.focus(); } }
+    }
+  }
+
+  deck.addEventListener('scroll', function(){
+    if (jumping || raf) return;
+    raf = requestAnimationFrame(function(){
+      raf = null;
+      var i = Math.round(deck.scrollLeft / (deck.clientWidth || 1));
+      if (i !== current && i >= 0 && i < pages.length){
+        mark(i);
+        try { history.replaceState({ p: i }, '', '#' + pages[i].id); } catch (e) {}
+      }
+    });
+  });
+
+  prev.addEventListener('click', function(){ go(current - 1); });
+  next.addEventListener('click', function(){ go(current + 1); });
+
+  /* the rail handles its own arrows (automatic activation); the document handles the rest */
+  axis.addEventListener('keydown', function(e){
+    var k = e.key, i = null;
+    if (k === 'ArrowRight' || k === 'ArrowDown') i = current + 1;
+    else if (k === 'ArrowLeft' || k === 'ArrowUp') i = current - 1;
+    else if (k === 'Home') i = 0;
+    else if (k === 'End') i = pages.length - 1;
+    else return;
+    e.preventDefault(); e.stopPropagation();
+    i = Math.max(0, Math.min(pages.length - 1, i));
+    go(i, { focus: false });
+    ticks[i].focus();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var t = e.target;
+    /* never steal Left/Right from a control or a horizontally scrollable region */
+    if (t && t.closest && t.closest('button, a, summary, input, select, textarea, [contenteditable], .srcbox, .eq, .tw')) return;
+    if (t && t.isContentEditable) return;
+    if (axis.contains(t)) return;
+    /* Escape must be tested BEFORE the menu early-return, or it can never fire */
+    if (e.key === 'Escape' && mpan && !mpan.hidden){ e.preventDefault(); closeMenu(); mbtn.focus(); return; }
+    if (mpan && !mpan.hidden) return;
+    if (e.key === 'ArrowRight'){ e.preventDefault(); go(current + 1); }
+    else if (e.key === 'ArrowLeft'){ e.preventDefault(); go(current - 1); }
+  });
+
+  function openMenu(){
+    mpan.hidden = false;
+    mbtn.setAttribute('aria-expanded', 'true');
+    if (hasInert){ deck.inert = true; prev.inert = true; next.inert = true; }
+    mitems[current].focus();
+  }
+  function closeMenu(){
+    mpan.hidden = true;
+    mbtn.setAttribute('aria-expanded', 'false');
+    if (hasInert){ deck.inert = false; prev.inert = false; next.inert = false; setActive(current); }
+  }
+  /* focus stays inside the open menu */
+  mpan.addEventListener('keydown', function(e){
+    if (e.key !== 'Tab') return;
+    var f = mitems.concat([mbtn]);
+    var i = f.indexOf(document.activeElement);
+    if (i < 0) return;
+    e.preventDefault();
+    f[(i + (e.shiftKey ? -1 : 1) + f.length) % f.length].focus();
+  });
+  if (mbtn){
+    mbtn.addEventListener('click', function(){ mpan.hidden ? openMenu() : closeMenu(); });
+  }
+
+  document.addEventListener('click', function(e){
+    var el = e.target && e.target.closest ? e.target.closest('[data-goto]') : null;
+    if (!el) return;
+    go(parseInt(el.getAttribute('data-goto'), 10));
+  });
+  document.addEventListener('click', function(e){
+    var a = e.target && e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if (!a) return;
+    var i = pages.map(function(p){ return p.id; }).indexOf(a.getAttribute('href').slice(1));
+    if (i >= 0){ e.preventDefault(); go(i); }
+  });
+
+  window.addEventListener('popstate', function(e){
+    var i = (e.state && typeof e.state.p === 'number')
+      ? e.state.p
+      : pages.map(function(p){ return p.id; }).indexOf((location.hash || '').slice(1));
+    if (i >= 0) go(i, { history: false });
+  });
+
+  var rt = null;
+  window.addEventListener('resize', function(){
+    clearTimeout(rt);
+    rt = setTimeout(function(){ deck.scrollLeft = current * deck.clientWidth; }, 120);
+  });
+
+  var restore = [];
+  window.addEventListener('beforeprint', function(){
+    restore = [];
+    Array.prototype.forEach.call(document.querySelectorAll('details'), function(d){
+      restore.push([d, d.open]); d.open = true;
+    });
+    if (hasInert) pages.forEach(function(p){ p.inert = false; });
+  });
+  window.addEventListener('afterprint', function(){
+    restore.forEach(function(pair){ pair[0].open = pair[1]; });
+    setActive(current);
+  });
+
+  var start = pages.map(function(p){ return p.id; }).indexOf((location.hash || '').slice(1));
+  if (start < 0) start = 0;
+  mark(start);
+  requestAnimationFrame(function(){ deck.scrollLeft = start * deck.clientWidth; });
+  try { history.replaceState({ p: start }, '', '#' + pages[start].id); } catch (e) {}
+})();
+</script>
+</body>
+</html>

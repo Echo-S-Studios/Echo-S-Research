@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Catalog as a Manifold — Surprisal Geometry · Echo S Research</title>
+<style>
+:root{
+  --ink:#16222c;
+  --ink-soft:#40525f;
+  --ink-faint:#5b6b76;
+  --ground:#e3e9ec;
+  --panel:#f5f8f9;
+  --panel-2:#eaeff1;
+  --rule:#c3cfd5;
+  --verdigris:#1c6355;
+  --verdigris-wash:#dceae6;
+  --ochre:#8a5a0d;
+  --ochre-wash:#f2e7d3;
+  --indigo:#33478a;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua","URW Palladio L",Georgia,serif;
+  --mono:ui-monospace,"SF Mono","Cascadia Mono","Roboto Mono",Menlo,Consolas,monospace;
+  --measure:63ch;
+  --head-h:62px;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  background:var(--ground);color:var(--ink);
+  font-family:var(--serif);font-size:17px;line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+}
+
+/* ─────────── header: the spectrum rail ─────────── */
+header{
+  position:fixed;top:0;left:0;right:0;height:var(--head-h);z-index:40;
+  display:flex;align-items:center;gap:14px;padding:0 16px;
+  background:rgba(227,233,236,.93);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--rule);
+}
+.brand{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-faint);white-space:nowrap}
+.brand b{color:var(--ink);font-weight:600}
+.rail{flex:1;display:flex;align-items:center;gap:0;min-width:0}
+.rail .axis{flex:1;display:flex;align-items:center;position:relative;height:26px}
+.rail .axis::before{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:var(--rule)}
+.tick{
+  position:relative;flex:1;display:flex;align-items:center;justify-content:center;
+  background:none;border:0;padding:0;height:26px;cursor:pointer;color:var(--ink-faint);
+  font-family:var(--mono);font-size:10px;letter-spacing:.02em;
+}
+.tick span{
+  position:relative;z-index:1;min-width:18px;height:18px;display:grid;place-items:center;
+  border:1px solid var(--rule);border-radius:2px;background:var(--panel);transition:all .18s
+}
+.tick:hover span{border-color:var(--ink-soft);color:var(--ink)}
+.tick[aria-current="true"] span{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.tick.edge span{border-radius:50%;min-width:10px;height:10px;font-size:0}
+.navbtn{
+  font-family:var(--mono);font-size:15px;line-height:1;
+  background:var(--panel);color:var(--ink);border:1px solid var(--rule);border-radius:3px;
+  width:30px;height:30px;cursor:pointer;display:grid;place-items:center;transition:all .16s
+}
+.navbtn:hover:not(:disabled){background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.navbtn:disabled{opacity:.32;cursor:default}
+:focus-visible{outline:2px solid var(--indigo);outline-offset:2px}
+
+/* ─────────── compact menu for narrow screens ─────────── */
+.menubtn{display:none;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;
+  letter-spacing:.06em;background:var(--panel);color:var(--ink);border:1px solid var(--rule);
+  border-radius:3px;height:34px;padding:0 11px;cursor:pointer;flex:1;justify-content:space-between}
+.menubtn b{font-size:13px;line-height:1}
+.menupanel{position:fixed;top:var(--head-h);left:0;right:0;bottom:0;z-index:39;
+  background:var(--ground);border-top:1px solid var(--rule);overflow-y:auto;padding:6px 0 40px}
+.menupanel[hidden]{display:none}
+.menupanel button{display:flex;width:100%;gap:12px;align-items:baseline;min-height:46px;
+  padding:10px 18px;background:none;border:0;border-bottom:1px solid var(--rule);
+  font-family:var(--serif);font-size:16px;color:var(--ink);text-align:left;cursor:pointer}
+.menupanel button .n{font-family:var(--mono);font-size:11px;color:var(--ink-faint);min-width:22px}
+.menupanel button[aria-current="true"]{background:var(--panel)}
+.menupanel button[aria-current="true"] .n{color:var(--verdigris)}
+
+/* ─────────── deck: horizontal pages ─────────── */
+#deck{
+  position:absolute;top:var(--head-h);bottom:0;left:0;right:0;
+  display:flex;overflow-x:auto;overflow-y:hidden;
+  scroll-snap-type:x mandatory;
+  scrollbar-width:none;
+}
+#deck::-webkit-scrollbar{display:none}
+.page{
+  flex:0 0 100%;height:100%;overflow-y:auto;scroll-snap-align:start;
+  padding:0 24px 96px;-webkit-overflow-scrolling:touch;
+}
+.inner{max-width:var(--measure);margin:0 auto;padding-top:44px}
+
+/* ─────────── type ─────────── */
+.eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.19em;text-transform:uppercase;
+  color:var(--verdigris);margin:0 0 12px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.eyebrow i{font-style:normal;color:var(--ink-faint)}
+h1{font-size:clamp(30px,6vw,44px);line-height:1.08;letter-spacing:-.015em;margin:0 0 10px;font-weight:600}
+h2{font-size:clamp(25px,4.6vw,33px);line-height:1.14;letter-spacing:-.012em;margin:0 0 8px;font-weight:600}
+.dek{font-size:19px;color:var(--ink-soft);line-height:1.45;margin:0 0 26px;font-style:italic}
+h3{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink);margin:34px 0 10px;font-weight:600;
+  padding-bottom:6px;border-bottom:1px solid var(--rule)}
+h3 em{font-style:normal;color:var(--ink-faint);font-weight:400}
+p{margin:0 0 15px}
+a{color:var(--indigo)}
+strong{font-weight:600}
+em{font-style:italic}
+.small{font-size:15px;color:var(--ink-soft)}
+ul,ol{margin:0 0 15px;padding-left:22px}
+li{margin-bottom:7px}
+code,.m{font-family:var(--mono);font-size:.88em;letter-spacing:-.01em}
+.m{white-space:nowrap}
+
+/* ─────────── equation strip ─────────── */
+.eq{
+  position:relative;margin:20px 0;padding:16px 74px 16px 18px;
+  background:var(--panel);border:1px solid var(--rule);border-left:2px solid var(--verdigris);
+  border-radius:2px;font-family:var(--mono);font-size:14.5px;line-height:1.75;
+  overflow-x:auto;
+}
+.eq .cid{
+  position:absolute;top:8px;right:10px;font-size:9.5px;letter-spacing:.12em;
+  color:var(--ink-faint);text-transform:uppercase
+}
+.eq b{font-weight:600;color:var(--verdigris)}
+.eq .note{display:block;margin-top:8px;font-family:var(--serif);font-size:14px;
+  color:var(--ink-soft);line-height:1.5;white-space:normal}
+
+/* matrices */
+.mat{display:inline-grid;gap:0 12px;vertical-align:middle;
+  position:relative;padding:2px 8px;margin:0 2px;font-family:var(--mono);font-size:.94em}
+.mat.c2{grid-template-columns:repeat(2,auto)}
+.mat.c3{grid-template-columns:repeat(3,auto)}
+.mat::before,.mat::after{content:"";position:absolute;top:0;bottom:0;width:4px;
+  border:1px solid var(--ink-soft)}
+.mat::before{left:0;border-right:0}
+.mat::after{right:0;border-left:0}
+.mat i{font-style:normal;text-align:right}
+
+/* ─────────── tables ─────────── */
+.tw{overflow-x:auto;margin:20px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--rule)}
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+th{font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;
+  text-align:left;padding:9px 12px 8px 0;color:var(--ink-faint);font-weight:600;
+  border-bottom:1px solid var(--rule);white-space:nowrap}
+td{padding:9px 12px 9px 0;border-bottom:1px solid var(--panel-2);vertical-align:top;line-height:1.45}
+tr:last-child td{border-bottom:0}
+td:first-child{font-family:var(--mono);font-size:13px;white-space:nowrap;color:var(--ink)}
+table.prose td:first-child{font-family:var(--serif);font-size:14.5px;white-space:normal}
+
+/* ─────────── tags ─────────── */
+.tag{display:inline-block;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;
+  text-transform:uppercase;padding:2px 6px;border-radius:2px;white-space:nowrap;
+  border:1px solid transparent;font-weight:600;vertical-align:2%}
+.tag.forced{background:var(--verdigris);color:#eef6f3}
+.tag.computed{background:var(--verdigris-wash);color:var(--verdigris);border-color:var(--verdigris)}
+.tag.declared{background:var(--ochre-wash);color:var(--ochre);border-color:var(--ochre)}
+.tag.plausible{background:transparent;color:var(--indigo);border:1px solid var(--indigo)}
+.tag.open{background:transparent;color:var(--ochre);border:1px dashed var(--ochre)}
+.tag.estab{background:transparent;color:var(--ink-faint);border:1px solid var(--rule)}
+
+/* ─────────── inherit / hand-on blocks ─────────── */
+.thread{
+  margin:0 0 28px;padding:13px 16px;background:var(--panel-2);border-radius:2px;
+  border:1px solid var(--rule);
+}
+.thread .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--ink-faint);display:block;margin-bottom:7px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{
+  font-family:var(--mono);font-size:11.5px;padding:3px 9px;border-radius:2px;
+  background:var(--panel);border:1px solid var(--rule);color:var(--ink);cursor:pointer;
+  transition:all .16s;text-align:left;line-height:1.35
+}
+.chip:hover{border-color:var(--verdigris);color:var(--verdigris)}
+.chip .n{color:var(--ink-faint);margin-right:5px}
+.chip:hover .n{color:var(--verdigris)}
+.handoff{
+  margin:30px 0 4px;padding:14px 16px;border:1px solid var(--verdigris);
+  background:var(--verdigris-wash);border-radius:2px;font-size:15px
+}
+.handoff .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--verdigris);display:block;margin-bottom:6px;font-weight:600}
+
+/* ─────────── run badge ─────────── */
+.run{
+  display:inline-flex;align-items:baseline;gap:9px;margin:0 0 24px;padding:6px 12px;
+  border:1px solid var(--verdigris);border-radius:2px;background:var(--panel);
+  font-family:var(--mono);font-size:11.5px;color:var(--verdigris)
+}
+.run b{font-size:15px;font-weight:600}
+.run i{font-style:normal;color:var(--ink-faint);letter-spacing:.06em;font-size:10px;
+  text-transform:uppercase}
+
+/* ─────────── checkpoint cards ─────────── */
+.cpwrap{margin:38px 0 0}
+.cphead{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink);border-bottom:1px solid var(--ink);padding-bottom:6px;margin-bottom:14px;
+  display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.cphead i{font-style:normal;color:var(--ink-faint);letter-spacing:.06em;font-size:9.5px}
+details.cp{
+  margin:0 0 10px;background:var(--panel);border:1px solid var(--rule);border-radius:2px;
+  transition:border-color .18s
+}
+details.cp[open]{border-color:var(--verdigris)}
+details.cp summary{
+  list-style:none;cursor:pointer;padding:13px 15px;display:flex;gap:12px;align-items:flex-start;
+  font-size:15.5px;line-height:1.5
+}
+details.cp summary::-webkit-details-marker{display:none}
+details.cp summary::marker{content:""}
+.qn{
+  flex:0 0 auto;font-family:var(--mono);font-size:10px;letter-spacing:.08em;font-weight:600;
+  color:var(--ink-faint);border:1px solid var(--rule);border-radius:2px;padding:2px 5px;margin-top:3px
+}
+details.cp[open] .qn{background:var(--verdigris);color:#eef6f3;border-color:var(--verdigris)}
+.qtext{flex:1}
+.reveal{
+  flex:0 0 auto;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--verdigris);border:1px solid var(--verdigris);border-radius:2px;padding:3px 7px;
+  margin-top:2px;white-space:nowrap;transition:all .16s
+}
+details.cp summary:hover .reveal{background:var(--verdigris);color:#eef6f3}
+details.cp[open] .reveal{background:var(--ink);border-color:var(--ink);color:var(--panel)}
+details.cp[open] .reveal::after{content:""}
+.ans{
+  border-top:1px solid var(--rule);margin:0 15px;padding:14px 0 16px;font-size:15.5px;
+  animation:fade .26s ease-out
+}
+.ans .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--verdigris);display:block;margin-bottom:7px;font-weight:600}
+.ans p:last-child{margin-bottom:0}
+@keyframes fade{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+  #deck{scroll-behavior:auto}
+}
+
+/* ─────────── cover ─────────── */
+.cover .inner{padding-top:6vh;max-width:70ch}
+.cover .rule{height:1px;background:var(--ink);margin:26px 0}
+.mono-list{font-family:var(--mono);font-size:13px;line-height:1.9;color:var(--ink-soft)}
+.mono-list b{color:var(--ink);font-weight:600}
+.mono-list span{color:var(--verdigris)}
+.howto{display:grid;gap:12px;margin:26px 0 0}
+.howto div{padding:12px 15px;background:var(--panel);border:1px solid var(--rule);border-radius:2px;
+  font-size:15px}
+.howto b{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--verdigris);display:block;margin-bottom:4px}
+.gapfig{margin:30px 0;padding:20px 18px 14px;background:var(--panel);border:1px solid var(--rule)}
+.gapline{position:relative;height:38px;margin:0 0 6px}
+.gapline .bar{position:absolute;top:18px;left:0;right:0;height:2px;background:var(--rule)}
+.gapline .seg{position:absolute;top:15px;height:8px;background:var(--verdigris);border-radius:1px}
+.gapline .band{position:absolute;top:6px;height:26px;border:1px dashed var(--ochre);
+  background:repeating-linear-gradient(45deg,transparent,transparent 5px,var(--ochre-wash) 5px,var(--ochre-wash) 10px)}
+.gapline .pt{position:absolute;top:11px;width:2px;height:16px;background:var(--ink)}
+.gapline .lb{position:absolute;top:-2px;font-family:var(--mono);font-size:10px;color:var(--ink-faint);
+  transform:translateX(-50%)}
+.gapcap{font-family:var(--mono);font-size:11px;color:var(--ink-soft);line-height:1.6}
+
+.endnote{margin-top:40px;padding-top:18px;border-top:1px solid var(--rule);
+  font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);letter-spacing:.02em}
+.nextup{margin-top:34px;padding:14px 16px;border:1px dashed var(--rule);border-radius:2px;
+  font-size:15px;color:var(--ink-soft)}
+.nextup b{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink);display:block;margin-bottom:5px}
+
+.vh{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.reveal::before{content:"reveal"}
+details.cp[open] .reveal::before{content:"hide"}
+.notemap td:first-child{color:var(--verdigris);font-weight:600}
+.audit td:last-child{font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);
+  word-break:break-all;white-space:normal;line-height:1.4}
+.srcbox{margin:16px 0;border:1px solid var(--rule);border-radius:2px;background:var(--panel)}
+.srcbox summary{cursor:pointer;padding:11px 14px;font-family:var(--mono);font-size:11px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--verdigris);list-style:none}
+.srcbox summary::-webkit-details-marker{display:none}
+.srcbox pre{margin:0;padding:0 14px 14px;overflow-x:auto;font-family:var(--mono);font-size:10.5px;
+  line-height:1.5;color:var(--ink);white-space:pre;max-height:60vh;overflow-y:auto}
+
+@media print{
+  :root{--head-h:0px}
+  html,body{height:auto;overflow:visible;background:#fff;font-size:11pt}
+  header{display:none}
+  #deck{position:static;display:block;overflow:visible;height:auto}
+  .page{flex:none;height:auto;overflow:visible;padding:0 0 24pt;break-before:page;page-break-before:always}
+  .page:first-child{break-before:auto;page-break-before:auto}
+  .inner{max-width:none;padding-top:0}
+  details.cp{break-inside:avoid;page-break-inside:avoid}
+  details.cp .ans{display:block !important}
+  .srcbox pre{max-height:none;overflow:visible;white-space:pre-wrap;overflow-wrap:anywhere;
+    font-size:7.5pt;line-height:1.35}
+  .srcbox{break-inside:auto;page-break-inside:auto}
+  .menubtn,.menupanel{display:none !important}
+  .reveal,.chip{display:none}
+  .eq,.tw,table,tr{break-inside:avoid;page-break-inside:avoid}
+  h2,h3{break-after:avoid;page-break-after:avoid}
+  a{text-decoration:none;color:inherit}
+}
+
+@media (max-width:640px){
+  body{font-size:16px}
+  .page{padding:0 16px 90px}
+  .inner{padding-top:28px}
+  .brand{display:none}
+  .eq{padding:14px 14px 14px 14px;font-size:13px}
+  .eq .cid{position:static;display:block;margin-bottom:6px;text-align:left}
+  .rail{display:none}
+  .menubtn{display:flex}
+  .dek{font-size:17px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand"><b>Surprisal Geometry</b> · The Catalog as a Manifold</div>
+  <button class="navbtn" id="prev" aria-label="Previous page">&#8592;</button>
+  <nav class="rail" aria-label="Lesson navigation"><div class="axis" id="axis"></div></nav>
+  <button class="menubtn" id="menubtn" aria-expanded="false" aria-controls="menupanel"
+          aria-label="Lesson menu"><span id="menulabel">1 / 15</span> <b>&#9776;</b></button>
+  <button class="navbtn" id="next" aria-label="Next page">&#8594;</button>
+</header>
+<nav class="menupanel" id="menupanel" aria-label="Lessons" hidden></nav>
+
+<main id="deck">
+
+<!-- ══════════════════════════ COVER ══════════════════════════ -->
+<section id="cover" class="page cover" data-title="Cover">
+  <div class="inner">
+    <p class="eyebrow">A course in five lessons <i>· the catalog re-read as a manifold</i></p>
+    <h1 tabindex="-1" data-pagehead>Surprisal Geometry</h1>
+    <p class="dek">Charge each seed of the emission catalog its description cost, warm it to a
+      temperature, and a finite set of algebraic numbers becomes a curved statistical manifold — five
+      layers of geometry forced before any choice is made, and a complete classification of which
+      second statistics bend it into a sphere.</p>
+
+    <div class="rule"></div>
+
+    <p>This booklet takes one paper — <em>The Field Surprisal Geometry</em> — and walks its arc in
+      five lessons. The object is small; the discipline is strict, and the discipline is half the
+      subject:</p>
+
+    <p class="mono-list">
+      <b>1.</b> read the catalog's forced numbers &nbsp;<span>&#8594;</span>&nbsp;
+      <b>2.</b> write an exact-arithmetic harness &nbsp;<span>&#8594;</span>&nbsp;
+      <b>3.</b> run it &nbsp;<span>&#8594;</span>&nbsp;
+      <b>4.</b> teach only what passed
+    </p>
+
+    <p>Every load-bearing claim carries a tag naming how strongly it is held —
+      <span class="tag forced">forced</span> proved or exact,
+      <span class="tag computed">computed</span> a validated numeric value,
+      <span class="tag declared">declared</span> a principled invariance-free choice,
+      <span class="tag open">open</span> unresolved,
+      <span class="tag estab">established</span> imported from the literature. The tags are the
+      mathematics, not decoration: they mark the difference between a gauge choice and a
+      gauge-invariant statement. This is the most reproducible paper in the archive —
+      <b>20 fail-first harnesses, 422 exact-arithmetic checks</b> over ℚ(log 2, log 3, log 5, log φ),
+      with floats display-only and every transcendental comparison interval-certified.</p>
+
+    <div class="howto">
+      <div><b>Move sideways</b>Swipe, use the arrow keys, or the buttons above. The rail is the table
+        of contents — tap any number to jump.</div>
+      <div><b>Read downwards</b>Each lesson scrolls vertically. The thread block at the top says what a
+        lesson inherits; the hand-off block at the bottom says what it passes on.</div>
+      <div><b>Answer the checkpoints</b>Every lesson ends with questions. Try them before revealing the
+        worked answer.</div>
+    </div>
+
+    <p class="endnote">Five lessons · one paper · 20 harnesses · 422 checks &nbsp;·&nbsp;
+      <a href="../learn.html">&#8592; The course</a> · <a href="../index.html">The archive</a> ·
+      <a href="../papers/2026-07-field-surprisal-geometry.pdf">the paper (PDF)</a></p>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LESSON 1 ══════════════════════════ -->
+<section id="lesson-1" class="page" data-title="1 · The Gibbs Family">
+  <div class="inner">
+    <p class="eyebrow">Lesson 01 <i>· field surprisal · Z = 17 + 4√5</i></p>
+    <h2 tabindex="-1" data-pagehead>The Catalog as a Gibbs Family</h2>
+    <p class="dek">Seven algebraic seeds, each priced by its Mahler measure. Charge that price at an
+      inverse temperature and the catalog becomes an exponential family — with surprisal affine in cost
+      and Fisher information equal to the cost's own variance.</p>
+
+    <div class="run"><b>12/12</b><i>field_surprisal_v2.py · exact</i></div>
+
+    <h3>&#167;1 <em>&nbsp;One catalog, seven forced numbers</em></h3>
+    <p>The emission catalog is the finite set
+      <span class="m">Ω = {√2, √3, √5, φ, τ, φ⁴, K}</span>. Each seed α carries a
+      <strong>Mahler measure</strong> <span class="m">M(α) = ∏<sub>|ζ|&gt;1</sub>|ζ|</span> — the
+      product of the conjugate root moduli that escape the unit circle — which the companion
+      <span class="m">λ = 2c</span> manuscript reads as a <strong>description cost</strong>
+      <span class="m">log M</span>. Every number below is re-derived from the minimal polynomial:</p>
+
+    <div class="tw"><table><caption class="vh">Lesson 1 — §1 The catalog's forced numbers</caption>
+      <thead><tr><th scope="col">seed</th><th scope="col">min poly</th><th scope="col">M</th><th scope="col">cost log M over (log2,log3,log5,logφ)</th><th scope="col">deg</th><th scope="col">trace</th></tr></thead>
+      <tbody>
+        <tr><td>√2</td><td>x²−2</td><td>2</td><td>(1, 0, 0, 0)</td><td>2</td><td>0</td></tr>
+        <tr><td>√3</td><td>x²−3</td><td>3</td><td>(0, 1, 0, 0)</td><td>2</td><td>0</td></tr>
+        <tr><td>√5</td><td>x²−5</td><td>5</td><td>(0, 0, 1, 0)</td><td>2</td><td>0</td></tr>
+        <tr><td>φ</td><td>x²−x−1</td><td>φ = (1+√5)/2</td><td>(0, 0, 0, 1)</td><td>2</td><td>+1</td></tr>
+        <tr><td>τ</td><td>x²+x−1</td><td>φ</td><td>(0, 0, 0, 1)</td><td>2</td><td>−1</td></tr>
+        <tr><td>φ⁴</td><td>x²−7x+1</td><td>φ⁴ = (7+3√5)/2</td><td>(0, 0, 0, 4)</td><td>2</td><td>+7</td></tr>
+        <tr><td>K</td><td>x⁴+5x²−5</td><td>φ⁴−1 = (5+3√5)/2</td><td>(0, 0, ½, 2)</td><td>4</td><td>0</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="eq"><span class="cid">Lemma · Z</span>
+      <b>Z</b> = ∑<sub>α∈Ω</sub> M(α) = 10 + 2φ + (2φ⁴ − 1) = <b>17 + 4√5</b>
+      <span class="note">2+3+5 = 10; φ+φ = 1+√5; φ⁴ + (φ⁴−1) = 6+3√5; summing gives 17+4√5
+      <span class="tag forced">forced</span>. The integer 17 is a coincidence of <em>this</em> catalog
+      and is read as nothing more. K is the one non-obvious measure: x⁴+5x²−5 gives
+      x² = (−5±3√5)/2, so the real pair ±K has |K| = 5<sup>1/4</sup>/φ &lt; 1 (inside, because 45 &lt; 49),
+      while the imaginary pair ±iβ has β² = (5+3√5)/2 &gt; 1 — only it contributes, so
+      M(K) = β² = φ⁴−1 = φ²√5.</span>
+    </div>
+
+    <p>The costs live in <span class="m">span<sub>ℚ</sub>{log2, log3, log5, logφ}</span>, and those four
+      logs are <strong>ℚ-linearly independent</strong> — the single hypothesis the whole course rests
+      on, and it is discharged on the spot: taking norms in ℚ(√5), N(2), N(3), N(5) = 4, 9, 25 while
+      N(φ) = φψ = −1, so a relation <span class="m">2<sup>a</sup>3<sup>b</sup>5<sup>c</sup>φ<sup>d</sup> = 1</span>
+      forces <span class="m">a = b = c = 0</span> by unique factorization and then
+      <span class="m">d = 0</span> <span class="tag forced">forced</span>. Two cost coincidences run the
+      entire arc: the <strong>golden tie</strong> (φ and τ share cost log φ) and the
+      <strong>Salem square</strong> <span class="m">(φ⁴−1)² = 5φ⁴</span>, i.e.
+      <span class="m">2·cost(K) = cost(√5) + cost(φ⁴)</span>.</p>
+
+    <h3>&#167;2 <em>&nbsp;The Mahler–Gibbs family</em></h3>
+    <p>Charge the cost <span class="m">E<sub>i</sub> = log M<sub>i</sub></span> at inverse temperature
+      β; the maximum-entropy law is the <strong>Mahler–Gibbs family</strong></p>
+
+    <div class="eq"><span class="cid">§3 · the family</span>
+      p<sub>i</sub>(β) = M<sub>i</sub><sup>−β</sup> / Z(β), &nbsp;&nbsp;
+      Z(β) = ∑<sub>j</sub> M<sub>j</sub><sup>−β</sup>, &nbsp;&nbsp; A(β) := log Z(β)
+      <span class="note">An <b>exponential family</b> with sufficient statistic log M. Its
+      <em>structure</em> is <span class="tag forced">forced</span>; only the <em>value</em> of β is
+      <span class="tag declared">declared</span>. Marked temperatures: β = 0 (uniform); β = 1 (the
+      MDL/Occam prior p ∝ 1/M); β = λ = √5 (the field's forced exchange rate); β = −1 (the exact
+      anchor p ∝ M, algebraic in ℚ(√5)).</span>
+    </div>
+
+    <h3>&#167;3 <em>&nbsp;Surprisal is affine in cost</em></h3>
+    <p>The <strong>surprisal</strong> of an outcome is its description length
+      <span class="m">S<sub>i</sub> = −log p<sub>i</sub></span>. On the Gibbs family it is exactly a
+      straight line in the cost:</p>
+
+    <div class="eq"><span class="cid">Prop · affinity</span>
+      S<sub>i</sub>(β) = −log p<sub>i</sub>(β) = <b>β·log M<sub>i</sub> + log Z(β)</b>
+      &nbsp;&nbsp;⇒&nbsp;&nbsp; ∂S<sub>i</sub>/∂(log M<sub>i</sub>) = β
+      <span class="note">The slope of surprisal against Mahler cost <em>is</em> the inverse
+      temperature <span class="tag forced">forced</span>. At β = λ = √5 the surprisal equals the
+      growth-rule cost λ·log M up to the shared constant log Z, tying this geometry back to the
+      exchange rate.</span>
+    </div>
+
+    <h3>&#167;4 <em>&nbsp;Fisher information is cost variance</em></h3>
+    <p>Differentiate the log-partition twice. The first derivative is the (negative) mean cost, the
+      second is the load-bearing identity of the whole course:</p>
+
+    <div class="eq" style="border-left-color:var(--verdigris)"><span class="cid">Prop · Fisher = Var</span>
+      A′(β) = Z′/Z = −∑<sub>j</sub> p<sub>j</sub> log M<sub>j</sub> = −𝔼<sub>β</sub>[log M]
+      &nbsp;&nbsp;·&nbsp;&nbsp; <b>I(β) = A″(β) = Var<sub>β</sub>(log M) ≥ 0</b>
+      <span class="note">The second derivative of an exponential family's log-partition is the
+      variance of its sufficient statistic; non-negativity is a variance's
+      <span class="tag forced">forced</span>. So <em>information is cost fluctuation</em> — the more
+      the description costs scatter at a temperature, the more the ensemble carries.</span>
+    </div>
+
+    <p>Read through the Cramér–Rao bound <span class="tag estab">established</span>, this says the
+      temperature of an emission ensemble is easiest to estimate exactly where the costs fluctuate
+      most: for n independent emissions,
+      <span class="m">Var(β&#770;) ≥ 1/(n·I(β)) = 1/(n·Var<sub>β</sub>(log M))</span>. Cost variance is
+      not noise here; it is the signal.</p>
+
+    <h3>&#167;5 <em>&nbsp;Two concrete slices</em></h3>
+    <p>The <strong>exact anchor</strong> β = −1 sets <span class="m">p<sub>i</sub> = M<sub>i</sub>/Z</span>,
+      all weights algebraic in ℚ(√5): it favours the high-Mahler seeds φ⁴ (weight ≈ 0.264) and K
+      (≈ 0.226) and most suppresses the golden pair φ, τ (equal weight ≈ 0.062, since
+      M(φ) = M(τ) = φ). And the <strong>keystone sub-catalog</strong> <span class="m">{R<sup>n</sup>}</span>
+      — powers of the Fibonacci companion matrix, with <span class="m">M(R<sup>n</sup>) = φ<sup>n</sup></span>
+      — has cost <em>linear</em> in n, so its Gibbs law is exactly a shifted geometric distribution
+      <span class="m">p<sub>n</sub> = (1−r)r<sup>n−n₀</sup></span> with <span class="m">r = φ<sup>−β</sup></span>
+      and <span class="m">I(β) = (log φ)²·r/(1−r)²</span> <span class="tag forced">forced</span>. The
+      row n = 4 carries the catalog's gap seed x²−7x+1, whose trace L₄ = 7 is the normalisation that
+      recurs across the corpus.</p>
+
+    <div class="cpwrap">
+      <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
+
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">The quartic K has four
+        conjugates but Mahler measure φ⁴−1, not a product of four moduli. Which roots contribute, and
+        why exactly those?</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>x⁴+5x²−5 = 0 is a quadratic in x²: x² = (−5±3√5)/2. The minus branch gives x² &lt; 0, a
+          purely imaginary pair ±iβ with β² = (5+3√5)/2 ≈ 5.85 &gt; 1 — <em>outside</em> the circle.
+          The plus branch gives a real pair ±K with K² = (3√5−5)/2 ≈ 0.85, so |K| = 5<sup>1/4</sup>/φ &lt; 1
+          — <em>inside</em>. Only the imaginary pair escapes, so M(K) = |iβ|² = β² = φ⁴−1 = φ²√5.</p>
+          <p>That single seed — the only one with complex conjugates and the only degree-4 member — is
+          what makes degree a <em>single-outcome indicator</em>, the fact Lesson 4 turns into a sphere.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Derive Fisher = Var from
+        A = log Z in two lines, and say what the identity turns Cramér–Rao into for estimating an
+        ensemble's temperature.</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>A′(β) = Z′/Z = −∑ p<sub>j</sub> log M<sub>j</sub> = −𝔼[log M]. Differentiating again,
+          A″ = 𝔼[(log M)²] − (𝔼[log M])² = Var<sub>β</sub>(log M) — the standard exponential-family
+          identity, non-negative because a variance is.</p>
+          <p>Cramér–Rao is then imported (unbiased estimator, usual regularity): for n independent
+          emissions Var(β&#770;) ≥ 1/(n·Var<sub>β</sub>(log M)), tightening like 1/n. The more the costs
+          fluctuate, the easier the temperature is to pin.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">The catalog costs satisfy
+        exactly two ℚ-relations. Write both as integer vectors d with ∑d<sub>i</sub> = 0, and flag the
+        feature of the second that a later lesson turns into a theorem.</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>The golden swap <span class="m">d₁ = e<sub>φ</sub> − e<sub>τ</sub></span> (the tie), and the
+          Salem square <span class="m">d₂ = e<sub>√5</sub> + e<sub>φ⁴</sub> − 2e<sub>K</sub></span>, from
+          2·cost(K) = cost(√5) + cost(φ⁴). They span the whole collision lattice
+          {d : d·cost = 0, ∑d = 0}, of rank exactly 2.</p>
+          <p>The feature: d₂ carries an entry of absolute value <strong>2</strong>, while d₁ is a
+          {−1,0,1} vector. Lesson 5 shows window collisions are squarefree, so the Salem square
+          <em>cannot act at window level</em> — only the golden swap can, and that one observation
+          closes necessity at every k.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="handoff"><span class="lbl">hands on to Lesson 2</span>
+      One family, one sufficient statistic, one function A = log Z that generated both the mean cost and
+      the Fisher information. That single convex potential is about to make the family <em>dually
+      flat</em> — and turn Fisher information into a heat capacity.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LESSON 2 ══════════════════════════ -->
+<section id="lesson-2" class="page" data-title="2 · Dual Flatness &amp; Heat">
+  <div class="inner">
+    <p class="eyebrow">Lesson 02 <i>· dual flatness · the thermodynamic identity</i></p>
+    <h2 tabindex="-1" data-pagehead>Dual Flatness and the Heat Capacity</h2>
+    <p class="dek">The one convex potential A = log Z carries two flat coordinate systems and a
+      divergence. Reading β as an inverse temperature makes the whole apparatus a thermodynamics — in
+      which Fisher information <em>is</em> the heat capacity.</p>
+
+    <div class="thread"><span class="lbl">carries forward</span>
+      <div class="chips">
+        <button class="chip" data-goto="1"><span class="n">L1</span>the Gibbs family</button>
+        <button class="chip" data-goto="1"><span class="n">L1</span>Fisher = Var(log M)</button>
+        <button class="chip" data-goto="1"><span class="n">L1</span>A = log Z</button>
+      </div>
+    </div>
+
+    <div class="run"><b>12/12</b><i>field_surprisal_v2.py · dual-flat + thermo</i></div>
+
+    <h3>&#167;1 <em>&nbsp;Two flat coordinate systems</em></h3>
+    <p>In the sense of Amari–Nagaoka <span class="tag estab">established</span> the family is a
+      <strong>dually flat</strong> manifold. The natural (e-affine) coordinate is β itself; the
+      expectation (m-affine) coordinate is <span class="m">η = A′(β) = −U(β)</span> with
+      <span class="m">U = 𝔼<sub>β</sub>[log M]</span> the mean cost; and the two dual potentials are
+      <span class="m">A(β) = log Z</span> and its Legendre transform, the negentropy
+      <span class="m">A*(η) = −H(p)</span>.</p>
+
+    <h3>&#167;2 <em>&nbsp;KL is a Bregman divergence of log Z</em></h3>
+    <div class="eq"><span class="cid">Prop · Bregman KL</span>
+      KL(p(β₁) ‖ p(β₂)) = A(β₂) − A(β₁) + (β₂ − β₁)·U(β₁)
+      <span class="note">Exactly the Bregman divergence generated by the convex potential A, and the
+      Legendre identity A*(η) = βη − A(β) = ∑ p<sub>i</sub> log p<sub>i</sub> = −H holds identically
+      <span class="tag forced">forced</span>. Consequence: the Gibbs curve β ↦ p(β) is an
+      <b>e-geodesic</b> — a straight line in the natural coordinate.</span>
+    </div>
+    <p>A worked instance, reading A and U from the thermodynamic table of §4:
+      <span class="m">KL(p(−1) ‖ p(1)) = A(1) − A(−1) + 2U(−1) = 0.950 − 3.256 + 2(1.458) = 0.610</span>
+      nats — the description-length gap between the exact anchor and the MDL prior. And because the
+      geometry is dually flat, the generalized <strong>Pythagorean theorem</strong> holds: if the
+      e-geodesic from p to q meets the m-geodesic from q to r Fisher-orthogonally, then
+      <span class="m">KL(p‖r) = KL(p‖q) + KL(q‖r)</span>.</p>
+
+    <h3>&#167;3 <em>&nbsp;The catalog as a thermodynamics</em></h3>
+    <p>With energies <span class="m">E<sub>i</sub> = log M<sub>i</sub></span> and temperature
+      <span class="m">T = 1/β</span>, every classical potential is present: free energy
+      <span class="m">F = −A/β</span>, internal energy <span class="m">U = −A′</span>, and Gibbs
+      entropy <span class="m">S = A + βU</span>, which coincides with the Shannon entropy
+      <span class="m">H(p(β))</span>. Entropy is maximal, log 7 ≈ 1.946, at the uniform point β = 0.</p>
+
+    <h3>&#167;4 <em>&nbsp;Fisher information is a heat capacity</em></h3>
+    <div class="eq" style="border-left-color:var(--verdigris)"><span class="cid">Prop · C = β²I</span>
+      <b>C(β) = dU/dT = β²·I(β) = β²·Var<sub>β</sub>(log M) ≥ 0</b>
+      <span class="note">dU/dβ = −A″ = −I and dT/dβ = −1/β², so C = (dU/dβ)/(dT/dβ) = β²I
+      <span class="tag forced">forced</span>. The same variance that measures information also measures
+      how the ensemble's energy responds to warming: information <em>is</em> heat capacity.</span>
+    </div>
+    <p>The two faces come apart at the temperatures. The fluctuation Var<sub>β</sub>(log M) peaks at a
+      distinguished <strong>peak-fluctuation temperature</strong> β* ≈ −0.0768, where
+      Var ≈ 0.3289 <span class="tag computed">computed</span>; but the heat capacity C = β²I is
+      <em>suppressed</em> near β = 0 by the β² factor and grows with |β|. As β → +∞ the measure
+      concentrates on the minimal-cost seeds φ, τ; as β → −∞ on the maximal-cost seed φ⁴.</p>
+
+    <div class="tw"><table><caption class="vh">Lesson 2 — §4 Thermodynamics at the distinguished temperatures</caption>
+      <thead><tr><th scope="col">β</th><th scope="col">Z(β)</th><th scope="col">A = log Z</th><th scope="col">U = ⟨log M⟩</th><th scope="col">S = H</th><th scope="col">C = β²I</th></tr></thead>
+      <tbody>
+        <tr><td>−1</td><td>25.944</td><td>3.256</td><td>1.458</td><td>1.798</td><td>0.2626</td></tr>
+        <tr><td>β* ≈ −0.077</td><td>7.654</td><td>2.035</td><td>1.176</td><td>1.945</td><td>0.0019</td></tr>
+        <tr><td>0</td><td>7</td><td>1.946</td><td>1.151</td><td>1.946</td><td>0</td></tr>
+        <tr><td>1</td><td>2.586</td><td>0.950</td><td>0.855</td><td>1.806</td><td>0.243</td></tr>
+        <tr><td>√5</td><td>1.040</td><td>0.039</td><td>0.648</td><td>1.487</td><td>0.520</td></tr>
+      </tbody>
+    </table></div>
+    <p class="small">All values <span class="tag computed">computed</span> (A, U, S, C in nats); entropy
+      is maximal at β = 0, the fluctuation peaks at β*, and the heat capacity vanishes at β = 0 and
+      grows on either side.</p>
+
+    <div class="cpwrap">
+      <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
+
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">The Gibbs curve is an
+        e-geodesic — a straight line in β. Why does that <em>not</em> make it a shortest path in the
+        Fisher–Rao metric?</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>e-geodesics are straight in the natural (dual-flat) coordinate; metric geodesics are
+          straight in the Fisher–Rao <em>Riemannian</em> connection. Dual flatness gives two flat
+          connections that are <em>not</em> the metric one, so the e-geodesic and the metric geodesic
+          are different curves. Lesson 3 makes this visible: the Fisher–Rao distances along the Gibbs
+          curve are strictly sub-additive, so the straight-in-β curve is a longer arc than the metric
+          chord between its endpoints.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Fisher information is
+        near its maximum at β = 0, yet the heat capacity is exactly 0 there. Reconcile.</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>C = β²·I. At β = 0 the fluctuation I = Var₀(log M) ≈ 0.328 is essentially at its peak, but
+          the prefactor β² = 0 kills it: C(0) = 0. Physically, at infinite temperature (β → 0) the
+          populations are uniform and insensitive to a change in T, so no heat is stored per degree even
+          though the cost still fluctuates maximally. The two "faces of the variance" — information and
+          heat capacity — are weighted differently, and they separate exactly at β = 0.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Write KL(p(β₁)‖p(β₂))
+        as a Bregman divergence and use it to explain in one line why KL is not symmetric.</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>KL(p(β₁)‖p(β₂)) = A(β₂) − A(β₁) + (β₂−β₁)U(β₁): the gap between A at β₂ and its
+          first-order Taylor expansion about β₁, i.e. the Bregman divergence of the convex A. It is
+          asymmetric because the linearization is taken at β₁ — swapping the arguments linearizes at
+          β₂ instead, and a strictly convex A gives a different remainder. The worked value
+          KL(p(−1)‖p(1)) = 0.610 nats is one such one-sided gap.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="handoff"><span class="lbl">hands on to Lesson 3</span>
+      A dually flat curve, straight in β. But <em>what surface does it live on?</em> Pass to
+      square-root coordinates and the whole categorical model becomes a sphere of curvature exactly ¼ —
+      on which distances are angles and no point of the Gibbs curve is canonical.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LESSON 3 ══════════════════════════ -->
+<section id="lesson-3" class="page" data-title="3 · The ¼-Sphere">
+  <div class="inner">
+    <p class="eyebrow">Lesson 03 <i>· the round ¼-sphere · Fisher–Rao distances · the dichotomy</i></p>
+    <h2 tabindex="-1" data-pagehead>The Round ¼-Sphere</h2>
+    <p class="dek">Square-root the probabilities and the categorical model is an isometric quarter-sphere:
+      curvature exactly ¼, distances are Bhattacharyya angles, the seeds a regular simplex. The one
+      declared quantity — the temperature — is then <em>proved</em> to be irreducibly a choice.</p>
+
+    <div class="thread"><span class="lbl">carries forward</span>
+      <div class="chips">
+        <button class="chip" data-goto="1"><span class="n">L1</span>Fisher = Var(log M)</button>
+        <button class="chip" data-goto="2"><span class="n">L2</span>dual flatness</button>
+        <button class="chip" data-goto="1"><span class="n">L1</span>the exchange rate √5</button>
+      </div>
+    </div>
+
+    <div class="run"><b>18/18</b><i>t6_selection.py · the dichotomy</i></div>
+
+    <h3>&#167;1 <em>&nbsp;The categorical model is a sphere</em></h3>
+    <p>On the interior of the simplex Δ<sup>m−1</sup> the Fisher–Rao metric is
+      <span class="m">g<sub>ij</sub> = δ<sub>ij</sub>/p<sub>i</sub></span>. The square-root embedding
+      trivializes it:</p>
+
+    <div class="eq"><span class="cid">Lemma · the sphere <span class="tag estab">estab</span></span>
+      Φ(p) = 2√p &nbsp;⇒&nbsp; ∑<sub>i</sub>(d·2√p<sub>i</sub>)² = ∑<sub>i</sub> p<sub>i</sub><sup>−1</sup> dp<sub>i</sub>² = g,
+      &nbsp;&nbsp; ∑<sub>i</sub>(2√p<sub>i</sub>)² = 4 &nbsp;⇒&nbsp; radius 2, curvature <b>¼</b>
+      <span class="note">An isometry onto the positive orthant of the sphere S<sup>m−1</sup>(2); a
+      radius-r sphere has constant sectional curvature 1/r² = ¼. <b>This layer is C. R. Rao's, not the
+      corpus's</b> — the square-root embedding and its round metric are classical
+      <span class="m">(Bull. Calcutta Math. Soc. 37 (1945), 81–91)</span>. What is corpus content is
+      that <em>this</em> seven-seed catalog forms the family at all, and everything downstream.</span>
+    </div>
+    <p>Every object of Lessons 1–2 now lives on a fixed curvature-¼ sphere, and the Gibbs curve's length
+      element is <span class="m">√I(β) = √Var<sub>β</sub>(log M)</span>.</p>
+
+    <h3>&#167;2 <em>&nbsp;Distances are Bhattacharyya angles</em></h3>
+    <div class="eq"><span class="cid">Prop · distance</span>
+      d<sub>FR</sub>(p, q) = 2·arccos ∑<sub>i</sub> √(p<sub>i</sub> q<sub>i</sub>)
+      &nbsp;&nbsp;·&nbsp;&nbsp; d<sub>FR</sub>(δ<sub>i</sub>, δ<sub>j</sub>) = 2·arccos 0 = <b>π</b>
+      <span class="note">Geodesic distance is the Bhattacharyya angle; the seven pure states are
+      mutually equidistant at π, a <b>regular spherical simplex</b>
+      <span class="tag forced">forced</span>. The information length of the Gibbs curve is
+      L(β₀,β₁) = ∫ √I(β) dβ.</span>
+    </div>
+
+    <div class="tw"><table><caption class="vh">Lesson 3 — §2 Fisher–Rao distances between the marked temperatures</caption>
+      <thead><tr><th scope="col">d<sub>FR</sub></th><th scope="col">β = −1</th><th scope="col">β = 0</th><th scope="col">β = 1</th><th scope="col">β = √5</th></tr></thead>
+      <tbody>
+        <tr><td>β = −1</td><td>0</td><td>0.553</td><td>1.092</td><td>1.581</td></tr>
+        <tr><td>β = 0</td><td>0.553</td><td>0</td><td>0.542</td><td>1.040</td></tr>
+        <tr><td>β = 1</td><td>1.092</td><td>0.542</td><td>0</td><td>0.502</td></tr>
+        <tr><td>β = √5</td><td>1.581</td><td>1.040</td><td>0.502</td><td>0</td></tr>
+      </tbody>
+    </table></div>
+    <p>These distances are <em>sub-additive</em>:
+      <span class="m">d(−1, √5) = 1.581 &lt; 0.553 + 0.542 + 0.502 = 1.597</span>
+      <span class="tag computed">computed</span>. That is the signature promised in Lesson 2 — the Gibbs
+      curve is an e-geodesic (straight in β) but <em>not</em> a metric geodesic, so its full arc length
+      (the information length L(−1→√5) ≈ 1.5999) exceeds the metric chord 1.5812 between the same
+      endpoints.</p>
+
+    <h3>&#167;3 <em>&nbsp;The temperature is a coordinate, not a parameter</em></h3>
+    <p>Lesson 1 left β as the family's one <span class="tag declared">declared</span> input. Half of that
+      dissolves. Require only that the law depend on the seeds through the Mahler measure alone,
+      <span class="m">p<sub>i</sub> ∝ f(M<sub>i</sub>)</span> with f measurable, and that it be
+      consistent across product catalogs; that <em>forces the form</em>:</p>
+
+    <div class="eq"><span class="cid">Thm · forced form</span>
+      product functoriality + measurable Cauchy &nbsp;⇒&nbsp; f(x) = c·x<sup>−β</sup>
+      <span class="note">Factorization on product catalogs is Cauchy's multiplicative equation
+      f(xy) = f(x)f(y)/f(1), whose measurable solutions are the power laws
+      <span class="tag forced">forced</span>. So the Mahler–Gibbs family is forced and β is the
+      canonical affine coordinate of a forced e-geodesic — of finite total information length
+      L<sub>tot</sub> = ∫<sub>−∞</sub><sup>∞</sup> √I dβ ≈ <b>5.64622</b>, running from the golden merge
+      {φ, τ} (β → +∞) to the φ⁴ vertex (β → −∞).</span>
+    </div>
+
+    <h3>&#167;4 <em>&nbsp;The dichotomy: the one choice stays a choice</em></h3>
+    <p>What remains declared is only the operating <em>point</em> on that forced curve — and no invariance
+      selects one. A finite-length one-dimensional Riemannian curve has isometry group {id, flip}, and
+      the flip swaps the endpoints; but the endpoints are <strong>distinguishable</strong> (β → +∞ is
+      uniform on the golden pair, β → −∞ is the single φ⁴ vertex), so the labeled-endpoint isometry
+      group is trivial and <em>symmetry</em> selects no interior point <span class="tag forced">forced</span>.
+      Meanwhile the candidate principles provably disagree:</p>
+
+    <div class="tw"><table><caption class="vh">Lesson 3 — §4 The four principles select distinct arc positions</caption>
+      <thead><tr><th scope="col">principle</th><th scope="col">selects</th><th scope="col">arc position s (s(0) = 0)</th></tr></thead>
+      <tbody>
+        <tr><td>arc-length midpoint</td><td>β<sub>mid</sub></td><td>−0.3401</td></tr>
+        <tr><td>maximal Fisher information (κ₃ = 0)</td><td>β* ≈ −0.0768</td><td>−0.0440</td></tr>
+        <tr><td>maximum entropy / uniform</td><td>β = 0</td><td>0</td></tr>
+        <tr><td>heat-capacity peak</td><td>β<sub>C</sub> ≈ 2.5455</td><td>+1.1401</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="eq" style="border-left-color:var(--ochre)"><span class="cid">state it narrowly</span>
+      <span class="note" style="margin:0;font-size:15px">The trivial labeled isometry group shows only
+      that <em>symmetry</em> supplies no distinguished point — <b>not</b> that the metric does. A finite
+      one-dimensional interval has an intrinsic arc-length midpoint whether or not its ends are
+      exchangeable, and the table lists it first. So the honest statement is not "the metric selects
+      nothing." It is: the metric offers a midpoint, the exponential family offers maximum information
+      and a heat-capacity peak, the catalog offers the uniform ensemble; these four are provably distinct
+      <span class="tag computed">computed</span>, and nothing in the application ranks them. Selecting a
+      temperature is an <b>election among inequivalent principles</b>, so β stays
+      <span class="tag declared">declared</span> — the answer's honest final form, not a gap awaiting
+      closure.</span>
+    </div>
+
+    <div class="cpwrap">
+      <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
+
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Why is every pair of
+        distinct pure states at Fisher–Rao distance exactly π, regardless of which seeds?</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Pure states are the standard basis vectors δ<sub>i</sub>, δ<sub>j</sub> with disjoint
+          support. Their Bhattacharyya coefficient ∑<sub>k</sub> √(δ<sub>i</sub>(k)δ<sub>j</sub>(k)) = 0,
+          so d<sub>FR</sub> = 2·arccos 0 = π. Under Φ(p) = 2√p they map to orthogonal points on the
+          radius-2 sphere, a quarter-turn apart, and 2·(π/2) = π. The value is combinatorial — it
+          depends only on disjoint support, never on the seeds' arithmetic.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">The distances along the
+        Gibbs curve are sub-additive. What does that one inequality tell you about the curve, and why is
+        it consistent with Lesson 2?</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>d(−1, √5) = 1.581 is strictly less than the sum 1.597 of the three consecutive hops, and
+          both are below the arc length 1.600. A metric geodesic would make intermediate distances add up
+          exactly; sub-additivity says the sampled points do not lie on a metric geodesic. This is
+          exactly Lesson 2's fact that the Gibbs curve is straight in β (an e-geodesic) but bent in the
+          Fisher–Rao metric — the arc bounds its chord.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Why is no interior
+        temperature canonical — and what would a catalog need for the metric alone to select one?</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>The curve's two ends are not exchangeable: one limit is the golden <em>level</em> {φ, τ}
+          (minimal cost, multiplicity 2), the other the single seed φ⁴ (maximal cost). Any isometry of
+          the labeled curve must fix the labeling, and the flip swaps distinguishable ends, so the
+          labeled isometry group is {id} — no fixed point forced.</p>
+          <p>A metric-canonical point would need the two extreme cost levels to be <em>isomorphic as
+          weighted levels</em> — same multiplicity, mirrored spacing of the whole cost spectrum — making
+          the flip a genuine symmetry with a canonical fixed point. This catalog is honestly asymmetric,
+          so the honest answer is the election of §4.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="handoff"><span class="lbl">hands on to Lesson 4</span>
+      One statistic built this sphere. Adjoin a <em>second</em> forced statistic — degree, charge, trace
+      — and ask which ones keep the curvature at exactly ¼. The first answer everyone guesses is wrong,
+      and the correction is the whole lesson.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LESSON 4 ══════════════════════════ -->
+<section id="lesson-4" class="page" data-title="4 · The Eight Surfaces">
+  <div class="inner">
+    <p class="eyebrow">Lesson 04 <i>· suspension · the ruled correction · the master identity</i></p>
+    <h2 tabindex="-1" data-pagehead>The Eight Surfaces</h2>
+    <p class="dek">Which second statistics keep the Gaussian curvature at exactly ¼? The complete answer
+      is eight surfaces — reached only after correcting the guess that constant curvature means a great
+      subsphere, and closed by a determinantal identity that turns 140 machine divisions into two lines.</p>
+
+    <div class="thread"><span class="lbl">carries forward</span>
+      <div class="chips">
+        <button class="chip" data-goto="3"><span class="n">L3</span>the ¼-sphere</button>
+        <button class="chip" data-goto="1"><span class="n">L1</span>cost = log M</button>
+        <button class="chip" data-goto="1"><span class="n">L1</span>the golden tie</button>
+      </div>
+    </div>
+
+    <div class="run"><b>44/44</b><i>t1_windowproof.py · the master identity</i></div>
+
+    <h3>&#167;1 <em>&nbsp;The correction that shaped everything</em></h3>
+    <p>Adjoin a statistic X to <span class="m">a = log M</span>: the two-parameter Gibbs family
+      <span class="m">p<sub>i</sub> ∝ exp(−β₁a<sub>i</sub> − β₂X<sub>i</sub>)</span> has a genuine 2D
+      Fisher metric, the Hessian <span class="m">∇²A = Cov<sub>β</sub>(log M, X)</span>. The first
+      instinct — that constant curvature ¼ means a <em>great subsphere</em> — is <strong>wrong</strong>,
+      and keeping the two notions apart is the spine of the lesson: constant ¼ fixes only the
+      <em>intrinsic</em> curvature; totally geodesic is a strictly stronger <em>embedding</em> condition.
+      In fact <strong>no (log M, X) surface here is totally geodesic</strong>:</p>
+
+    <div class="eq"><span class="cid">Prop · no TG</span>
+      log M takes <b>6</b> distinct values &nbsp;⇒&nbsp; the plane points (a<sub>i</sub>, X<sub>i</sub>)
+      number 6 or 7, never the ≤ 3 a great subsphere needs
+      <span class="note">A totally geodesic V = ⟨1, log M, X⟩ would be a unital subalgebra of ℝ⁷,
+      forcing the count of distinct value-pairs down to dim V = 3; the cost alone already takes six
+      values <span class="tag forced">forced</span>. A recorded slip: "log²M ∉ V" is <em>false</em> as a
+      blanket reason — X could <em>be</em> log²M. The value count is the correct proof, caught early and
+      never repeated.</span>
+    </div>
+
+    <h3>&#167;2 <em>&nbsp;Sufficiency is a suspension</em></h3>
+    <p>The degree is special: <span class="m">deg<sub>i</sub> = 2 + 2·<b>1</b><sub>{i=K}</sub></span>, so
+      degree is affinely the indicator of the <em>single</em> outcome K. When X is a single-outcome
+      indicator, pass to square-root coordinates — the apex mass gives a latitude ψ, the conditional
+      family on the rest traces a unit curve x(θ), and √p = (cos ψ·x(θ), sin ψ):</p>
+
+    <div class="eq" style="border-left-color:var(--verdigris)"><span class="cid">Thm · suspension</span>
+      ds²<sub>F</sub> = <b>4·(dψ² + cos²ψ·dℓ²)</b> — the round metric, <em>whatever the base curve</em>
+      &nbsp;⇒&nbsp; curvature ¼ identically
+      <span class="note">The family is the spherical <b>suspension</b> of the apex K over the
+      a-curve; the metric is a round sphere for <em>any</em> curve x, so its curvature is the constant ¼
+      <span class="tag forced">forced</span>. The factor 4 is Lesson 3's embedding p ↦ 2√p onto the
+      radius-2 sphere; the intrinsic curvature is 1/2² = ¼.</span>
+    </div>
+    <p>The embedding is a <strong>ruled surface</strong>, not a subsphere: because
+      <span class="m">c² = c</span> (idempotent) and <span class="m">a·c = a<sub>K</sub>·c</span> stay in
+      the span V, the second fundamental form has <span class="m">II<sub>cc</sub> = II<sub>ac</sub> = 0</span>
+      — the c-flow lines are great circles and the surface is swept by them — while
+      <span class="m">a² ∉ V</span> (three or more distinct a-values) gives
+      <span class="m">II<sub>aa</sub> ≠ 0</span>: it bends along a. So <span class="m">det II ≤ 0</span>,
+      and every indicator surface sits <em>at or below</em> the ¼ ceiling, the eight families being the
+      equality case. An apex is essential: a control with no indicator structure has non-constant,
+      sign-changing curvature — the bundle's own controls give <b>4/21</b> (m = 4) and
+      <b>857/16928</b> (m = 5), both ≠ ¼ <span class="tag forced">forced</span>.</p>
+
+    <h3>&#167;3 <em>&nbsp;The eight, and what forces each</em></h3>
+    <p>The complete classification at k = 2: the (log M, X) surface is constant-¼ <strong>iff</strong> X
+      is affinely <span class="m"><b>1</b><sub>S</sub></span> with log M constant on S or on its
+      complement — <strong>exactly eight surfaces</strong>, the seven single-seed indicators plus the
+      golden-pair merge <span class="m"><b>1</b><sub>{φ,τ}</sub></span> (a surface depends only on the
+      partition {S, Sᶜ}). Each single-seed surface is forced by an arithmetic invariant:</p>
+
+    <div class="tw"><table><caption class="vh">Lesson 4 — §3 What singles out each of the seven single-seed surfaces</caption>
+      <thead><tr><th scope="col">seed</th><th scope="col">√2</th><th scope="col">√3</th><th scope="col">√5</th><th scope="col">φ</th><th scope="col">τ</th><th scope="col">φ⁴</th><th scope="col">K</th></tr></thead>
+      <tbody>
+        <tr><td>singled out by</td><td>M = 2</td><td>M = 3</td><td>M = 5</td><td>tr = 1</td><td>tr = −1</td><td>M = φ⁴</td><td>M = φ⁴−1</td></tr>
+      </tbody>
+    </table></div>
+    <p>The Mahler measure alone distinguishes five seeds; the only degeneracy is the golden pair tied at
+      M = φ, split by the trace ±1 — the very sign the λ = 2c construction uses to pick the Perron
+      keystone over its Clifford conjugate. The eighth surface is the single-outcome indicator of the
+      <em>effective</em> catalog in which the tied seeds φ, τ are merged. Among the catalog's other
+      forced invariants, only the single-outcome indicator is constant ¼:</p>
+
+    <div class="tw"><table class="prose"><caption class="vh">Lesson 4 — §3 The landscape of forced invariants</caption>
+      <thead><tr><th scope="col">statistic X</th><th scope="col">type</th><th scope="col">K of (log M, X) at three points</th></tr></thead>
+      <tbody>
+        <tr><td>degree {2,4}</td><td><b>1</b><sub>K</sub> — single outcome</td><td>0.250, 0.250, 0.250</td></tr>
+        <tr><td>charge parity</td><td><b>1</b><sub>φ⁴</sub> — single outcome</td><td>0.250, 0.250, 0.250</td></tr>
+        <tr><td>#{|ζ|&gt;1} {1,2}</td><td><b>1</b><sub>{φ,τ,φ⁴}</sub> — 3-set</td><td>0.020, 0.066, −0.006</td></tr>
+        <tr><td>trace {−1,0,1,7}</td><td>non-indicator</td><td>0.177, 0.056, 0.197</td></tr>
+        <tr><td>house max|ζ|</td><td>non-indicator</td><td>0.211, 0.114, 0.227</td></tr>
+      </tbody>
+    </table></div>
+    <p class="small">Curvatures <span class="tag computed">computed</span> (routine validated on four
+      metrics of known curvature). The charge parity 𝟙<sub>{φ⁴}</sub> — the Mahler-floor parity of the
+      charge-measure companion — is a <em>second</em> single-outcome indicator, hence a second
+      constant-¼ surface, dual to degree <span class="tag forced">forced</span>. A three-valued
+      invariant like the charge-group order {1,2,4} gives a varying, non-¼ surface.</p>
+
+    <h3>&#167;4 <em>&nbsp;The master identity closes necessity</em></h3>
+    <p>Ruling out <em>every</em> non-indicator once meant ≈ 5000 samples. It is now two lines. The whole
+      curvature numerator factors through a single determinantal law:</p>
+
+    <div class="eq" style="border-left-color:var(--verdigris)"><span class="cid">Thm · master identity</span>
+      <b>P(w) = Z²·∑<sub>|s|=4</sub> q₄(s)·w<sub>s</sub></b>, &nbsp;&nbsp;
+      q₄(s) = ℓ<sub>s</sub>(a²)·ℓ<sub>s</sub>(X²) − ℓ<sub>s</sub>(aX)²
+      <span class="note">By Sylvester's determinant identity (pivot Z) plus Cauchy–Binet — a
+      bordered-Gram expansion <span class="tag forced">forced</span>. Since the squarefree monomials
+      {w<sub>s</sub>} are linearly independent, the curvature obstruction q ≡ 0 <em>iff</em> q₄(s) = 0
+      for every one of the 35 windows, with no collision analysis. The heavy coefficient is exactly 1;
+      the 462-monomial dictionary is forced.</span>
+    </div>
+    <p>And <span class="m">q₄(s) = −∏<sub>t∈s</sub> det(1, a, X)|<sub>s∖t</sub></span> is a product of the
+      four triple minors, so a window vanishes iff three of its four plane points are affinely dependent
+      (collinear, or a coincident pair at the golden merge). A four-point trichotomy plus a plane lemma
+      then force all but at most one point onto a single line — exactly the eight indicator families.
+      Necessity upgrades to <span class="tag forced">forced</span>: <strong>the eight surfaces are the
+      only constant-¼ two-statistic surfaces</strong>.</p>
+
+    <div class="cpwrap">
+      <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
+
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Constant curvature ¼ was
+        the intuition-trap. In one line each, say what constant-¼ fixes, what totally geodesic adds, and
+        why the value-count 6 or 7 settles it here.</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Constant-¼ fixes the <em>intrinsic</em> Gaussian curvature (how the surface curves in
+          itself). Totally geodesic adds an <em>embedding</em> condition: the surface must be a great
+          subsphere, i.e. V = ⟨1, log M, X⟩ a unital subalgebra, forcing distinct value-pairs down to
+          dim V = 3. The cost log M already takes six distinct values, so the pairs number 6 or 7 —
+          never 3. Every catalog surface is therefore constant-¼ but <em>none</em> is totally geodesic.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Why must the indicator
+        be of a <em>single</em> outcome? What breaks for the 3-set indicator #{|ζ|&gt;1}?</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>A single-outcome indicator makes the family a spherical <em>suspension</em> over one apex:
+          √p = (cos ψ·x, sin ψ), whose metric is round for any base curve x, hence curvature ¼ exactly.
+          A set indicator of ≥ 2 outcomes is instead a <em>join</em> of two non-trivial curves — one on
+          the set's sub-sphere, one on its complement — which is not a suspension over a point, so the
+          metric is no longer round. #{|ζ|&gt;1} = 2 − 𝟙<sub>{φ,τ,φ⁴}</sub> is a 3-set indicator, and its
+          surface has non-constant, sign-changing curvature (0.020, 0.066, −0.006). The single-outcome
+          hypothesis is sharp.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">The master identity
+        P = Z²·∑ q₄(s) w<sub>s</sub> replaced ≈ 5000 samples. Why does linear independence of the
+        window monomials collapse the whole necessity question?</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>The curvature obstruction is q = P/(Z²D), and by Sylvester + Cauchy–Binet the numerator P
+          is a ℤ-combination of the squarefree monomials w<sub>s</sub> = ∏<sub>i∈s</sub> w<sub>i</sub>
+          over 4-subsets s, with coefficient exactly q₄(s). Distinct squarefree monomials are linearly
+          independent as polynomials in the free weights, so P ≡ 0 iff <em>every</em> coefficient
+          q₄(s) = 0 — a finite, exact, window-by-window test, with no need to reason about how monomials
+          might collide. Each q₄(s) = −∏(triple minors) then vanishes iff three of four plane points are
+          dependent, and the plane lemma finishes it.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="handoff"><span class="lbl">hands on to Lesson 5</span>
+      Eight surfaces at k = 2, by a window identity that lifts to every k by the same Cauchy–Binet. What
+      is the full landscape — and does the standing conjecture that indicator-joins exhaust it survive?
+      One squarefree observation closes necessity everywhere; a partition count refutes the conjecture;
+      and over the compositum, coupling two fields stops being a choice.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LESSON 5 ══════════════════════════ -->
+<section id="lesson-5" class="page" data-title="5 · Landscape &amp; Coupling">
+  <div class="inner">
+    <p class="eyebrow">Lesson 05 <i>· squarefree collisions · the partitioned-affine landscape · the forced coupling</i></p>
+    <h2 tabindex="-1" data-pagehead>The Landscape and the Coupling</h2>
+    <p class="dek">The window calculus lifts by Cauchy–Binet; one squarefree observation closes necessity
+      for 2 ≤ k ≤ 5; the full landscape is a partition count that refutes the standing conjecture; and
+      over the compositum, coupling two fields stops being a choice once the tensor cost is adopted.</p>
+
+    <div class="thread"><span class="lbl">carries forward</span>
+      <div class="chips">
+        <button class="chip" data-goto="4"><span class="n">L4</span>the master identity</button>
+        <button class="chip" data-goto="1"><span class="n">L1</span>the two coincidences</button>
+        <button class="chip" data-goto="3"><span class="n">L3</span>independent catalogs</button>
+      </div>
+    </div>
+
+    <div class="run"><b>21/21</b><i>t9_landscape.py · the landscape</i></div>
+
+    <h3>&#167;1 <em>&nbsp;The squarefree key</em></h3>
+    <p>At k = 2 the weights were free and the window monomials independent. On the family they are not:
+      two windows <em>collide</em> when their exponents tie, and the tying directions are exactly
+      Lesson 1's collision lattice — the rank-2 kernel spanned by the golden swap d₁ and the Salem
+      square d₂. The resolving observation:</p>
+
+    <div class="eq"><span class="cid">Thm · squarefree collisions</span>
+      <b>1</b><sub>s</sub> − <b>1</b><sub>s′</sub> ∈ {−1, 0, 1}⁷, &nbsp; but d₂ carries the entry −2 at K
+      &nbsp;⇒&nbsp; cube ∩ lattice = {0, ±d₁}
+      <span class="note">Window collisions are <em>squarefree</em>, so the Salem square cannot act at
+      window level — only the golden swap can, and it fires only when <em>every</em> statistic ties on
+      {φ, τ}. If some statistic separates the pair, no two windows collide; if all tie, φ, τ are
+      <b>twins</b> — swapped windows are equal minor-by-minor and twin-containing windows vanish outright
+      <span class="tag forced">forced</span>.</span>
+    </div>
+    <p>Either way every window coefficient is forced individually, so necessity closes for 2 ≤ k ≤ 5:
+      <strong>constant ¼ ⟺ every window matrix has rank ≤ 1</strong> — the same multiplicity-2 mechanism
+      that made the master identity's heavy cofactor exactly 1. The eight-branch machinery of the k = 2
+      proof is retired to an independent verification lane.</p>
+
+    <h3>&#167;2 <em>&nbsp;The moment trichotomy</em></h3>
+    <p>The rank condition is local to <em>circuits</em> — minimal affinely dependent subsets of the point
+      configuration <span class="m">P<sub>i</sub> = (T₁,…,T<sub>k</sub>)(i)</span>. With window matrix
+      <span class="m">L(s) = ∑<sub>i∈s</sub> λ<sub>i</sub> P<sub>i</sub>P<sub>i</sub><sup>⊤</sup></span>:</p>
+
+    <div class="tw"><table><caption class="vh">Lesson 5 — §2 The moment trichotomy</caption>
+      <thead><tr><th scope="col">circuit size</th><th scope="col">window matrix</th><th scope="col">witness</th></tr></thead>
+      <tbody>
+        <tr><td>2 (coincident pair)</td><td>L(s) = 0</td><td>the dependency lives on two equal points</td></tr>
+        <tr><td>3 (collinear triple)</td><td>rank exactly 1</td><td>moment −(t₁−t₂)(t₂−t₃)(t₃−t₁) ≠ 0</td></tr>
+        <tr><td>≥ 4</td><td>rank ≥ 2</td><td>det Q = xy(1−x−y) at d=2; mixed minor x<sub>j</sub>x<sub>l</sub>x<sub>r</sub> at d≥3</td></tr>
+      </tbody>
+    </table></div>
+    <p>So a k-family is constant-¼ <strong>iff every circuit has size ≤ 3</strong>
+      <span class="tag forced">forced</span>. The multiset failure that blocked the k = 2 plane-lemma
+      route is not repaired but made irrelevant: a doubled point is a 2-circuit and never obstructs.</p>
+
+    <h3>&#167;3 <em>&nbsp;The landscape is a partition count</em></h3>
+    <p>Circuits of size ≤ 3 force the configuration into <em>rich lines</em> (pairwise skew, no
+      transversal triples) plus free locations, and the span becomes <span class="m">V(π)</span> for a
+      partition π of the seeds into <strong>clusters</strong> (within a cost level: singletons or the
+      golden pair) and <strong>line blocks</strong> (≥ 3 distinct cost values), with
+      <span class="m">dim V(π) = c + 2b₂</span>. The constant-¼ k-families are exactly the canonical
+      V(π) with c + 2b₂ = k + 1:</p>
+
+    <div class="eq" style="border-left-color:var(--verdigris)"><span class="cid">Thm · counts</span>
+      for the catalog Ω:&nbsp; k = 2, 3, 4, 5, 6 &nbsp;→&nbsp; <b>8, 56, 95, 31, 1</b>
+      <span class="note">At k = 2 this recovers the eight surfaces in one line. At k = 3 the 26
+      double-indicator classes are joined by <b>30 split-affine classes</b>
+      ⟨1, a, <b>1</b><sub>B</sub>, a·<b>1</b><sub>B</sub>⟩ — witness B = {√2, √3, √5}, whose span contains
+      no indicators beyond <b>1</b><sub>B</sub> and <b>1</b><sub>Bᶜ</sub>, so it is constant-¼ yet
+      <em>not</em> an indicator join: the standing conjecture is <b>refuted</b>
+      <span class="tag forced">forced</span>. At k = 5 the golden-merged simplex ℝ[log M] appears — the
+      arc's first and only totally geodesic family (the geodesic threshold, exactly where Lesson 4's
+      dimension count put it). At k = 6, only the full simplex.</span>
+    </div>
+    <p>The count is <em>catalog-invariant</em> in shape: it is always
+      <span class="m">∑<sub>levels ℓ</sub>(2<sup>m<sub>ℓ</sub></sup> − 1)</span>, so the "eighth surface"
+      is precisely the golden level's <span class="m">2² − 1 = 3</span>. Verified across four catalogs —
+      full / drop-K / drop-τ / add-√7 → <b>8 / 7 / 6 / 9</b> <span class="tag forced">forced</span>.
+      Catalogs with a cost level of multiplicity ≥ 3 admit genuinely new <em>vertical</em> line blocks
+      and stay <span class="tag open">open</span> on both the classification and filter sides.</p>
+
+    <h3>&#167;4 <em>&nbsp;The compositum couples</em></h3>
+    <p>Two <em>independent</em> catalogs form a Riemannian product
+      <span class="m">S<sup>m₁−1</sup>(2) × S<sup>m₂−1</sup>(2)</span> — block-diagonal Fisher, zero
+      cross-curvature — so any coupling term would be a <span class="tag declared">declared</span> warp
+      (the Čencov argument that leaves β and the conformal scale undetermined). Over the
+      <strong>compositum</strong> it stops being a choice. Form the tensor polynomial p ⊗ q (its roots
+      are all conjugate products α<sub>i</sub>β<sub>j</sub> — no root chosen, so gauge-free) and the
+      compositum cost <span class="m">c(p,q) = log M(p ⊗ q)</span> is <em>not additively separable</em>:</p>
+
+    <div class="eq"><span class="cid">Thm · the coupling is forced</span>
+      c(√2,√3) + c(φ,φ) − c(√2,φ) − c(φ,√3) = <b>log 2</b>, &nbsp;&nbsp;
+      c(φ,φ) + c(φ⁴,φ⁴) − 2·c(φ,φ⁴) = <b>−6 log φ</b>
+      <span class="note">Both exact, as nonzero coefficient vectors <span class="tag forced">forced</span>.
+      The rational sector {√2, √3, √5} stays separable; the golden tie persists
+      (c(φ,·) = c(τ,·)); and the double-centered interaction tensor Δ is nonzero of exact rank <b>5</b>.
+      The declared warp is, in the compositum reading, a forced datum — and Δ is <em>not</em> determined
+      by the charge data: (√2,√3) and (√2,√5) share the charge pair (ℤ/2, ℤ/2) yet differ in Δ.</span>
+    </div>
+    <p>And the coupled family genuinely <strong>curves</strong>. On the 49-cell tensor catalog the triple
+      (cost₁, cost₂, c) spans dim V = 4 and carries a genuine 5-circuit, so it is not partitioned-affine
+      and its window has rank ≥ 2. The Gauss obstructions at the uniform point are nonzero:
+      <span class="m">sec(cost₁, cost₂) = ¼ − 0.2485 ≈ 0.0015</span> and
+      <span class="m">sec(cost<sub>i</sub>, c) = ¼ − 0.0838 ≈ 0.1662</span>
+      <span class="tag computed">computed</span> — yet
+      <span class="m">Cov<sub>uniform</sub>(cost₁, cost₂) = 0</span> exactly.</p>
+
+    <div class="eq" style="border-left-color:var(--ochre)"><span class="cid">state it precisely</span>
+      <span class="note" style="margin:0;font-size:15px">The slogan "invisible to covariance" overstates
+      it. The full model carries three statistics, and Cov(cost₁, c), Cov(cost₂, c) are both
+      <em>nonzero</em> (exact rational forms in the four logs; ℚ-independence certifies they cannot
+      cancel). The sharp statement: <em>the two marginal costs remain exactly uncorrelated while the
+      nonseparable tensor-cost statistic produces a curved, non-windowwise-flat joint family.</em> A
+      second-moment instrument restricted to the margins cannot see the coupling; the full second-moment
+      matrix can, and curvature sees more still — already at the uniform point, below the reach of the
+      cross-covariance of the margins.</span>
+    </div>
+
+    <div class="cpwrap">
+      <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
+
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Prove cube ∩ lattice =
+        {0, ±d₁} from the two generators, and state in one sentence what a collision at ±d₁ demands of
+        the statistics.</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>A lattice vector is n₁d₁ + n₂d₂; its K-entry is −2n₂, so membership in the cube {−1,0,1}⁷
+          forces n₂ = 0, and then n₁d₁ is in the cube iff n₁ ∈ {−1, 0, 1}. Hence exactly {0, ±d₁} — only
+          the golden swap survives at window level.</p>
+          <p>A collision at ±d₁ means the two windows differ by swapping φ ↔ τ <em>and</em> every
+          statistic in play takes equal values on the pair — so either some statistic separates the twins
+          and no collision ever happens, or all tie and the swap is a symmetry making grouped
+          coefficients equal termwise. Forced vanishing either way.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">The standing conjecture
+        was that constant-¼ families are the within-level indicator joins. Give the witness that refutes
+        it and say why it is genuinely new.</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Take B = {√2, √3, √5} and the split-affine span ⟨1, a, <b>1</b><sub>B</sub>,
+          a·<b>1</b><sub>B</sub>⟩. Every circuit of its configuration has size ≤ 3 (both sides carry ≥ 3
+          distinct cost values, so no 4-circuit), so it is constant-¼ by the moment trichotomy. But
+          scanning all subsets, the only indicators its span contains are <b>1</b><sub>B</sub> and
+          <b>1</b><sub>Bᶜ</sub> — an affine 0/1 pattern across three or more distinct costs is constant —
+          so it is not a join of indicators. It is one of 30 such classes at k = 3, joining the 26
+          double-indicator classes to make 56.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">How can the coupled
+        family curve at the uniform point while Cov(cost₁, cost₂) = 0 there — and what is the precise
+        (non-sloganized) statement?</span><span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Under the uniform product measure cost₁ depends only on the row and cost₂ only on the column
+          — independent coordinates, so their covariance is exactly zero. But curvature is built from
+          third- and fourth-order joint moments of the <em>three</em> statistics (cost₁, cost₂, c), and
+          the nonseparable tensor cost c couples them there: a genuine 5-circuit gives a rank-≥2 window
+          and nonzero Gauss obstruction (sec ≈ 0.0015 and 0.1662, off ¼).</p>
+          <p>Precisely: the two <em>marginal</em> costs stay exactly uncorrelated, while Cov(cost<sub>i</sub>, c)
+          are nonzero and the joint family is curved and not windowwise flat. A margin-only second-moment
+          instrument is blind to it; the full second-moment matrix and curvature are not.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="handoff"><span class="lbl">hands on to the ledger</span>
+      Five lessons, one catalog re-read as a manifold: a Gibbs family, a heat capacity, a quarter-sphere,
+      eight surfaces, and a landscape classified to the last k — with its one declared quantity proved
+      irreducibly declared, and a coupling that is forced once the tensor cost is adopted.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LEDGER ══════════════════════════ -->
+<section id="ledger" class="page" data-title="Ledger">
+  <div class="inner">
+    <p class="eyebrow">Closing <i>· what five lessons proved</i></p>
+    <h2 tabindex="-1" data-pagehead>The Ledger</h2>
+    <p class="dek">The whole development in one table — sorted by how strongly each claim is held. The
+      tags are the point: they separate what is forced from the one honest choice and the outward-facing
+      frontier.</p>
+
+    <h3>&#167;1 <em>&nbsp;The claim ledger</em></h3>
+    <div class="tw"><table class="prose"><caption class="vh">Ledger — §1 The claim ledger</caption>
+      <thead><tr><th scope="col">claim</th><th scope="col">status</th></tr></thead>
+      <tbody>
+        <tr><td>Z = 17 + 4√5; Mahler–Gibbs is an exponential family with statistic log M</td><td><span class="tag forced">forced</span></td></tr>
+        <tr><td>surprisal = β·log M + log Z; Fisher = Var<sub>β</sub>(log M); geometry = S<sup>m−1</sup>(2), K = ¼</td><td><span class="tag forced">forced</span> · <span class="tag estab">estab</span> (Rao's embedding)</td></tr>
+        <tr><td>dual flatness; KL = Bregman divergence of log Z; A* = −H</td><td><span class="tag forced">forced</span></td></tr>
+        <tr><td>C(β) = β²·I(β) — Fisher information is a heat capacity</td><td><span class="tag forced">forced</span></td></tr>
+        <tr><td>d<sub>FR</sub> = 2·arccos(Bhattacharyya); seven vertices mutually π apart</td><td><span class="tag forced">forced</span></td></tr>
+        <tr><td>Gibbs form p ∝ M<sup>−β</sup> forced by product functoriality + measurable Cauchy</td><td><span class="tag forced">forced</span></td></tr>
+        <tr><td>no (log M, X) surface is totally geodesic (value count 6 or 7)</td><td><span class="tag forced">forced</span></td></tr>
+        <tr><td>indicator-suspension: single-outcome-indicator surface is constant-¼, ruled</td><td><span class="tag forced">forced</span></td></tr>
+        <tr><td>exactly 8 constant-¼ surfaces at k = 2; master identity P = Z²·∑ q₄(s) w<sub>s</sub></td><td><span class="tag forced">forced</span></td></tr>
+        <tr><td>k-necessity (2 ≤ k ≤ 5): constant-¼ ⟺ windowwise rank ≤ 1 (squarefree + twins)</td><td><span class="tag forced">forced</span></td></tr>
+        <tr><td>landscape = partitioned-affine V(π); counts 8/56/95/31/1; conjecture refuted</td><td><span class="tag forced">forced</span></td></tr>
+        <tr><td>compositum couples: contrasts log 2 and −6 log φ; rank Δ = 5; Δ not charge-determined</td><td><span class="tag forced">forced</span></td></tr>
+        <tr><td>peak-fluctuation β* ≈ −0.0768; information length; thermodynamic table; distance table</td><td><span class="tag computed">computed</span></td></tr>
+        <tr><td>only degree/charge-parity among forced invariants are constant-¼; coupled family sec off ¼</td><td><span class="tag forced">forced</span> · <span class="tag computed">computed</span></td></tr>
+        <tr><td>coupling of two <em>independent</em> catalogs (the Čencov warp), before the compositum reading</td><td><span class="tag declared">declared</span></td></tr>
+        <tr><td>selection of one operating temperature among the marked points (the dichotomy)</td><td><span class="tag declared">declared</span></td></tr>
+        <tr><td>fat levels (mult. ≥ 3); composita of distinct catalogs; coupled family off the uniform point</td><td><span class="tag open">open</span></td></tr>
+        <tr><td>the integer 17 in Z; the value I(1/φ) = φ³</td><td><span class="tag estab">coincidence</span></td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>&#167;2 <em>&nbsp;The arc</em></h3>
+    <div class="tw"><table><caption class="vh">Ledger — §2 The arc</caption>
+      <thead><tr><th scope="col">lesson</th><th scope="col">what it built</th><th scope="col">headline harness</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>the Gibbs family — Z = 17+4√5, surprisal affine, Fisher = Var</td><td>field_surprisal_v2.py · 12/12</td></tr>
+        <tr><td>2</td><td>dual flatness and the heat capacity C = β²I</td><td>field_surprisal_v2.py · 12/12</td></tr>
+        <tr><td>3</td><td>the round ¼-sphere, Fisher–Rao distances, the temperature dichotomy</td><td>t6_selection.py · 18/18</td></tr>
+        <tr><td>4</td><td>the eight surfaces, the ruled correction, the master identity</td><td>t1_windowproof.py · 44/44</td></tr>
+        <tr><td>5</td><td>the landscape at every k, a refuted conjecture, the forced coupling</td><td>t9_landscape.py · 21/21</td></tr>
+      </tbody>
+    </table></div>
+    <p class="small">The lessons draw on further harnesses: suspension_theorem.py (9/9),
+      field_surprisal_tier2.py (15/15), field_surprisal_classification.py (9/9), t1_core.py (61/61) and
+      the t1 window suite for Lesson 4; t2_temperature.py (12/12) for Lesson 3; t7_knecessity.py (28/28),
+      t5_catalog_census.py (72/72), t8_compositum.py (13/13), t10_coupled.py (9/9) for Lesson 5.
+      <strong>20 harnesses, 422 checks in all.</strong></p>
+
+    <h3>&#167;3 <em>&nbsp;What is still open</em></h3>
+    <ul>
+      <li><strong>The temperature stays declared</strong> <span class="tag declared">declared</span> —
+        by the dichotomy, not for want of trying: no invariance selects an operating point, and the four
+        candidate principles provably disagree. An answer, not a gap.</li>
+      <li><strong>Fat levels</strong> <span class="tag open">open</span> — a cost level of multiplicity
+        ≥ 3 opens vertical line blocks the partitioned-affine classification does not cover verbatim.</li>
+      <li><strong>Composita of two <em>distinct</em> catalogs</strong> <span class="tag open">open</span>
+        — only a single field's self-compositum is treated; the tensor construction and Δ should
+        generalize verbatim.</li>
+      <li><strong>The coupled family away from the uniform point</strong> <span class="tag open">open</span>
+        — its curvature landscape is computed only at β = 0.</li>
+    </ul>
+    <p class="small">One item is <em>not</em> on this list: the ℚ-linear independence of
+      (log 2, log 3, log 5, log φ), the arc's standing input, is <em>discharged</em> — proved in Lesson 1
+      by a two-line norm argument in ℚ(√5) — so it is an input the classification needs, never an open
+      assumption.</p>
+
+    <h3>&#167;4 <em>&nbsp;Verify it yourself</em></h3>
+    <div class="run"><b>422</b><i>exact checks · 20 fail-first harnesses</i></div>
+    <p>Every load-bearing identity in these lessons is machine-checked in exact
+      <span class="m">sympy</span> over ℚ(log 2, log 3, log 5, log φ) (plus log 7 for the extended
+      catalog); floats are display-only, and every transcendental comparison at the true catalog is
+      certified by <span class="m">mpmath.iv</span> interval arithmetic. Each harness is fail-first — it
+      exits non-zero on the first failed assertion, so a clean exit <em>is</em> the proof of every line it
+      printed. Run the fast lane (<span class="m">ci_check.py</span>, ≈ 2.5 min) or the whole suite
+      (<span class="m">run_all.sh</span>) in
+      <a href="https://github.com/Echo-S-Studios/Echo-S-Research/tree/main/code/2026-07-field-surprisal-geometry" target="_blank" rel="noopener">code/2026-07-field-surprisal-geometry</a>.</p>
+
+    <h3>&#167;5 <em>&nbsp;The paper</em></h3>
+    <div class="tw"><table class="prose"><caption class="vh">Ledger — §5 The paper</caption>
+      <thead><tr><th scope="col">document</th><th scope="col">where</th></tr></thead>
+      <tbody>
+        <tr><td>The Field Surprisal Geometry — Full Worked Edition</td><td><a href="../papers/2026-07-field-surprisal-geometry.pdf" target="_blank" rel="noopener">PDF ↗</a></td></tr>
+        <tr><td>LaTeX source</td><td><a href="https://github.com/Echo-S-Studios/Echo-S-Research/tree/main/papers/2026-07-field-surprisal-geometry" target="_blank" rel="noopener">papers/2026-07-field-surprisal-geometry ↗</a></td></tr>
+        <tr><td>Reproduction package (20 harnesses, 422 checks)</td><td><a href="https://github.com/Echo-S-Studios/Echo-S-Research/tree/main/code/2026-07-field-surprisal-geometry" target="_blank" rel="noopener">code/2026-07-field-surprisal-geometry ↗</a></td></tr>
+        <tr><td>The deep track — the same material threaded end to end</td><td><a href="../papers/2026-07-exact-arithmetic.html" target="_blank" rel="noopener">Exact Arithmetic, Lessons 11–13 ↗</a></td></tr>
+      </tbody>
+    </table></div>
+
+    <p class="endnote">Surprisal Geometry · five lessons · 20 harnesses · 422 checks &nbsp;·&nbsp;
+      <a href="../learn.html">&#8592; The course</a> · <a href="../index.html">The archive</a></p>
+  </div>
+</section>
+
+</main>
+
+<script>
+(function(){
+  var deck  = document.getElementById('deck');
+  var pages = Array.prototype.slice.call(deck.querySelectorAll('.page'));
+  var axis  = document.getElementById('axis');
+  var prev  = document.getElementById('prev');
+  var next  = document.getElementById('next');
+  var mbtn  = document.getElementById('menubtn');
+  var mlab  = document.getElementById('menulabel');
+  var mpan  = document.getElementById('menupanel');
+  var current = 0, jumping = false, jumpTimer = null, raf = null;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var hasInert = ('inert' in HTMLElement.prototype);
+  var hasScrollEnd = ('onscrollend' in window);
+  var FOCUSABLE = 'a[href],button,summary,input,select,textarea,[tabindex]';
+
+  /* the rail is one tab stop: a tablist with roving tabindex and automatic activation */
+  /* a plain group with roving focus: no tab roles without real tabpanels */
+  axis.setAttribute('role', 'group');
+  axis.setAttribute('aria-label', 'Lessons');
+  pages.forEach(function(pg, i){
+    var b = document.createElement('button');
+    b.className = 'tick' + ((i === 0 || i === pages.length - 1) ? ' edge' : '');
+    b.type = 'button';
+    b.setAttribute('tabindex', '-1');
+    var label = pg.getAttribute('data-title') || ('Page ' + (i + 1));
+    b.setAttribute('aria-label', label);
+    b.title = label;
+    var s = document.createElement('span');
+    s.textContent = (i === 0 || i === pages.length - 1) ? '' : String(i);
+    b.appendChild(s);
+    b.addEventListener('click', function(){ go(i); });
+    axis.appendChild(b);
+
+    var m = document.createElement('button');
+    m.type = 'button';
+    m.innerHTML = '<span class="n">' + ((i === 0 || i === pages.length - 1) ? '&#183;' : i) +
+                  '</span><span>' + label.replace(/^\d+\s*·\s*/, '') + '</span>';
+    m.addEventListener('click', function(){ closeMenu(); go(i); });
+    mpan.appendChild(m);
+  });
+  var ticks = Array.prototype.slice.call(axis.querySelectorAll('.tick'));
+  var mitems = Array.prototype.slice.call(mpan.querySelectorAll('button'));
+
+  function setActive(i){
+    pages.forEach(function(pg, j){
+      var off = (j !== i);
+      if (hasInert){
+        pg.inert = off;
+      } else {
+        pg.setAttribute('aria-hidden', off ? 'true' : 'false');
+        Array.prototype.forEach.call(pg.querySelectorAll(FOCUSABLE), function(el){
+          if (off){
+            if (!el.hasAttribute('data-ti')) el.setAttribute('data-ti', el.getAttribute('tabindex') || '');
+            el.setAttribute('tabindex', '-1');
+          } else if (el.hasAttribute('data-ti')){
+            var t = el.getAttribute('data-ti');
+            if (t === '') el.removeAttribute('tabindex'); else el.setAttribute('tabindex', t);
+            el.removeAttribute('data-ti');
+          }
+        });
+      }
+    });
+  }
+
+  function mark(i){
+    current = i;
+    ticks.forEach(function(t, j){
+      var on = (j === i);
+      t.setAttribute('aria-current', on ? 'true' : 'false');
+      t.setAttribute('tabindex', on ? '0' : '-1');   /* roving: one stop, not fifteen */
+    });
+    mitems.forEach(function(m, j){ m.setAttribute('aria-current', j === i ? 'true' : 'false'); });
+    if (mlab) mlab.textContent = (i + 1) + ' / ' + pages.length;
+    prev.disabled = (i === 0);
+    next.disabled = (i === pages.length - 1);
+    setActive(i);
+  }
+
+  /* arrival detection: scrollend where available, a bounded poll otherwise */
+  function settle(expected){
+    var done = function(){
+      jumping = false;
+      deck.removeEventListener('scrollend', done);
+      clearTimeout(jumpTimer);
+    };
+    if (hasScrollEnd){
+      deck.addEventListener('scrollend', done, { once: true });
+      jumpTimer = setTimeout(done, 1200);                       /* safety net only */
+    } else {
+      var t0 = Date.now();
+      (function poll(){
+        if (Math.abs(deck.scrollLeft - expected) < 2 || Date.now() - t0 > 1200){ done(); return; }
+        jumpTimer = setTimeout(poll, 40);
+      })();
+    }
+  }
+
+  function go(i, opts){
+    opts = opts || {};
+    i = Math.max(0, Math.min(pages.length - 1, i));
+    var behavior = (reduce.matches || Math.abs(i - current) > 1) ? 'auto' : 'smooth';
+    var target = i * deck.clientWidth;
+    jumping = true;
+    clearTimeout(jumpTimer);
+    mark(i);
+    deck.scrollTo({ left: target, behavior: behavior });
+    settle(target);
+    if (opts.history !== false){
+      try { history.pushState({ p: i }, '', '#' + pages[i].id); } catch (e) {}
+    }
+    if (opts.focus !== false){
+      var head = pages[i].querySelector('[data-pagehead]');
+      if (head) { try { head.focus({ preventScroll: true }); } catch (e) { head.focus(); } }
+    }
+  }
+
+  deck.addEventListener('scroll', function(){
+    if (jumping || raf) return;
+    raf = requestAnimationFrame(function(){
+      raf = null;
+      var i = Math.round(deck.scrollLeft / (deck.clientWidth || 1));
+      if (i !== current && i >= 0 && i < pages.length){
+        mark(i);
+        try { history.replaceState({ p: i }, '', '#' + pages[i].id); } catch (e) {}
+      }
+    });
+  });
+
+  prev.addEventListener('click', function(){ go(current - 1); });
+  next.addEventListener('click', function(){ go(current + 1); });
+
+  /* the rail handles its own arrows (automatic activation); the document handles the rest */
+  axis.addEventListener('keydown', function(e){
+    var k = e.key, i = null;
+    if (k === 'ArrowRight' || k === 'ArrowDown') i = current + 1;
+    else if (k === 'ArrowLeft' || k === 'ArrowUp') i = current - 1;
+    else if (k === 'Home') i = 0;
+    else if (k === 'End') i = pages.length - 1;
+    else return;
+    e.preventDefault(); e.stopPropagation();
+    i = Math.max(0, Math.min(pages.length - 1, i));
+    go(i, { focus: false });
+    ticks[i].focus();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var t = e.target;
+    /* never steal Left/Right from a control or a horizontally scrollable region */
+    if (t && t.closest && t.closest('button, a, summary, input, select, textarea, [contenteditable], .srcbox, .eq, .tw')) return;
+    if (t && t.isContentEditable) return;
+    if (axis.contains(t)) return;
+    /* Escape must be tested BEFORE the menu early-return, or it can never fire */
+    if (e.key === 'Escape' && mpan && !mpan.hidden){ e.preventDefault(); closeMenu(); mbtn.focus(); return; }
+    if (mpan && !mpan.hidden) return;
+    if (e.key === 'ArrowRight'){ e.preventDefault(); go(current + 1); }
+    else if (e.key === 'ArrowLeft'){ e.preventDefault(); go(current - 1); }
+  });
+
+  function openMenu(){
+    mpan.hidden = false;
+    mbtn.setAttribute('aria-expanded', 'true');
+    if (hasInert){ deck.inert = true; prev.inert = true; next.inert = true; }
+    mitems[current].focus();
+  }
+  function closeMenu(){
+    mpan.hidden = true;
+    mbtn.setAttribute('aria-expanded', 'false');
+    if (hasInert){ deck.inert = false; prev.inert = false; next.inert = false; setActive(current); }
+  }
+  /* focus stays inside the open menu */
+  mpan.addEventListener('keydown', function(e){
+    if (e.key !== 'Tab') return;
+    var f = mitems.concat([mbtn]);
+    var i = f.indexOf(document.activeElement);
+    if (i < 0) return;
+    e.preventDefault();
+    f[(i + (e.shiftKey ? -1 : 1) + f.length) % f.length].focus();
+  });
+  if (mbtn){
+    mbtn.addEventListener('click', function(){ mpan.hidden ? openMenu() : closeMenu(); });
+  }
+
+  document.addEventListener('click', function(e){
+    var el = e.target && e.target.closest ? e.target.closest('[data-goto]') : null;
+    if (!el) return;
+    go(parseInt(el.getAttribute('data-goto'), 10));
+  });
+  document.addEventListener('click', function(e){
+    var a = e.target && e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if (!a) return;
+    var i = pages.map(function(p){ return p.id; }).indexOf(a.getAttribute('href').slice(1));
+    if (i >= 0){ e.preventDefault(); go(i); }
+  });
+
+  window.addEventListener('popstate', function(e){
+    var i = (e.state && typeof e.state.p === 'number')
+      ? e.state.p
+      : pages.map(function(p){ return p.id; }).indexOf((location.hash || '').slice(1));
+    if (i >= 0) go(i, { history: false });
+  });
+
+  var rt = null;
+  window.addEventListener('resize', function(){
+    clearTimeout(rt);
+    rt = setTimeout(function(){ deck.scrollLeft = current * deck.clientWidth; }, 120);
+  });
+
+  var restore = [];
+  window.addEventListener('beforeprint', function(){
+    restore = [];
+    Array.prototype.forEach.call(document.querySelectorAll('details'), function(d){
+      restore.push([d, d.open]); d.open = true;
+    });
+    if (hasInert) pages.forEach(function(p){ p.inert = false; });
+  });
+  window.addEventListener('afterprint', function(){
+    restore.forEach(function(pair){ pair[0].open = pair[1]; });
+    setActive(current);
+  });
+
+  var start = pages.map(function(p){ return p.id; }).indexOf((location.hash || '').slice(1));
+  if (start < 0) start = 0;
+  mark(start);
+  requestAnimationFrame(function(){ deck.scrollLeft = start * deck.clientWidth; });
+  try { history.replaceState({ p: start }, '', '#' + pages[start].id); } catch (e) {}
+})();
+</script>
+</body>
+</html>

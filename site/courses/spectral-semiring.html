@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Into an Algebra — The Spectral Semiring · Echo S Research</title>
+<style>
+:root{
+  --ink:#16222c;
+  --ink-soft:#40525f;
+  --ink-faint:#5b6b76;
+  --ground:#e3e9ec;
+  --panel:#f5f8f9;
+  --panel-2:#eaeff1;
+  --rule:#c3cfd5;
+  --verdigris:#1c6355;
+  --verdigris-wash:#dceae6;
+  --ochre:#8a5a0d;
+  --ochre-wash:#f2e7d3;
+  --indigo:#33478a;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua","URW Palladio L",Georgia,serif;
+  --mono:ui-monospace,"SF Mono","Cascadia Mono","Roboto Mono",Menlo,Consolas,monospace;
+  --measure:63ch;
+  --head-h:62px;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  background:var(--ground);color:var(--ink);
+  font-family:var(--serif);font-size:17px;line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+}
+
+/* ─────────── header: the spectrum rail ─────────── */
+header{
+  position:fixed;top:0;left:0;right:0;height:var(--head-h);z-index:40;
+  display:flex;align-items:center;gap:14px;padding:0 16px;
+  background:rgba(227,233,236,.93);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--rule);
+}
+.brand{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-faint);white-space:nowrap}
+.brand b{color:var(--ink);font-weight:600}
+.rail{flex:1;display:flex;align-items:center;gap:0;min-width:0}
+.rail .axis{flex:1;display:flex;align-items:center;position:relative;height:26px}
+.rail .axis::before{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:var(--rule)}
+.tick{
+  position:relative;flex:1;display:flex;align-items:center;justify-content:center;
+  background:none;border:0;padding:0;height:26px;cursor:pointer;color:var(--ink-faint);
+  font-family:var(--mono);font-size:10px;letter-spacing:.02em;
+}
+.tick span{
+  position:relative;z-index:1;min-width:18px;height:18px;display:grid;place-items:center;
+  border:1px solid var(--rule);border-radius:2px;background:var(--panel);transition:all .18s
+}
+.tick:hover span{border-color:var(--ink-soft);color:var(--ink)}
+.tick[aria-current="true"] span{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.tick.edge span{border-radius:50%;min-width:10px;height:10px;font-size:0}
+.navbtn{
+  font-family:var(--mono);font-size:15px;line-height:1;
+  background:var(--panel);color:var(--ink);border:1px solid var(--rule);border-radius:3px;
+  width:30px;height:30px;cursor:pointer;display:grid;place-items:center;transition:all .16s
+}
+.navbtn:hover:not(:disabled){background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.navbtn:disabled{opacity:.32;cursor:default}
+:focus-visible{outline:2px solid var(--indigo);outline-offset:2px}
+
+/* ─────────── compact menu for narrow screens ─────────── */
+.menubtn{display:none;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;
+  letter-spacing:.06em;background:var(--panel);color:var(--ink);border:1px solid var(--rule);
+  border-radius:3px;height:34px;padding:0 11px;cursor:pointer;flex:1;justify-content:space-between}
+.menubtn b{font-size:13px;line-height:1}
+.menupanel{position:fixed;top:var(--head-h);left:0;right:0;bottom:0;z-index:39;
+  background:var(--ground);border-top:1px solid var(--rule);overflow-y:auto;padding:6px 0 40px}
+.menupanel[hidden]{display:none}
+.menupanel button{display:flex;width:100%;gap:12px;align-items:baseline;min-height:46px;
+  padding:10px 18px;background:none;border:0;border-bottom:1px solid var(--rule);
+  font-family:var(--serif);font-size:16px;color:var(--ink);text-align:left;cursor:pointer}
+.menupanel button .n{font-family:var(--mono);font-size:11px;color:var(--ink-faint);min-width:22px}
+.menupanel button[aria-current="true"]{background:var(--panel)}
+.menupanel button[aria-current="true"] .n{color:var(--verdigris)}
+
+/* ─────────── deck: horizontal pages ─────────── */
+#deck{
+  position:absolute;top:var(--head-h);bottom:0;left:0;right:0;
+  display:flex;overflow-x:auto;overflow-y:hidden;
+  scroll-snap-type:x mandatory;
+  scrollbar-width:none;
+}
+#deck::-webkit-scrollbar{display:none}
+.page{
+  flex:0 0 100%;height:100%;overflow-y:auto;scroll-snap-align:start;
+  padding:0 24px 96px;-webkit-overflow-scrolling:touch;
+}
+.inner{max-width:var(--measure);margin:0 auto;padding-top:44px}
+
+/* ─────────── type ─────────── */
+.eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.19em;text-transform:uppercase;
+  color:var(--verdigris);margin:0 0 12px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.eyebrow i{font-style:normal;color:var(--ink-faint)}
+h1{font-size:clamp(30px,6vw,44px);line-height:1.08;letter-spacing:-.015em;margin:0 0 10px;font-weight:600}
+h2{font-size:clamp(25px,4.6vw,33px);line-height:1.14;letter-spacing:-.012em;margin:0 0 8px;font-weight:600}
+.dek{font-size:19px;color:var(--ink-soft);line-height:1.45;margin:0 0 26px;font-style:italic}
+h3{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink);margin:34px 0 10px;font-weight:600;
+  padding-bottom:6px;border-bottom:1px solid var(--rule)}
+h3 em{font-style:normal;color:var(--ink-faint);font-weight:400}
+p{margin:0 0 15px}
+a{color:var(--indigo)}
+strong{font-weight:600}
+em{font-style:italic}
+.small{font-size:15px;color:var(--ink-soft)}
+ul,ol{margin:0 0 15px;padding-left:22px}
+li{margin-bottom:7px}
+code,.m{font-family:var(--mono);font-size:.88em;letter-spacing:-.01em}
+.m{white-space:nowrap}
+
+/* ─────────── equation strip ─────────── */
+.eq{
+  position:relative;margin:20px 0;padding:16px 74px 16px 18px;
+  background:var(--panel);border:1px solid var(--rule);border-left:2px solid var(--verdigris);
+  border-radius:2px;font-family:var(--mono);font-size:14.5px;line-height:1.75;
+  overflow-x:auto;
+}
+.eq .cid{
+  position:absolute;top:8px;right:10px;font-size:9.5px;letter-spacing:.12em;
+  color:var(--ink-faint);text-transform:uppercase
+}
+.eq b{font-weight:600;color:var(--verdigris)}
+.eq .note{display:block;margin-top:8px;font-family:var(--serif);font-size:14px;
+  color:var(--ink-soft);line-height:1.5;white-space:normal}
+
+/* matrices */
+.mat{display:inline-grid;gap:0 12px;vertical-align:middle;
+  position:relative;padding:2px 8px;margin:0 2px;font-family:var(--mono);font-size:.94em}
+.mat.c2{grid-template-columns:repeat(2,auto)}
+.mat.c3{grid-template-columns:repeat(3,auto)}
+.mat::before,.mat::after{content:"";position:absolute;top:0;bottom:0;width:4px;
+  border:1px solid var(--ink-soft)}
+.mat::before{left:0;border-right:0}
+.mat::after{right:0;border-left:0}
+.mat i{font-style:normal;text-align:right}
+
+/* ─────────── tables ─────────── */
+.tw{overflow-x:auto;margin:20px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--rule)}
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+th{font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;
+  text-align:left;padding:9px 12px 8px 0;color:var(--ink-faint);font-weight:600;
+  border-bottom:1px solid var(--rule);white-space:nowrap}
+td{padding:9px 12px 9px 0;border-bottom:1px solid var(--panel-2);vertical-align:top;line-height:1.45}
+tr:last-child td{border-bottom:0}
+td:first-child{font-family:var(--mono);font-size:13px;white-space:nowrap;color:var(--ink)}
+table.prose td:first-child{font-family:var(--serif);font-size:14.5px;white-space:normal}
+
+/* ─────────── tags ─────────── */
+.tag{display:inline-block;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;
+  text-transform:uppercase;padding:2px 6px;border-radius:2px;white-space:nowrap;
+  border:1px solid transparent;font-weight:600;vertical-align:2%}
+.tag.forced{background:var(--verdigris);color:#eef6f3}
+.tag.computed{background:var(--verdigris-wash);color:var(--verdigris);border-color:var(--verdigris)}
+.tag.declared{background:var(--ochre-wash);color:var(--ochre);border-color:var(--ochre)}
+.tag.plausible{background:transparent;color:var(--indigo);border:1px solid var(--indigo)}
+.tag.open{background:transparent;color:var(--ochre);border:1px dashed var(--ochre)}
+.tag.estab{background:transparent;color:var(--ink-faint);border:1px solid var(--rule)}
+
+/* ─────────── inherit / hand-on blocks ─────────── */
+.thread{
+  margin:0 0 28px;padding:13px 16px;background:var(--panel-2);border-radius:2px;
+  border:1px solid var(--rule);
+}
+.thread .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--ink-faint);display:block;margin-bottom:7px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{
+  font-family:var(--mono);font-size:11.5px;padding:3px 9px;border-radius:2px;
+  background:var(--panel);border:1px solid var(--rule);color:var(--ink);cursor:pointer;
+  transition:all .16s;text-align:left;line-height:1.35
+}
+.chip:hover{border-color:var(--verdigris);color:var(--verdigris)}
+.chip .n{color:var(--ink-faint);margin-right:5px}
+.chip:hover .n{color:var(--verdigris)}
+.handoff{
+  margin:30px 0 4px;padding:14px 16px;border:1px solid var(--verdigris);
+  background:var(--verdigris-wash);border-radius:2px;font-size:15px
+}
+.handoff .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--verdigris);display:block;margin-bottom:6px;font-weight:600}
+
+/* ─────────── run badge ─────────── */
+.run{
+  display:inline-flex;align-items:baseline;gap:9px;margin:0 0 24px;padding:6px 12px;
+  border:1px solid var(--verdigris);border-radius:2px;background:var(--panel);
+  font-family:var(--mono);font-size:11.5px;color:var(--verdigris)
+}
+.run b{font-size:15px;font-weight:600}
+.run i{font-style:normal;color:var(--ink-faint);letter-spacing:.06em;font-size:10px;
+  text-transform:uppercase}
+
+/* ─────────── checkpoint cards ─────────── */
+.cpwrap{margin:38px 0 0}
+.cphead{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink);border-bottom:1px solid var(--ink);padding-bottom:6px;margin-bottom:14px;
+  display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.cphead i{font-style:normal;color:var(--ink-faint);letter-spacing:.06em;font-size:9.5px}
+details.cp{
+  margin:0 0 10px;background:var(--panel);border:1px solid var(--rule);border-radius:2px;
+  transition:border-color .18s
+}
+details.cp[open]{border-color:var(--verdigris)}
+details.cp summary{
+  list-style:none;cursor:pointer;padding:13px 15px;display:flex;gap:12px;align-items:flex-start;
+  font-size:15.5px;line-height:1.5
+}
+details.cp summary::-webkit-details-marker{display:none}
+details.cp summary::marker{content:""}
+.qn{
+  flex:0 0 auto;font-family:var(--mono);font-size:10px;letter-spacing:.08em;font-weight:600;
+  color:var(--ink-faint);border:1px solid var(--rule);border-radius:2px;padding:2px 5px;margin-top:3px
+}
+details.cp[open] .qn{background:var(--verdigris);color:#eef6f3;border-color:var(--verdigris)}
+.qtext{flex:1}
+.reveal{
+  flex:0 0 auto;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--verdigris);border:1px solid var(--verdigris);border-radius:2px;padding:3px 7px;
+  margin-top:2px;white-space:nowrap;transition:all .16s
+}
+details.cp summary:hover .reveal{background:var(--verdigris);color:#eef6f3}
+details.cp[open] .reveal{background:var(--ink);border-color:var(--ink);color:var(--panel)}
+details.cp[open] .reveal::after{content:""}
+.ans{
+  border-top:1px solid var(--rule);margin:0 15px;padding:14px 0 16px;font-size:15.5px;
+  animation:fade .26s ease-out
+}
+.ans .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--verdigris);display:block;margin-bottom:7px;font-weight:600}
+.ans p:last-child{margin-bottom:0}
+@keyframes fade{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+  #deck{scroll-behavior:auto}
+}
+
+/* ─────────── cover ─────────── */
+.cover .inner{padding-top:6vh;max-width:70ch}
+.cover .rule{height:1px;background:var(--ink);margin:26px 0}
+.mono-list{font-family:var(--mono);font-size:13px;line-height:1.9;color:var(--ink-soft)}
+.mono-list b{color:var(--ink);font-weight:600}
+.mono-list span{color:var(--verdigris)}
+.howto{display:grid;gap:12px;margin:26px 0 0}
+.howto div{padding:12px 15px;background:var(--panel);border:1px solid var(--rule);border-radius:2px;
+  font-size:15px}
+.howto b{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--verdigris);display:block;margin-bottom:4px}
+.gapfig{margin:30px 0;padding:20px 18px 14px;background:var(--panel);border:1px solid var(--rule)}
+.gapline{position:relative;height:38px;margin:0 0 6px}
+.gapline .bar{position:absolute;top:18px;left:0;right:0;height:2px;background:var(--rule)}
+.gapline .seg{position:absolute;top:15px;height:8px;background:var(--verdigris);border-radius:1px}
+.gapline .band{position:absolute;top:6px;height:26px;border:1px dashed var(--ochre);
+  background:repeating-linear-gradient(45deg,transparent,transparent 5px,var(--ochre-wash) 5px,var(--ochre-wash) 10px)}
+.gapline .pt{position:absolute;top:11px;width:2px;height:16px;background:var(--ink)}
+.gapline .lb{position:absolute;top:-2px;font-family:var(--mono);font-size:10px;color:var(--ink-faint);
+  transform:translateX(-50%)}
+.gapcap{font-family:var(--mono);font-size:11px;color:var(--ink-soft);line-height:1.6}
+
+.endnote{margin-top:40px;padding-top:18px;border-top:1px solid var(--rule);
+  font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);letter-spacing:.02em}
+.nextup{margin-top:34px;padding:14px 16px;border:1px dashed var(--rule);border-radius:2px;
+  font-size:15px;color:var(--ink-soft)}
+.nextup b{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink);display:block;margin-bottom:5px}
+
+.vh{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.reveal::before{content:"reveal"}
+details.cp[open] .reveal::before{content:"hide"}
+.notemap td:first-child{color:var(--verdigris);font-weight:600}
+.audit td:last-child{font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);
+  word-break:break-all;white-space:normal;line-height:1.4}
+.srcbox{margin:16px 0;border:1px solid var(--rule);border-radius:2px;background:var(--panel)}
+.srcbox summary{cursor:pointer;padding:11px 14px;font-family:var(--mono);font-size:11px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--verdigris);list-style:none}
+.srcbox summary::-webkit-details-marker{display:none}
+.srcbox pre{margin:0;padding:0 14px 14px;overflow-x:auto;font-family:var(--mono);font-size:10.5px;
+  line-height:1.5;color:var(--ink);white-space:pre;max-height:60vh;overflow-y:auto}
+
+@media print{
+  :root{--head-h:0px}
+  html,body{height:auto;overflow:visible;background:#fff;font-size:11pt}
+  header{display:none}
+  #deck{position:static;display:block;overflow:visible;height:auto}
+  .page{flex:none;height:auto;overflow:visible;padding:0 0 24pt;break-before:page;page-break-before:always}
+  .page:first-child{break-before:auto;page-break-before:auto}
+  .inner{max-width:none;padding-top:0}
+  details.cp{break-inside:avoid;page-break-inside:avoid}
+  details.cp .ans{display:block !important}
+  .srcbox pre{max-height:none;overflow:visible;white-space:pre-wrap;overflow-wrap:anywhere;
+    font-size:7.5pt;line-height:1.35}
+  .srcbox{break-inside:auto;page-break-inside:auto}
+  .menubtn,.menupanel{display:none !important}
+  .reveal,.chip{display:none}
+  .eq,.tw,table,tr{break-inside:avoid;page-break-inside:avoid}
+  h2,h3{break-after:avoid;page-break-after:avoid}
+  a{text-decoration:none;color:inherit}
+}
+
+@media (max-width:640px){
+  body{font-size:16px}
+  .page{padding:0 16px 90px}
+  .inner{padding-top:28px}
+  .brand{display:none}
+  .eq{padding:14px 14px 14px 14px;font-size:13px}
+  .eq .cid{position:static;display:block;margin-bottom:6px;text-align:left}
+  .rail{display:none}
+  .menubtn{display:flex}
+  .dek{font-size:17px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand"><b>Into an Algebra</b> · The Spectral Semiring</div>
+  <button class="navbtn" id="prev" aria-label="Previous page">&#8592;</button>
+  <nav class="rail" aria-label="Lesson navigation"><div class="axis" id="axis"></div></nav>
+  <button class="menubtn" id="menubtn" aria-expanded="false" aria-controls="menupanel"
+          aria-label="Lesson menu"><span id="menulabel">1 / 15</span> <b>&#9776;</b></button>
+  <button class="navbtn" id="next" aria-label="Next page">&#8594;</button>
+</header>
+<nav class="menupanel" id="menupanel" aria-label="Lessons" hidden></nav>
+
+<main id="deck">
+
+<!-- ══════════════════════════ COVER ══════════════════════════ -->
+<section id="cover" class="page cover" data-title="Cover">
+  <div class="inner">
+    <p class="eyebrow">Module 2 of the course <i>· built from four papers</i></p>
+    <h1 tabindex="-1" data-pagehead>Into an Algebra</h1>
+    <p class="dek">Take one matrix <span class="m">R</span> with <span class="m">R² = R + I</span>. Everything
+      else is forced: a ring, an <span class="m">𝔰𝔩₂</span>, a Mahler-graded semiring — read by two
+      characters, coupled at a golden floor, then made reference-free.</p>
+
+    <div class="rule"></div>
+
+    <p>Module 1 gave the objects and the two walls that confine them. This module gives them an
+      <em>algebra</em>. The seed is the golden ratio wearing a matrix costume: the companion matrix
+      <span class="m">R</span> of <span class="m">x² − x − 1</span>. Accept it and the relation it
+      satisfies, and you do not get to choose what follows — the ring it generates, the Lie algebra it
+      acts on, the two numbers that grade its objects, and the boundary where that grading collapses are
+      all consequences. The four papers below build that structure once, then read it three ways.</p>
+
+    <p class="mono-list">
+      <b>1.</b> one matrix, one relation &nbsp;<span>&#8594;</span>&nbsp; the algebra <span class="m">𝔄</span> in three layers &nbsp;<span>&#8594;</span>&nbsp;
+      <b>2.</b> the operators are a <span class="m">λ</span>-ring, two characters &nbsp;<span>&#8594;</span>&nbsp;
+      <b>3.</b> charge couples to measure &nbsp;<span>&#8594;</span>&nbsp;
+      <b>4.</b> delete the reference ray
+    </p>
+
+    <p>Every load-bearing claim carries a tag naming how strongly it is held —
+      <span class="tag forced">forced</span> a theorem or exact computation,
+      <span class="tag computed">computed</span> exhaustive over a stated range,
+      <span class="tag declared">declared</span> a principled naming or modelling choice,
+      <span class="tag plausible">plausible</span> evidence short of proof,
+      <span class="tag open">open</span> unresolved,
+      <span class="tag estab">established</span> imported from the literature. The tags are the
+      mathematics, not decoration: a suggestive picture that has not been proved earns
+      <span class="tag declared">declared</span>, never <span class="tag forced">forced</span>.</p>
+
+    <div class="gapfig">
+      <div class="gapline">
+        <div class="bar"></div>
+        <div class="pt" style="left:5%"></div><div class="lb" style="left:5%">M=1</div>
+        <div class="band" style="left:5%;width:29%"></div>
+        <div class="lb" style="left:19%;color:#9a6410">empty</div>
+        <div class="pt" style="left:34%"></div><div class="lb" style="left:34%">&#966;</div>
+        <div class="seg" style="left:34%;right:0"></div>
+        <div class="band" style="left:34%;width:18%"></div>
+        <div class="pt" style="left:52%"></div><div class="lb" style="left:52%">2</div>
+        <div class="lb" style="left:74%;color:#1c6355">realized</div>
+      </div>
+      <p class="gapcap">The module in one figure. Emitted Mahler measures lie in {1} &#8746; [&#966;, &#8734;).
+        The band (1, &#966;) is empty; even charge floors at &#966;, odd charge at 2, and the inner band
+        (&#966;, 2) is the odd-charge gap — exactly the no-Salem closure. Lessons 3 and 4 are an account
+        of that split.</p>
+    </div>
+
+    <div class="howto">
+      <div><b>Move sideways</b>Swipe, use the arrow keys, or the buttons above. The rail is the table of
+        contents — tap a number to jump to that lesson.</div>
+      <div><b>Read downwards</b>Each lesson scrolls vertically. Thread blocks at the top say what a
+        lesson inherits; the hand-off at the bottom says what it passes on.</div>
+      <div><b>Answer the checkpoints</b>Every lesson ends with questions. Try them before opening the
+        card — the worked answer is the one that started the next section.</div>
+    </div>
+
+    <p class="endnote">Four papers &#183; one algebra &#183; every constant settled in exact arithmetic
+      &nbsp;&#183;&nbsp; <a href="../learn.html">← The course</a> · <a href="../index.html">The archive</a></p>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LESSON 1 ══════════════════════════ -->
+<section id="lesson-1" class="page" data-title="1 · One Matrix, One Relation">
+  <div class="inner">
+    <p class="eyebrow">Lesson 01 <i>· the emission algebra 𝔄</i></p>
+    <h2 tabindex="-1" data-pagehead>One Matrix, One Relation &#8594; the Algebra <span class="m">𝔄</span></h2>
+    <p class="dek">A single companion matrix and the identity it satisfies grow three exact layers —
+      a ring, an <span class="m">𝔰𝔩₂</span>, a semiring — welded by one trace duality. Almost nothing is
+      posited; the structure unfolds from the seed.</p>
+
+    <div class="run"><b>d1–d7</b><i>exact-arithmetic scripts, over &#8484;, &#8474;(&#8730;5), &#8474;(5<sup>1/4</sup>)</i></div>
+
+    <h3>&#167;1 <em>&nbsp;The seed and the keystone</em></h3>
+    <p>The golden ratio <span class="m">&#966; = (1+&#8730;5)/2</span> satisfies <span class="m">&#966;² = &#966; + 1</span>.
+      Carry that number inside linear algebra as the companion matrix of <span class="m">x² &#8722; x &#8722; 1</span>,
+      and the scalar identity becomes a <em>matrix</em> identity — the keystone.</p>
+
+    <div class="eq"><span class="cid">keystone</span>
+      R = <span class="mat c2"><i>0</i><i>1</i><i>1</i><i>1</i></span>,&nbsp;&nbsp;
+      <b>R² = R + I</b>,&nbsp;&nbsp; Tr R = 1,&nbsp; det R = &#8722;1,&nbsp; spec R = {&#966;, &#968;}
+      <span class="note">The two eigenvalues are the roots of <span class="m">x² &#8722; x &#8722; 1</span>:
+      <span class="m">&#966;</span> and its conjugate <span class="m">&#968; = (1&#8722;&#8730;5)/2 = &#8722;1/&#966;</span>.
+      Any polynomial identity satisfied by <span class="m">&#966;</span> is automatically satisfied by
+      <span class="m">R</span> (with <span class="m">I</span> standing in for 1). The whole first layer
+      is this dictionary made precise. <span class="tag forced">forced</span></span>
+    </div>
+
+    <p>Iterating the one reduction <span class="m">R² = R + I</span> forces Fibonacci to appear — not by
+      coincidence, but as a theorem. Reducing every <span class="m">R²</span> gives
+      <span class="m">R³ = 2R + I</span>, <span class="m">R⁴ = 3R + 2I</span>,
+      <span class="m">R⁵ = 5R + 3I</span>, and in general:</p>
+
+    <div class="eq"><span class="cid">power law · D1</span>
+      R<sup>n</sup> = F<sub>n</sub>R + F<sub>n&#8722;1</sub>I = <span class="mat c2"><i>F<sub>n&#8722;1</sub></i><i>F<sub>n</sub></i><i>F<sub>n</sub></i><i>F<sub>n+1</sub></i></span>&nbsp;&nbsp;(all n &#8712; &#8484;)
+      <span class="note">Whence the classical identities as trace and determinant:
+      <span class="m">Tr(R<sup>n</sup>) = L<sub>n</sub></span> (Lucas), <span class="m">det(R<sup>n</sup>) = (&#8722;1)<sup>n</sup></span>,
+      Cassini <span class="m">F<sub>n&#8722;1</sub>F<sub>n+1</sub> &#8722; F<sub>n</sub>² = (&#8722;1)<sup>n</sup></span>,
+      and Binet <span class="m">F<sub>n</sub> = (&#966;<sup>n</sup> &#8722; &#968;<sup>n</sup>)/&#8730;5</span>.
+      Verified symbolically for all n and spot-checked <span class="m">n &#8712; [&#8722;16, 16]</span>. <span class="tag forced">forced</span></span>
+    </div>
+
+    <h3>&#167;2 <em>&nbsp;Layer one — the golden order</em></h3>
+    <p>The powers of <span class="m">R</span> live in the <span class="m">&#8484;</span>-span of
+      <span class="m">I</span> and <span class="m">R</span>. That span is a ring, and it is exactly the
+      right one: <span class="m">&#8484;[R] &#8773; &#8484;[&#966;] = 𝒪<sub>&#8474;(&#8730;5)</sub></span>,
+      the ring of integers of the golden field. Its discriminant is
+      <span class="m">disc(x² &#8722; x &#8722; 1) = 5</span>, the <em>fundamental</em> discriminant of
+      <span class="m">&#8474;(&#8730;5)</span> (because <span class="m">5 &#8801; 1 mod 4</span>), so the index
+      <span class="m">[𝒪 : &#8484;[&#966;]]</span> is 1 — the order is <strong>maximal</strong>, nothing missing.
+      <span class="tag forced">forced</span> The golden seed is not arbitrary but optimal: a clumsier
+      seed like <span class="m">2&#966;</span> (discriminant 20) lands in a defective sub-order of index 2.</p>
+
+    <h3>&#167;3 <em>&nbsp;Layer two — an <span class="m">𝔰𝔩₂</span> with golden root length</em></h3>
+    <p>How does <span class="m">R</span> act on its own surroundings — the whole 4-dimensional space
+      <span class="m">M₂</span> of matrices — through the commutator
+      <span class="m">ad<sub>R</sub>(X) = [R, X]</span>? Its spectrum is
+      <span class="m">{0, 0, +&#8730;5, &#8722;&#8730;5}</span>: a 2-dimensional centre fixed by
+      <span class="m">R</span>, and two root directions along which it shears at rate
+      <span class="m">&#177;&#8730;5</span>. The traceless part assembles into the most important small
+      Lie algebra in mathematics.</p>
+
+    <div class="eq"><span class="cid">D4 · signature</span>
+      H := 2R &#8722; I,&nbsp; Tr H = 0,&nbsp; <b>H² = 5I</b>,&nbsp; [N<sub>+</sub>, N<sub>&#8722;</sub>] = &#8730;5&#183;H
+      <span class="note">The layer is <span class="m">𝔰𝔩₂</span> of Lorentzian signature
+      <span class="m">(2,1)</span> — two boost directions, one rotation, two null root vectors — with
+      root length the golden coupling <span class="m">&#8730;5 = &#966; &#8722; &#968; = &#966; + &#966;<sup>&#8722;1</sup></span>.
+      The trace form <span class="m">&#10216;X,Y&#10217; = Tr(XY)</span> is
+      <span class="m">diag(10, 10, &#8722;2)</span>. Diagonalising the Cartan needs exactly
+      <span class="m">&#8730;5</span> and no more. <span class="tag forced">forced</span></span>
+    </div>
+
+    <h3>&#167;4 <em>&nbsp;The trace duality that welds the layers</em></h3>
+    <p>Subtract from <span class="m">2R<sup>n</sup></span> its own trace and a small miracle occurs: the
+      remainder collapses onto a single ray. The <em>deviation operator</em>
+      <span class="m">X<sub>n</sub> = 2R<sup>n</sup> &#8722; L<sub>n</sub>I</span> equals
+      <span class="m">F<sub>n</sub>H</span> — the entire Fibonacci ladder is one Cartan axis, sampled at
+      Fibonacci scale. Its hyperbolic length is the duality:</p>
+
+    <div class="eq" style="border-left-color:var(--ink)"><span class="cid">D6 · duality</span>
+      &#189;&#183;Tr(X<sub>n</sub>²) &nbsp;=&nbsp; <b>5F<sub>n</sub>²</b> &nbsp;=&nbsp; L<sub>n</sub>² &#8722; 4(&#8722;1)<sup>n</sup> &nbsp;=&nbsp; (&#966;<sup>n</sup> &#8722; &#968;<sup>n</sup>)²
+      <span class="note">One number in three coats: Fibonacci supplies the length, Lucas the trace, and
+      their difference is the same <span class="m">&#177;4</span> that governs Cassini. Proved from
+      <span class="m">X<sub>n</sub>² = F<sub>n</sub>²H² = 5F<sub>n</sub>²I</span>; symbolic, so it carries
+      all n. This is the dictionary the whole corpus spends: height data on one side, an integer lattice
+      ledger along a <span class="m">&#8730;5</span>-ray on the other. <span class="tag forced">forced</span></span>
+    </div>
+
+    <h3>&#167;5 <em>&nbsp;Layer three — the semiring, in one breath</em></h3>
+    <p>The third layer describes the <em>objects</em> the algebra handles: finite multisets of algebraic
+      integers. Each carries two numbers — a magnitude (the Mahler measure
+      <span class="m">M(A) = &#8719;<sub>i</sub> max(1, |&#955;<sub>i</sub>|) &#8805; 1</span>) and a charge
+      (<span class="m">&#967; &#8712; &#8484;/4&#8484;</span>, which compass quadrant each root points to).
+      The golden object <span class="m">A<sub>&#966;</sub> = {&#966;, &#968;}</span> has
+      <span class="m">M = &#966;</span> and charge <span class="m">{0, 2}</span> — it points only along the
+      real axis. Lesson 2 makes this layer an algebra in its own right; here it is enough to know the
+      three questions it forces, all answered <span class="tag forced">forced</span>:</p>
+    <ul>
+      <li><strong>Can the golden mode couple to a copy of itself into a Salem number?</strong> No — three
+        independent obstructions forbid it: <span class="m">[R, R] = 0</span> (no new direction), the
+        charge is trapped in <span class="m">{0, 2}</span> and never reaches <span class="m">{1, 3}</span>,
+        and the "on-circle and expanding" Salem slot is empty because every combination of the reals
+        <span class="m">&#966;, &#968;</span> stays real.</li>
+      <li><strong>What completes the charge to all of <span class="m">&#8484;/4&#8484;</span>?</strong> A unique
+        orthogonal partner, the even quartic <span class="m">K = x&#8308; + 5x² &#8722; 5</span>: its
+        imaginary roots <span class="m">&#177;i&#946;</span> supply the missing <span class="m">{1, 3}</span>,
+        with <span class="m">M(K) = &#946;² = &#966;²&#8730;5 &#8776; 5.854</span>.</li>
+      <li><strong>Where does the magnitude bottom out?</strong> At the cyclotomic floor
+        <span class="m">M = 1</span> (Kronecker: roots of unity only), where magnitude collapses and only
+        charge survives. In this algebra <span class="m">M &#8712; {1} &#8746; [&#966;, &#8734;)</span> —
+        isolated by the golden gap.</li>
+    </ul>
+    <p class="small">That last gap is <span class="tag forced">forced</span> inside the algebra's own
+      emission class but <span class="tag open">open</span> in general mathematics: Lehmer's number
+      <span class="m">&#8776; 1.17628</span> sits inside <span class="m">(1, &#966;)</span> for a
+      polynomial that <span class="m">𝔄</span> cannot emit. Whether the whole band is empty over all
+      polynomials is Lehmer's problem, unsolved since 1933.</p>
+
+    <div class="cpwrap">
+      <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
+
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Compute
+        <span class="m">R&#8309;</span> two ways — from the power law and by direct reduction — then read
+        off <span class="m">L&#8309;</span> and check Cassini.</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p><span class="m">R&#8309; = F&#8309;R + F&#8324;I = 5R + 3I = </span>
+          <span class="mat c2"><i>3</i><i>5</i><i>5</i><i>8</i></span>. Then
+          <span class="m">Tr = 11 = L&#8309;</span>, <span class="m">det = 24 &#8722; 25 = &#8722;1 = (&#8722;1)&#8309;</span>,
+          and Cassini reads <span class="m">F&#8324;F&#8326; &#8722; F&#8309;² = 3&#183;8 &#8722; 25 = &#8722;1</span>.
+          Every displayed value is an integer computation — no float decides anything.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">The number
+        <span class="m">&#8730;5</span> keeps reappearing. Name the distinct roles it plays across the
+        three layers, and say why that is not a coincidence.</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>One number, four roles: the eigenvalue gap <span class="m">&#966; &#8722; &#968;</span> of the
+          core; the irrational eigenvalue of <span class="m">ad<sub>R</sub></span> (the root length) in the
+          Lie layer; the length <span class="m">&#10216;H,H&#10217; = 5</span>, i.e.
+          <span class="m">H² = 5I</span>, of the trace form; and the fundamental discriminant
+          <span class="m">disc = 5</span> that makes <span class="m">&#8484;[R]</span> the <em>maximal</em>
+          order. They agree because all three layers are grown from the same seed — the golden field's
+          own invariant, surfacing wherever the structure measures a gap.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Why can the golden mode
+        <em>not</em> close on itself into a Salem number, and what does it need instead?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Three languages, one fact. <em>Algebra:</em> self-application returns the keystone and makes
+          no new direction, <span class="m">[R, R] = 0</span>. <em>Arithmetic:</em> the charge is confined
+          to the subgroup <span class="m">{0, 2}</span> and cannot reach the coset <span class="m">{1, 3}</span>.
+          <em>Geometry:</em> the mode lives on the real axis and never climbs onto the complex unit circle.
+          To escape it needs a <em>partner</em> carrying the missing charges — the even quartic
+          <span class="m">K = x&#8308; + 5x² &#8722; 5</span>, whose imaginary roots supply the quarter-turn.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="handoff"><span class="lbl">hands on to Lesson 2</span>
+      Three operators appeared informally — union <span class="m">&#8853;</span>, coupling
+      <span class="m">&#8855;</span>, and squaring — and two characters, <span class="m">M</span> and
+      <span class="m">&#967;</span>. Lesson 2 shows they are not an ad-hoc collection: together they form
+      one named object, a <span class="m">&#955;</span>-ring, and the two characters are its two morphisms out.
+    </div>
+
+    <div class="nextup"><b>next &#8594;</b>
+      <strong>Lesson 2 · The Operator Algebra.</strong> Squaring turns out not to be a fourth primitive
+      but the Adams operation <span class="m">&#968;²</span> — the diagonal of the tensor square — and the
+      whole apparatus resolves into a <span class="m">&#955;</span>-ring seen through two characters.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LESSON 2 ══════════════════════════ -->
+<section id="lesson-2" class="page" data-title="2 · The Operator Algebra">
+  <div class="inner">
+    <p class="eyebrow">Lesson 02 <i>· a λ-ring, two characters</i></p>
+    <h2 tabindex="-1" data-pagehead>The Operator Algebra: a <span class="m">λ</span>-Ring and Two Characters</h2>
+    <p class="dek">The companion papers studied <span class="m">&#8853;</span>, <span class="m">&#8855;</span>
+      and squaring one at a time. Read <em>in relation</em>, they are a single structure — and the two
+      invariants the corpus lives on are its two characters.</p>
+
+    <div class="thread"><span class="lbl">carries forward</span>
+      <div class="chips">
+        <button class="chip" data-goto="1"><span class="n">L1</span>the three operators, informal</button>
+        <button class="chip" data-goto="1"><span class="n">L1</span>M and &#967; on objects</button>
+        <button class="chip" data-goto="1"><span class="n">L1</span>x² &#8722; 3x + 1, unexplained</button>
+      </div>
+    </div>
+
+    <div class="run"><b>38/38</b><i>operator suite · exact arithmetic, all green</i></div>
+
+    <h3>&#167;1 <em>&nbsp;The semiring, earned</em></h3>
+    <div class="tw"><table><caption class="vh">Lesson 2 — §1 the three operators, concretely</caption>
+      <thead><tr><th scope="col">operator</th><th scope="col">matrix realization</th><th scope="col">effect on spectrum</th></tr></thead>
+      <tbody>
+        <tr><td>A &#8853; B</td><td>block sum diag(A, B)</td><td>multiset union &#8846;</td></tr>
+        <tr><td>A &#8855; B</td><td>Kronecker product</td><td>pairwise products {&#945;<sub>i</sub>&#946;<sub>j</sub>}</td></tr>
+        <tr><td>&#968;<sup>n</sup>(A)</td><td>matrix power A<sup>n</sup></td><td>pointwise powers {&#955;<sub>i</sub><sup>n</sup>}</td></tr>
+      </tbody>
+    </table></div>
+    <p>The load-bearing axiom is distributivity, and it holds on the nose at the level of spectral
+      multisets — <span class="m">A &#8855; (B &#8853; C) = (A &#8855; B) &#8853; (A &#8855; C)</span> —
+      together with commutativity, associativity, the unit <span class="m">[1]</span>, and the annihilator
+      <span class="m">&#8709;</span>. So <span class="m">(&#8853;, &#8855;)</span> make the objects a
+      <strong>commutative semiring</strong>. <span class="tag forced">forced</span></p>
+
+    <h3>&#167;2 <em>&nbsp;Squaring is the diagonal of <span class="m">&#8855;</span></em></h3>
+    <p>Squaring is not a fourth primitive. Look at <span class="m">A &#8855; A</span>: its spectrum is
+      <em>all ordered pairs</em> <span class="m">{&#955;<sub>i</sub>&#955;<sub>j</sub>}</span>, and it splits
+      as symmetric plus antisymmetric — the plethysm. Squaring picks out the diagonal.</p>
+
+    <div class="eq"><span class="cid">OA-PLE</span>
+      A &#8855; A = Sym² A &#8853; &#923;² A,&nbsp;&nbsp; <b>&#968;²A = diagonal of Sym² A</b>
+      <span class="note">Concretely for the golden seed,
+      <span class="m">cp(R &#8855; R) = (x² &#8722; 3x + 1)·(x + 1)²</span> — the first factor is
+      <span class="m">cp(&#968;²R) = cp({&#966;², &#968;²})</span>, your Lesson-1 checkpoint polynomial
+      arriving as a theorem output; the second is the wedge <span class="m">&#923;²</span>. The
+      <span class="m">&#968;<sup>n</sup></span> are semiring endomorphisms —
+      <span class="m">&#968;<sup>n</sup>(A &#8853; B) = &#968;<sup>n</sup>A &#8853; &#968;<sup>n</sup>B</span>,
+      <span class="m">&#968;<sup>n</sup>(A &#8855; B) = &#968;<sup>n</sup>A &#8855; &#968;<sup>n</sup>B</span>,
+      <span class="m">&#968;<sup>m</sup>&#8728;&#968;<sup>n</sup> = &#968;<sup>mn</sup></span> — and satisfy
+      Newton's identity <span class="m">Tr &#968;²A = p&#8322; = e&#8321;² &#8722; 2e&#8322;</span>. Those are
+      the Adams axioms. Calling the package "a <span class="m">&#955;</span>-ring" is the standard imported
+      name — <span class="tag declared">declared</span> at the naming level,
+      <span class="tag forced">forced</span> at every law.</span>
+    </div>
+
+    <h3>&#167;3 <em>&nbsp;Character I — the measure, and where it goes tropical</em></h3>
+    <p>The Mahler measure is a clean homomorphism on <span class="m">&#8853;</span>
+      (<span class="m">M(A &#8853; B) = M(A)M(B)</span>) and intertwines squaring with squaring
+      (<span class="m">M(&#968;²A) = M(A)²</span>). On the tensor it is <strong>not</strong>
+      multiplicative — it is tropical:</p>
+
+    <div class="eq"><span class="cid">OA-M</span>
+      log M(A &#8855; B) &nbsp;=&nbsp; &#8721;<sub>i,j</sub> (log|&#945;<sub>i</sub>| + log|&#946;<sub>j</sub>|)<sup>+</sup>&nbsp;&nbsp;<span style="font-family:var(--serif)">(a (max,+) convolution)</span>
+      <span class="note">The naive guess <span class="m">M(A)<sup>deg B</sup>M(B)<sup>deg A</sup></span> is
+      the single most instructive failure in the corpus. Counterexample:
+      <span class="m">golden &#8855; (x² &#8722; 2)</span> has spectrum
+      <span class="m">{&#177;&#8730;2&#183;&#966;, &#177;&#8730;2&#183;&#968;}</span>, so
+      <span class="m">M = 2&#966;² &#8776; 5.236</span> — not the factored
+      <span class="m">2&#966; &#8776; 3.236</span>, because one cross-pair
+      <span class="m">&#177;&#8730;2&#183;&#968;</span> falls <em>inside</em> the unit circle and leaves the
+      measure. Whether a cross-term contributes is a fresh boundary decision per pair. <span class="tag forced">forced</span></span>
+    </div>
+
+    <p>The image of the additive character is a monoid, <span class="m">&#10216;&#966;, 2, 3, 5, &#946;²&#10217;</span>
+      with <span class="m">&#946;² = &#966;²&#8730;5</span>; its <em>least generator is</em>
+      <span class="m">&#966;</span>, so nothing lands in <span class="m">(1, &#966;)</span> — the cost floor,
+      as an intrinsic feature of Character I. <span class="tag forced">forced</span> / <span class="tag computed">computed</span></p>
+
+    <h3>&#167;4 <em>&nbsp;Character II — the <span class="m">&#8484;/4&#8484;</span> charge</em></h3>
+    <p>Each on-circle root carries a charge (<span class="m">+&#8477;&#8614;0, +i&#8477;&#8614;1, &#8722;&#8477;&#8614;2, &#8722;i&#8477;&#8614;3</span>),
+      and the laws mirror the operators <em>additively</em>: <span class="m">&#8853;</span> unites,
+      <span class="m">&#8855;</span> takes the sumset mod 4, and <span class="m">&#968;²</span> doubles.
+      The showcase object is the content polynomial <span class="m">x&#8308; &#8722; 1</span>: spectrum
+      <span class="m">{1, i, &#8722;1, &#8722;i}</span>, charges <span class="m">{0, 1, 2, 3}</span> — the
+      whole group <span class="m">&#8484;/4&#8484;</span> at <span class="m">M = 1</span>. Doubling sends
+      <span class="m">{0,1,2,3} &#8614; {0,2,0,2}</span>, so <strong>the odd sector
+      <span class="m">{1, 3}</span> is unreachable in the image of <span class="m">&#968;²</span></strong> —
+      the mechanism behind the parity floor of Lesson 3. <span class="tag forced">forced</span></p>
+
+    <h3>&#167;5 <em>&nbsp;Self-action — the three powers</em></h3>
+    <div class="tw"><table><caption class="vh">Lesson 2 — §5 the three powers of the golden seed</caption>
+      <thead><tr><th scope="col">power (from the seed M=&#966;)</th><th scope="col">M</th><th scope="col">rate</th></tr></thead>
+      <tbody>
+        <tr><td>&#8853;<sup>k</sup> &nbsp;additive</td><td>&#966;<sup>k</sup></td><td>linear — constant entropy density &#189;log&#966;</td></tr>
+        <tr><td>(&#968;²)<sup>&#8728;k</sup> &nbsp;Adams</td><td>&#966;<sup>2<sup>k</sup></sup></td><td>doubling tower at fixed degree</td></tr>
+        <tr><td>&#8855;<sup>k</sup> &nbsp;multiplicative</td><td>&#966;<sup>S<sub>k</sub></sup></td><td>super-exponential, S<sub>k</sub> = 1,2,6,12,30,60,140,&#8230;</td></tr>
+      </tbody>
+    </table></div>
+    <p>These are one semiring's three notions of exponentiation — repeated addition, repeated Frobenius,
+      repeated multiplication — with <span class="m">S<sub>k</sub> = k&#183;C(k&#8722;1, &#8970;(k&#8722;1)/2&#8971;)</span>
+      the mean-absolute-deviation sum of the symmetric binomial. <span class="tag forced">forced</span> / <span class="tag computed">computed</span></p>
+
+    <div class="eq" style="border-left-color:var(--ink)"><span class="cid">synthesis · Thm 8.1</span>
+      one <span class="m">&#955;</span>-ring &nbsp;+&nbsp; two characters &nbsp;=&nbsp; the whole apparatus
+      <span class="note">The cost floor is Character I's least generator; the Salem-free emission is
+      Character II's conserved sector; and <span class="m">&#8730;5 = &#966; + &#966;<sup>&#8722;1</sup></span>
+      is where they meet — the <span class="m">&#8855;</span>-logarithm of the floor and the generator of
+      the self-action. What looked like three operators and two invariants is a single algebraic object.
+      The tropical face of the measure is <em>why</em> the floor survives composition: a (max,+)
+      convolution bounded below by <span class="m">log&#966;</span> stays bounded below by
+      <span class="m">log&#966;</span>, no matter how deep the word. <span class="tag forced">forced</span></span>
+    </div>
+
+    <div class="cpwrap">
+      <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
+
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">In one sentence, why is
+        squaring not a fourth primitive operator — and what exactly is <span class="m">&#968;²A</span>
+        inside <span class="m">A &#8855; A</span>?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Because <span class="m">A &#8855; A = Sym²A &#8853; &#923;²A</span>, and
+          <span class="m">&#968;²A = {&#955;<sub>i</sub>²}</span> is precisely the diagonal
+          <span class="m">i = j</span> inside <span class="m">Sym²A</span>; the off-diagonal part is the
+          exterior square. Squaring is the diagonal restriction of the tensor square — a derived motion,
+          not a new axiom.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Compute
+        <span class="m">M(golden &#8855; (x² &#8722; 2))</span> and say why it beats the naive factored
+        value.</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>The four products are <span class="m">{&#8730;2&#183;&#966;, &#8722;&#8730;2&#183;&#966;, &#8730;2&#183;&#968;, &#8722;&#8730;2&#183;&#968;}</span>.
+          Only <span class="m">&#177;&#8730;2&#183;&#966;</span> lie outside the unit circle
+          (<span class="m">&#8730;2&#183;&#966; &#8776; 2.29</span>), while
+          <span class="m">&#177;&#8730;2&#183;&#968; &#8776; &#177;0.87</span> fall inside. So
+          <span class="m">M = (&#8730;2&#183;&#966;)² = 2&#966;² &#8776; 5.236</span>, whereas the factored
+          form predicts <span class="m">2&#966; &#8776; 3.236</span>. The tropical rule floors the
+          inside-pair to 1; the factored rule cannot see the straddle.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Which Mahler measures are
+        fixed by <span class="m">&#968;²</span>, and what does that single fact say about the whole
+        magnitude axis?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p><span class="m">M(&#968;²A) = M(A)</span> forces <span class="m">M(A)² = M(A)</span>, so
+          <span class="m">M(A) &#8712; {0, 1}</span>; since <span class="m">M &#8805; 1</span>, only
+          <span class="m">M = 1</span> is fixed — the cyclotomic (Kronecker) locus, roots of unity.
+          Everything else strictly grows under squaring. The only fixed magnitude is the trivial one,
+          which is why the floor at <span class="m">M = 1</span> is a genuine boundary and not just a
+          convenient normalization.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="handoff"><span class="lbl">hands on to Lesson 3</span>
+      Two characters, defined independently and read off different data. Lesson 3 asks the coupling
+      question the corpus turns on: does the magnitude floor <em>see</em> the charge? The answer is a
+      single parity bit — and it explains Lesson 1's gap arithmetically.
+    </div>
+
+    <div class="nextup"><b>next &#8594;</b>
+      <strong>Lesson 3 · Charge Meets Measure.</strong> The minimal measure at charge group
+      <span class="m">&#8484;/n</span> is <span class="m">&#966;</span> for even <span class="m">n</span>
+      and 2 for odd — and the odd gap <span class="m">(&#966;, 2)</span> is exactly the no-Salem closure.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LESSON 3 ══════════════════════════ -->
+<section id="lesson-3" class="page" data-title="3 · Charge Meets Measure">
+  <div class="inner">
+    <p class="eyebrow">Lesson 03 <i>· the charge–measure coupling</i></p>
+    <h2 tabindex="-1" data-pagehead>Charge Meets Measure: <span class="m">&#966;</span> for Even, 2 for Odd</h2>
+    <p class="dek">The two characters are orthogonal as readouts — yet coupled at the extremal floor. One
+      parity bit governs the coupling: does the charge lattice contain the ray <span class="m">&#960;</span>?</p>
+
+    <div class="thread"><span class="lbl">carries forward</span>
+      <div class="chips">
+        <button class="chip" data-goto="2"><span class="n">L2</span>&#968;² doubles: {1,3} unreachable</button>
+        <button class="chip" data-goto="2"><span class="n">L2</span>M's least generator is &#966;</button>
+        <button class="chip" data-goto="1"><span class="n">L1</span>the golden object, charge {0,2}</button>
+      </div>
+    </div>
+
+    <div class="run"><b>A–M</b><i>consolidation ledger · integer-matrix engine, no float decides</i></div>
+
+    <h3>&#167;1 <em>&nbsp;Which groups can a charge be?</em></h3>
+    <p>An object is <em>charge-admissible</em> if every conjugate has
+      <span class="m">&#945;<sup>n</sup> &#8712; &#8477;<sub>&gt;0</sub></span> for some
+      <span class="m">n</span> — all conjugate arguments on a finite rational-angle lattice. The least such
+      <span class="m">n</span> is the charge group <span class="m">&#8484;/n</span>. Two structural facts
+      settle the possibilities:</p>
+    <ul>
+      <li><strong>Cyclicity.</strong> Every charge group is a finite subgroup of
+        <span class="m">&#8474;/&#8484;</span>, hence <em>cyclic</em>: no
+        <span class="m">&#8484;/p &#215; &#8484;/p</span> ever occurs. <span class="tag forced">forced</span></li>
+      <li><strong>Realizability.</strong> For every <span class="m">n</span>, the polynomial
+        <span class="m">x<sup>n</sup> &#8722; 2</span> has charge group <span class="m">&#8484;/n</span>,
+        hits all <span class="m">n</span> charges, and has <span class="m">M = 2</span>. So the realizable
+        groups are <em>exactly</em> the finite cyclic ones. <span class="tag forced">forced</span></li>
+    </ul>
+    <p>The primary decomposition <span class="m">&#8484;/n &#8773; &#8719; &#8484;/p<sub>i</sub><sup>e<sub>i</sub></sup></span>
+      is realized <em>inside the algebra</em>: the Adams operation
+      <span class="m">&#968;<sup>n/p<sub>i</sub><sup>e<sub>i</sub></sup></sup></span> is the CRT projector
+      onto the <span class="m">p<sub>i</sub></span>-primary component. Under <span class="m">&#8855;</span>,
+      charge groups combine to <span class="m">&#8484;/lcm</span>, and the composition keeps both charges
+      recoverable <em>iff</em> the orders are coprime. <span class="tag forced">forced</span></p>
+
+    <h3>&#167;2 <em>&nbsp;The parity-graded floor</em></h3>
+    <p>Define <span class="m">&#956;(n)</span> as the least Mahler measure above 1 over objects of charge
+      group <span class="m">&#8484;/n</span>. The coupling result:</p>
+
+    <div class="eq" style="border-left-color:var(--ink)"><span class="cid">Thm 5.1 · parity floor</span>
+      &#956;(n) = <b>&#966;</b> &nbsp;(n even),&nbsp;&nbsp; &#956;(n) = <b>2</b> &nbsp;(n odd)
+      <span class="note">Even is attained constructively by
+      <span class="m">q<sub>k</sub>(x) = x<sup>2k</sup> + x<sup>k</sup> &#8722; 1</span>, which has charge
+      group <span class="m">&#8484;/2k</span> and <span class="m">M = &#966;</span> exactly (substitute
+      <span class="m">y = x<sup>k</sup></span>: <span class="m">y² + y &#8722; 1</span> gives
+      <span class="m">1/&#966; &gt; 0</span> and <span class="m">&#8722;&#966; &lt; 0</span>). Status is
+      layered honestly: the even <em>attainment</em> and the odd forced lower bound
+      <span class="m">&#956;<sub>S</sub></span> are <span class="tag forced">forced</span>; the even
+      <em>lower bound</em> <span class="m">&#8805; &#966;</span> inherits the emission gap, only
+      <span class="tag plausible">plausible</span> in general; the odd <em>realized</em> floor
+      <span class="m">&#956;(odd) = 2</span> is <span class="tag forced">forced</span> for
+      <span class="m">&#8484;/3</span> and <span class="tag computed">computed</span> beyond.</span>
+    </div>
+
+    <p>Why the split? The golden conjugate <span class="m">&#966;' = (1&#8722;&#8730;5)/2 &lt; 0</span> sits
+      at argument <span class="m">&#960;</span>, and <span class="m">&#960; &#8712; (2&#960;/n)&#8484;</span>
+      <em>iff</em> <span class="m">n</span> is even. So the golden construction — the one thing that
+      realizes <span class="m">M = &#966;</span> — can only be hosted on an even lattice. This is the
+      <strong>&#960;-ray obstruction</strong>. <span class="tag forced">forced</span> Odd charge cannot
+      reach <span class="m">&#966;</span> and must pay <span class="m">M = 2</span> via
+      <span class="m">x<sup>n</sup> &#8722; 2</span>.</p>
+
+    <h3>&#167;3 <em>&nbsp;The odd gap is the no-Salem closure</em></h3>
+    <p>What lives in the band <span class="m">(&#966;, 2)</span> at odd charge? Nothing admissible — and the
+      would-be occupants are exactly the objects the algebra excludes. A Salem number carries
+      <em>no</em> finite charge group: its unit-circle conjugates are non-cyclotomic, hence at irrational
+      angles. <span class="tag forced">forced</span></p>
+
+    <div class="eq"><span class="cid">ledger F · &#946;&#8324;</span>
+      &#946;<sub>4</sub> = x&#8308; &#8722; x³ &#8722; x² &#8722; x + 1,&nbsp;&nbsp; <b>M = 1.72208&#8230; &#8712; (&#966;, 2)</b>,&nbsp; charge group: none
+      <span class="note">The minimal degree-4 Salem number sits squarely in the odd gap, yet is
+      charge-inadmissible on exact re-classification (its angle is irrational). A two-stage exact search
+      returned <em>no</em> genuine odd-charge object with <span class="m">M &#8712; (&#966;, 2)</span>: all
+      17 loose-screen candidates were irrational-angle Salem/Pisot numbers. So the odd-charge gap
+      <em>coincides</em> with the no-Salem closure. <span class="tag forced">forced</span> for
+      <span class="m">&#8484;/3</span>; <span class="tag plausible">plausible</span> at all degrees.</span>
+    </div>
+
+    <p><strong>The pentagon, worked.</strong> At <span class="m">&#8484;/5</span> the elementary
+      <span class="m">&#8484;/3</span> argument fails (the cosines
+      <span class="m">2cos72&#176; = &#966;&#8722;1</span> and <span class="m">2cos144&#176; = &#8722;&#966;</span>
+      are irrational and Galois-coupled). The paper still forces the floor up to
+      <span class="m">&#956;<sub>S</sub> = 1.3247&#8230;</span> (Smyth's plastic number) and closes the
+      degree-four sector at <span class="m">M &#8712; {1} &#8746; [&#966;&#8308;, &#8734;)</span>,
+      <span class="m">&#966;&#8308; &#8776; 6.854</span> — but the residual (non-reciprocal
+      charge-<span class="m">&#8484;/5</span> objects in <span class="m">[&#956;<sub>S</sub>, 2)</span>)
+      is Lehmer's problem on the pentagon lattice and stays <span class="tag open">open</span>. Honest
+      discipline: a finite search may extend a claim to <span class="tag computed">computed</span>, never
+      promote it to <span class="tag forced">forced</span>.</p>
+
+    <h3>&#167;4 <em>&nbsp;The one door — where confinement ends</em></h3>
+    <p>Every result above governs the <em>abelian</em> semiring
+      (<span class="m">&#8853;, &#8855;, &#968;<sup>n</sup></span>). The matrix commutator
+      <span class="m">[A, B] = AB &#8722; BA</span> is deliberately not a generator — and it is the exact
+      boundary. By Shoda / Albert–Muckenhoupt / Laffey–Reams, every trace-zero integer matrix is a
+      commutator; the companion of <span class="m">L(x)(x&#8722;1)</span> (Lehmer's polynomial times
+      <span class="m">x&#8722;1</span>) is trace-zero and carries Lehmer's number.</p>
+
+    <div class="eq"><span class="cid">ledger L · commutator</span>
+      commutator spectrum: <b>M = 1.17628&#8230; &#8712; (1, &#966;)</b>,&nbsp; charge group = &#8869;
+      <span class="note">Below the emission floor <em>and</em> off every angle lattice at once. So no
+      floor, gap, or charge constraint extends across the commutator, and no single theorem governs every
+      free commutator — the goal is unsatisfiable. The no-Salem closure is <em>operation-relative</em>:
+      Salem numbers are excluded by the choice to stay abelian, not by the ambient matrix algebra, which
+      realizes them freely. Confinement is the box; the commutator is the door. <span class="tag forced">forced</span> (Shoda)</span>
+    </div>
+
+    <div class="cpwrap">
+      <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
+
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">Which abelian groups occur
+        as charge groups? Does <span class="m">&#8484;/2 &#215; &#8484;/2</span> occur, and what realizes
+        the ones that do?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Exactly the finite <em>cyclic</em> groups <span class="m">&#8484;/n</span> — because every
+          finite subgroup of <span class="m">&#8474;/&#8484;</span> is cyclic. So
+          <span class="m">&#8484;/2 &#215; &#8484;/2</span> (non-cyclic) is unrealizable, while every
+          <span class="m">&#8484;/n</span> is realized by <span class="m">x<sup>n</sup> &#8722; 2</span> at
+          <span class="m">M = 2</span>. Note <span class="m">x&#8308; &#8722; 2</span> gives the single
+          generator <span class="m">&#8484;/4</span>, not <span class="m">&#8484;/2 &#215; &#8484;/2</span>.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Why exactly
+        <span class="m">&#966;</span> for even <span class="m">n</span> but a jump to 2 for odd? Name the
+        obstruction.</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>The <strong>&#960;-ray obstruction.</strong> The golden conjugate
+          <span class="m">&#966;' &lt; 0</span> lies at argument <span class="m">&#960;</span>, and
+          <span class="m">&#960;</span> belongs to the lattice <span class="m">(2&#960;/n)&#8484;</span>
+          only when <span class="m">n</span> is even. The measure-<span class="m">&#966;</span> construction
+          must place a conjugate at <span class="m">&#960;</span>, so it can be hosted only on even
+          lattices. Odd charge cannot reach <span class="m">&#966;</span>; the cheapest it can do is
+          <span class="m">M = 2</span> with <span class="m">x<sup>n</sup> &#8722; 2</span>.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">The band
+        <span class="m">(&#966;, 2)</span> is empty of odd-charge measures. What would fill it in general
+        mathematics, and how does that spectrum re-enter here?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Salem numbers fill it — e.g. <span class="m">&#946;<sub>4</sub> = x&#8308;&#8722;x³&#8722;x²&#8722;x+1</span>,
+          <span class="m">M = 1.722</span> — but they are charge-inadmissible (irrational conjugate
+          angles), so they are absent from the admissible sector. They re-enter through the
+          <em>commutator</em>: every trace-zero integer matrix is a commutator (Shoda), and one carries
+          Lehmer's number at <span class="m">M = 1.17628 &#8712; (1, &#966;)</span> with charge group
+          <span class="m">&#8869;</span>. The exclusion is a property of the abelian box, not the matrix
+          algebra.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="handoff"><span class="lbl">hands on to Lesson 4</span>
+      The whole coupling turned on one bit — whether the reference ray <span class="m">&#960;</span> is on
+      the lattice. Lesson 4 deletes the reference ray entirely and asks: was that bit ever about the ray,
+      or about a relation <em>inside</em> the golden pair?
+    </div>
+
+    <div class="nextup"><b>next &#8594;</b>
+      <strong>Lesson 4 · Deleting the Reference Ray.</strong> Make charge purely relational, prove that
+      integrality pins the gauge, and evaluate the parity floor reference-free — with every Salem number
+      relationally inert.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LESSON 4 ══════════════════════════ -->
+<section id="lesson-4" class="page" data-title="4 · Deleting the Reference Ray">
+  <div class="inner">
+    <p class="eyebrow">Lesson 04 <i>· relational charge &amp; gauge rigidity</i></p>
+    <h2 tabindex="-1" data-pagehead>Relational Charge &amp; Gauge Rigidity</h2>
+    <p class="dek">Which part of an object's phase belongs to the number, and which only to a chosen
+      reference ray? Refactor charge into a pure relation, and determine exactly how much survives.</p>
+
+    <div class="thread"><span class="lbl">carries forward</span>
+      <div class="chips">
+        <button class="chip" data-goto="3"><span class="n">L3</span>the parity bit: &#960; on the lattice?</button>
+        <button class="chip" data-goto="3"><span class="n">L3</span>Salem = charge-inadmissible</button>
+        <button class="chip" data-goto="3"><span class="n">L3</span>the odd floor, still open</button>
+      </div>
+    </div>
+
+    <div class="run"><b>46/46</b><i>certified Salem instances inert · integer &amp; rational arithmetic only</i></div>
+
+    <h3>&#167;1 <em>&nbsp;The pair charge, and the gauge</em></h3>
+    <p>Write each conjugate as an oscillator
+      <span class="m">&#945; = |&#945;|&#183;e<sup>2&#960;i&#183;t(&#945;)</sup></span> with phase
+      <span class="m">t(&#945;) = Arg(&#945;)/2&#960;</span>. The relational datum is the phase
+      <em>difference</em>, declared whenever it is rational:</p>
+
+    <div class="eq"><span class="cid">gauge · the cocycle</span>
+      t<sub>rel</sub>(&#945;, &#946;) = t(&#945;) &#8722; t(&#946;) &#8712; &#8474;/&#8484;
+      <span class="note">This is a <span class="m">&#8474;/&#8484;</span>-valued <b>cocycle</b> on the
+      coherence groupoid; the absolute charge is a <b>trivialization</b> (a coboundary), and the reference
+      ray <span class="m">Arg = 0</span> is the <b>gauge</b>. A global rotation
+      <span class="m">&#961;<sub>c</sub>: &#945; &#8614; e<sup>2&#960;ic</sup>&#945;</span> shifts every
+      absolute phase by <span class="m">c</span> and fixes every relative one. The vocabulary is
+      structural, not physical — no connection to physical gauge theory is implied. <span class="tag declared">declared</span>
+      naming; <span class="tag forced">forced</span> content.</span>
+    </div>
+
+    <h3>&#167;2 <em>&nbsp;Rigidity — integrality fixes the gauge</em></h3>
+    <p>Does the relational theory admit objects the absolute theory rejected — systems internally in tune
+      but out of tune with the reference ray? No. For a conjugation-closed spectrum, all pairwise
+      differences rational forces every phase rational.</p>
+
+    <div class="eq" style="border-left-color:var(--ink)"><span class="cid">rigidity theorem</span>
+      relationally admissible &nbsp;&#8658;&nbsp; charge-admissible,&nbsp;&nbsp; anchor <b>n &#8712; {m, 2m}</b>
+      <span class="note">Over the relational group <span class="m">&#8484;/m</span>, the absolute group is
+      pinned to <span class="m">m</span> or <span class="m">2m</span> — both occur
+      (<span class="m">x<sup>m</sup>&#8722;2</span> gives <span class="m">n=m</span>;
+      <span class="m">x³+2</span> gives <span class="m">n=6=2&#183;3</span>). Read this as a
+      <em>canonicity</em> theorem, not a redundancy: the absolute framework of Lesson 3 is the unique
+      natural section of the relational one. The mechanism is integrality — real coefficients make the
+      spectrum conjugation-closed, and the algebraic locus meets each rotation orbit only at rational
+      offsets. <span class="tag forced">forced</span></span>
+    </div>
+
+    <p>So the relational theory adds no new objects on the algebra's own domain — its genuine reach is the
+      <em>inadmissible</em> sector, where there is no section to fix. Every composition law of Lesson 3
+      descends verbatim: the Adams operations multiply relative charges by <span class="m">k</span>, and
+      the <span class="m">lcm</span> law is secretly relational, with strict growth occurring only through
+      <em>offset cancellation</em> (the tensor product internalizing cross-object phase relations).
+      <span class="tag forced">forced</span></p>
+
+    <h3>&#167;3 <em>&nbsp;The parity floor, reference-free</em></h3>
+    <p>The parity bit of Lesson 3 was never about the ray. It is an intrinsic relation <em>inside</em> the
+      golden pair:</p>
+
+    <div class="eq"><span class="cid">golden relation</span>
+      &#966;/&#966;' = &#8722;&#966;²&nbsp;&nbsp;&#8658;&nbsp;&nbsp; <b>t<sub>rel</sub>(&#966;, &#966;') = &#189;</b>
+      <span class="note">A sign-twist involution
+      <span class="m">T(p)(x) = (&#8722;1)<sup>deg p</sup>p(&#8722;x)</span> shifts every angle by
+      <span class="m">&#189;</span>, fixes every difference, and preserves the measure, so it exchanges the
+      two anchor sectors at odd <span class="m">m</span>. Hence the relational floor equals the absolute
+      one: <span class="m">&#956;<sub>rel</sub>(m) = &#966;</span> for even <span class="m">m</span>
+      (attained), <span class="m">&#956;<sub>rel</sub>(m) = &#956;(m)</span> for odd. The universal floor
+      <span class="m">&#966;</span> is attainable iff <span class="m">&#189; &#8712; &#916;(O)</span>, i.e.
+      iff <span class="m">|&#916;(O)|</span> is even — the parity bit is the order of a relational class,
+      with no reference ray anywhere. Identity and attainment <span class="tag forced">forced</span>;
+      the floor <em>values</em> stay conditional on the emission gap.</span>
+    </div>
+
+    <h3>&#167;4 <em>&nbsp;The inadmissible sector — modulus pinning</em></h3>
+    <p>On the sector the absolute theory discards, the relational theory is genuinely finer: every object
+      carries a computable <em>coherence type</em>, decided exactly on equal-modulus shells by a
+      cyclotomic-contact scan with a provable completeness bound (<span class="m">M &#8804; 2(deg P)²</span>).
+      And a general theorem closes the Salem question outright:</p>
+
+    <div class="eq" style="border-left-color:var(--ink)"><span class="cid">modulus pinning</span>
+      irreducible p, one root modulus attained uniquely &nbsp;&#8658;&nbsp; <b>no two distinct roots differ by a root of unity</b>
+      <span class="note">Proof by Galois transport: an automorphism carries the pinned root to the unique
+      one of its modulus, and a torsion ratio would force a second root of that modulus — contradiction.
+      A Salem number's dominant root <span class="m">&#964;</span> pins its modulus, so <em>every Salem
+      number is relationally inert</em>: its only coherence is the forced real pair
+      <span class="m">{&#964;, 1/&#964;}</span>. And no two distinct Salem numbers circle-lock. Both were
+      open problems of earlier drafts, now closed in the negative. <span class="tag forced">forced</span></span>
+    </div>
+
+    <p>The theorem was written <em>after</em> forty-six certified instances corroborated it: the four
+      canonical Salem tests of degrees 4–10 (including <span class="m">&#946;<sub>4</sub></span> and
+      Lehmer's polynomial, contacts <span class="m">{&#934;<sub>1</sub><sup>4</sup>}</span> and
+      <span class="m">{&#934;<sub>1</sub><sup>10</sup>}</span> only), an exhaustive degree-12
+      small-coefficient census (<span class="m">37/37</span> Salems inert), and five larger spot checks —
+      cross-checked in a second computer-algebra stack (PARI/GP vs sympy), with no floating-point number
+      anywhere. <span class="tag computed">computed</span> family; <span class="tag forced">forced</span>
+      per instance. Two open successors remain: whether parity is the <em>whole</em> coupling, and the odd
+      floor itself — which the relational refactor proves adds <em>zero</em> new burden to the companion's
+      problem. <span class="tag open">open</span></p>
+
+    <div class="cpwrap">
+      <div class="cphead"><span>Checkpoint</span><i>tap to reveal</i></div>
+
+      <details class="cp"><summary><span class="qn">Q1</span><span class="qtext">In what precise sense is
+        the absolute charge a gauge-fixing of the relational one — and what is the gauge group?</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>The relative charge <span class="m">t<sub>rel</sub></span> is a
+          <span class="m">&#8474;/&#8484;</span>-valued cocycle on the coherence groupoid; an absolute
+          charge is a trivialization (choice of the constant, i.e. the reference ray
+          <span class="m">Arg = 0</span>). The gauge group is the circle acting by rotations
+          <span class="m">&#961;<sub>c</sub></span>: each shifts every absolute phase by
+          <span class="m">c</span> while fixing every difference. Absolute theory = relational theory + one
+          ray.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q2</span><span class="qtext">Does making charge
+        relational produce any objects the absolute theory rejected? State the theorem and its one-line
+        mechanism.</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>No — <strong>rigidity.</strong> For a conjugation-closed spectrum, all pairwise differences
+          rational forces every angle rational (pair <span class="m">&#945;</span> with its conjugate
+          <span class="m">&#945;&#772;</span>: <span class="m">2t(&#945;)</span> is rational, so
+          <span class="m">t(&#945;)</span> is). Thus relational admissibility = absolute admissibility, with
+          anchor <span class="m">n &#8712; {m, 2m}</span>. It is a canonicity theorem: integrality pins the
+          gauge, and the absolute framework is the unique natural section. The relational language earns its
+          keep only on the inadmissible sector.</p>
+        </div>
+      </details>
+
+      <details class="cp"><summary><span class="qn">Q3</span><span class="qtext">Is every Salem number
+        relationally inert? Give the theorem that decides it and how it was corroborated.</span>
+        <span class="reveal" aria-hidden="true"></span></summary>
+        <div class="ans"><span class="lbl">answer</span>
+          <p>Yes — <strong>modulus pinning.</strong> An irreducible polynomial with a uniquely attained
+          root modulus admits no torsion ratio between distinct roots (Galois transport). A Salem number's
+          dominant root <span class="m">&#964;</span> is such a modulus, so its only coherence is the real
+          pair <span class="m">{&#964;, 1/&#964;}</span> — inert off the real axis. Corroborated before the
+          proof on 46 certified instances, including a full <span class="m">37/37</span> degree-12 census,
+          cross-checked in PARI/GP and sympy with no float in any decision.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="handoff"><span class="lbl">hands on to the ledger</span>
+      The module is built: one matrix, three layers, a <span class="m">&#955;</span>-ring with two
+      characters, a parity-coupled floor, and a relational refactor that keeps every theorem and loses no
+      information. The ledger sorts what is <em>forced</em>, <em>declared</em>, and still <em>open</em>,
+      and hands you the four papers that prove it.
+    </div>
+
+    <div class="nextup"><b>next &#8594;</b>
+      <strong>Ledger.</strong> The claim table for the whole module, the papers with links, and where to
+      run the checks yourself.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LEDGER ══════════════════════════ -->
+<section id="ledger" class="page" data-title="Ledger">
+  <div class="inner">
+    <p class="eyebrow">Closing <i>· what four papers established</i></p>
+    <h2 tabindex="-1" data-pagehead>The Ledger</h2>
+    <p class="dek">One algebra, read four ways — and an honest accounting of how strongly each piece is
+      held. The tags are the mathematics.</p>
+
+    <h3>&#167;1 <em>&nbsp;What is forced, declared, and open</em></h3>
+    <div class="tw"><table class="prose"><caption class="vh">Ledger — §1 the claim table</caption>
+      <thead><tr><th scope="col">claim</th><th scope="col">status</th></tr></thead>
+      <tbody>
+        <tr><td><strong>R² = R + I</strong> generates <span class="m">&#8484;[R] = 𝒪<sub>&#8474;(&#8730;5)</sub></span>,
+          the maximal order (disc 5); power law <span class="m">R<sup>n</sup> = F<sub>n</sub>R + F<sub>n&#8722;1</sub>I</span></td>
+          <td><span class="tag forced">forced</span></td></tr>
+        <tr><td>The Lie layer is <span class="m">𝔰𝔩₂</span> of signature <span class="m">(2,1)</span>, root
+          length <span class="m">&#8730;5</span>; trace duality
+          <span class="m">&#189;Tr(X<sub>n</sub>²) = 5F<sub>n</sub>² = L<sub>n</sub>² &#8722; 4(&#8722;1)<sup>n</sup></span></td>
+          <td><span class="tag forced">forced</span></td></tr>
+        <tr><td><span class="m">(&#8853;, &#8855;)</span> a commutative semiring; <span class="m">&#968;²</span>
+          the Adams operation = diagonal of <span class="m">&#8855;</span>; the <span class="m">&#955;</span>-ring
+          <em>naming</em></td>
+          <td><span class="tag forced">forced</span> laws; <span class="tag declared">declared</span> name</td></tr>
+        <tr><td>M additive on <span class="m">&#8853;</span>, tropical on <span class="m">&#8855;</span>;
+          least generator (cost floor) <span class="m">&#966;</span>; charge a finite character onto
+          <span class="m">&#8484;/4&#8484;</span></td>
+          <td><span class="tag forced">forced</span> / <span class="tag computed">computed</span></td></tr>
+        <tr><td>Charge groups are exactly finite cyclic <span class="m">&#8484;/n</span>; realized by
+          <span class="m">x<sup>n</sup>&#8722;2</span>; <span class="m">lcm</span> law, safe &#8660; coprime</td>
+          <td><span class="tag forced">forced</span></td></tr>
+        <tr><td>Parity floor: <span class="m">&#956;(even) = &#966;</span> attained by
+          <span class="m">q<sub>k</sub></span>; the &#960;-ray obstruction</td>
+          <td><span class="tag forced">forced</span> (attainment)</td></tr>
+        <tr><td>Even lower bound <span class="m">&#8805; &#966;</span> (inherits the emission gap)</td>
+          <td><span class="tag plausible">plausible</span></td></tr>
+        <tr><td>Odd realized floor <span class="m">&#956;(odd) = 2</span></td>
+          <td><span class="tag forced">forced</span> at <span class="m">&#8484;/3</span>;
+          <span class="tag computed">computed</span> general</td></tr>
+        <tr><td>Odd forced lower bound <span class="m">&#956;<sub>S</sub> = 1.3247&#8230;</span> (Smyth);
+          <span class="m">&#8484;/5</span> degree-4 sector at <span class="m">&#966;&#8308;</span></td>
+          <td><span class="tag forced">forced</span></td></tr>
+        <tr><td>Odd gap <span class="m">(&#966;, 2)</span> = no-Salem closure
+          (<span class="m">&#946;<sub>4</sub></span>, M = 1.722, charge-inadmissible)</td>
+          <td><span class="tag forced">forced</span> at <span class="m">&#8484;/3</span>;
+          <span class="tag plausible">plausible</span> general</td></tr>
+        <tr><td>Rigidity: relational &#8658; absolute, anchor <span class="m">n &#8712; {m, 2m}</span>;
+          absolute charge is a gauge-fixing of the relational cocycle</td>
+          <td><span class="tag forced">forced</span></td></tr>
+        <tr><td>Modulus pinning &#8658; every Salem number relationally inert; no two circle-lock
+          (46 instances; <span class="m">37/37</span> census)</td>
+          <td><span class="tag forced">forced</span>; <span class="tag computed">computed</span> census</td></tr>
+        <tr><td>Commutator boundary: no floor/gap/charge extends across
+          <span class="m">[A,B]</span> (Lehmer re-enters, M = 1.17628)</td>
+          <td><span class="tag forced">forced</span> (Shoda)</td></tr>
+        <tr><td>Lehmer's problem; the general odd floor; "is parity the whole coupling?"</td>
+          <td><span class="tag open">open</span></td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>&#167;2 <em>&nbsp;The four papers</em></h3>
+    <div class="tw"><table class="prose"><caption class="vh">Ledger — §2 the module's papers</caption>
+      <thead><tr><th scope="col">paper</th><th scope="col">what it proves</th><th scope="col">read</th></tr></thead>
+      <tbody>
+        <tr><td><strong>The Emission Algebra <span class="m">𝔄</span></strong> — one matrix, one relation,
+          three layers</td>
+          <td>The ring <span class="m">𝒪</span>, the <span class="m">𝔰𝔩₂</span>, the semiring, the trace
+          duality, the partner <span class="m">K</span>, the cyclotomic floor (Lesson 1)</td>
+          <td><a href="../papers/2026-07-emission-algebra-primer.pdf">PDF</a></td></tr>
+        <tr><td><strong>The Operator Algebra of the Emission Semiring</strong> — a
+          <span class="m">&#955;</span>-ring, the Adams square, two characters</td>
+          <td>Semiring + Adams <span class="m">&#968;²</span> = plethysm diagonal; measure additive/tropical;
+          charge finite; three self-action powers (Lesson 2)</td>
+          <td><a href="../papers/2026-06-operator-algebra.pdf">PDF</a></td></tr>
+        <tr><td><strong>The Charge–Measure Coupling on a Spectral Semiring</strong> — cyclicity, composition,
+          a parity-graded floor</td>
+          <td>Cyclic charge groups; the <span class="m">lcm</span> law; the parity floor
+          <span class="m">&#966;</span>/2; odd gap = no-Salem; the commutator door (Lesson 3)</td>
+          <td><a href="../papers/2026-06-charge-measure-coupling.pdf">PDF</a></td></tr>
+        <tr><td><strong>Relational Charge on the Spectral Semiring</strong> — gauge rigidity, coherence
+          types, a reference-free floor</td>
+          <td>The pair-charge cocycle; rigidity; the reference-free parity floor; modulus pinning &#8658;
+          Salem inertness (Lesson 4)</td>
+          <td><a href="../papers/2026-07-relational-charge.pdf">PDF</a></td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>&#167;3 <em>&nbsp;Verify it yourself</em></h3>
+    <p>No badge in this booklet resolves to anything but an artifact. The emission-algebra primer ships its
+      own harnesses (<span class="m">d1–d7</span>: the power law over
+      <span class="m">n &#8712; [&#8722;16, 16]</span>, the <span class="m">𝔰𝔩₂</span> structure constants,
+      the trace duality); the operator suite carries 38 exact checks; the charge–measure coupling regenerates
+      its consolidation ledger (entries A–M) on an integer-matrix engine; and the relational-charge probe runs
+      entirely in integer and rational polynomial arithmetic, cross-checked in PARI/GP. Read the sources and
+      re-run the checks at the archive's
+      <a href="https://github.com/Echo-S-Studios/Echo-S-Research/tree/main/tests" target="_blank" rel="noopener">test suite</a>
+      and the per-paper
+      <a href="https://github.com/Echo-S-Studios/Echo-S-Research/tree/main/papers" target="_blank" rel="noopener">papers tree</a>.</p>
+
+    <p class="small"><b>A standing caveat.</b> Statements of the form "smallest <em>known</em>" — Lehmer's
+      polynomial above all — are status claims about the literature at a moment in time, not theorems; they are
+      tagged <span class="tag estab">established</span> and inherited, never re-verified by the scripts. And the
+      floor <em>values</em> that read as <span class="m">&#966;</span> rest on the emission gap
+      <span class="m">(EG)</span>, forced only for the integer-quadratic spectrum; the structural results —
+      cyclicity, rigidity, gauge, descent, pinning, the commutator boundary — are unconditional.</p>
+
+    <p class="endnote">Four papers &#183; one algebra &#183; each read, run, then written
+      &nbsp;&#183;&nbsp; <a href="../learn.html">← The course</a> · <a href="../index.html">The archive</a></p>
+  </div>
+</section>
+
+</main>
+
+<script>
+(function(){
+  var deck  = document.getElementById('deck');
+  var pages = Array.prototype.slice.call(deck.querySelectorAll('.page'));
+  var axis  = document.getElementById('axis');
+  var prev  = document.getElementById('prev');
+  var next  = document.getElementById('next');
+  var mbtn  = document.getElementById('menubtn');
+  var mlab  = document.getElementById('menulabel');
+  var mpan  = document.getElementById('menupanel');
+  var current = 0, jumping = false, jumpTimer = null, raf = null;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var hasInert = ('inert' in HTMLElement.prototype);
+  var hasScrollEnd = ('onscrollend' in window);
+  var FOCUSABLE = 'a[href],button,summary,input,select,textarea,[tabindex]';
+
+  /* the rail is one tab stop: a tablist with roving tabindex and automatic activation */
+  /* a plain group with roving focus: no tab roles without real tabpanels */
+  axis.setAttribute('role', 'group');
+  axis.setAttribute('aria-label', 'Lessons');
+  pages.forEach(function(pg, i){
+    var b = document.createElement('button');
+    b.className = 'tick' + ((i === 0 || i === pages.length - 1) ? ' edge' : '');
+    b.type = 'button';
+    b.setAttribute('tabindex', '-1');
+    var label = pg.getAttribute('data-title') || ('Page ' + (i + 1));
+    b.setAttribute('aria-label', label);
+    b.title = label;
+    var s = document.createElement('span');
+    s.textContent = (i === 0 || i === pages.length - 1) ? '' : String(i);
+    b.appendChild(s);
+    b.addEventListener('click', function(){ go(i); });
+    axis.appendChild(b);
+
+    var m = document.createElement('button');
+    m.type = 'button';
+    m.innerHTML = '<span class="n">' + ((i === 0 || i === pages.length - 1) ? '&#183;' : i) +
+                  '</span><span>' + label.replace(/^\d+\s*·\s*/, '') + '</span>';
+    m.addEventListener('click', function(){ closeMenu(); go(i); });
+    mpan.appendChild(m);
+  });
+  var ticks = Array.prototype.slice.call(axis.querySelectorAll('.tick'));
+  var mitems = Array.prototype.slice.call(mpan.querySelectorAll('button'));
+
+  function setActive(i){
+    pages.forEach(function(pg, j){
+      var off = (j !== i);
+      if (hasInert){
+        pg.inert = off;
+      } else {
+        pg.setAttribute('aria-hidden', off ? 'true' : 'false');
+        Array.prototype.forEach.call(pg.querySelectorAll(FOCUSABLE), function(el){
+          if (off){
+            if (!el.hasAttribute('data-ti')) el.setAttribute('data-ti', el.getAttribute('tabindex') || '');
+            el.setAttribute('tabindex', '-1');
+          } else if (el.hasAttribute('data-ti')){
+            var t = el.getAttribute('data-ti');
+            if (t === '') el.removeAttribute('tabindex'); else el.setAttribute('tabindex', t);
+            el.removeAttribute('data-ti');
+          }
+        });
+      }
+    });
+  }
+
+  function mark(i){
+    current = i;
+    ticks.forEach(function(t, j){
+      var on = (j === i);
+      t.setAttribute('aria-current', on ? 'true' : 'false');
+      t.setAttribute('tabindex', on ? '0' : '-1');   /* roving: one stop, not fifteen */
+    });
+    mitems.forEach(function(m, j){ m.setAttribute('aria-current', j === i ? 'true' : 'false'); });
+    if (mlab) mlab.textContent = (i + 1) + ' / ' + pages.length;
+    prev.disabled = (i === 0);
+    next.disabled = (i === pages.length - 1);
+    setActive(i);
+  }
+
+  /* arrival detection: scrollend where available, a bounded poll otherwise */
+  function settle(expected){
+    var done = function(){
+      jumping = false;
+      deck.removeEventListener('scrollend', done);
+      clearTimeout(jumpTimer);
+    };
+    if (hasScrollEnd){
+      deck.addEventListener('scrollend', done, { once: true });
+      jumpTimer = setTimeout(done, 1200);                       /* safety net only */
+    } else {
+      var t0 = Date.now();
+      (function poll(){
+        if (Math.abs(deck.scrollLeft - expected) < 2 || Date.now() - t0 > 1200){ done(); return; }
+        jumpTimer = setTimeout(poll, 40);
+      })();
+    }
+  }
+
+  function go(i, opts){
+    opts = opts || {};
+    i = Math.max(0, Math.min(pages.length - 1, i));
+    var behavior = (reduce.matches || Math.abs(i - current) > 1) ? 'auto' : 'smooth';
+    var target = i * deck.clientWidth;
+    jumping = true;
+    clearTimeout(jumpTimer);
+    mark(i);
+    deck.scrollTo({ left: target, behavior: behavior });
+    settle(target);
+    if (opts.history !== false){
+      try { history.pushState({ p: i }, '', '#' + pages[i].id); } catch (e) {}
+    }
+    if (opts.focus !== false){
+      var head = pages[i].querySelector('[data-pagehead]');
+      if (head) { try { head.focus({ preventScroll: true }); } catch (e) { head.focus(); } }
+    }
+  }
+
+  deck.addEventListener('scroll', function(){
+    if (jumping || raf) return;
+    raf = requestAnimationFrame(function(){
+      raf = null;
+      var i = Math.round(deck.scrollLeft / (deck.clientWidth || 1));
+      if (i !== current && i >= 0 && i < pages.length){
+        mark(i);
+        try { history.replaceState({ p: i }, '', '#' + pages[i].id); } catch (e) {}
+      }
+    });
+  });
+
+  prev.addEventListener('click', function(){ go(current - 1); });
+  next.addEventListener('click', function(){ go(current + 1); });
+
+  /* the rail handles its own arrows (automatic activation); the document handles the rest */
+  axis.addEventListener('keydown', function(e){
+    var k = e.key, i = null;
+    if (k === 'ArrowRight' || k === 'ArrowDown') i = current + 1;
+    else if (k === 'ArrowLeft' || k === 'ArrowUp') i = current - 1;
+    else if (k === 'Home') i = 0;
+    else if (k === 'End') i = pages.length - 1;
+    else return;
+    e.preventDefault(); e.stopPropagation();
+    i = Math.max(0, Math.min(pages.length - 1, i));
+    go(i, { focus: false });
+    ticks[i].focus();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var t = e.target;
+    /* never steal Left/Right from a control or a horizontally scrollable region */
+    if (t && t.closest && t.closest('button, a, summary, input, select, textarea, [contenteditable], .srcbox, .eq, .tw')) return;
+    if (t && t.isContentEditable) return;
+    if (axis.contains(t)) return;
+    /* Escape must be tested BEFORE the menu early-return, or it can never fire */
+    if (e.key === 'Escape' && mpan && !mpan.hidden){ e.preventDefault(); closeMenu(); mbtn.focus(); return; }
+    if (mpan && !mpan.hidden) return;
+    if (e.key === 'ArrowRight'){ e.preventDefault(); go(current + 1); }
+    else if (e.key === 'ArrowLeft'){ e.preventDefault(); go(current - 1); }
+  });
+
+  function openMenu(){
+    mpan.hidden = false;
+    mbtn.setAttribute('aria-expanded', 'true');
+    if (hasInert){ deck.inert = true; prev.inert = true; next.inert = true; }
+    mitems[current].focus();
+  }
+  function closeMenu(){
+    mpan.hidden = true;
+    mbtn.setAttribute('aria-expanded', 'false');
+    if (hasInert){ deck.inert = false; prev.inert = false; next.inert = false; setActive(current); }
+  }
+  /* focus stays inside the open menu */
+  mpan.addEventListener('keydown', function(e){
+    if (e.key !== 'Tab') return;
+    var f = mitems.concat([mbtn]);
+    var i = f.indexOf(document.activeElement);
+    if (i < 0) return;
+    e.preventDefault();
+    f[(i + (e.shiftKey ? -1 : 1) + f.length) % f.length].focus();
+  });
+  if (mbtn){
+    mbtn.addEventListener('click', function(){ mpan.hidden ? openMenu() : closeMenu(); });
+  }
+
+  document.addEventListener('click', function(e){
+    var el = e.target && e.target.closest ? e.target.closest('[data-goto]') : null;
+    if (!el) return;
+    go(parseInt(el.getAttribute('data-goto'), 10));
+  });
+  document.addEventListener('click', function(e){
+    var a = e.target && e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if (!a) return;
+    var i = pages.map(function(p){ return p.id; }).indexOf(a.getAttribute('href').slice(1));
+    if (i >= 0){ e.preventDefault(); go(i); }
+  });
+
+  window.addEventListener('popstate', function(e){
+    var i = (e.state && typeof e.state.p === 'number')
+      ? e.state.p
+      : pages.map(function(p){ return p.id; }).indexOf((location.hash || '').slice(1));
+    if (i >= 0) go(i, { history: false });
+  });
+
+  var rt = null;
+  window.addEventListener('resize', function(){
+    clearTimeout(rt);
+    rt = setTimeout(function(){ deck.scrollLeft = current * deck.clientWidth; }, 120);
+  });
+
+  var restore = [];
+  window.addEventListener('beforeprint', function(){
+    restore = [];
+    Array.prototype.forEach.call(document.querySelectorAll('details'), function(d){
+      restore.push([d, d.open]); d.open = true;
+    });
+    if (hasInert) pages.forEach(function(p){ p.inert = false; });
+  });
+  window.addEventListener('afterprint', function(){
+    restore.forEach(function(pair){ pair[0].open = pair[1]; });
+    setActive(current);
+  });
+
+  var start = pages.map(function(p){ return p.id; }).indexOf((location.hash || '').slice(1));
+  if (start < 0) start = 0;
+  mark(start);
+  requestAnimationFrame(function(){ deck.scrollLeft = start * deck.clientWidth; });
+  try { history.replaceState({ p: start }, '', '#' + pages[start].id); } catch (e) {}
+})();
+</script>
+</body>
+</html>
