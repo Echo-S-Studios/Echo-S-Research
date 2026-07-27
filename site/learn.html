@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Emission Algebra — a course through the Echo S Research archive</title>
+<meta name="description" content="A guided course through all @COUNT@ papers of the Echo S Research archive: one matrix relation R²=R+I, and everything that grows from it — the Mahler measure and its two walls, the spectral semiring, residual-return learning, the golden helix, and two applied geometries. Every claim machine-verified.">
+<meta name="author" content="Echo S Studios Research Developments">
+<meta name="theme-color" content="#05060b">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The Emission Algebra — a course through the archive">
+<meta property="og:description" content="Learn all @COUNT@ archive papers as one story: R²=R+I → the Mahler measure, the semiring, residual-return learning, the golden helix, and two applied geometries.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='7'%20fill='%2305060b'/%3E%3Ctext%20x='16'%20y='23'%20font-size='18'%20text-anchor='middle'%20fill='%235cc9c0'%20font-family='Georgia,serif'%3E%E2%88%AB%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --void:#05060b; --panel0:#0b0d18; --panel1:#0f1120; --panel2:#141733;
+    --ink:#eef0f8; --muted:#a6abc6; --faint:#7c82a3;
+    --line:#23273d; --edge:#2a2e44; --gold:#e9c46a; --teal:#5cc9c0; --violet:#8fb6ff; --rose:#e58a8a;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"URW Palladio L",Georgia,"Times New Roman",serif;
+    --ui:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --measure:70ch;
+  }
+  *{ box-sizing:border-box }
+  html{ scroll-behavior:smooth }
+  html,body{ margin:0 }
+  body{
+    background:radial-gradient(120% 90% at 50% 0%, #10132a 0%, var(--panel0) 46%, var(--void) 100%);
+    background-attachment:fixed;
+    color:var(--ink); font-family:var(--ui); min-height:100vh; padding:0 0 90px;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; line-height:1.6;
+  }
+  .wrap{ max-width:1120px; margin:0 auto; padding:0 clamp(16px,3.2vw,40px) }
+  a{ color:var(--teal); text-decoration:none }
+  a:hover{ color:var(--gold) }
+
+  .skip{ position:absolute; left:-9999px; top:0; background:var(--gold); color:#0a0b12;
+    font-family:var(--mono); font-size:12px; padding:8px 14px; border-radius:0 0 8px 0; z-index:60 }
+  .skip:focus{ left:0 }
+
+  /* sticky bar */
+  .bar{ position:sticky; top:0; z-index:50; backdrop-filter:blur(9px);
+    background:linear-gradient(180deg, rgba(6,7,14,.92), rgba(6,7,14,.7)); border-bottom:1px solid var(--line) }
+  .bar .row{ max-width:1120px; margin:0 auto; padding:11px clamp(16px,3.2vw,40px);
+    display:flex; align-items:center; gap:16px; justify-content:space-between }
+  .bar .brand{ font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted) }
+  .bar .brand b{ color:var(--teal); font-weight:600 }
+  .bar nav{ display:flex; gap:6px; flex-wrap:wrap; font-family:var(--mono); font-size:11px }
+  .bar nav a{ color:var(--faint); padding:3px 7px; border-radius:6px; border:1px solid transparent }
+  .bar nav a:hover{ color:var(--ink); border-color:var(--edge) }
+  .bar .home{ color:var(--muted); font-family:var(--mono); font-size:12px; white-space:nowrap }
+
+  /* masthead */
+  header.hero{ padding:clamp(38px,7vw,80px) 0 10px }
+  .eyebrow{ font-family:var(--mono); font-size:11px; letter-spacing:.28em; text-transform:uppercase; color:var(--muted); margin:0 0 16px }
+  h1{ font-family:var(--serif); font-weight:500; font-size:clamp(34px,6.6vw,62px); line-height:1.0; margin:0; letter-spacing:.004em;
+    background:linear-gradient(180deg,#fff,#d9c79a 68%,#b8975a); -webkit-background-clip:text; background-clip:text; color:transparent }
+  .tagline{ font-family:var(--serif); font-style:italic; font-size:clamp(16px,2.5vw,21px); color:#d6dbf0; margin:18px 0 0; max-width:60ch }
+  .lede{ font-size:15.5px; line-height:1.7; color:var(--muted); max-width:var(--measure); margin:22px 0 0 }
+  .lede b{ color:var(--ink); font-weight:600 }
+  .keyrow{ display:flex; flex-wrap:wrap; gap:10px; margin:26px 0 0 }
+  .chip{ font-family:var(--mono); font-size:11.5px; color:var(--muted); border:1px solid var(--edge); border-radius:999px; padding:6px 12px }
+  .chip b{ color:var(--teal); font-weight:600 }
+
+  /* the one relation, framed */
+  .relation{ margin:30px 0 0; border:1px solid var(--line); border-radius:16px; overflow:hidden;
+    background:linear-gradient(180deg, rgba(20,23,51,.6), rgba(11,13,24,.6)) }
+  .relation .top{ height:2px; background:linear-gradient(90deg,var(--gold),var(--teal),var(--violet)) }
+  .relation .body{ padding:22px 24px; display:flex; gap:24px; flex-wrap:wrap; align-items:center; justify-content:space-between }
+  .relation .eq{ font-family:var(--serif); font-size:clamp(26px,4vw,40px); color:var(--ink) }
+  .relation .eq .k{ color:var(--gold) }
+  .relation .gloss{ font-size:14px; color:var(--muted); max-width:52ch }
+
+  /* section heads */
+  h2.mod{ font-family:var(--serif); font-weight:500; font-size:clamp(24px,3.6vw,34px); margin:0; line-height:1.12; color:var(--ink) }
+  .modwrap{ margin:64px 0 0; scroll-margin-top:70px }
+  .modhead{ display:flex; gap:16px; align-items:baseline; flex-wrap:wrap; padding-bottom:14px; border-bottom:1px solid var(--line) }
+  .modnum{ font-family:var(--mono); font-size:12px; color:var(--void); background:var(--teal); font-weight:700;
+    padding:3px 10px; border-radius:999px; letter-spacing:.05em }
+  .modseries{ font-family:var(--mono); font-size:11px; letter-spacing:.06em; color:var(--violet); text-transform:uppercase }
+  .modcount{ font-family:var(--mono); font-size:11px; color:var(--faint); margin-left:auto }
+
+  .learn{ margin:20px 0 0; border-left:2px solid var(--edge); padding:2px 0 2px 18px }
+  .learn h3{ font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); margin:0 0 8px }
+  .learn ul{ margin:0; padding-left:18px; color:var(--muted); font-size:14.5px }
+  .learn li{ margin:4px 0 }
+
+  .prose{ max-width:var(--measure); margin:22px 0 0; color:#d3d7ee; font-size:15.5px }
+  .prose p{ margin:0 0 15px }
+  .prose b{ color:var(--ink); font-weight:600 }
+  .prose .term{ color:var(--teal); font-weight:600 }
+
+  /* inline + display math */
+  .m{ font-family:var(--serif); font-style:italic; color:#f0e6c9; white-space:nowrap }
+  .m.up{ font-style:normal }
+  .disp{ display:block; text-align:center; font-family:var(--serif); font-size:19px; color:#f2ecd6;
+    margin:18px auto; padding:14px 16px; border:1px solid var(--line); border-radius:12px; background:rgba(20,23,51,.4); max-width:60ch; overflow-x:auto }
+
+  /* callouts */
+  .verify{ margin:20px 0 0; max-width:var(--measure); border:1px solid rgba(92,201,192,.28); border-radius:12px;
+    background:rgba(92,201,192,.06); padding:14px 16px; font-size:13.6px; color:#bfe4df }
+  .verify b{ color:var(--teal) }
+  .verify a{ color:var(--teal); border-bottom:1px solid rgba(92,201,192,.35) }
+  .note{ font-size:13px; color:var(--faint); max-width:var(--measure); margin:12px 0 0; font-style:italic }
+
+  /* paper cards injected from the catalog */
+  .papers{ margin:22px 0 0; display:grid; gap:12px }
+  .cp{ border:1px solid var(--line); border-radius:13px; padding:15px 17px;
+    background:linear-gradient(180deg, rgba(15,17,32,.7), rgba(11,13,24,.7)) }
+  .cp:hover{ border-color:#3b4166 }
+  .cp .h{ display:flex; gap:12px; align-items:baseline; justify-content:space-between; flex-wrap:wrap }
+  .cp .t{ font-family:var(--serif); font-size:17px; color:var(--ink); line-height:1.25 }
+  .cp .meta{ font-family:var(--mono); font-size:10.5px; color:var(--faint); white-space:nowrap }
+  .cp .d{ font-size:13.4px; color:var(--muted); margin:8px 0 0; line-height:1.55 }
+  .cp .links{ margin:11px 0 0; display:flex; gap:8px; flex-wrap:wrap; font-family:var(--mono); font-size:11.5px }
+  .cp .links a{ padding:4px 10px; border-radius:999px; border:1px solid var(--edge); color:var(--muted) }
+  .cp .links a.pdf{ color:var(--gold); border-color:rgba(233,196,106,.4) }
+  .cp .links a.pdf:hover{ background:rgba(233,196,106,.1) }
+  .cp .links a:hover{ color:var(--ink); border-color:#3b4166 }
+
+  footer{ margin-top:70px; padding-top:24px; border-top:1px solid var(--line);
+    font-family:var(--mono); font-size:12px; color:var(--faint); display:flex; flex-wrap:wrap; gap:8px 22px }
+  footer a{ color:var(--muted) }
+
+  @media (max-width:620px){ .relation .body{ flex-direction:column; align-items:flex-start } }
+  @media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto } *{ transition:none!important } }
+  @media print{ body{ background:#fff; color:#111 } .bar{ display:none } h1{ -webkit-text-fill-color:#111; color:#111 } }
+</style>
+</head>
+<body>
+<a class="skip" href="#m0">Skip to the course</a>
+
+<div class="bar">
+  <div class="row">
+    <span class="brand">Echo&nbsp;S&nbsp;Research · <b>The Course</b></span>
+    <nav aria-label="Modules">
+      <a href="#m0">0 · Start</a>
+      <a href="#m1">1 · Mahler</a>
+      <a href="#m2">2 · Semiring</a>
+      <a href="#m3">3 · Residual</a>
+      <a href="#m4">4 · Substrate</a>
+      <a href="#m5">5 · Transport</a>
+      <a href="#m6">6 · Surprisal</a>
+      <a href="#m7">7 · Booklet</a>
+    </nav>
+    <a class="home" href="./index.html">← Archive</a>
+  </div>
+</div>
+
+<main class="wrap" id="main">
+
+  <header class="hero" id="m0">
+    <p class="eyebrow">A guided course · @COUNT@ papers · one relation</p>
+    <h1>The Emission Algebra,<br>and everything that grows from it.</h1>
+    <p class="tagline">Every paper in this archive is a branch of one small fact about a single matrix. This course walks the tree from its root.</p>
+    <p class="lede">You do not need to read the @COUNT@ papers in the order they were written. They grow from <b>one relation</b> — a matrix <span class="m">R</span> with <span class="m up">R² = R + I</span> — and the fastest way to understand any one of them is to see where it sits on that tree. This page is the map and the path: seven modules, each teaching the ideas in prose, then handing you the papers that prove them and the code that checks them. Nothing here is asserted that a machine has not verified in exact arithmetic.</p>
+
+    <div class="keyrow">
+      <span class="chip"><b>7</b> modules</span>
+      <span class="chip"><b>@COUNT@</b> papers</span>
+      <span class="chip">root: <b>R² = R + I</b></span>
+      <span class="chip">discipline: <b>exact arithmetic</b></span>
+      <span class="chip">every claim <b>machine-checked</b></span>
+    </div>
+
+    <div class="relation">
+      <div class="top"></div>
+      <div class="body">
+        <div class="eq"><span class="k">R² = R + I</span></div>
+        <p class="gloss">The same relation the golden ratio obeys: <span class="m up">φ² = φ + 1</span>. Read as a matrix it is an algebra; read as a number it is <span class="m">φ = (1+√5)/2</span> and the field <span class="m up">ℚ(√5)</span>; read through the Mahler measure it is a <em>cost</em>, floored at <span class="m">φ</span>. Those three readings are Modules 1–3. The rest are what happens when you iterate, learn on, and curve the same object.</p>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p><span class="term">How to use this page.</span> Read Module&nbsp;0 (here) and then go in order — each module states <em>what you'll learn</em>, teaches the load-bearing ideas with the real formulae inline, and closes with a <em>Verify it yourself</em> note and the module's papers (pulled live from the archive, so this list is always current). If you would rather read one continuous narrative, jump to Module&nbsp;7: the <b>Exact Arithmetic</b> booklet threads the whole corpus into thirteen lessons and is the recommended deep track.</p>
+      <p><span class="term">The epistemic tags.</span> Throughout the papers, every claim carries a tag: <b>[forced]</b> (a theorem or an exact computation), <b>[computed]</b> (a validated numerical result), <b>[declared]</b> (a principled, invariance-free modelling choice), or <b>[open]</b>. The house rule that governs all of it: <em>a summary may be shorter than its source, but never stronger.</em></p>
+    </div>
+  </header>
+
+  <!-- ───────────────────────── MODULE 1 ───────────────────────── -->
+  <section class="modwrap" id="m1">
+    <div class="modhead">
+      <span class="modnum">Module 1</span>
+      <h2 class="mod">The Two Walls — Mahler, Salem &amp; Lehmer</h2>
+      <span class="modseries">Mahler, Salem &amp; Lehmer</span>
+      <span class="modcount">7 papers</span>
+    </div>
+    <div class="learn">
+      <h3>What you'll learn</h3>
+      <ul>
+        <li>The <b>Mahler measure</b> <span class="m up">M(α) = ∏<sub>|ζ|&gt;1</sub>|ζ|</span> — a multiplicative "cost" on algebraic numbers — and <b>Lehmer's problem</b>: is there a smallest measure above 1?</li>
+        <li>What a <b>Salem number</b> is, and why the numbers this algebra can emit systematically <em>avoid</em> them.</li>
+        <li>The <b>two walls</b> — a height wall and an angle wall — that confine emission to <span class="m up">{1} ∪ [φ, ∞)</span> with on-circle eigenvalues only at angles in <span class="m up">(π/2)ℤ</span>.</li>
+        <li>Why <span class="m">φ</span> is not assumed but <b>derived</b>, as the floor those walls force.</li>
+      </ul>
+    </div>
+    <div class="prose">
+      <p>Attach to each algebraic number a single positive cost: the product of the absolute values of its conjugates that lie outside the unit circle. That is the <span class="term">Mahler measure</span> <span class="m up">M</span>. It is <span class="m up">1</span> exactly for roots of unity, and Lehmer asked in 1933 whether it can come <em>arbitrarily close</em> to 1 without being 1 — a question still open in general.</p>
+      <p>This corpus does not resolve Lehmer's problem; it does something sharper and complete on its own terrain. The numbers the emission algebra produces are confined by <b>two independent walls</b>. The height wall puts every emitted measure in <span class="m up">{1} ∪ [φ, ∞)</span> — there is a clean gap just above 1, and its edge is the golden ratio. The angle wall puts every on-circle eigenvalue at a quarter-turn, an angle in <span class="m up">(π/2)ℤ</span>. A <span class="term">Salem number</span> — the classical candidate for a small measure — violates <em>both</em> walls at once, so the entire band <span class="m up">(1, μ<sub>S</sub>)</span> is simply absent from the spectral image. Lehmer's problem is sidestepped, not solved: the interesting band is empty here for a structural reason.</p>
+      <p>The rest of the module is the anatomy of that emptiness. It turns out the "Salem slot" is not merely empty — its vacancy is a <b>conserved <span class="m up">ℤ/4ℤ</span> charge</b>, and from that charge alone five separate objects fall out (a grading, the content polynomial <span class="m up">x⁴−1</span>, the Mahler floor, a normal form, and a conserved current). Push on the slot and a totally-real Perron occupant appears via the trace redirection <span class="m up">β ↦ τ₀ = β + β⁻¹</span>, converging to <span class="m up">√5 = φ + φ⁻¹</span>. The dichotomy is tested against the pentagon (<span class="m up">ℤ₅</span>) case where the elementary argument fails, and closed at the level of an exhaustive quintic census.</p>
+    </div>
+    <div class="verify">
+      <b>Verify it yourself.</b> Every measure, every census count, and every wall in this module is independently re-derived from the papers' own premises by the archive's <a href="https://github.com/Echo-S-Studios/Echo-S-Research/tree/main/tests" target="_blank" rel="noopener">test suite</a> (roots to 40+ digits, exact symbolic algebra) — Mahler measures from root products, Galois groups from scratch, never a number copied from the paper and asserted against itself.
+    </div>
+    <div class="papers"><!--@PAPERS:mahler-salem-lehmer@--></div>
+  </section>
+
+  <!-- ───────────────────────── MODULE 2 ───────────────────────── -->
+  <section class="modwrap" id="m2">
+    <div class="modhead">
+      <span class="modnum">Module 2</span>
+      <h2 class="mod">Into an Algebra — The Spectral Semiring</h2>
+      <span class="modseries">Spectral Semiring</span>
+      <span class="modcount">4 papers</span>
+    </div>
+    <div class="learn">
+      <h3>What you'll learn</h3>
+      <ul>
+        <li>How one matrix <span class="m">R</span> and one relation <span class="m up">R² = R + I</span> generate a whole graded <b>algebra</b> <span class="m up">𝔄</span> — a ring, an <span class="m up">𝔰𝔩₂</span>, and a Mahler-graded semiring — in three layers.</li>
+        <li>The operations <span class="m up">⊕</span>, <span class="m up">⊗</span> and squaring, and why squaring is the <b>Adams operation</b> <span class="m up">ψ²</span> of a λ-ring.</li>
+        <li>The <b>charge–measure coupling</b>: minimal measure at charge group <span class="m up">ℤ/n</span> is <span class="m">φ</span> for even <span class="m">n</span>, <span class="m up">2</span> for odd — the odd gap <span class="m up">(φ, 2)</span> is exactly the no-Salem closure.</li>
+        <li>How to make charge <b>relational</b> (reference-free), and the rigidity that pins admissible spectra to anchors <span class="m up">n ∈ {m, 2m}</span>.</li>
+      </ul>
+    </div>
+    <div class="prose">
+      <p>Module&nbsp;1 gave us objects and walls; this module gives them an <span class="term">algebra</span>. From the single relation <span class="m up">R² = R + I</span>, three exact layers appear at once: the ring <span class="m up">ℤ[R] = 𝒪</span> of integers of <span class="m up">ℚ(√5)</span>; an <span class="m up">𝔰𝔩₂</span> of signature <span class="m up">(2,1)</span> whose root length is <span class="m up">√5</span>; and a Mahler-graded semiring carrying a charge <span class="m up">χ ∈ ℤ/4ℤ</span>. They are tied together by one trace duality, <span class="m up">½ Tr(Xₙ²) = 5Fₙ² = Lₙ² − 4(−1)ⁿ</span>, linking Fibonacci and Lucas numbers to the algebra's inner product.</p>
+      <p>On this algebra the two operations behave like a <span class="term">λ-ring</span>: addition <span class="m up">⊕</span>, tensor <span class="m up">⊗</span>, and a squaring that is precisely the Adams operation <span class="m up">ψ²</span> — the diagonal of the tensor square. Two characters read it out: the Mahler measure (additive on <span class="m up">⊕</span>, tropical/<span class="m up">max</span> on <span class="m up">⊗</span>) and the <span class="m up">ℤ/4ℤ</span> angle charge. The <span class="term">charge–measure coupling</span> is the punchline that explains Module&nbsp;1's gap arithmetically: the cheapest measure you can carry at charge group <span class="m up">ℤ/n</span> is <span class="m">φ</span> when <span class="m">n</span> is even and jumps to <span class="m up">2</span> when <span class="m">n</span> is odd — and that odd gap <span class="m up">(φ, 2)</span> is the same band the Salem walls forbid.</p>
+      <p>Finally the charge is made <span class="term">relational</span>: the pair charge <span class="m up">t<sub>rel</sub>(α,β) ∈ ℚ/ℤ</span> is a groupoid cocycle whose only gauge freedom is the choice of reference ray. Fix nothing external, and a modulus-pinning theorem still leaves every Salem number relationally inert and evaluates the parity floor reference-free — the strongest form of the no-Salem statement.</p>
+    </div>
+    <div class="verify">
+      <b>Verify it yourself.</b> The λ-ring laws, the trace duality, the module dimensions, and the coupling floors are checked in exact <span class="m up">sympy</span> in the <a href="https://github.com/Echo-S-Studios/Echo-S-Research/tree/main/tests" target="_blank" rel="noopener">test suite</a>; the emission-algebra primer ships its own harnesses.
+    </div>
+    <div class="papers"><!--@PAPERS:spectral-semiring@--></div>
+  </section>
+
+  <!-- ───────────────────────── MODULE 3 ───────────────────────── -->
+  <section class="modwrap" id="m3">
+    <div class="modhead">
+      <span class="modnum">Module 3</span>
+      <h2 class="mod">Number Fields as Learning Geometry — Residual Return</h2>
+      <span class="modseries">Residual Return</span>
+      <span class="modcount">3 papers</span>
+    </div>
+    <div class="learn">
+      <h3>What you'll learn</h3>
+      <ul>
+        <li>How to read a number field <span class="m up">ℚ(θ)</span> as an exact <b>learning geometry</b>: a vector space, a companion-matrix algebra, and a Minkowski lattice glued by the trace form <span class="m up">G = MᵀM</span> with <span class="m up">det G = d<sub>K</sub></span>.</li>
+        <li>The <b>residual-return</b> learner: capture as a vanishing <span class="m up">G</span>-orthogonal residual <span class="m up">r = x − Px</span>, with Mahler-measure height gating growth.</li>
+        <li>The <b>exchange rate</b> identity <span class="m up">λ = 2c</span>, read as second-order KL over the trace-form Fisher metric — and how the golden gate forces <span class="m up">λ = √5</span>.</li>
+      </ul>
+    </div>
+    <div class="prose">
+      <p>Here the algebra starts to <span class="term">learn</span>. A number field <span class="m up">ℚ(θ)</span> is simultaneously a vector space, a companion-matrix algebra, and a lattice under the Minkowski embedding; the trace form <span class="m up">G = MᵀM</span> is the metric that glues these views, and its determinant is the field discriminant <span class="m up">d<sub>K</sub></span>. In that metric, <span class="term">capture</span> — having learned an element — is exactly the vanishing of the <span class="m up">G</span>-orthogonal residual <span class="m up">r = x − Px</span>, and growth of the learned field is gated by Mahler-measure height with a Smyth-nonzero cost floor. The dynamics have an exact streaming form whose return operator <span class="m up">𝓛(X) = RX + XR − X</span> lands in a <span class="m">φ</span>-slack kernel over the Clifford algebra <span class="m up">Cl(2,0) ≅ M₂(ℝ)</span>.</p>
+      <p>The capstone is a single conformal identity. The growth rule's <span class="term">exchange rate</span> — how much description cost you pay per unit of learned structure — is the derived identity <span class="m up">λ = 2c</span>, read as a second-order Kullback–Leibler expansion over the trace-form Fisher metric. Čencov's theorem leaves one constant <span class="m">c</span> free; the golden gate fixes it, forcing <span class="m up">λ = √5</span>. One sign flip, <span class="m up">D = 1 + 4C</span>, inverts the whole regime — the same duality that will reappear as the flip between the two walls.</p>
+    </div>
+    <div class="verify">
+      <b>Verify it yourself.</b> The Fisher matrices are rebuilt from log-likelihood Hessians, the discriminants from determinantal divisors, and the <span class="m up">λ = 2c</span> identity checked symbolically, all in the <a href="https://github.com/Echo-S-Studios/Echo-S-Research/tree/main/tests" target="_blank" rel="noopener">test suite</a>.
+    </div>
+    <div class="papers"><!--@PAPERS:residual-return@--></div>
+  </section>
+
+  <!-- ───────────────────────── MODULE 4 ───────────────────────── -->
+  <section class="modwrap" id="m4">
+    <div class="modhead">
+      <span class="modnum">Module 4</span>
+      <h2 class="mod">One Gate, One Ladder, One Helix — The Golden Substrate</h2>
+      <span class="modseries">Golden Substrate</span>
+      <span class="modcount">2 papers</span>
+    </div>
+    <div class="learn">
+      <h3>What you'll learn</h3>
+      <ul>
+        <li>How a single gate iteration <span class="m up">f<sub>C</sub>(x) = C/(1+x)</span> builds a discrete <b>helix</b>.</li>
+        <li>The Lucas–Fibonacci <b>rung ladder</b> <span class="m up">ρ<sub>n</sub> = n · ln φ</span> and the state-angle chart on which every height is a gate.</li>
+        <li>Why the whole ladder is the orbit of one complex number <span class="m up">q = iτ</span> (with <span class="m up">q⁴ = </span> the gap, a <span class="m up">ℤ/4ℤ</span> quarter-turn), and why the winding rate <span class="m up">κ = π/(2 ln φ)</span> is <b>transcendental</b>.</li>
+      </ul>
+    </div>
+    <div class="prose">
+      <p>Take the algebra of Modules&nbsp;1–3 and <span class="term">iterate</span> it. The gate map <span class="m up">f<sub>C</sub>(x) = C/(1+x)</span> — the continued-fraction step behind <span class="m">φ</span> — turns the static objects into a trajectory: a discrete <span class="term">helix</span> <span class="m up">Γ(ρ)</span> climbing a rung ladder whose spacing is <span class="m up">ρ<sub>n</sub> = n · ln φ</span>, plotted on a state-angle chart where every integer height is itself a gate. The whitepaper builds this on three declared atoms — the chart, the charge selection, and the winding rate — and shows the helix is explicit and closed-form.</p>
+      <p>The companion paper compresses it to a single generator: the entire discrete ladder is the <b>orbit of one complex number</b> <span class="m up">q = iτ</span>, whose fourth power is exactly the Module-1 gap (a <span class="m up">ℤ/4ℤ</span> quarter-turn — the same charge, now geometric). The winding rate <span class="m up">κ = π/(2 ln φ)</span> is proved transcendental, and the open problem "OP-RATE" closes as a full classification, with a machine-certified ledger that locates every remaining blocker. This is the corpus at its most self-contained: one number, one relation, the whole ladder.</p>
+    </div>
+    <div class="verify">
+      <b>Verify it yourself.</b> The complex-rung-generator ships an exact-arithmetic harness suite (the open-tag resolution check, 74/74) run on every push; see <a href="https://github.com/Echo-S-Studios/Echo-S-Research/tree/main/code/2026-07-complex-rung-generator" target="_blank" rel="noopener">code/2026-07-complex-rung-generator</a>.
+    </div>
+    <div class="papers"><!--@PAPERS:golden-substrate@--></div>
+  </section>
+
+  <!-- ───────────────────────── MODULE 5 ───────────────────────── -->
+  <section class="modwrap" id="m5">
+    <div class="modhead">
+      <span class="modnum">Module 5</span>
+      <h2 class="mod">When Distance Lies — Transport Resistance</h2>
+      <span class="modseries">Transport Resistance</span>
+      <span class="modcount">2 papers</span>
+    </div>
+    <div class="learn">
+      <h3>What you'll learn</h3>
+      <ul>
+        <li>The mixed-boundary <b>torsion problem</b> <span class="m up">−∇·(𝒜∇u) = q</span> as the true governing object for a steady maintenance/transport burden — and its exact laws and sharp bounds.</li>
+        <li>Why <b>distance is provably the wrong scalar</b>: on tapered "horn" domains a distance-only estimate can overcharge by an unbounded factor.</li>
+        <li>The <b>accumulated transport resistance</b> surrogate: burden tracks demand routed through each transport cross-section, <span class="m up">Q<sub>↓</sub>(s)/(P·A)</span>, not distance or narrowness.</li>
+      </ul>
+    </div>
+    <div class="prose">
+      <p>The first applied branch leaves number theory for analysis, but keeps the corpus's habit of proving exactly what is forced. The <span class="term">mixed-boundary torsion problem</span> <span class="m up">−∇·(𝒜∇u) = q</span>, with a Dirichlet supply portion and reflecting walls, is the object that actually governs whether an interior point can be maintained against a distributed demand. The "horn paper" records its forced mechanics: an exact one-dimensional law, a ratio-free ball-mean bound (constant <span class="m up">n(n+2) = 15</span> in three dimensions), a sharp star-shaped lower bound, and the <b>closure of the distance conjecture</b> — an explicit tapered-horn family drives the coefficient <span class="m up">P‖u‖<sub>∞</sub>/(qR²)</span> all the way to infimum <span class="m up">0</span> (a clean rational witness, <span class="m up">423/2890 &lt; 1/6</span>), so distance to the supply set gives <em>no</em> universal lower bound. The straight cone <span class="m up">k = 2</span> is the exact transition.</p>
+      <p>The second paper turns that into a research protocol. If distance overcharges, what is the right cheap scalar? The <span class="term">accumulated transport resistance</span> says burden tracks the demand routed through each available transport cross-section, <span class="m up">Q<sub>↓</sub>(s)/(P·A)</span>. That single ratio separates two regimes — volume-graded tapers (burden falls, <span class="m up">ρ<sub>u</sub> ≪ 1</span>) and demand-loaded bottlenecks (burden rises, <span class="m up">ρ<sub>u</sub> = 1.83 &gt; 1</span>) — and a Phase-A "surrogate contest" makes any geometry-only predictor pass a gatekeeper (does it track the exact field <span class="m">u</span>?) before any biological claim. The gain, on a matched-distance family, is the <b>restriction × demand interaction</b>, not distance alone.</p>
+    </div>
+    <div class="verify">
+      <b>Verify it yourself.</b> Every displayed identity in the horn paper is machine-checked in exact rational arithmetic (its <span class="m up">p2-softcheck</span>, 28 checks); the ATR numerical claims come from its companion <span class="m up">surrogate_contest.py</span> (see the paper's verification section). <span class="note" style="display:inline">A display erratum (the <span class="m up">k=10</span> tube value is <span class="m up">1/22 = 0.045</span>) is logged in <a href="https://github.com/Echo-S-Studios/Echo-S-Research/blob/main/ERRATA.md" target="_blank" rel="noopener">ERRATA.md</a>.</span>
+    </div>
+    <div class="papers"><!--@PAPERS:transport-resistance@--></div>
+  </section>
+
+  <!-- ───────────────────────── MODULE 6 ───────────────────────── -->
+  <section class="modwrap" id="m6">
+    <div class="modhead">
+      <span class="modnum">Module 6</span>
+      <h2 class="mod">The Catalog as a Manifold — Surprisal Geometry</h2>
+      <span class="modseries">Surprisal Geometry</span>
+      <span class="modcount">1 paper</span>
+    </div>
+    <div class="learn">
+      <h3>What you'll learn</h3>
+      <ul>
+        <li>How to re-read the Mahler-measure <b>catalog</b> <span class="m up">Ω = {√2, √3, √5, φ, τ, φ⁴, K}</span> as a probability family and give it a <b>Fisher–Rao geometry</b>.</li>
+        <li>The identity <span class="m up">C(β) = β² I(β)</span> — Fisher information <em>is</em> a heat capacity — and why the geometry is an exact round <b>¼-sphere</b>.</li>
+        <li>The classification of its constant-curvature surfaces: exactly <b>8</b> at <span class="m">k=2</span>, forced by a two-line determinantal <b>master identity</b>.</li>
+      </ul>
+    </div>
+    <div class="prose">
+      <p>The second applied branch turns the corpus's own numbers into statistics. The catalog's Mahler measures sum to the field constant <span class="m up">Z = 17 + 4√5</span>, and through the description cost <span class="m up">log M</span> they define a Gibbs family <span class="m up">p<sub>i</sub>(β) ∝ M<sub>i</sub><sup>−β</sup></span> — a forced exponential family. On it, surprisal is affine in cost and the <span class="term">Fisher information equals the cost variance</span>; the geometry is dually flat, and its thermodynamics obey <span class="m up">C(β) = β² I(β)</span> — Fisher information is literally a heat capacity. Adjoin the degree as a second statistic and the Gaussian curvature is <em>exactly</em> the constant <span class="m up">¼</span>: an isometric round quarter-sphere, embedded as a ruled surface.</p>
+      <p>The worked edition then classifies everything. The constant-<span class="m up">¼</span> two-statistic surfaces are <b>exactly eight</b> at <span class="m">k = 2</span>, and the count is forced not by search but by a two-line determinantal <span class="term">master identity</span>, <span class="m up">P = Z² · Σ<sub>|s|=4</sub> q₄(s) w<sub>s</sub></span> (Sylvester's identity plus Cauchy–Binet). The full landscape at every <span class="m">k</span> is a partitioned-affine classification with counts <span class="m up">8/56/95/31/1</span>, and the compositum coupling is shown forced. It is the whole method in miniature: a conjecture replaced by an exact identity, every number machine-verified.</p>
+    </div>
+    <div class="verify">
+      <b>Verify it yourself.</b> This is the most reproducible paper in the archive: <b>20 fail-first harnesses, 422 exact-arithmetic checks</b> over <span class="m up">ℚ(log2, log3, log5, log φ)</span>. Run the fast lane (<span class="m up">ci_check.py</span>, ~2.5&nbsp;min) or the whole suite (<span class="m up">run_all.sh</span>) in <a href="https://github.com/Echo-S-Studios/Echo-S-Research/tree/main/code/2026-07-field-surprisal-geometry" target="_blank" rel="noopener">code/2026-07-field-surprisal-geometry</a>.
+    </div>
+    <div class="papers"><!--@PAPERS:surprisal-geometry@--></div>
+  </section>
+
+  <!-- ───────────────────────── MODULE 7 ───────────────────────── -->
+  <section class="modwrap" id="m7">
+    <div class="modhead">
+      <span class="modnum">Module 7</span>
+      <h2 class="mod">The Whole Story, End to End — Exact Arithmetic</h2>
+      <span class="modseries">Exact Arithmetic</span>
+      <span class="modcount">the deep track</span>
+    </div>
+    <div class="learn">
+      <h3>What you'll learn</h3>
+      <ul>
+        <li>Everything in Modules&nbsp;1–6, threaded into a single continuous narrative of <b>thirteen lessons</b>, each pinned to a fail-first check.</li>
+        <li>The method itself: how a claim becomes a check, and why <em>a summary may be shorter than its source but never stronger</em>.</li>
+      </ul>
+    </div>
+    <div class="prose">
+      <p>If this page is the map, the <span class="term">Exact Arithmetic</span> booklet is the walked path. It is a self-contained thirteen-lesson course that takes the same material in one continuous line — single objects and the two walls, into an algebra, the exchange rate <span class="m up">λ = 2c</span>, the capacity gate and the parity floor, residual/capture/growth, deleting the reference ray, one ladder–chart–helix, the closure engine and its door, a new discovery, closure, and finally the catalog re-read as a statistical manifold. Where this page teaches the ideas and hands you the papers, the booklet <em>derives</em> them, lesson by lesson, and every lesson ends in a badge of exact-arithmetic checks (354 numbered across the thirteen, plus census, revision, and certificate artifacts).</p>
+      <p>It is also the clearest statement of the discipline the whole archive runs on: no uncertified approximation crosses a decision boundary; symbolic equality where possible, exhaustive enumeration where the set is finite, directed-interval arithmetic where a transcendental comparison enters; and floats may display but never decide. Read it start to finish and the other @COUNT@&nbsp;−&nbsp;1 papers become footnotes you already understand.</p>
+    </div>
+    <div class="verify">
+      <b>Verify it yourself.</b> The booklet ships its full evidence bundle — 14 fail-first scripts plus <span class="m up">run_all.py</span>. One command, <span class="m up">run_all.py --full</span>, checks every lesson, the quintic census, both revision passes, and the certificates end-to-end.
+    </div>
+    <div class="papers"><!--@PAPERS:exact-arithmetic@--></div>
+  </section>
+
+  <footer>
+    <span>© 2026 Echo S Studios Research Developments · CC BY 4.0</span>
+    <a href="./index.html">The archive</a>
+    <a href="https://github.com/Echo-S-Studios/Echo-S-Research" target="_blank" rel="noopener">Source</a>
+    <a href="https://doi.org/10.5281/zenodo.21364940" target="_blank" rel="noopener">Zenodo (DOI)</a>
+    <span>Course assembled @UPDATED@.</span>
+  </footer>
+
+</main>
+</body>
+</html>

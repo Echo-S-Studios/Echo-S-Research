@@ -91,6 +91,27 @@
   .card:hover .go .arr{ transform:translateX(3px) }
   .arr{ transition:transform .2s }
 
+  /* start-here course hero */
+  .course{ margin:38px 0 6px }
+  .course-card{ display:block; text-decoration:none; color:inherit; position:relative; overflow:hidden;
+    border:1px solid var(--edge); border-radius:18px; padding:24px 26px 20px;
+    background:linear-gradient(180deg, rgba(20,23,51,.72), rgba(11,13,24,.72));
+    transition:border-color .2s, transform .2s, box-shadow .2s }
+  .course-card::before{ content:""; position:absolute; inset:0 0 auto 0; height:3px;
+    background:linear-gradient(90deg, var(--gold), var(--teal), var(--violet)) }
+  .course-card:hover{ border-color:#454c70; transform:translateY(-3px); box-shadow:0 18px 44px -20px rgba(0,0,0,.85) }
+  .course-card:focus-visible{ outline:2px solid var(--gold); outline-offset:2px }
+  .course-top{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap }
+  .tag.start{ font-family:var(--mono); font-size:10px; letter-spacing:.16em; text-transform:uppercase;
+    color:#05060b; background:var(--teal); padding:4px 10px; border-radius:999px; font-weight:700 }
+  .course-meta{ font-family:var(--mono); font-size:11px; color:var(--muted) }
+  .course-h{ font-family:var(--serif); font-weight:500; font-size:clamp(21px,3.2vw,29px); line-height:1.15; margin:14px 0 0; color:#fff }
+  .course-p{ font-size:14.5px; line-height:1.65; color:#c4c8dd; max-width:80ch; margin:11px 0 0 }
+  .course-p b{ color:var(--gold); font-family:var(--mono); font-size:13px }
+  .course-go{ margin-top:15px; display:inline-flex; align-items:center; gap:8px; font-family:var(--mono);
+    font-size:12.5px; letter-spacing:.05em; color:var(--gold) }
+  .course-card:hover .course-go .arr{ transform:translateX(4px) }
+
   /* archive note */
   .note{ margin-top:26px; font-size:13px; line-height:1.65; color:var(--muted); max-width:78ch }
   .note a{ color:var(--muted); text-decoration:none; border-bottom:1px solid var(--edge); transition:color .18s }
@@ -129,6 +150,18 @@
       cites. Sources, computational products, and the contribution contract live in the
       <a href="https://github.com/Echo-S-Studios/Echo-S-Research">source repository</a>; each tagged release mints a citable <b>DOI</b>.</p>
   </header>
+
+  <section class="course" aria-label="Start here — the course">
+    <a class="course-card" href="learn.html">
+      <div class="course-top">
+        <span class="tag start">Start here ↗</span>
+        <span class="course-meta">@COUNT@ papers · 7 modules · one relation</span>
+      </div>
+      <h2 class="course-h">New here? Learn the whole archive as one story.</h2>
+      <p class="course-p">Every paper below grows from a single matrix relation, <b>R² = R + I</b>. The guided course walks the tree from its root — the Mahler measure and its two walls, the spectral semiring, residual-return learning, the golden helix, and two applied geometries — teaching the ideas, then handing you the papers and the code that checks them.</p>
+      <span class="course-go">Begin the course <span class="arr">→</span></span>
+    </a>
+  </section>
 
   <section aria-labelledby="papers-head">
     <h2 id="papers-head">The papers</h2>

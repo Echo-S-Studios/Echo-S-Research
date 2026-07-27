@@ -149,6 +149,63 @@ def render_card(p: dict) -> str:
     return "\n".join(lines)
 
 
+# The learning course (site/learn.html) groups the papers into series-modules. This is the
+# ONLY place the series->module mapping lives; a paper's series (from blurbs.json) routes it
+# to a module automatically, so adding a paper needs no edit here. A series with no module
+# entry is logged (its papers still appear on the index, just not in the course).
+SERIES_SLUG = {
+    "Mahler, Salem & Lehmer": "mahler-salem-lehmer",
+    "Spectral Semiring": "spectral-semiring",
+    "Residual Return": "residual-return",
+    "Golden Substrate": "golden-substrate",
+    "Transport Resistance": "transport-resistance",
+    "Surprisal Geometry": "surprisal-geometry",
+    "Exact Arithmetic": "exact-arithmetic",
+}
+
+
+def render_course_paper(p: dict) -> str:
+    """A compact paper entry for a course module (title, meta, blurb, PDF + source links)."""
+    heading = html.escape(display_title(p["title"]))
+    desc = html.escape(p["description"]) if p.get("description") else ""
+    pp = f"{p['pages']} pp" if p["pages"] else ""
+    meta = " · ".join(x for x in (pp, month_label(p["date"], p["shortname"])) if x)
+    links = [f'<a class="pdf" href="{html.escape(p["file"])}" target="_blank" rel="noopener">Read PDF ↗</a>']
+    if p.get("tex"):
+        links.append(f'<a href="{html.escape(p["tex"])}" target="_blank" rel="noopener">Source</a>')
+    lines = [
+        '      <div class="cp">',
+        f'        <div class="h"><span class="t">{heading}</span><span class="meta">{meta}</span></div>',
+    ]
+    if desc:
+        lines.append(f'        <p class="d">{desc}</p>')
+    lines.append('        <div class="links">' + " ".join(links) + "</div>")
+    lines.append("      </div>")
+    return "\n".join(lines)
+
+
+def build_course(papers: list) -> None:
+    """Render site/learn.html into _site/learn.html, injecting each series' papers into its
+    <!--@PAPERS:<slug>@--> placeholder. No-op if the template is absent."""
+    tpl_path = SITE / "learn.html"
+    if not tpl_path.is_file():
+        return
+    by_series: dict[str, list] = {}
+    for p in papers:
+        by_series.setdefault(p.get("series") or "", []).append(p)
+    for s in by_series:
+        if s and s not in SERIES_SLUG:
+            print(f"::warning title=course::series {s!r} has no course module — its papers are on the index only")
+    learn = tpl_path.read_text(encoding="utf-8")
+    for series, slug in SERIES_SLUG.items():
+        group = sorted(by_series.get(series, []), key=lambda p: (p["date"], p["shortname"]))
+        frag = "\n".join(render_course_paper(p) for p in group)
+        learn = learn.replace(f"<!--@PAPERS:{slug}@-->", frag)
+    learn = (learn.replace("@COUNT@", str(len(papers)))
+                  .replace("@UPDATED@", date.today().isoformat()))
+    (OUT / "learn.html").write_text(learn, encoding="utf-8")
+
+
 def main() -> None:
     blurbs_path = SITE / "blurbs.json"
     blurbs = json.loads(blurbs_path.read_text(encoding="utf-8")) if blurbs_path.is_file() else {}
@@ -184,8 +241,11 @@ def main() -> None:
         fail("site/index.html has no <!--@CARDS@--> placeholder — nothing was injected")
     (OUT / "index.html").write_text(out_html, encoding="utf-8")
 
+    build_course(papers)
+
     print(f"built _site: {len(papers)} papers, "
-          f"{sum(1 for p in papers if p.get('description'))} with blurbs")
+          f"{sum(1 for p in papers if p.get('description'))} with blurbs, "
+          f"course={'yes' if (OUT / 'learn.html').is_file() else 'no'}")
 
 
 if __name__ == "__main__":
