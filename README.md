@@ -2,6 +2,7 @@
 
 [![structure](https://github.com/Echo-S-Studios/Echo-S-Research/actions/workflows/structure.yml/badge.svg)](https://github.com/Echo-S-Studios/Echo-S-Research/actions/workflows/structure.yml)
 [![drift](https://github.com/Echo-S-Studios/Echo-S-Research/actions/workflows/drift.yml/badge.svg)](https://github.com/Echo-S-Studios/Echo-S-Research/actions/workflows/drift.yml)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21364940.svg)](https://doi.org/10.5281/zenodo.21364940)
 
 Research papers and their computational products from **Echo S Studios Research Developments**.
 
