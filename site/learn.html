@@ -130,7 +130,17 @@
   @media (max-width:620px){ .relation .body{ flex-direction:column; align-items:flex-start } }
   @media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto } *{ transition:none!important } }
   @media print{ body{ background:#fff; color:#111 } .bar{ display:none } h1{ -webkit-text-fill-color:#111; color:#111 } }
+  /* ── tabbed module view · progressive enhancement (no-JS falls back to the long scroll) ── */
+  .has-js .panel{ display:none }
+  .has-js .panel.is-active{ display:block }
+  .has-js .modwrap{ margin-top:30px }
+  .has-js header.hero{ padding-top:clamp(26px,5vw,52px) }
+  .bar nav a{ transition:background .15s, color .15s, border-color .15s }
+  .bar nav a.is-active{ color:var(--void); background:var(--teal); border-color:var(--teal); font-weight:700 }
+  .panel:focus{ outline:none }
+  @media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto } }
 </style>
+<script>document.documentElement.classList.add('has-js')</script>
 </head>
 <body>
 <a class="skip" href="#m0">Skip to the course</a>
@@ -139,7 +149,7 @@
   <div class="row">
     <span class="brand">Echo&nbsp;S&nbsp;Research · <b>The Course</b></span>
     <nav aria-label="Modules">
-      <a href="#m0">0 · Start</a>
+      <a href="#m0" class="is-active">0 · Start</a>
       <a href="#m1">1 · Mahler</a>
       <a href="#m2">2 · Semiring</a>
       <a href="#m3">3 · Residual</a>
@@ -154,7 +164,7 @@
 
 <main class="wrap" id="main">
 
-  <header class="hero" id="m0">
+  <header class="hero panel is-active" id="m0">
     <p class="eyebrow">A guided course · @COUNT@ papers · one relation</p>
     <h1>The Emission Algebra,<br>and everything that grows from it.</h1>
     <p class="tagline">Every paper in this archive is a branch of one small fact about a single matrix. This course walks the tree from its root.</p>
@@ -183,7 +193,7 @@
   </header>
 
   <!-- ───────────────────────── MODULE 1 ───────────────────────── -->
-  <section class="modwrap" id="m1">
+  <section class="modwrap panel" id="m1">
     <div class="modhead">
       <span class="modnum">Module 1</span>
       <h2 class="mod">The Two Walls — Mahler, Salem &amp; Lehmer</h2>
@@ -212,7 +222,7 @@
   </section>
 
   <!-- ───────────────────────── MODULE 2 ───────────────────────── -->
-  <section class="modwrap" id="m2">
+  <section class="modwrap panel" id="m2">
     <div class="modhead">
       <span class="modnum">Module 2</span>
       <h2 class="mod">Into an Algebra — The Spectral Semiring</h2>
@@ -241,7 +251,7 @@
   </section>
 
   <!-- ───────────────────────── MODULE 3 ───────────────────────── -->
-  <section class="modwrap" id="m3">
+  <section class="modwrap panel" id="m3">
     <div class="modhead">
       <span class="modnum">Module 3</span>
       <h2 class="mod">Number Fields as Learning Geometry — Residual Return</h2>
@@ -268,7 +278,7 @@
   </section>
 
   <!-- ───────────────────────── MODULE 4 ───────────────────────── -->
-  <section class="modwrap" id="m4">
+  <section class="modwrap panel" id="m4">
     <div class="modhead">
       <span class="modnum">Module 4</span>
       <h2 class="mod">One Gate, One Ladder, One Helix — The Golden Substrate</h2>
@@ -295,7 +305,7 @@
   </section>
 
   <!-- ───────────────────────── MODULE 5 ───────────────────────── -->
-  <section class="modwrap" id="m5">
+  <section class="modwrap panel" id="m5">
     <div class="modhead">
       <span class="modnum">Module 5</span>
       <h2 class="mod">When Distance Lies — Transport Resistance</h2>
@@ -322,7 +332,7 @@
   </section>
 
   <!-- ───────────────────────── MODULE 6 ───────────────────────── -->
-  <section class="modwrap" id="m6">
+  <section class="modwrap panel" id="m6">
     <div class="modhead">
       <span class="modnum">Module 6</span>
       <h2 class="mod">The Catalog as a Manifold — Surprisal Geometry</h2>
@@ -349,7 +359,7 @@
   </section>
 
   <!-- ───────────────────────── MODULE 7 ───────────────────────── -->
-  <section class="modwrap" id="m7">
+  <section class="modwrap panel" id="m7">
     <div class="modhead">
       <span class="modnum">Module 7</span>
       <h2 class="mod">The Whole Story, End to End — Exact Arithmetic</h2>
@@ -382,5 +392,48 @@
   </footer>
 
 </main>
+
+<script>
+(function(){
+  document.documentElement.classList.add('has-js');
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.panel'));
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.bar nav a[href^="#m"]'));
+  if (!panels.length || !tabs.length) return;
+  function idOf(a){ return (a.getAttribute('href') || '').slice(1); }
+  function isPanel(id){ var el = id && document.getElementById(id); return !!(el && el.classList.contains('panel')); }
+  function show(id, updateHash){
+    if (!isPanel(id)) return;
+    panels.forEach(function(p){ p.classList.toggle('is-active', p.id === id); });
+    tabs.forEach(function(a){
+      var on = idOf(a) === id;
+      a.classList.toggle('is-active', on);
+      a.setAttribute('aria-current', on ? 'page' : 'false');
+    });
+    if (updateHash) { try { history.replaceState(null, '', '#' + id); } catch (e) {} }
+    (document.scrollingElement || document.documentElement).scrollTop = 0;
+    var panel = document.getElementById(id);
+    panel.setAttribute('tabindex', '-1');
+    panel.focus({ preventScroll: true });
+  }
+  tabs.forEach(function(a){
+    a.addEventListener('click', function(e){ e.preventDefault(); show(idOf(a), true); });
+  });
+  window.addEventListener('hashchange', function(){
+    var id = location.hash.slice(1);
+    if (isPanel(id)) show(id, false);
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    var cur = -1, i;
+    for (i = 0; i < panels.length; i++) { if (panels[i].classList.contains('is-active')) { cur = i; break; } }
+    var next = cur + (e.key === 'ArrowRight' ? 1 : -1);
+    if (cur >= 0 && next >= 0 && next < panels.length) { e.preventDefault(); show(panels[next].id, true); }
+  });
+  // Honor a #mN deep link on load; otherwise the pre-marked orientation (m0) stays active.
+  var initial = location.hash.slice(1);
+  if (isPanel(initial) && initial !== 'm0') show(initial, false);
+})();
+</script>
 </body>
 </html>
